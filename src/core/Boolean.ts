@@ -1,11 +1,11 @@
 import * as Promise from "bluebird";
-import {Type, SyncType} from "./interfaces/Type";
+import {SyncType} from "./interfaces/Type";
 
 export class BooleanType implements SyncType{
 	name: string = "boolean";
 	options: {[key: string]: any};
 
-	readSync(format:string, val:any):any {
+	readSync(format: string, val: any): boolean {
 		return Boolean(val);
 	}
 
@@ -13,10 +13,9 @@ export class BooleanType implements SyncType{
 		return Promise.resolve(Boolean(val));
 	}
 
-	writeSync(format:string, val:any):any {
+	writeSync(format: string, val: boolean): any {
 		return Boolean(val);
 	}
-
 
 	write(format: string, val: boolean): Promise<any> {
 		return Promise.resolve(Boolean(val));
@@ -33,16 +32,15 @@ export class BooleanType implements SyncType{
 		return Promise.resolve(this.testSync(val));
 	}
 
-	normalizeSync(val:any):any {
+	normalizeSync(val: boolean): boolean {
 		return Boolean(val);
 	}
-
 
 	normalize(val: any): Promise<boolean> {
 		return Promise.resolve(Boolean(val));
 	}
 
-	equalsSync(val1:any, val2:any):any {
+	equalsSync(val1: boolean, val2: boolean): boolean {
 		return val1 === val2;
 	}
 
@@ -50,7 +48,7 @@ export class BooleanType implements SyncType{
 		return Promise.resolve(val1 === val2);
 	}
 
-	cloneSync(val:any):any {
+	cloneSync(val: boolean): boolean {
 		return val;
 	}
 
@@ -58,7 +56,7 @@ export class BooleanType implements SyncType{
 		return Promise.resolve(val);
 	}
 
-	diffSync(oldVal:any, newVal:any):any {
+	diffSync(oldVal: boolean, newVal: boolean): boolean {
 		return oldVal !== newVal;
 	}
 
@@ -66,7 +64,7 @@ export class BooleanType implements SyncType{
 		return Promise.resolve(oldVal !== newVal);
 	}
 
-	patchSync(oldVal:any, diff:any):any {
+	patchSync(oldVal: boolean, diff: boolean): boolean {
 		return diff ? !oldVal : oldVal;
 	}
 
@@ -74,7 +72,7 @@ export class BooleanType implements SyncType{
 		return Promise.resolve(diff ? !oldVal : oldVal);
 	}
 
-	revertSync(newVal:any, diff:any):any {
+	revertSync(newVal: boolean, diff: boolean): boolean {
 		return diff ? !newVal : newVal;
 	}
 
