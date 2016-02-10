@@ -13,7 +13,7 @@ export interface Type{
   revert(newVal: any, diff: any): Promise<any>;
 }
 
-export interface TypeSync extends Type{
+export interface SyncType extends Type{
   readSync(format: string, val: any): any;
   writeSync(format: string, val: any): any;
   testSync(val: any): boolean | Error;

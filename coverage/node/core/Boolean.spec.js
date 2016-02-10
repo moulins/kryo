@@ -1,6 +1,6 @@
 "use strict";
-var Boolean_1 = require('./Boolean');
-var chai = require('chai');
+var Boolean_1 = require("./Boolean");
+var chai = require("chai");
 var assert = chai.assert;
 describe("BooleanType", function () {
     var validValues = [
@@ -12,10 +12,10 @@ describe("BooleanType", function () {
         new Boolean(false),
         0,
         1,
-        '',
-        '0',
-        'false',
-        'true',
+        "",
+        "0",
+        "false",
+        "true",
         [],
         {},
         new Date(),
