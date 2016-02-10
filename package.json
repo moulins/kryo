@@ -1,0 +1,36 @@
+{
+  "name": "via-type",
+  "version": "1.0.0",
+  "description": "Basic types for via.",
+  "main": "dist/node/node/main.js",
+  "repository": {
+    "type": "git",
+    "url": null
+  },
+  "scripts": {
+    "test": "gulp test",
+    "postinstall": "gulp install.noNpm"
+  },
+  "keywords": [
+    "orm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "gulp": "^3.9.0",
+    "typescript": "^1.8.0-dev.20160125",
+    "via-build-tools": "^0.6.3"
+  },
+  "jspm": {
+    "configFile": "systemjs.config.js",
+    "dependencies": {
+      "lodash": "npm:lodash@^4.0.0"
+    },
+    "devDependencies": {}
+  },
+  "dependencies": {
+    "bluebird": "^3.2.1",
+    "lodash": "^4.0.0"
+  }
+}
