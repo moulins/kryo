@@ -1,7 +1,7 @@
 import * as Promise from "bluebird";
-import {SyncType} from "./interfaces/Type";
+import {Type, TypeSync} from "./interfaces/Type";
 
-export class BooleanType implements SyncType{
+export class BooleanType implements Type, TypeSync{
 	name: string = "boolean";
 	options: {[key: string]: any};
 

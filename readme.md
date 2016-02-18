@@ -1,8 +1,8 @@
-# Omnichat
+# Via-Type
 
 ## Description
 
-OmniChat is a service library 
+Simple type interfaces.
 
 ## Install
 

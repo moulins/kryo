@@ -1,6 +1,6 @@
 import {IntegerType} from "./Integer";
 import * as chai from "chai";
-import {SyncType} from "./interfaces/Type";
+import {TypeSync} from "./interfaces/Type";
 
 let assert = chai.assert;
 
@@ -37,14 +37,14 @@ describe("IntegerType", function(){
 	];
 
 	it("#test should return true if the argument is an integer", function() {
-		let type:SyncType = new IntegerType();
+		let type:TypeSync = new IntegerType();
 		for (let i = 0, l = validValues.length; i < l; i++) {
 			assert.strictEqual(type.testSync(validValues[i]), true, String(validValues[i]));
 		}
 	});
 
 	it("#test should return false if the argument is not an integer", function() {
-		let type:SyncType = new IntegerType();
+		let type:TypeSync = new IntegerType();
 		for (let i = 0, l = invalidValues.length; i < l; i++) {
 			assert.notStrictEqual(type.testSync(invalidValues[i]), true, String(invalidValues[i]));
 		}
