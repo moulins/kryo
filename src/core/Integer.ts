@@ -54,7 +54,7 @@ export class IntegerType implements Type, TypeSync{
 	}
 
 	diffSync(oldVal: number, newVal: number): number {
-		return newVal-oldVal;
+		return newVal - oldVal;
 	}
 
 	diff(oldVal: number, newVal: number): Promise<number> {
@@ -62,7 +62,7 @@ export class IntegerType implements Type, TypeSync{
 	}
 
 	patchSync(oldVal: number, diff: number): number {
-		return oldVal+diff;
+		return oldVal + diff;
 	}
 
 	patch(oldVal: number, diff: number): Promise<number> {
@@ -70,7 +70,7 @@ export class IntegerType implements Type, TypeSync{
 	}
 
 	revertSync(newVal: number, diff: number): number {
-		return newVal-diff;
+		return newVal - diff;
 	}
 
 	revert(newVal: number, diff: number): Promise<number> {

@@ -1,4 +1,4 @@
-import {IntegerType} from "./Integer";
+import {DateType} from "./Date";
 import * as chai from "chai";
 import {TypeSync} from "./interfaces/Type";
 
@@ -10,47 +10,43 @@ interface NumberConstructorES6 extends NumberConstructor{
   EPSILON: number
 }
 
-describe("IntegerType", function () {
+describe("DateType", function () {
 
   let validValues = [
-    0,
-    1,
-    -1,
-    2,
-    -2,
-    1e3,
-    -1e3,
-    (<NumberConstructorES6>Number).MAX_SAFE_INTEGER,
-    (<NumberConstructorES6>Number).MIN_SAFE_INTEGER,
-    Number.MAX_VALUE
+    new Date(),
+    new Date(0),
+    new Date("1247-05-18T19:40:08.418Z"),
+    new Date((<NumberConstructorES6>Number).EPSILON),
+    new Date(Math.PI)
   ];
 
   let invalidValues = [
-    new Number(1),
+    new Date((<NumberConstructorES6>Number).MAX_SAFE_INTEGER),
+    new Date((<NumberConstructorES6>Number).MIN_SAFE_INTEGER),
+    new Date(Number.MAX_VALUE),
+    new Date(NaN),
+    1,
     0.5,
-    0.0001,
     Infinity,
-    -Infinity,
     NaN,
     undefined,
     null,
-    (<NumberConstructorES6>Number).EPSILON,
-    '0',
+    '1',
     [],
     {},
-    new Date(),
     /regex/
   ];
 
-  it("#test should return true if the argument is an integer", function () {
-    let type:TypeSync = new IntegerType();
+  it("#test should return true if the argument is a date", function () {
+    let type:TypeSync = new DateType();
     for (let i = 0, l = validValues.length; i < l; i++) {
+      console.log(String(validValues[i]));
       assert.strictEqual(type.testSync(validValues[i]), true, String(validValues[i]));
     }
   });
 
-  it("#test should return false if the argument is not an integer", function () {
-    let type:TypeSync = new IntegerType();
+  it("#test should return false if the argument is not a date", function () {
+    let type:TypeSync = new DateType();
     for (let i = 0, l = invalidValues.length; i < l; i++) {
       assert.notStrictEqual(type.testSync(invalidValues[i]), true, String(invalidValues[i]));
     }
