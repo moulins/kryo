@@ -1,3 +1,6 @@
+// type SyncAsync<T> = T | Promise<SyncAsync<T>>;
+// type NormalizedPromise<T> = Promise<SyncAsync<T>>;
+
 export interface TypeAsync<T, D> {
   isSync: boolean;
   name: string;
