@@ -35,7 +35,7 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
     throw new Error("DocumentType does not support readSync");
   }
 
-  read(format: string, val: any): Promise<{[key: string]: any}> {
+  read(format: string, val: any): Promise<Dictionnary<any>> {
     return Promise.try(() => {
       switch (format) {
         case 'bson':
@@ -60,11 +60,11 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
     });
   }
 
-  writeSync(format: string, val: Date): any {
+  writeSync(format: string, val: Dictionnary<any>): any {
     throw new Error("DocumentType does not support writeSync");
   }
 
-  write(format: string, val: Date): Promise<any> {
+  write(format: string, val: Dictionnary<any>): Promise<any> {
     return Promise.try(() => {
       switch (format) {
         case 'bson':
@@ -142,51 +142,51 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
     });
   }
 
-  normalizeSync(val: any): Date {
+  normalizeSync(val: any): any {
     throw new Error("DocumentType does not support normalizeSync");
   }
 
-  normalize (val: any): Promise<Date> {
+  normalize (val: any): Promise<any> {
     return Promise.resolve(val);
   }
 
-  equalsSync(val1: Date, val2: Date): boolean {
+  equalsSync(val1: any, val2: any): boolean {
     throw new Error("DocumentType does not support equalsSync");
   }
 
-  equals (val1: Date, val2: Date): Promise<boolean> {
-    return Promise.resolve(val1.getTime() === val2.getTime());
+  equals (val1: any, val2: any): Promise<boolean> {
+    return Promise.reject(new Error("ArrayType does not support equals"));
   }
 
-  cloneSync(val: Date): Date {
+  cloneSync(val: any): any {
     throw new Error("DocumentType does not support cloneSync");
   }
 
-  clone (val: Date): Promise<Date> {
+  clone (val: any): Promise<any> {
     return Promise.resolve(this.cloneSync(val));
   }
 
-  diffSync(oldVal: Date, newVal: Date): number {
+  diffSync(oldVal: any, newVal: any): number {
     throw new Error("DocumentType does not support diffSync");
   }
 
-  diff (oldVal: Date, newVal: Date): Promise<number> {
+  diff (oldVal: any, newVal: any): Promise<number> {
     return Promise.resolve(this.diffSync(oldVal, newVal));
   }
 
-  patchSync(oldVal: Date, diff: number): Date {
+  patchSync(oldVal: any, diff: number): any {
     throw new Error("DocumentType does not support patchSync");
   }
 
-  patch (oldVal: Date, diff: number): Promise<Date> {
+  patch (oldVal: any, diff: number): Promise<any> {
     return Promise.resolve(this.patchSync(oldVal, diff));
   }
 
-  revertSync(newVal: Date, diff: number): Date {
+  revertSync(newVal: any, diff: number): any {
     throw new Error("DocumentType does not support revertSync");
   }
 
-  revert (newVal: Date, diff: number): Promise<Date> {
+  revert (newVal: any, diff: number): Promise<any> {
     return Promise.resolve(this.revertSync(newVal, diff));
   }
 
