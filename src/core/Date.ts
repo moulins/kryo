@@ -1,7 +1,7 @@
 import * as Promise from "bluebird";
 import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/Type";
 
-class DateTypeSync implements TypeSync<Date, number> {
+export class DateTypeSync implements TypeSync<Date, number> {
   isSync: boolean = true;
   name: string = "date";
 
@@ -67,3 +67,4 @@ class DateTypeSync implements TypeSync<Date, number> {
 }
 
 export let DateType: StaticType<Date, number> = promisifyClass(DateTypeSync);
+export type DateType = Type<Date, number>;

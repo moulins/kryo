@@ -42,4 +42,5 @@ export class IntegerTypeSync implements TypeSync<number, number> {
   }
 }
 
-export let DateType: StaticType<number, number> = promisifyClass(IntegerTypeSync);
+export let IntegerType: StaticType<number, number> = promisifyClass(IntegerTypeSync);
+export type IntegerType = Type<number, number>;

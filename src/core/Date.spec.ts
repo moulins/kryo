@@ -1,8 +1,6 @@
-import {DateType} from "./Date";
-import * as chai from "chai";
+import {DateTypeSync, DateType} from "./Date";
 import {TypeSync} from "./interfaces/Type";
-
-let assert = chai.assert;
+import {TypeTestItem, runTypeTestSync} from "./tests-helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number,
@@ -12,44 +10,36 @@ interface NumberConstructorES6 extends NumberConstructor{
 
 describe("DateType", function () {
 
-  let validValues = [
-    new Date(),
-    new Date(0),
-    new Date("1247-05-18T19:40:08.418Z"),
-    new Date((<NumberConstructorES6>Number).EPSILON),
-    new Date(Math.PI)
+  let type: DateTypeSync = new DateTypeSync();
+
+  let truthyItems: TypeTestItem[] = [
+    {name: "new Date()", value: new Date(), message: null},
+    {name: "new Date(0)", value: new Date(0), message: null},
+    {name: 'new Date("1247-05-18T19:40:08.418Z")', value: new Date("1247-05-18T19:40:08.418Z"), message: null},
+    {name: "new Date(Number.EPSILON)", value: new Date((<NumberConstructorES6>Number).EPSILON), message: null},
+    {name: "new Date(Math.PI)", value: new Date(Math.PI), message: null}
   ];
 
-  let invalidValues = [
-    new Date((<NumberConstructorES6>Number).MAX_SAFE_INTEGER),
-    new Date((<NumberConstructorES6>Number).MIN_SAFE_INTEGER),
-    new Date(Number.MAX_VALUE),
-    new Date(NaN),
-    1,
-    0.5,
-    Infinity,
-    NaN,
-    undefined,
-    null,
-    '1',
-    [],
-    {},
-    /regex/
+  runTypeTestSync(type, truthyItems);
+
+  let falsyItems: TypeTestItem[] = [
+    {name: "new Date(Number.MAX_SAFE_INTEGER)", value: new Date((<NumberConstructorES6>Number).MAX_SAFE_INTEGER), message: ""},
+    {name: "new Date(Number.MIN_SAFE_INTEGER)", value: new Date((<NumberConstructorES6>Number).MIN_SAFE_INTEGER), message: ""},
+    {name: "new Date(Number.MAX_VALUE)", value: new Date(Number.MAX_VALUE), message: ""},
+    {name: "new Date(NaN)", value: new Date(NaN), message: ""},
+    {name: "1", value: 1, message: ""},
+    {name: "0.5", value: 0.5, message: ""},
+    {name: "Infinity", value: Infinity, message: ""},
+    {name: "NaN", value: NaN, message: ""},
+    {name: "undefined", value: undefined, message: ""},
+    {name: "Infinity", value: Infinity, message: ""},
+    {name: "null", value: null, message: ""},
+    {name: '"1"', value: "1", message: ""},
+    {name: "[]", value: [], message: ""},
+    {name: "{}", value: {}, message: ""},
+    {name: "/regex/", value: /regex/, message: ""}
   ];
 
-  it("#test should return true if the argument is a date", function () {
-    let type:TypeSync = new DateType();
-    for (let i = 0, l = validValues.length; i < l; i++) {
-      console.log(String(validValues[i]));
-      assert.strictEqual(type.testSync(validValues[i]), true, String(validValues[i]));
-    }
-  });
-
-  it("#test should return false if the argument is not a date", function () {
-    let type:TypeSync = new DateType();
-    for (let i = 0, l = invalidValues.length; i < l; i++) {
-      assert.notStrictEqual(type.testSync(invalidValues[i]), true, String(invalidValues[i]));
-    }
-  });
+  runTypeTestSync(type, falsyItems);
 
 });
