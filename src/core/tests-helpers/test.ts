@@ -3,16 +3,20 @@ import * as chai from "chai";
 let assert = chai.assert;
 
 export interface TypeTestItem {
-  name: string;
+  name?: string;
   value: any;
   message: string;
 }
 
 export function runTypeTestSync<T, D>(type: TypeSync<T, D>, items: TypeTestItem[]): void {
   for (let item of items) {
+    if (!("name" in item)) {
+      item.name = String(item.value);
+    }
+
     it(`#testSync should match correctly for: ${item.name}`, () => {
       try {
-        let result:Error = type.testSync(item.value);
+        let result: Error = type.testSync(item.value);
         if (item.message === null) {
           assert.strictEqual(result, null);
         } else {

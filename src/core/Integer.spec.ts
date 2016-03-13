@@ -1,8 +1,6 @@
-import {IntegerType} from "./Integer";
-import * as chai from "chai";
+import {IntegerTypeSync, IntegerType} from "./Integer";
 import {TypeSync} from "./interfaces/Type";
-
-let assert = chai.assert;
+import {TypeTestItem, runTypeTestSync} from "./tests-helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number,
@@ -10,50 +8,40 @@ interface NumberConstructorES6 extends NumberConstructor{
   EPSILON: number
 }
 
-describe("IntegerType", function () {
+describe("NumberType", function () {
 
-  let validValues = [
-    0,
-    1,
-    -1,
-    2,
-    -2,
-    1e3,
-    -1e3,
-    (<NumberConstructorES6>Number).MAX_SAFE_INTEGER,
-    (<NumberConstructorES6>Number).MIN_SAFE_INTEGER,
-    Number.MAX_VALUE
+  let type: IntegerTypeSync = new IntegerTypeSync();
+
+  let truthyItems: TypeTestItem[] = [
+    {value: 0, message: null},
+    {value: 1, message: null},
+    {value: -1, message: null},
+    {value: 2, message: null},
+    {value: 1e3, message: null},
+    {value: -1e3, message: null},
+    {value: (<NumberConstructorES6>Number).MAX_SAFE_INTEGER, message: null},
+    {value: (<NumberConstructorES6>Number).MIN_SAFE_INTEGER, message: null},
+    {value: Number.MAX_VALUE, message: null}
   ];
 
-  let invalidValues = [
-    new Number(1),
-    0.5,
-    0.0001,
-    Infinity,
-    -Infinity,
-    NaN,
-    undefined,
-    null,
-    (<NumberConstructorES6>Number).EPSILON,
-    '0',
-    [],
-    {},
-    new Date(),
-    /regex/
+  runTypeTestSync(type, truthyItems);
+
+  let falsyItems: TypeTestItem[] = [
+    {name: "new Number(1)", value: new Number(1), message: ""},
+    {name: "0.5", value: 0.5, message: ""},
+    {name: "0.0001", value: 0.0001, message: ""},
+    {name: "Infinity", value: Infinity, message: ""},
+    {name: "-Infinity", value: -Infinity, message: ""},
+    {name: "NaN", value: NaN, message: ""},
+    {name: "undefined", value: undefined, message: ""},
+    {name: "null", value: null, message: ""},
+    {name: "Number.EPSILON", value: (<NumberConstructorES6>Number).EPSILON, message: ""},
+    {name: '"0"', value: "0", message: ""},
+    {name: "[]", value: [], message: ""},
+    {name: "{}", value: {}, message: ""},
+    {name: "/regex/", value: /regex/, message: ""}
   ];
 
-  it("#test should return true if the argument is an integer", function () {
-    let type:IntegerType = new IntegerType();
-    for (let i = 0, l = validValues.length; i < l; i++) {
-      assert.strictEqual(type.testSync(validValues[i]), null, String(validValues[i]));
-    }
-  });
-
-  it("#test should return false if the argument is not an integer", function () {
-    let type:IntegerType = new IntegerType();
-    for (let i = 0, l = invalidValues.length; i < l; i++) {
-      assert.notStrictEqual(type.testSync(invalidValues[i]), null, String(invalidValues[i]));
-    }
-  });
+  runTypeTestSync(type, falsyItems);
 
 });
