@@ -1,4 +1,4 @@
-import {TypeSync} from "../interfaces/Type";
+import {TypeSync} from "../interfaces/type";
 import * as chai from "chai";
 let assert = chai.assert;
 

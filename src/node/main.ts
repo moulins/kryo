@@ -1,3 +1,3 @@
-import {BooleanType} from "../core/Boolean";
+import {BooleanType} from "../core/boolean";
 
 export = BooleanType;

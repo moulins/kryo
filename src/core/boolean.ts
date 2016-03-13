@@ -1,5 +1,5 @@
 import * as Promise from "bluebird";
-import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/Type";
+import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/type";
 
 class BooleanTypeSync implements TypeSync<boolean, boolean> {
   isSync: boolean = true;

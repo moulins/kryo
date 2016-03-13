@@ -1,5 +1,5 @@
 import * as Promise from "bluebird";
-import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/Type";
+import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/type";
 
 export class DateTypeSync implements TypeSync<Date, number> {
   isSync: boolean = true;

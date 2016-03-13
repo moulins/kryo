@@ -1,5 +1,5 @@
-import {DateTypeSync, DateType} from "./Date";
-import {TypeSync} from "./interfaces/Type";
+import {DateTypeSync, DateType} from "./date";
+import {TypeSync} from "./interfaces/type";
 import {TypeTestItem, runTypeTestSync} from "./tests-helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{

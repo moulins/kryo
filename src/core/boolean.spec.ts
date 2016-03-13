@@ -1,6 +1,6 @@
-import {BooleanType} from "./Boolean";
+import {BooleanType} from "./boolean";
 import * as chai from "chai";
-import {TypeSync} from "./interfaces/Type";
+import {TypeSync} from "./interfaces/type";
 
 let assert = chai.assert;
 
