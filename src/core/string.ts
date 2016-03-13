@@ -1,10 +1,6 @@
 import * as Promise from "bluebird";
 import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/type";
 
-export interface Dictionnary<T> {
-  [key: string]: T;
-}
-
 export interface StringOptions {
   regex?: RegExp;
   lowerCase?: boolean;
@@ -21,7 +17,7 @@ let defaultOptions: StringOptions = {
   maxLength: null
 };
 
-class StringTypeSync implements TypeSync<string, string[]> {
+export class StringTypeSync implements TypeSync<string, string[]> {
   isSync: boolean = true;
   name: string = "string";
   options: StringOptions;

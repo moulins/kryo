@@ -1,7 +1,7 @@
 import * as Promise from "bluebird";
 import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/type";
 
-class BooleanTypeSync implements TypeSync<boolean, boolean> {
+export class BooleanTypeSync implements TypeSync<boolean, boolean> {
   isSync: boolean = true;
   name: string = "boolean";
 
