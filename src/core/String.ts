@@ -2,7 +2,7 @@ import * as Promise from "bluebird";
 import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/Type";
 
 export interface Dictionnary<T> {
-  [key: string]: T
+  [key: string]: T;
 }
 
 export interface StringOptions {
@@ -34,8 +34,9 @@ class StringTypeSync implements TypeSync<string, string[]> {
     switch (format) {
       case "json":
       case "bson":
+        return String(val);
       default:
-        return val;
+        throw new Error("Unsupported format");
     }
   }
 
@@ -43,14 +44,15 @@ class StringTypeSync implements TypeSync<string, string[]> {
     switch (format) {
       case "json":
       case "bson":
-      default:
         return String(val);
+      default:
+        throw new Error("Unsupported format");
     }
   }
 
   testSync(val: any): Error {
     if (!_.isString(val)) {
-      return new Error('Expected string')
+      return new Error("Expected string");
     }
 
     if (this.options.lowerCase) {

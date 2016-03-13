@@ -16,8 +16,9 @@ export class DateTypeSync implements TypeSync<Date, number> {
         }
         throw new Error("Expected value to be either string or finite number");
       case "bson":
-      default:
         return val;
+      default:
+        throw new Error("Unsupported format");
     }
   }
 
@@ -26,17 +27,18 @@ export class DateTypeSync implements TypeSync<Date, number> {
       case "json":
         return val.toString();
       case "bson":
-      default:
         return val;
+      default:
+        throw new Error("Unsupported format");
     }
   }
 
   testSync(val: any): Error {
     if (!(val instanceof Date)) {
-      return new Error("Expected value to be instanceof Date")
+      return new Error("Expected value to be instanceof Date");
     }
     if (isNaN(val.getTime())) {
-      return new Error("Timestamp is NaN")
+      return new Error("Timestamp is NaN");
     }
     return null;
   }

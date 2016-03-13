@@ -3,9 +3,9 @@ import {TypeSync} from "./interfaces/Type";
 import {TypeTestItem, runTypeTestSync} from "./tests-helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
-  MAX_SAFE_INTEGER: number,
-  MIN_SAFE_INTEGER: number,
-  EPSILON: number
+  MAX_SAFE_INTEGER: number;
+  MIN_SAFE_INTEGER: number;
+  EPSILON: number;
 }
 
 describe("NumberType", function () {
@@ -19,8 +19,8 @@ describe("NumberType", function () {
     {value: 2, message: null},
     {value: 1e3, message: null},
     {value: -1e3, message: null},
-    {value: (<NumberConstructorES6>Number).MAX_SAFE_INTEGER, message: null},
-    {value: (<NumberConstructorES6>Number).MIN_SAFE_INTEGER, message: null},
+    {value: (<NumberConstructorES6> Number).MAX_SAFE_INTEGER, message: null},
+    {value: (<NumberConstructorES6> Number).MIN_SAFE_INTEGER, message: null},
     {value: Number.MAX_VALUE, message: null}
   ];
 
@@ -35,7 +35,7 @@ describe("NumberType", function () {
     {name: "NaN", value: NaN, message: ""},
     {name: "undefined", value: undefined, message: ""},
     {name: "null", value: null, message: ""},
-    {name: "Number.EPSILON", value: (<NumberConstructorES6>Number).EPSILON, message: ""},
+    {name: "Number.EPSILON", value: (<NumberConstructorES6> Number).EPSILON, message: ""},
     {name: '"0"', value: "0", message: ""},
     {name: "[]", value: [], message: ""},
     {name: "{}", value: {}, message: ""},

@@ -18,7 +18,7 @@ export class ArrayType implements CollectionTypeAsync<any, any> {
   itemType: Type<any, any>;
 
   constructor (itemType: Type<any, any>, options: ArrayOptions) {
-    this.options = <ArrayOptions>_.assign(_.clone(defaultOptions), options);
+    this.options = <ArrayOptions> _.assign(_.clone(defaultOptions), options);
     this.isSync = itemType.isSync;
     this.itemType = itemType;
   }
@@ -30,8 +30,8 @@ export class ArrayType implements CollectionTypeAsync<any, any> {
   read(format: string, val: any): Promise<any[]> {
     return Promise.try(() => {
       switch (format) {
-        case 'bson':
-        case 'json':
+        case "bson":
+        case "json":
           return Promise
             .map(val, (item: any, i: number, len: number) => {
               return this.itemType.read(format, item);
@@ -49,8 +49,8 @@ export class ArrayType implements CollectionTypeAsync<any, any> {
   write(format: string, val: any[]): Promise<any> {
     return Promise.try(() => {
       switch (format) {
-        case 'bson':
-        case 'json':
+        case "bson":
+        case "json":
           return Promise
             .map(val, (item: any, i: number, len: number) => {
               return this.itemType.write(format, item);
@@ -69,11 +69,11 @@ export class ArrayType implements CollectionTypeAsync<any, any> {
   test (val: any[]): Promise<Error> {
     return Promise.try((): Promise<Error> => {
       if (!_.isArray(val)) {
-        return Promise.resolve(new Error('Expected array'));
+        return Promise.resolve(new Error("Expected array"));
       }
 
       if (this.options.maxLength !== null && val.length > this.options.maxLength) {
-        return Promise.resolve(new Error('Array max length is ' + this.options.maxLength));
+        return Promise.resolve(new Error("Array max length is " + this.options.maxLength));
       }
 
       if (this.itemType === null) { // any
@@ -86,14 +86,14 @@ export class ArrayType implements CollectionTypeAsync<any, any> {
         })
         .then(function(res){
           let errors: Error[] = [];
-          for(let i=0, l=res.length; i<l; i++){
+          for (let i = 0, l = res.length; i < l; i++) {
             if (res[i] !== null) {
-              errors.push(new Error('Invalid type at index '+i))
+              errors.push(new Error("Invalid type at index "+i));
             }
           }
           if (errors.length) {
-            // return new _Error(errors, 'typeError', 'Failed test on items')
-            return new Error('Failed test on some items');
+            // return new _Error(errors, "typeError", "Failed test on items")
+            return new Error("Failed test on some items");
           }
           return null;
         });
@@ -151,8 +151,8 @@ export class ArrayType implements CollectionTypeAsync<any, any> {
   reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any) {
     return Promise.try(() => {
       visitor(this.itemType, null, this);
-      if ((<CollectionType<any, any>>this.itemType).reflect) {
-        (<CollectionType<any, any>>this.itemType).reflect(visitor);
+      if ((<CollectionType<any, any>> this.itemType).reflect) {
+        (<CollectionType<any, any>> this.itemType).reflect(visitor);
       }
     });
   }
