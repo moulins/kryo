@@ -10,7 +10,7 @@ let defaultOptions: ArrayOptions = {
   maxLength: 100
 };
 
-export class ArrayType implements CollectionTypeAsync<any, any> {
+export class ArrayType implements CollectionTypeAsync<any[], any> {
 
   isSync: boolean = true;
   name: string = "array";

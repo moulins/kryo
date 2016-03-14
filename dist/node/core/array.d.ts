@@ -4,7 +4,7 @@ import { CollectionType, CollectionTypeAsync } from "./interfaces/collection-typ
 export interface ArrayOptions {
     maxLength: number;
 }
-export declare class ArrayType implements CollectionTypeAsync<any, any> {
+export declare class ArrayType implements CollectionTypeAsync<any[], any> {
     isSync: boolean;
     name: string;
     options: ArrayOptions;

@@ -16,6 +16,10 @@
   ],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.2.1",
+    "lodash": "^4.0.0"
+  },
   "devDependencies": {
     "chai": "^3.4.1",
     "gulp": "^3.9.0",
@@ -28,9 +32,5 @@
       "lodash": "npm:lodash@^4.0.0"
     },
     "devDependencies": {}
-  },
-  "dependencies": {
-    "bluebird": "^3.2.1",
-    "lodash": "^4.0.0"
   }
 }
