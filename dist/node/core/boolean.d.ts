@@ -1,0 +1,15 @@
+import { TypeSync, StaticType } from "./interfaces/type";
+export declare class BooleanTypeSync implements TypeSync<boolean, boolean> {
+    isSync: boolean;
+    name: string;
+    readSync(format: string, val: any): boolean;
+    writeSync(format: string, val: boolean): any;
+    testSync(val: any): Error;
+    normalizeSync(val: boolean): boolean;
+    equalsSync(val1: boolean, val2: boolean): boolean;
+    cloneSync(val: boolean): boolean;
+    diffSync(oldVal: boolean, newVal: boolean): boolean;
+    patchSync(oldVal: boolean, diff: boolean): boolean;
+    revertSync(newVal: boolean, diff: boolean): boolean;
+}
+export declare let BooleanType: StaticType<boolean, boolean>;
