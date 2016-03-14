@@ -47,3 +47,4 @@ export class BooleanTypeSync implements TypeSync<boolean, boolean> {
 }
 
 export let BooleanType: StaticType<boolean, boolean> = promisifyClass(BooleanTypeSync);
+export type BooleanType = Type<boolean, boolean>;
