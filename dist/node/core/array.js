@@ -1,5 +1,6 @@
 "use strict";
 var Promise = require("bluebird");
+var _ = require("lodash");
 var defaultOptions = {
     maxLength: 100
 };

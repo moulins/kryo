@@ -1,5 +1,4 @@
-// type SyncAsync<T> = T | Promise<SyncAsync<T>>;
-// type NormalizedPromise<T> = Promise<SyncAsync<T>>;
+import * as Promise from "bluebird";
 
 export interface TypeAsync<T, D> {
   isSync: boolean;

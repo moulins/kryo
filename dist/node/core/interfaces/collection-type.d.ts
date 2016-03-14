@@ -1,3 +1,4 @@
+import * as Promise from "bluebird";
 import { TypeAsync, TypeSync, Type } from "./type";
 export interface CollectionTypeAsync<T, D> extends TypeAsync<T, D> {
     reflect(visitor: (value?: T, key?: any, parent?: CollectionType<any, any>) => any): Promise<any>;

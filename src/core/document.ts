@@ -1,4 +1,5 @@
 import * as Promise from "bluebird";
+import * as _ from "lodash";
 import {Type, TypeSync} from "./interfaces/type";
 import {CollectionType, CollectionTypeAsync, CollectionTypeSync} from "./interfaces/collection-type";
 
@@ -118,7 +119,8 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
 
       return Promise
         .map(curKeys, (key: string, i: number, len: number) => {
-          return this.properties[key].test(val[key])
+          return this.properties[key]
+            .test(val[key])
             .then((err: Error) => {
               return [key, err];
             });

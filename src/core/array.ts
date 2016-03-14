@@ -1,4 +1,5 @@
 import * as Promise from "bluebird";
+import * as _ from "lodash";
 import {Type, TypeSync} from "./interfaces/type";
 import {CollectionType, CollectionTypeAsync, CollectionTypeSync} from "./interfaces/collection-type";
 

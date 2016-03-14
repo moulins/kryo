@@ -1,6 +1,5 @@
-// type SyncAsync<T> = T | Promise<SyncAsync<T>>;
-// type NormalizedPromise<T> = Promise<SyncAsync<T>>;
 "use strict";
+var Promise = require("bluebird");
 function promisify(typeSync) {
     var type = typeSync;
     type.isSync = true;

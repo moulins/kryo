@@ -1,3 +1,4 @@
+import * as Promise from "bluebird";
 export interface TypeAsync<T, D> {
     isSync: boolean;
     name: string;

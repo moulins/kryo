@@ -1,5 +1,6 @@
 "use strict";
 var Promise = require("bluebird");
+var _ = require("lodash");
 var defaultOptions = {
     ignoreExtraKeys: false,
     optionalProperties: []
@@ -93,7 +94,8 @@ var DocumentType = (function () {
             curKeys = _.intersection(curKeys, expectedKeys);
             return Promise
                 .map(curKeys, function (key, i, len) {
-                return _this.properties[key].test(val[key])
+                return _this.properties[key]
+                    .test(val[key])
                     .then(function (err) {
                     return [key, err];
                 });

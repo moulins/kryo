@@ -1,4 +1,5 @@
 "use strict";
+var _ = require("lodash");
 var type_1 = require("./interfaces/type");
 var DateTypeSync = (function () {
     function DateTypeSync() {
