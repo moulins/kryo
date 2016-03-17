@@ -1,5 +1,5 @@
 "use strict";
-var type_1 = require("./interfaces/type");
+var promisify_1 = require("./helpers/promisify");
 var IntegerTypeSync = (function () {
     function IntegerTypeSync() {
         this.isSync = true;
@@ -35,4 +35,4 @@ var IntegerTypeSync = (function () {
     return IntegerTypeSync;
 }());
 exports.IntegerTypeSync = IntegerTypeSync;
-exports.IntegerType = type_1.promisifyClass(IntegerTypeSync);
+exports.IntegerType = promisify_1.promisifyClass(IntegerTypeSync);

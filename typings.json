@@ -3,7 +3,8 @@
   "main": "dist/node/node/main.d.ts",
   "dependencies": {
     "bluebird": "registry:npm/bluebird#3.2.1+20160211005852",
-    "lodash": "registry:npm/lodash#4.0.0+20160305082308"
+    "lodash": "registry:npm/lodash#4.0.0+20160305082308",
+    "via-core": "npm:via-core"
   },
   "devDependencies": {},
   "ambientDevDependencies": {

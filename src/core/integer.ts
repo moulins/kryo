@@ -1,6 +1,7 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Type, TypeSync, StaticType, promisifyClass} from "./interfaces/type";
+import {Type, TypeSync, StaticType} from "via-core";
+import {promisifyClass} from "./helpers/promisify";
 
 export class IntegerTypeSync implements TypeSync<number, number> {
   isSync: boolean = true;

@@ -1,4 +1,4 @@
-import { Type, TypeSync, StaticType } from "./interfaces/type";
+import { Type, TypeSync, StaticType } from "via-core";
 export declare class DateTypeSync implements TypeSync<Date, number> {
     isSync: boolean;
     name: string;

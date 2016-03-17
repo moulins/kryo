@@ -1,4 +1,4 @@
-import { TypeSync, StaticType } from "./interfaces/type";
+import { Type, TypeSync, StaticType } from "via-core";
 export declare class BooleanTypeSync implements TypeSync<boolean, boolean> {
     isSync: boolean;
     name: string;
@@ -13,3 +13,4 @@ export declare class BooleanTypeSync implements TypeSync<boolean, boolean> {
     revertSync(newVal: boolean, diff: boolean): boolean;
 }
 export declare let BooleanType: StaticType<boolean, boolean>;
+export declare type BooleanType = Type<boolean, boolean>;

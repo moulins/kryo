@@ -1,4 +1,4 @@
-import { TypeSync, StaticType } from "./interfaces/type";
+import { TypeSync, StaticType } from "via-core";
 export interface StringOptions {
     regex?: RegExp;
     lowerCase?: boolean;

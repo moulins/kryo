@@ -1,5 +1,5 @@
 "use strict";
-var type_1 = require("./interfaces/type");
+var promisify_1 = require("./helpers/promisify");
 var BooleanTypeSync = (function () {
     function BooleanTypeSync() {
         this.isSync = true;
@@ -38,4 +38,4 @@ var BooleanTypeSync = (function () {
     return BooleanTypeSync;
 }());
 exports.BooleanTypeSync = BooleanTypeSync;
-exports.BooleanType = type_1.promisifyClass(BooleanTypeSync);
+exports.BooleanType = promisify_1.promisifyClass(BooleanTypeSync);

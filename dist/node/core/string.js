@@ -1,6 +1,6 @@
 "use strict";
 var _ = require("lodash");
-var type_1 = require("./interfaces/type");
+var promisify_1 = require("./helpers/promisify");
 var defaultOptions = {
     regex: null,
     lowerCase: false,
@@ -82,4 +82,4 @@ var StringTypeSync = (function () {
     return StringTypeSync;
 }());
 exports.StringTypeSync = StringTypeSync;
-exports.StringType = type_1.promisifyClass(StringTypeSync);
+exports.StringType = promisify_1.promisifyClass(StringTypeSync);

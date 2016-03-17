@@ -1,6 +1,6 @@
 "use strict";
 var _ = require("lodash");
-var type_1 = require("./interfaces/type");
+var promisify_1 = require("./helpers/promisify");
 var DateTypeSync = (function () {
     function DateTypeSync() {
         this.isSync = true;
@@ -62,4 +62,4 @@ var DateTypeSync = (function () {
     return DateTypeSync;
 }());
 exports.DateTypeSync = DateTypeSync;
-exports.DateType = type_1.promisifyClass(DateTypeSync);
+exports.DateType = promisify_1.promisifyClass(DateTypeSync);

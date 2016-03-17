@@ -1,6 +1,3 @@
-export {Type, TypeSync, TypeAsync} from "../core/interfaces/type";
-export {CollectionType, CollectionTypeSync, CollectionTypeAsync} from "../core/interfaces/collection-type";
-
 export {ArrayType} from "../core/array";
 export {BooleanType, BooleanTypeSync} from "../core/boolean";
 export {DateType, DateTypeSync} from "../core/date";

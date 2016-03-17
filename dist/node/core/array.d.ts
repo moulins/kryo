@@ -1,6 +1,5 @@
 import * as Promise from "bluebird";
-import { Type } from "./interfaces/type";
-import { CollectionType, CollectionTypeAsync } from "./interfaces/collection-type";
+import { Type, CollectionType, CollectionTypeAsync } from "via-core";
 export interface ArrayOptions {
     maxLength: number;
 }

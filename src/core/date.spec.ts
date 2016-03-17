@@ -1,6 +1,6 @@
 import {DateTypeSync, DateType} from "./date";
-import {TypeSync} from "./interfaces/type";
-import {TypeTestItem, runTypeTestSync} from "./tests-helpers/test";
+import {TypeSync} from "via-core";
+import {TypeTestItem, runTypeTestSync} from "./helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number;
