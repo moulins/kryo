@@ -1,41 +1,50 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync} from "via-core";
+import {Dictionary, Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync} from "via-core";
 
-export interface Dictionnary<T> {
-  [key: string]: T;
+export interface PropertyDescriptor {
+  type: Type<any, any>;
+  optional?: boolean;
 }
 
 export interface DocumentOptions {
-  ignoreExtraKeys?: boolean;
-  optionalProperties?: string[]; // null: all
+  additionalProperties?: boolean;
+  properties?: Dictionary<PropertyDescriptor>;
 }
 
 let defaultOptions: DocumentOptions = {
-  ignoreExtraKeys: false,
-  optionalProperties: []
+  additionalProperties: false,
+  properties: {}
 };
 
-export class DocumentType implements CollectionTypeAsync<any, any> {
+export class DocumentType implements CollectionType<any, any> {
 
   isSync: boolean = true;
   name: string = "document";
   options: DocumentOptions;
-  properties: Dictionnary<Type<any, any>>;
 
-  constructor (properties: Dictionnary<Type<any, any>>, options: DocumentOptions) {
+  constructor (options?: DocumentOptions) {
     this.options = _.assign(_.clone(defaultOptions), options);
-    for (let key in properties) {
-      this.isSync = this.isSync && properties[key].isSync;
+    this.updatedIsSync();
+  }
+
+  updatedIsSync (): boolean {
+    this.isSync = true;
+    for (let key in this.options.properties) {
+      let property = this.options.properties[key];
+      if (!property.type.isSync) {
+        this.isSync = false;
+        break;
+      }
     }
-    this.properties = properties;
+    return this.isSync;
   }
 
   readSync(format: string, val: any): any {
     throw new Error("DocumentType does not support readSync");
   }
 
-  read(format: string, val: any): Promise<Dictionnary<any>> {
+  read(format: string, val: any): Promise<Dictionary<any>> {
     return Promise.try(() => {
       switch (format) {
         case "bson":
@@ -44,12 +53,12 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
             return Promise.reject(new Error("Expected plain object"));
           }
 
-          val = <Dictionnary<any>> val;
+          val = <Dictionary<any>> val;
 
           return Promise
-            .props(_.mapValues(val, (member: any, key: string, doc: Dictionnary<any>) => {
-              if (key in this.properties) {
-                return this.properties[key].read(format, member);
+            .props(_.mapValues(val, (member: any, key: string, doc: Dictionary<any>) => {
+              if (key in this.options.properties) {
+                return this.options.properties[key].type.read(format, member);
               } else {
                 return Promise.reject(new Error("Unknown property "+key));
               }
@@ -60,19 +69,19 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
     });
   }
 
-  writeSync(format: string, val: Dictionnary<any>): any {
+  writeSync(format: string, val: Dictionary<any>): any {
     throw new Error("DocumentType does not support writeSync");
   }
 
-  write(format: string, val: Dictionnary<any>): Promise<any> {
+  write(format: string, val: Dictionary<any>): Promise<any> {
     return Promise.try(() => {
       switch (format) {
         case "bson":
         case "json":
           return Promise
-            .props(_.mapValues(val, (member: any, key: string, doc: Dictionnary<any>) => {
-              if (key in this.properties) {
-                return this.properties[key].write(format, member);
+            .props(_.mapValues(val, (member: any, key: string, doc: Dictionary<any>) => {
+              if (key in this.options.properties) {
+                return this.options.properties[key].type.write(format, member);
               } else {
                 return Promise.reject(new Error("DocumentType:write -> unknown field " + key));
               }
@@ -98,9 +107,9 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
       }
 
       let curKeys: string[] = _.keys(val);
-      let expectedKeys: string[] = _.keys(this.properties);
+      let expectedKeys: string[] = _.keys(this.options.properties);
 
-      if (!options.ignoreExtraKeys) {
+      if (!options.additionalProperties) {
         let extraKeys: string[] = _.difference(curKeys, expectedKeys);
         if (extraKeys.length) {
           return Promise.resolve(new Error("Unexpected extra keys: "+extraKeys.join(", ")));
@@ -118,7 +127,7 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
 
       return Promise
         .map(curKeys, (key: string, i: number, len: number) => {
-          return this.properties[key]
+          return this.options.properties[key].type
             .test(val[key])
             .then((err: Error) => {
               return [key, err];
@@ -209,8 +218,8 @@ export class DocumentType implements CollectionTypeAsync<any, any> {
   reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any) {
     return Promise.try(() => {
       let childType: Type<any, any>;
-      for (let prop in this.properties) {
-        childType = this.properties[prop];
+      for (let prop in this.options.properties) {
+        childType = this.options.properties[prop].type;
         visitor(childType, prop, this);
         if ((<CollectionType<any, any>> childType).reflect) {
           (<CollectionType<any, any>> childType).reflect(visitor);
