@@ -1,8 +1,9 @@
 import {DateType} from "./date";
 import {IntegerType} from "./integer";
 import {DocumentType, DocumentOptions} from "./document";
-import {TypeSync} from "via-core";
-import {TypeTestItem, runTypeTest} from "./helpers/test";
+import {RunTestItem, runTest, runReadWrite} from "./helpers/test";
+import * as chai from "chai";
+let assert = chai.assert;
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number;
@@ -25,10 +26,39 @@ describe("DocumentType", function () {
 
   let type: DocumentType = new DocumentType(options);
 
-  let truthyItems: TypeTestItem[] = [
-    {name: "{dateProp: new Date(), intProp: 10}", value: {dateProp: new Date(), intProp: 10}, message: null},
+  let truthyItems: RunTestItem[] = [
+    {name: "{dateProp: new Date(), intProp: 10}", value: {dateProp: new Date(), intProp: 10}, message: null}
   ];
 
-  runTypeTest(type, truthyItems);
+  runTest(type, truthyItems);
+
+  let falsyItems: RunTestItem[] = [
+    {name: "{dateProp: new Date(), intProp: [10]}", value: {dateProp: new Date(), intProp: [10]}, message: ""}
+  ];
+
+  runTest(type, falsyItems);
+
+  it("#equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 10}) should resolve true", function() {
+    return type
+      .equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 10})
+      .then((result: boolean) => {
+        assert.strictEqual(result, true);
+      })
+  });
+  
+  it("#equals({dateProp: new Date(), intProp: 10}, {dateProp: \"string\", intProp: 10}) should resolve false", function() {
+    return type
+      .equals({dateProp: new Date(), intProp: 10}, {dateProp: "string", intProp: 10})
+      .then((result: boolean) => {
+        assert.strictEqual(result, false);
+      })
+  });
+  
+  runReadWrite({
+    message: "Simple JSON encoding",
+    type: type,
+    value: {dateProp: new Date(), intProp: 10},
+    format: "json"
+  });
 
 });

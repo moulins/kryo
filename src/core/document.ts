@@ -1,10 +1,11 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Dictionary, Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync} from "via-core";
+import {Dictionary, Type, CollectionType} from "via-core";
 
 export interface PropertyDescriptor {
   type: Type<any, any>;
   optional?: boolean;
+  nullable?: boolean;
 }
 
 export interface DocumentOptions {
@@ -16,6 +17,11 @@ let defaultOptions: DocumentOptions = {
   additionalProperties: false,
   properties: {}
 };
+
+export interface EqualsOptions {
+  partial?: boolean;
+  throw?: boolean;
+}
 
 export class DocumentType implements CollectionType<any, any> {
 
@@ -164,8 +170,59 @@ export class DocumentType implements CollectionType<any, any> {
     throw new Error("DocumentType does not support equalsSync");
   }
 
-  equals (val1: any, val2: any): Promise<boolean> {
-    return Promise.reject(new Error("ArrayType does not support equals"));
+  equals (val1: any, val2: any, options?: EqualsOptions): Promise<boolean> {
+    return Promise
+      .try(() => {
+        let keys: string[] = _.keys(this.options.properties);
+        let val1Keys: string[] = _.intersection(keys, _.keys(val1));
+        let val2Keys: string[] = _.intersection(keys, _.keys(val2));
+
+        if (val1Keys.length === keys.length && val2Keys.length === keys.length) {
+          return Promise.resolve(keys);
+        }
+
+        // if (!options || !options.partial) {
+        //   return Promise.resolve(new Error("Missing keys"));
+        // }
+
+        let extraKeys: string[] = _.difference(val1Keys, val2Keys);
+        let missingKeys: string[] = _.difference(val2Keys, val1Keys);
+
+        if (extraKeys.length) {
+          return Promise.reject(new Error(`First argument has extra keys: ${extraKeys.join(", ")}`));
+        }
+
+        if (missingKeys.length) {
+          return Promise.reject(new Error(`First argument has missing keys: ${missingKeys.join(", ")}`));
+        }
+
+        return Promise.resolve(val1Keys);
+      })
+      .then<boolean>((keys: string[]) => {
+        return Promise
+          .map(keys, (key: string) => {
+            let property: PropertyDescriptor = this.options.properties[key];
+            return property.type.equals(val1[key], val2[key]);
+          })
+          .then((equalsResults: boolean[]) => {
+            let equals: boolean = equalsResults.indexOf(false) < 0;
+            if (equals) {
+              return Promise.resolve(true);
+            } else if (options && options.throw) {
+              let diffKeys: string[] = _.filter(keys, (key: string, index: number): boolean => equalsResults[index] === false);
+              return Promise.reject(`The objects are not equal because the following keys are not equal: ${diffKeys.join(", ")}`);
+            } else {
+              return Promise.resolve(false);
+            }
+          });
+      })
+      .catch((err: Error) => {
+        if (options && options.throw) {
+          return Promise.reject(err);
+        } else {
+          return Promise.resolve(false);
+        }
+      });
   }
 
   cloneSync(val: any): any {

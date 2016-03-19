@@ -1,6 +1,6 @@
 import {IntegerTypeSync, IntegerType} from "./integer";
 import {TypeSync} from "via-core";
-import {TypeTestItem, runTypeTestSync} from "./helpers/test";
+import {RunTestItem, runTestSync} from "./helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number;
@@ -12,7 +12,7 @@ describe("NumberType", function () {
 
   let type: IntegerTypeSync = new IntegerTypeSync();
 
-  let truthyItems: TypeTestItem[] = [
+  let truthyItems: RunTestItem[] = [
     {value: 0, message: null},
     {value: 1, message: null},
     {value: -1, message: null},
@@ -24,9 +24,9 @@ describe("NumberType", function () {
     {value: Number.MAX_VALUE, message: null}
   ];
 
-  runTypeTestSync(type, truthyItems);
+  runTestSync(type, truthyItems);
 
-  let falsyItems: TypeTestItem[] = [
+  let falsyItems: RunTestItem[] = [
     {name: "new Number(1)", value: new Number(1), message: ""},
     {name: "0.5", value: 0.5, message: ""},
     {name: "0.0001", value: 0.0001, message: ""},
@@ -42,6 +42,6 @@ describe("NumberType", function () {
     {name: "/regex/", value: /regex/, message: ""}
   ];
 
-  runTypeTestSync(type, falsyItems);
+  runTestSync(type, falsyItems);
 
 });
