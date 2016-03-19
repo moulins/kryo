@@ -5,13 +5,13 @@ import * as Promise from "bluebird";
 
 let assert = chai.assert;
 
-export interface TypeTestItem {
+export interface RunTestItem {
   name?: string;
   value: any;
   message: string;
 }
 
-export function runTypeTestSync<T, D>(type: TypeSync<T, D>, items: TypeTestItem[]): void {
+export function runTestSync<T, D>(type: TypeSync<T, D>, items: RunTestItem[]): void {
   for (let item of items) {
     if (!("name" in item)) {
       item.name = String(item.value);
@@ -37,13 +37,13 @@ export function runTypeTestSync<T, D>(type: TypeSync<T, D>, items: TypeTestItem[
   }
 }
 
-export function runTypeTest<T, D>(type: Type<T, D>, items: TypeTestItem[]): void {
+export function runTest<T, D>(type: Type<T, D>, items: RunTestItem[]): void {
   for (let item of items) {
     if (!("name" in item)) {
       item.name = String(item.value);
     }
 
-    it(`#testSync should match correctly for: ${item.name}`, () => {
+    it(`#test should match correctly for: ${item.name}`, () => {
       return type
         .test(item.value)
         .then((result: Error) => {
@@ -62,3 +62,28 @@ export function runTypeTest<T, D>(type: Type<T, D>, items: TypeTestItem[]): void
   }
 }
 
+export interface runReadWriteOptions<T, D> {
+  type: Type<T, D>;
+  value: T;
+  format: string;
+  message: string;
+}
+
+export function runReadWrite<T, D>(options: runReadWriteOptions<T, D>): void {
+  it(`#write #read #equals: ${options.message}`, () => {
+    return options.type
+      .write(options.format, options.value)
+      .then((raw: any) => {
+        let jsonClone = JSON.parse(JSON.stringify(raw));
+        return options.type
+          .read(options.format, jsonClone);
+      })
+      .then((result: T) => {
+        return options.type
+          .equals(result, options.value);
+      })
+      .then((equals: boolean) => {
+        assert.strictEqual(equals, true);
+      })
+  });
+}

@@ -27,7 +27,7 @@ export class DateTypeSync implements TypeSync<Date, number> {
   writeSync(format: string, val: Date): any {
     switch (format) {
       case "json":
-        return val.toString();
+        return val.toJSON(); // ISO8601 string with millisecond precision
       case "bson":
         return val;
       default:
