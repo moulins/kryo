@@ -45,10 +45,10 @@ describe("DocumentType", function () {
         assert.strictEqual(result, true);
       })
   });
-  
-  it("#equals({dateProp: new Date(), intProp: 10}, {dateProp: \"string\", intProp: 10}) should resolve false", function() {
+
+  it("#equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 123}) should resolve false", function() {
     return type
-      .equals({dateProp: new Date(), intProp: 10}, {dateProp: "string", intProp: 10})
+      .equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 123})
       .then((result: boolean) => {
         assert.strictEqual(result, false);
       })

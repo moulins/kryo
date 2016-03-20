@@ -1,28 +1,34 @@
 import * as Promise from "bluebird";
-import { Type, CollectionType, CollectionTypeAsync } from "via-core";
-export interface Dictionnary<T> {
-    [key: string]: T;
+import { Dictionary, Type, CollectionType } from "via-core";
+export interface PropertyDescriptor {
+    type: Type<any, any>;
+    optional?: boolean;
+    nullable?: boolean;
 }
 export interface DocumentOptions {
-    ignoreExtraKeys?: boolean;
-    optionalProperties?: string[];
+    additionalProperties?: boolean;
+    properties?: Dictionary<PropertyDescriptor>;
 }
-export declare class DocumentType implements CollectionTypeAsync<any, any> {
+export interface EqualsOptions {
+    partial?: boolean;
+    throw?: boolean;
+}
+export declare class DocumentType implements CollectionType<any, any> {
     isSync: boolean;
     name: string;
     options: DocumentOptions;
-    properties: Dictionnary<Type<any, any>>;
-    constructor(properties: Dictionnary<Type<any, any>>, options: DocumentOptions);
+    constructor(options?: DocumentOptions);
+    updatedIsSync(): boolean;
     readSync(format: string, val: any): any;
-    read(format: string, val: any): Promise<Dictionnary<any>>;
-    writeSync(format: string, val: Dictionnary<any>): any;
-    write(format: string, val: Dictionnary<any>): Promise<any>;
+    read(format: string, val: any): Promise<Dictionary<any>>;
+    writeSync(format: string, val: Dictionary<any>): any;
+    write(format: string, val: Dictionary<any>): Promise<any>;
     testSync(val: any): Error;
     test(val: any): Promise<Error>;
     normalizeSync(val: any): any;
     normalize(val: any): Promise<any>;
     equalsSync(val1: any, val2: any): boolean;
-    equals(val1: any, val2: any): Promise<boolean>;
+    equals(val1: any, val2: any, options?: EqualsOptions): Promise<boolean>;
     cloneSync(val: any): any;
     clone(val: any): Promise<any>;
     diffSync(oldVal: any, newVal: any): number;

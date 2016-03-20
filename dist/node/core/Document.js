@@ -2,19 +2,27 @@
 var Promise = require("bluebird");
 var _ = require("lodash");
 var defaultOptions = {
-    ignoreExtraKeys: false,
-    optionalProperties: []
+    additionalProperties: false,
+    properties: {}
 };
 var DocumentType = (function () {
-    function DocumentType(properties, options) {
+    function DocumentType(options) {
         this.isSync = true;
         this.name = "document";
         this.options = _.assign(_.clone(defaultOptions), options);
-        for (var key in properties) {
-            this.isSync = this.isSync && properties[key].isSync;
-        }
-        this.properties = properties;
+        this.updatedIsSync();
     }
+    DocumentType.prototype.updatedIsSync = function () {
+        this.isSync = true;
+        for (var key in this.options.properties) {
+            var property = this.options.properties[key];
+            if (!property.type.isSync) {
+                this.isSync = false;
+                break;
+            }
+        }
+        return this.isSync;
+    };
     DocumentType.prototype.readSync = function (format, val) {
         throw new Error("DocumentType does not support readSync");
     };
@@ -30,8 +38,8 @@ var DocumentType = (function () {
                     val = val;
                     return Promise
                         .props(_.mapValues(val, function (member, key, doc) {
-                        if (key in _this.properties) {
-                            return _this.properties[key].read(format, member);
+                        if (key in _this.options.properties) {
+                            return _this.options.properties[key].type.read(format, member);
                         }
                         else {
                             return Promise.reject(new Error("Unknown property " + key));
@@ -53,8 +61,8 @@ var DocumentType = (function () {
                 case "json":
                     return Promise
                         .props(_.mapValues(val, function (member, key, doc) {
-                        if (key in _this.properties) {
-                            return _this.properties[key].write(format, member);
+                        if (key in _this.options.properties) {
+                            return _this.options.properties[key].type.write(format, member);
                         }
                         else {
                             return Promise.reject(new Error("DocumentType:write -> unknown field " + key));
@@ -78,8 +86,8 @@ var DocumentType = (function () {
                 return Promise.resolve(new Error("Expected plain object"));
             }
             var curKeys = _.keys(val);
-            var expectedKeys = _.keys(_this.properties);
-            if (!options.ignoreExtraKeys) {
+            var expectedKeys = _.keys(_this.options.properties);
+            if (!options.additionalProperties) {
                 var extraKeys = _.difference(curKeys, expectedKeys);
                 if (extraKeys.length) {
                     return Promise.resolve(new Error("Unexpected extra keys: " + extraKeys.join(", ")));
@@ -94,7 +102,7 @@ var DocumentType = (function () {
             curKeys = _.intersection(curKeys, expectedKeys);
             return Promise
                 .map(curKeys, function (key, i, len) {
-                return _this.properties[key]
+                return _this.options.properties[key].type
                     .test(val[key])
                     .then(function (err) {
                     return [key, err];
@@ -126,8 +134,57 @@ var DocumentType = (function () {
     DocumentType.prototype.equalsSync = function (val1, val2) {
         throw new Error("DocumentType does not support equalsSync");
     };
-    DocumentType.prototype.equals = function (val1, val2) {
-        return Promise.reject(new Error("ArrayType does not support equals"));
+    DocumentType.prototype.equals = function (val1, val2, options) {
+        var _this = this;
+        return Promise
+            .try(function () {
+            var keys = _.keys(_this.options.properties);
+            var val1Keys = _.intersection(keys, _.keys(val1));
+            var val2Keys = _.intersection(keys, _.keys(val2));
+            if (val1Keys.length === keys.length && val2Keys.length === keys.length) {
+                return Promise.resolve(keys);
+            }
+            // if (!options || !options.partial) {
+            //   return Promise.resolve(new Error("Missing keys"));
+            // }
+            var extraKeys = _.difference(val1Keys, val2Keys);
+            var missingKeys = _.difference(val2Keys, val1Keys);
+            if (extraKeys.length) {
+                return Promise.reject(new Error("First argument has extra keys: " + extraKeys.join(", ")));
+            }
+            if (missingKeys.length) {
+                return Promise.reject(new Error("First argument has missing keys: " + missingKeys.join(", ")));
+            }
+            return Promise.resolve(val1Keys);
+        })
+            .then(function (keys) {
+            return Promise
+                .map(keys, function (key) {
+                var property = _this.options.properties[key];
+                return property.type.equals(val1[key], val2[key]);
+            })
+                .then(function (equalsResults) {
+                var equals = equalsResults.indexOf(false) < 0;
+                if (equals) {
+                    return Promise.resolve(true);
+                }
+                else if (options && options.throw) {
+                    var diffKeys = _.filter(keys, function (key, index) { return equalsResults[index] === false; });
+                    return Promise.reject("The objects are not equal because the following keys are not equal: " + diffKeys.join(", "));
+                }
+                else {
+                    return Promise.resolve(false);
+                }
+            });
+        })
+            .catch(function (err) {
+            if (options && options.throw) {
+                return Promise.reject(err);
+            }
+            else {
+                return Promise.resolve(false);
+            }
+        });
     };
     DocumentType.prototype.cloneSync = function (val) {
         throw new Error("DocumentType does not support cloneSync");
@@ -171,8 +228,8 @@ var DocumentType = (function () {
         var _this = this;
         return Promise.try(function () {
             var childType;
-            for (var prop in _this.properties) {
-                childType = _this.properties[prop];
+            for (var prop in _this.options.properties) {
+                childType = _this.options.properties[prop].type;
                 visitor(childType, prop, _this);
                 if (childType.reflect) {
                     childType.reflect(visitor);

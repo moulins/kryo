@@ -25,7 +25,7 @@ var DateTypeSync = (function () {
     DateTypeSync.prototype.writeSync = function (format, val) {
         switch (format) {
             case "json":
-                return val.toString();
+                return val.toJSON(); // ISO8601 string with millisecond precision
             case "bson":
                 return val;
             default:
