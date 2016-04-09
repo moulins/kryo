@@ -8,55 +8,55 @@ export function promisify<T, D>(typeSync: TypeSync<T, D>): Type<T, D> {
 
   if (!type.read) {
     type.read = function(format: string, val: any): Promise<T> {
-      return Promise.try(<() => T> this.readSync, [format, val], this);
+      return (<Function> Promise.try)(this.readSync, [format, val], this);
     };
   }
 
   if (!type.write) {
     type.write = function(format: string, val: T): Promise<any> {
-      return Promise.try(<() => any> this.writeSync, [format, val], this);
+      return Promise.try(() => {return this.writeSync(format, val);});
     };
   }
 
   if (!type.test) {
     type.test = function(val: any): Promise<Error> {
-      return Promise.try(<() => Error> this.testSync, [val], this);
+      return Promise.try(() => {return this.testSync(val);});
     };
   }
 
   if (!type.normalize) {
     type.normalize = function(val: any): Promise<T> {
-      return Promise.try(<() => T> this.normalizeSync, [val], this);
+      return Promise.try(() => {return this.normalizeSync(val);});
     };
   }
 
   if (!type.equals) {
     type.equals = function(val1: T, val2: T): Promise<boolean> {
-      return Promise.try(<() => boolean> this.equalsSync, [val1, val2], this);
+      return Promise.try(() => {return this.equalsSync(val1, val2);});
     };
   }
 
   if (!type.clone) {
     type.clone = function(val: T): Promise<T> {
-      return Promise.try(<() => T> this.cloneSync, [val], this);
+      return Promise.try(() => {return this.cloneSync(val);});
     };
   }
 
   if (!type.diff) {
     type.diff = function(oldVal: T, newVal: T): Promise<D> {
-      return Promise.try(<() => D> this.diffSync, [oldVal, newVal], this);
+      return Promise.try(() => {return this.diffSync(oldVal, newVal);});
     };
   }
 
   if (!type.patch) {
     type.patch = function(oldVal: T, diff: D): Promise<T> {
-      return Promise.try(<() => T> this.patchSync, [oldVal, diff], this);
+      return Promise.try(() => {return this.patchSync(oldVal, diff);});
     };
   }
 
   if (!type.revert) {
     type.revert = function(newVal: T, diff: D): Promise<T> {
-      return Promise.try(<() => T> this.revertSync, [newVal, diff], this);
+      return Promise.try(() => {return this.revertSync(newVal, diff);});
     };
   }
 

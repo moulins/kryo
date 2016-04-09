@@ -1,6 +1,6 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Dictionary, Type, TypeSync, CollectionType} from "via-core";
+import {Dictionary, Document, Type, TypeSync, CollectionType, DocumentDiff} from "via-core";
 
 export interface PropertyDescriptor {
   type: Type<any, any>;
@@ -23,7 +23,7 @@ export interface EqualsOptions {
   throw?: boolean;
 }
 
-export class DocumentType implements CollectionType<any, any> {
+export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
   isSync: boolean = true;
   name: string = "document";
@@ -46,11 +46,11 @@ export class DocumentType implements CollectionType<any, any> {
     return this.isSync;
   }
 
-  readSync(format: string, val: any): any {
+  readSync(format: string, val: any): Document {
     throw new Error("DocumentType does not support readSync");
   }
 
-  read(format: string, val: any): Promise<Dictionary<any>> {
+  read(format: string, val: any): Promise<Document> {
     return Promise.try(() => {
       switch (format) {
         case "bson":
@@ -75,11 +75,11 @@ export class DocumentType implements CollectionType<any, any> {
     });
   }
 
-  writeSync(format: string, val: Dictionary<any>): any {
+  writeSync(format: string, val: Document): any {
     throw new Error("DocumentType does not support writeSync");
   }
 
-  write(format: string, val: Dictionary<any>): Promise<any> {
+  write(format: string, val: Document): Promise<any> {
     return Promise.try(() => {
       switch (format) {
         case "bson":
@@ -98,11 +98,11 @@ export class DocumentType implements CollectionType<any, any> {
     });
   }
 
-  testSync (val: any): Error {
+  testSync (val: Document): Error {
     throw new Error("DocumentType does not support testSync");
   }
 
-  test (val: any): Promise<Error> {
+  test (val: Document): Promise<Error> {
     return Promise.try(() => {
       // let options: DocumentOptions = _.merge({}, this.options, opt);
       let options = this.options;
@@ -158,19 +158,19 @@ export class DocumentType implements CollectionType<any, any> {
     });
   }
 
-  normalizeSync(val: any): any {
+  normalizeSync(val: Document): Document {
     throw new Error("DocumentType does not support normalizeSync");
   }
 
-  normalize (val: any): Promise<any> {
+  normalize (val: Document): Promise<Document> {
     return Promise.resolve(val);
   }
 
-  equalsSync(val1: any, val2: any): boolean {
+  equalsSync(val1: Document, val2: Document): boolean {
     throw new Error("DocumentType does not support equalsSync");
   }
 
-  equals (val1: any, val2: any, options?: EqualsOptions): Promise<boolean> {
+  equals (val1: Document, val2: Document, options?: EqualsOptions): Promise<boolean> {
     return Promise
       .try(() => {
         let keys: string[] = _.keys(this.options.properties);
@@ -225,35 +225,35 @@ export class DocumentType implements CollectionType<any, any> {
       });
   }
 
-  cloneSync(val: any): any {
+  cloneSync(val: Document): Document {
     throw new Error("DocumentType does not support cloneSync");
   }
 
-  clone (val: any): Promise<any> {
+  clone (val: Document): Promise<Document> {
     return Promise.resolve(this.cloneSync(val));
   }
 
-  diffSync(oldVal: any, newVal: any): number {
+  diffSync(oldVal: Document, newVal: Document): DocumentDiff {
     throw new Error("DocumentType does not support diffSync");
   }
 
-  diff (oldVal: any, newVal: any): Promise<number> {
+  diff (oldVal: Document, newVal: Document): Promise<DocumentDiff> {
     return Promise.resolve(this.diffSync(oldVal, newVal));
   }
 
-  patchSync(oldVal: any, diff: number): any {
+  patchSync(oldVal: Document, diff: DocumentDiff): Document {
     throw new Error("DocumentType does not support patchSync");
   }
 
-  patch (oldVal: any, diff: number): Promise<any> {
+  patch (oldVal: Document, diff: DocumentDiff): Promise<Document> {
     return Promise.resolve(this.patchSync(oldVal, diff));
   }
 
-  revertSync(newVal: any, diff: number): any {
+  revertSync(newVal: Document, diff: DocumentDiff): Document {
     throw new Error("DocumentType does not support revertSync");
   }
 
-  revert (newVal: any, diff: number): Promise<any> {
+  revert (newVal: Document, diff: DocumentDiff): Promise<Document> {
     return Promise.resolve(this.revertSync(newVal, diff));
   }
 
@@ -292,10 +292,10 @@ export class DocumentType implements CollectionType<any, any> {
 
     let childType: TypeSync<any, any>;
     for (let prop in this.options.properties) {
-      childType = this.options.properties[prop].type;
-      visitor(childType, prop, this);
-      if ((<CollectionType<any, any>> childType).reflectSync) {
-        (<CollectionType<any, any>> childType).reflectSync(visitor);
+      childType = <TypeSync<any, any>> <any> this.options.properties[prop].type;
+      visitor(childType, prop, <CollectionType<Document, DocumentDiff>> <any> this);
+      if ((<CollectionType<any, any>> <any> childType).reflectSync) {
+        (<CollectionType<any, any>> <any> childType).reflectSync(visitor);
       }
     }
     return this;

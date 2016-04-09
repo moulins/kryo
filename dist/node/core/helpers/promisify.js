@@ -10,42 +10,50 @@ function promisify(typeSync) {
     }
     if (!type.write) {
         type.write = function (format, val) {
-            return Promise.try(this.writeSync, [format, val], this);
+            var _this = this;
+            return Promise.try(function () { return _this.writeSync(format, val); });
         };
     }
     if (!type.test) {
         type.test = function (val) {
-            return Promise.try(this.testSync, [val], this);
+            var _this = this;
+            return Promise.try(function () { return _this.testSync(val); });
         };
     }
     if (!type.normalize) {
         type.normalize = function (val) {
-            return Promise.try(this.normalizeSync, [val], this);
+            var _this = this;
+            return Promise.try(function () { return _this.normalizeSync(val); });
         };
     }
     if (!type.equals) {
         type.equals = function (val1, val2) {
-            return Promise.try(this.equalsSync, [val1, val2], this);
+            var _this = this;
+            return Promise.try(function () { return _this.equalsSync(val1, val2); });
         };
     }
     if (!type.clone) {
         type.clone = function (val) {
-            return Promise.try(this.cloneSync, [val], this);
+            var _this = this;
+            return Promise.try(function () { return _this.cloneSync(val); });
         };
     }
     if (!type.diff) {
         type.diff = function (oldVal, newVal) {
-            return Promise.try(this.diffSync, [oldVal, newVal], this);
+            var _this = this;
+            return Promise.try(function () { return _this.diffSync(oldVal, newVal); });
         };
     }
     if (!type.patch) {
         type.patch = function (oldVal, diff) {
-            return Promise.try(this.patchSync, [oldVal, diff], this);
+            var _this = this;
+            return Promise.try(function () { return _this.patchSync(oldVal, diff); });
         };
     }
     if (!type.revert) {
         type.revert = function (newVal, diff) {
-            return Promise.try(this.revertSync, [newVal, diff], this);
+            var _this = this;
+            return Promise.try(function () { return _this.revertSync(newVal, diff); });
         };
     }
     return type;

@@ -2,7 +2,7 @@
   "name": "via-type",
   "main": "dist/node/node/main.d.ts",
   "dependencies": {
-    "bluebird": "registry:dt/bluebird#2.0.0+20160319051630",
+    "bluebird": "registry:npm/bluebird#3.3.4+20160406213700",
     "lodash": "registry:npm/lodash#4.0.0+20160305082308",
     "via-core": "npm:via-core"
   },

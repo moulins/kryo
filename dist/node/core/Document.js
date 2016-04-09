@@ -237,6 +237,20 @@ var DocumentType = (function () {
             }
         });
     };
+    DocumentType.prototype.reflectSync = function (visitor) {
+        if (!this.isSync) {
+            throw new Error("Cannot use reflectSync on DocumentType with async sub-types");
+        }
+        var childType;
+        for (var prop in this.options.properties) {
+            childType = this.options.properties[prop].type;
+            visitor(childType, prop, this);
+            if (childType.reflectSync) {
+                childType.reflectSync(visitor);
+            }
+        }
+        return this;
+    };
     return DocumentType;
 }());
 exports.DocumentType = DocumentType;
