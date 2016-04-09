@@ -1,6 +1,6 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Dictionary, Type, CollectionType} from "via-core";
+import {Dictionary, Type, TypeSync, CollectionType} from "via-core";
 
 export interface PropertyDescriptor {
   type: Type<any, any>;
@@ -272,7 +272,7 @@ export class DocumentType implements CollectionType<any, any> {
   //   return undefined;
   // }
 
-  reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any) {
+  reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any): any {
     return Promise.try(() => {
       let childType: Type<any, any>;
       for (let prop in this.options.properties) {
@@ -283,5 +283,21 @@ export class DocumentType implements CollectionType<any, any> {
         }
       }
     });
+  }
+
+  reflectSync (visitor: (value?: any, key?: any, parent?: CollectionType<any, any>) => any): any {
+    if (!this.isSync) {
+      throw new Error("Cannot use reflectSync on DocumentType with async sub-types");
+    }
+
+    let childType: TypeSync<any, any>;
+    for (let prop in this.options.properties) {
+      childType = this.options.properties[prop].type;
+      visitor(childType, prop, this);
+      if ((<CollectionType<any, any>> childType).reflectSync) {
+        (<CollectionType<any, any>> childType).reflectSync(visitor);
+      }
+    }
+    return this;
   }
 }
