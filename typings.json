@@ -2,13 +2,14 @@
   "name": "via-type",
   "main": "dist/node/node/main.d.ts",
   "dependencies": {
-    "bluebird": "registry:npm/bluebird#3.2.1+20160211005852",
+    "bluebird": "registry:dt/bluebird#2.0.0+20160319051630",
     "lodash": "registry:npm/lodash#4.0.0+20160305082308",
     "via-core": "npm:via-core"
   },
   "devDependencies": {},
   "ambientDevDependencies": {
-    "chai": "registry:dt/chai#3.4.0+20160216071402",
-    "mocha": "registry:dt/mocha#2.2.5+20151023103246"
-  }
+    "chai": "registry:dt/chai#3.4.0+20160317120654",
+    "mocha": "registry:dt/mocha#2.2.5+20160317120654"
+  },
+  "ambientDependencies": {}
 }
