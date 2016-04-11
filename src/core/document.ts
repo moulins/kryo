@@ -1,6 +1,6 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Dictionary, Document, Type, TypeSync, CollectionType, DocumentDiff} from "via-core";
+import {Dictionary, Document, Type, TypeSync, CollectionType, DocumentDiff, UpdateQuery} from "via-core";
 
 export interface PropertyDescriptor {
   type: Type<any, any>;
@@ -299,5 +299,40 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
       }
     }
     return this;
+  }
+
+  // TODO: Promise.try
+  diffToUpdate (newVal: Document, diff: DocumentDiff, format: string): Promise<UpdateQuery> {
+    let update: UpdateQuery = {
+      $set: {},
+      $unset: {}
+    };
+
+    if (diff === null) {
+      return Promise.resolve(update);
+    }
+
+    for (let key in diff.unset) {
+      update.$unset[key] = true;
+    }
+
+    let setPromises: Promise<any>[] = _.map(diff.set, (value: any, field: string) => {
+      let property:PropertyDescriptor = this.options.properties[field];
+      return property.type
+        .write(format, newVal[field])
+        .then((encoded:any) => update.$set[field] = encoded);
+    });
+
+    // TODO: recursivity, etc.
+    let updatePromises: Promise<any>[] = _.map(diff.update, (value: any, field: string) => {
+      let property:PropertyDescriptor = this.options.properties[field];
+      return property.type
+        .write(format, newVal[field])
+        .then((encoded:any) => update.$set[field] = encoded);
+    });
+
+    return Promise
+      .all(_.concat(setPromises, updatePromises))
+      .thenReturn(update);
   }
 }

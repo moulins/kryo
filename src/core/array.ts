@@ -1,6 +1,7 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync} from "via-core";
+import {UpdateQuery} from "~via-core/dist/node/core/interfaces/type";
 
 export interface ArrayOptions {
   maxLength: number;
@@ -124,36 +125,46 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
     return Promise.resolve(this.cloneSync(val));
   }
 
-  diffSync(oldVal: any, newVal: any): number {
+  diffSync(oldVal: any, newVal: any): any {
     throw new Error("ArrayType does not support diffSync");
   }
 
-  diff (oldVal: any, newVal: any): Promise<number> {
+  diff (oldVal: any, newVal: any): Promise<any> {
     return Promise.resolve(this.diffSync(oldVal, newVal));
   }
 
-  patchSync(oldVal: any, diff: number): any {
+  patchSync(oldVal: any, diff: any): any {
     throw new Error("ArrayType does not support patchSync");
   }
 
-  patch (oldVal: any, diff: number): Promise<any> {
+  patch (oldVal: any, diff: any): Promise<any> {
     return Promise.resolve(this.patchSync(oldVal, diff));
   }
 
-  revertSync(newVal: any, diff: number): any {
+  revertSync(newVal: any, diff: any): any {
     throw new Error("ArrayType does not support revertSync");
   }
 
-  revert (newVal: any, diff: number): Promise<any> {
+  revert (newVal: any, diff: any): Promise<any> {
     return Promise.resolve(this.revertSync(newVal, diff));
   }
 
   reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any) {
     return Promise.try(() => {
-      visitor(this.itemType, null, this);
+      visitor(this.itemType, null, <CollectionType<any, any>> this);
       if ((<CollectionType<any, any>> this.itemType).reflect) {
         (<CollectionType<any, any>> this.itemType).reflect(visitor);
       }
     });
   }
+
+  diffToUpdate (newVal: any, diff: any, format: string): Promise<UpdateQuery> {
+    let update: UpdateQuery = {
+      $set: {},
+      $unset: {}
+    };
+
+    return Promise.resolve(update);
+  }
+
 }
