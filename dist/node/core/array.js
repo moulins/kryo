@@ -127,6 +127,13 @@ var ArrayType = (function () {
             }
         });
     };
+    ArrayType.prototype.diffToUpdate = function (newVal, diff, format) {
+        var update = {
+            $set: {},
+            $unset: {}
+        };
+        return Promise.resolve(update);
+    };
     return ArrayType;
 }());
 exports.ArrayType = ArrayType;

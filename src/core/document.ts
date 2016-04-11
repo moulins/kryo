@@ -133,24 +133,29 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
       return Promise
         .map(curKeys, (key: string, i: number, len: number) => {
-          return this.options.properties[key].type
+          let property: PropertyDescriptor = this.options.properties[key];
+          if (val[key] === null) {
+            return Promise.resolve([key, property.optional ? null : new Error("Mandatory property does not accept null")]);
+          }
+
+          return property.type
             .test(val[key])
             .then((err: Error) => {
               return [key, err];
             });
         })
-        .then(function(results: Array<string|Error>[]) {
+        .then(function(results: Array<[string, Error]>) {
           let errors: Error[] = [];
           for (let i = 0, l = results.length; i<l; i++) {
-            let key: string = <string> results[i][0];
-            let err: Error = <Error> results[i][1];
+            let key: string = results[i][0];
+            let err: Error = results[i][1];
             if (err !== null) {
               // errors.push(new Error(err, "Invalid value at field "+results[i][0]))
               errors.push(new Error(`Invalid value at field ${key}: ${err.message}`));
             }
           }
           if (errors.length) {
-            return new Error("Failed test for some properties");
+            return new Error("Failed test for some properties: " + errors.join(", "));
             // return new _Error(errors, "typeError", "Failed test on fields")
           }
           return null;

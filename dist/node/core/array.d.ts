@@ -1,5 +1,6 @@
 import * as Promise from "bluebird";
 import { Type, CollectionType, CollectionTypeAsync } from "via-core";
+import { UpdateQuery } from "~via-core/dist/node/core/interfaces/type";
 export interface ArrayOptions {
     maxLength: number;
 }
@@ -21,11 +22,12 @@ export declare class ArrayType implements CollectionTypeAsync<any[], any> {
     equals(val1: any, val2: any): Promise<boolean>;
     cloneSync(val: any): any;
     clone(val: any): Promise<any>;
-    diffSync(oldVal: any, newVal: any): number;
-    diff(oldVal: any, newVal: any): Promise<number>;
-    patchSync(oldVal: any, diff: number): any;
-    patch(oldVal: any, diff: number): Promise<any>;
-    revertSync(newVal: any, diff: number): any;
-    revert(newVal: any, diff: number): Promise<any>;
+    diffSync(oldVal: any, newVal: any): any;
+    diff(oldVal: any, newVal: any): Promise<any>;
+    patchSync(oldVal: any, diff: any): any;
+    patch(oldVal: any, diff: any): Promise<any>;
+    revertSync(newVal: any, diff: any): any;
+    revert(newVal: any, diff: any): Promise<any>;
     reflect(visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any): Promise<void>;
+    diffToUpdate(newVal: any, diff: any, format: string): Promise<UpdateQuery>;
 }

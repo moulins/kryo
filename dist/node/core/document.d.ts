@@ -1,5 +1,5 @@
 import * as Promise from "bluebird";
-import { Dictionary, Document, Type, CollectionType, DocumentDiff } from "via-core";
+import { Dictionary, Document, Type, CollectionType, DocumentDiff, UpdateQuery } from "via-core";
 export interface PropertyDescriptor {
     type: Type<any, any>;
     optional?: boolean;
@@ -39,4 +39,5 @@ export declare class DocumentType implements CollectionType<Document, DocumentDi
     revert(newVal: Document, diff: DocumentDiff): Promise<Document>;
     reflect(visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any): any;
     reflectSync(visitor: (value?: any, key?: any, parent?: CollectionType<any, any>) => any): any;
+    diffToUpdate(newVal: Document, diff: DocumentDiff, format: string): Promise<UpdateQuery>;
 }

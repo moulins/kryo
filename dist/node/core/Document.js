@@ -102,7 +102,11 @@ var DocumentType = (function () {
             curKeys = _.intersection(curKeys, expectedKeys);
             return Promise
                 .map(curKeys, function (key, i, len) {
-                return _this.options.properties[key].type
+                var property = _this.options.properties[key];
+                if (val[key] === null) {
+                    return Promise.resolve([key, property.optional ? null : new Error("Mandatory property does not accept null")]);
+                }
+                return property.type
                     .test(val[key])
                     .then(function (err) {
                     return [key, err];
@@ -119,7 +123,7 @@ var DocumentType = (function () {
                     }
                 }
                 if (errors.length) {
-                    return new Error("Failed test for some properties");
+                    return new Error("Failed test for some properties: " + errors.join(", "));
                 }
                 return null;
             });
@@ -250,6 +254,36 @@ var DocumentType = (function () {
             }
         }
         return this;
+    };
+    // TODO: Promise.try
+    DocumentType.prototype.diffToUpdate = function (newVal, diff, format) {
+        var _this = this;
+        var update = {
+            $set: {},
+            $unset: {}
+        };
+        if (diff === null) {
+            return Promise.resolve(update);
+        }
+        for (var key in diff.unset) {
+            update.$unset[key] = true;
+        }
+        var setPromises = _.map(diff.set, function (value, field) {
+            var property = _this.options.properties[field];
+            return property.type
+                .write(format, newVal[field])
+                .then(function (encoded) { return update.$set[field] = encoded; });
+        });
+        // TODO: recursivity, etc.
+        var updatePromises = _.map(diff.update, function (value, field) {
+            var property = _this.options.properties[field];
+            return property.type
+                .write(format, newVal[field])
+                .then(function (encoded) { return update.$set[field] = encoded; });
+        });
+        return Promise
+            .all(_.concat(setPromises, updatePromises))
+            .thenReturn(update);
     };
     return DocumentType;
 }());
