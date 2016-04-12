@@ -73,20 +73,19 @@ var DocumentType = (function () {
             }
         });
     };
-    DocumentType.prototype.testSync = function (val) {
+    DocumentType.prototype.testSync = function (val, options) {
         throw new Error("DocumentType does not support testSync");
     };
-    DocumentType.prototype.test = function (val) {
+    DocumentType.prototype.test = function (val, opt) {
         var _this = this;
         return Promise.try(function () {
-            // let options: DocumentOptions = _.merge({}, this.options, opt);
-            var options = _this.options;
+            var options = DocumentType.mergeOptions(_this.options, opt);
             // TODO: keep this test ?
             if (!_.isPlainObject(val)) {
                 return Promise.resolve(new Error("Expected plain object"));
             }
             var curKeys = _.keys(val);
-            var expectedKeys = _.keys(_this.options.properties);
+            var expectedKeys = _.keys(options.properties);
             if (!options.additionalProperties) {
                 var extraKeys = _.difference(curKeys, expectedKeys);
                 if (extraKeys.length) {
@@ -102,7 +101,7 @@ var DocumentType = (function () {
             curKeys = _.intersection(curKeys, expectedKeys);
             return Promise
                 .map(curKeys, function (key, i, len) {
-                var property = _this.options.properties[key];
+                var property = options.properties[key];
                 if (val[key] === null) {
                     return Promise.resolve([key, property.optional ? null : new Error("Mandatory property does not accept null")]);
                 }
@@ -284,6 +283,30 @@ var DocumentType = (function () {
         return Promise
             .all(_.concat(setPromises, updatePromises))
             .thenReturn(update);
+    };
+    DocumentType.assignOptions = function (target, source) {
+        if (!source) {
+            return target || {};
+        }
+        // TODO: cleaner assignation
+        var oldProps = target.properties;
+        _.assign(target, source);
+        target.properties = oldProps;
+        if (source.properties) {
+            if (!target.properties) {
+                target.properties = {};
+            }
+            for (var propertyName in source.properties) {
+                target.properties[propertyName] = _.assign({}, target.properties[propertyName], source.properties[propertyName]);
+            }
+        }
+        return target;
+    };
+    DocumentType.cloneOptions = function (source) {
+        return DocumentType.assignOptions({}, source);
+    };
+    DocumentType.mergeOptions = function (target, source) {
+        return DocumentType.assignOptions(DocumentType.cloneOptions(target), source);
     };
     return DocumentType;
 }());

@@ -1,7 +1,7 @@
 import * as Promise from "bluebird";
 import { Dictionary, Document, Type, CollectionType, DocumentDiff, UpdateQuery } from "via-core";
 export interface PropertyDescriptor {
-    type: Type<any, any>;
+    type?: Type<any, any>;
     optional?: boolean;
     nullable?: boolean;
 }
@@ -23,8 +23,8 @@ export declare class DocumentType implements CollectionType<Document, DocumentDi
     read(format: string, val: any): Promise<Document>;
     writeSync(format: string, val: Document): any;
     write(format: string, val: Document): Promise<any>;
-    testSync(val: Document): Error;
-    test(val: Document): Promise<Error>;
+    testSync(val: Document, options?: DocumentOptions): Error;
+    test(val: Document, opt?: DocumentOptions): Promise<Error>;
     normalizeSync(val: Document): Document;
     normalize(val: Document): Promise<Document>;
     equalsSync(val1: Document, val2: Document): boolean;
@@ -40,4 +40,7 @@ export declare class DocumentType implements CollectionType<Document, DocumentDi
     reflect(visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any): any;
     reflectSync(visitor: (value?: any, key?: any, parent?: CollectionType<any, any>) => any): any;
     diffToUpdate(newVal: Document, diff: DocumentDiff, format: string): Promise<UpdateQuery>;
+    static assignOptions(target: DocumentOptions, source: DocumentOptions): DocumentOptions;
+    static cloneOptions(source: DocumentOptions): DocumentOptions;
+    static mergeOptions(target: DocumentOptions, source: DocumentOptions): DocumentOptions;
 }

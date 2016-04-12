@@ -53,6 +53,14 @@ describe("DocumentType", function () {
         assert.strictEqual(result, false);
       })
   });
+
+  it("#test({dateProp: null, intProp: 10}, {properties: {dateProp: {optional: true}}}) should resolve null", function() {
+    return type
+      .test({dateProp: null, intProp: 10}, {properties: {dateProp: {optional: true}}})
+      .then((result: Error) => {
+        assert.strictEqual(result, null);
+      })
+  });
   
   runReadWrite({
     message: "Simple JSON encoding",

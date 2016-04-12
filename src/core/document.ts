@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import {Dictionary, Document, Type, TypeSync, CollectionType, DocumentDiff, UpdateQuery} from "via-core";
 
 export interface PropertyDescriptor {
-  type: Type<any, any>;
+  type?: Type<any, any>;
   optional?: boolean;
   nullable?: boolean;
 }
@@ -98,14 +98,13 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     });
   }
 
-  testSync (val: Document): Error {
+  testSync (val: Document, options?: DocumentOptions): Error {
     throw new Error("DocumentType does not support testSync");
   }
 
-  test (val: Document): Promise<Error> {
+  test (val: Document, opt?: DocumentOptions): Promise<Error> {
     return Promise.try(() => {
-      // let options: DocumentOptions = _.merge({}, this.options, opt);
-      let options = this.options;
+      let options: DocumentOptions = DocumentType.mergeOptions(this.options, opt);
 
       // TODO: keep this test ?
       if (!_.isPlainObject(val)) {
@@ -113,7 +112,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
       }
 
       let curKeys: string[] = _.keys(val);
-      let expectedKeys: string[] = _.keys(this.options.properties);
+      let expectedKeys: string[] = _.keys(options.properties);
 
       if (!options.additionalProperties) {
         let extraKeys: string[] = _.difference(curKeys, expectedKeys);
@@ -133,7 +132,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
       return Promise
         .map(curKeys, (key: string, i: number, len: number) => {
-          let property: PropertyDescriptor = this.options.properties[key];
+          let property: PropertyDescriptor = options.properties[key];
           if (val[key] === null) {
             return Promise.resolve([key, property.optional ? null : new Error("Mandatory property does not accept null")]);
           }
@@ -339,5 +338,32 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     return Promise
       .all(_.concat(setPromises, updatePromises))
       .thenReturn(update);
+  }
+
+  static assignOptions (target: DocumentOptions, source: DocumentOptions): DocumentOptions {
+    if (!source) {
+      return target || {};
+    }
+    // TODO: cleaner assignation
+    let oldProps = target.properties;
+    _.assign(target, source);
+    target.properties = oldProps;
+    if (source.properties) {
+      if (!target.properties) {
+        target.properties = {};
+      }
+      for (let propertyName in source.properties) {
+        target.properties[propertyName] = <PropertyDescriptor> _.assign({}, target.properties[propertyName], source.properties[propertyName]);
+      }
+    }
+    return target;
+  }
+
+  static cloneOptions (source: DocumentOptions): DocumentOptions {
+    return DocumentType.assignOptions({}, source);
+  }
+
+  static mergeOptions (target: DocumentOptions, source: DocumentOptions): DocumentOptions {
+    return DocumentType.assignOptions(DocumentType.cloneOptions(target), source);
   }
 }
