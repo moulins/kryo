@@ -16,7 +16,7 @@ var DocumentType = (function () {
         this.isSync = true;
         for (var key in this.options.properties) {
             var property = this.options.properties[key];
-            if (!property.type.isSync) {
+            if (property && property.type && !property.type.isSync) {
                 this.isSync = false;
                 break;
             }
@@ -38,8 +38,14 @@ var DocumentType = (function () {
                     val = val;
                     return Promise
                         .props(_.mapValues(val, function (member, key, doc) {
-                        if (key in _this.options.properties) {
-                            return _this.options.properties[key].type.read(format, member);
+                        if (_this.options.properties[key]) {
+                            var property = _this.options.properties[key];
+                            if (property.type) {
+                                return property.type.read(format, member);
+                            }
+                            else {
+                                return Promise.reject(new Error("Property property " + key + " does not declare a type"));
+                            }
                         }
                         else {
                             return Promise.reject(new Error("Unknown property " + key));
@@ -61,11 +67,17 @@ var DocumentType = (function () {
                 case "json":
                     return Promise
                         .props(_.mapValues(val, function (member, key, doc) {
-                        if (key in _this.options.properties) {
-                            return _this.options.properties[key].type.write(format, member);
+                        if (_this.options.properties[key]) {
+                            var property = _this.options.properties[key];
+                            if (property.type) {
+                                return property.type.write(format, member);
+                            }
+                            else {
+                                return Promise.reject(new Error("Property property " + key + " does not declare a type"));
+                            }
                         }
                         else {
-                            return Promise.reject(new Error("DocumentType:write -> unknown field " + key));
+                            return Promise.reject(new Error("Unknown property " + key));
                         }
                     }));
                 default:
@@ -297,7 +309,12 @@ var DocumentType = (function () {
                 target.properties = {};
             }
             for (var propertyName in source.properties) {
-                target.properties[propertyName] = _.assign({}, target.properties[propertyName], source.properties[propertyName]);
+                if (source.properties[propertyName] === null) {
+                    delete target.properties[propertyName];
+                }
+                else {
+                    target.properties[propertyName] = _.assign({}, target.properties[propertyName], source.properties[propertyName]);
+                }
             }
         }
         return target;

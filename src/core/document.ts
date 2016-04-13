@@ -38,7 +38,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     this.isSync = true;
     for (let key in this.options.properties) {
       let property = this.options.properties[key];
-      if (!property.type.isSync) {
+      if (property && property.type && !property.type.isSync) {
         this.isSync = false;
         break;
       }
@@ -63,10 +63,15 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
           return Promise
             .props(_.mapValues(val, (member: any, key: string, doc: Dictionary<any>) => {
-              if (key in this.options.properties) {
-                return this.options.properties[key].type.read(format, member);
+              if (this.options.properties[key]) {
+                let property = this.options.properties[key];
+                if (property.type) {
+                  return property.type.read(format, member);
+                } else {
+                  return Promise.reject(new Error(`Property property ${key} does not declare a type`));
+                }
               } else {
-                return Promise.reject(new Error("Unknown property "+key));
+                return Promise.reject(new Error(`Unknown property ${key}`));
               }
             }));
         default:
@@ -86,10 +91,15 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
         case "json":
           return Promise
             .props(_.mapValues(val, (member: any, key: string, doc: Dictionary<any>) => {
-              if (key in this.options.properties) {
-                return this.options.properties[key].type.write(format, member);
+              if (this.options.properties[key]) {
+                let property = this.options.properties[key];
+                if (property.type) {
+                  return property.type.write(format, member);
+                } else {
+                  return Promise.reject(new Error(`Property property ${key} does not declare a type`));
+                }
               } else {
-                return Promise.reject(new Error("DocumentType:write -> unknown field " + key));
+                return Promise.reject(new Error(`Unknown property ${key}`));
               }
             }));
         default:
@@ -117,7 +127,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
       if (!options.additionalProperties) {
         let extraKeys: string[] = _.difference(curKeys, expectedKeys);
         if (extraKeys.length) {
-          return Promise.resolve(new Error("Unexpected extra keys: "+extraKeys.join(", ")));
+          return Promise.resolve(new Error(`Unexpected extra keys: ${extraKeys.join(", ")}`));
         }
       }
 
@@ -154,7 +164,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
             }
           }
           if (errors.length) {
-            return new Error("Failed test for some properties: " + errors.join(", "));
+            return new Error(`Failed test for some properties: ${errors.join(", ")}`);
             // return new _Error(errors, "typeError", "Failed test on fields")
           }
           return null;
@@ -353,7 +363,11 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
         target.properties = {};
       }
       for (let propertyName in source.properties) {
-        target.properties[propertyName] = <PropertyDescriptor> _.assign({}, target.properties[propertyName], source.properties[propertyName]);
+        if (source.properties[propertyName] === null) {
+          delete target.properties[propertyName];
+        } else {
+          target.properties[propertyName] = <PropertyDescriptor> _.assign({}, target.properties[propertyName], source.properties[propertyName]);
+        }
       }
     }
     return target;
