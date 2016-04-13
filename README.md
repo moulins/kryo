@@ -23,15 +23,13 @@ Creates a new type to match against documents. This type ensures that the define
 
 `DocumentOptions`:
 
-* `properties: Dictionary<PropertyDescriptor>`: Each key is used as the property name and the associated behaviour is determined by the associated `PropertyDescriptor`.
+* `properties: Dictionary<PropertyDescriptor>`: Each key is used as the property name and the associated behaviour is determined by the associated `PropertyDescriptor`. If the value is `null`, then the property is deleted (ignored) - usefull when extending the `DocumentOptions`.
 
     `PropertyDescriptor`:
     
-    * `type: Type`: the type of the property
+    * `type: Type`: the type of the property (soon: If the type is `null` -> allow any value, requires manual read/write)
     
-    * `optional: boolean`: whether the property must be set
-    
-    * `nullable: boolean`: allow the value to be `null`
+    * `optional: boolean`: Allows the value to be `null`
     
 * `additionalProperties: boolean`: Ignore additional properties when doing tests 
 
