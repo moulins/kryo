@@ -9,6 +9,8 @@ export interface StringOptions {
   trimmed?: boolean;
   minLength?: number;
   maxLength?: number;
+
+  looseTest?: boolean;
 }
 
 let defaultOptions: StringOptions = {
@@ -16,7 +18,9 @@ let defaultOptions: StringOptions = {
   lowerCase: false,
   trimmed: false,
   minLength: null,
-  maxLength: null
+  maxLength: null,
+
+  looseTest: false
 };
 
 export class StringTypeSync implements TypeSync<string, string[]> {
@@ -24,7 +28,7 @@ export class StringTypeSync implements TypeSync<string, string[]> {
   name: string = "string";
   options: StringOptions;
 
-  constructor (options: StringOptions) {
+  constructor (options?: StringOptions) {
     this.options = _.assign(_.clone(defaultOptions), options);
   }
 
@@ -48,35 +52,41 @@ export class StringTypeSync implements TypeSync<string, string[]> {
     }
   }
 
-  testSync(val: any): Error {
-    if (!_.isString(val)) {
+  testSync(val: any, opt?: StringOptions): Error {
+    let options: StringOptions = StringTypeSync.mergeOptions(this.options, opt);
+
+    if (!(typeof val === "string")) {
       return new Error("Expected string");
     }
 
-    if (this.options.lowerCase) {
+    // if (options.looseTest) {
+    //   return null;
+    // }
+
+    if (options.lowerCase) {
       if (val !== val.toLowerCase()){
         return new Error("Expected lower case string.");
       }
     }
 
-    if (this.options.trimmed) {
+    if (options.trimmed) {
       if (val !== _.trim(val)){
         return new Error("Expected trimmed string.");
       }
     }
 
-    if (this.options.regex !== null) {
+    if (options.regex !== null) {
       if (!this.options.regex.test(val)) {
         return new Error("Expected string to match pattern");
       }
     }
 
-    let minLength = this.options.minLength;
+    let minLength = options.minLength;
     if (minLength !== null && val.length < minLength) {
       return new Error("Expected string longer than "+minLength+".");
     }
 
-    let maxLength = this.options.maxLength;
+    let maxLength = options.maxLength;
     if (maxLength !== null && val.length > maxLength) {
       return new Error("Expected string shorter than "+maxLength+".");
     }
@@ -106,6 +116,22 @@ export class StringTypeSync implements TypeSync<string, string[]> {
 
   revertSync(newVal: string, diff: string[]): string {
     return diff[0];
+  }
+
+  static assignOptions (target: StringOptions, source: StringOptions): StringOptions {
+    if (!source) {
+      return target || {};
+    }
+    _.assign(target, source);
+    return target;
+  }
+
+  static cloneOptions (source: StringOptions): StringOptions {
+    return StringTypeSync.assignOptions({}, source);
+  }
+
+  static mergeOptions (target: StringOptions, source: StringOptions): StringOptions {
+    return StringTypeSync.assignOptions(StringTypeSync.cloneOptions(target), source);
   }
 }
 

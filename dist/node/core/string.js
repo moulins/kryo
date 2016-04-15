@@ -6,7 +6,8 @@ var defaultOptions = {
     lowerCase: false,
     trimmed: false,
     minLength: null,
-    maxLength: null
+    maxLength: null,
+    looseTest: false
 };
 var StringTypeSync = (function () {
     function StringTypeSync(options) {
@@ -32,30 +33,34 @@ var StringTypeSync = (function () {
                 throw new Error("Unsupported format");
         }
     };
-    StringTypeSync.prototype.testSync = function (val) {
-        if (!_.isString(val)) {
+    StringTypeSync.prototype.testSync = function (val, opt) {
+        var options = StringTypeSync.mergeOptions(this.options, opt);
+        if (!(typeof val === "string")) {
             return new Error("Expected string");
         }
-        if (this.options.lowerCase) {
+        // if (options.looseTest) {
+        //   return null;
+        // }
+        if (options.lowerCase) {
             if (val !== val.toLowerCase()) {
                 return new Error("Expected lower case string.");
             }
         }
-        if (this.options.trimmed) {
+        if (options.trimmed) {
             if (val !== _.trim(val)) {
                 return new Error("Expected trimmed string.");
             }
         }
-        if (this.options.regex !== null) {
+        if (options.regex !== null) {
             if (!this.options.regex.test(val)) {
                 return new Error("Expected string to match pattern");
             }
         }
-        var minLength = this.options.minLength;
+        var minLength = options.minLength;
         if (minLength !== null && val.length < minLength) {
             return new Error("Expected string longer than " + minLength + ".");
         }
-        var maxLength = this.options.maxLength;
+        var maxLength = options.maxLength;
         if (maxLength !== null && val.length > maxLength) {
             return new Error("Expected string shorter than " + maxLength + ".");
         }
@@ -78,6 +83,19 @@ var StringTypeSync = (function () {
     };
     StringTypeSync.prototype.revertSync = function (newVal, diff) {
         return diff[0];
+    };
+    StringTypeSync.assignOptions = function (target, source) {
+        if (!source) {
+            return target || {};
+        }
+        _.assign(target, source);
+        return target;
+    };
+    StringTypeSync.cloneOptions = function (source) {
+        return StringTypeSync.assignOptions({}, source);
+    };
+    StringTypeSync.mergeOptions = function (target, source) {
+        return StringTypeSync.assignOptions(StringTypeSync.cloneOptions(target), source);
     };
     return StringTypeSync;
 }());

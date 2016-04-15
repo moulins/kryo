@@ -13,6 +13,31 @@ gulp build.node
 
 ## API ##
 
+### String ###
+
+````ts
+new StringType(options: DocumentOptions);
+````
+
+````ts
+export interface StringOptions {
+  regex?: RegExp; // null
+  lowerCase?: boolean; // false
+  trimmed?: boolean; // false
+  minLength?: number; // null
+  maxLength?: number; // null
+  
+  looseTest?: boolean; // false
+}
+````
+
+`looseTest`: The test returns true if the only errors found can be fixed with .normalize.
+
+#### .test(options: StringOptions) ####
+
+Tests whether a string is valid or not according to the options.
+
+
 ### Document ###
 
 ````ts
@@ -31,9 +56,9 @@ Creates a new type to match against documents. This type ensures that the define
     
     * `optional: boolean`: Allows the value to be `null`
     
-* `additionalProperties: boolean`: Ignore additional properties when doing tests 
+* `additionalProperties: boolean`: Allow (and ignore) additional properties when doing tests 
 
-#### diff ####
+#### .diff ####
 
 ````ts
 interface DiffResult {

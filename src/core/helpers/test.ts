@@ -9,6 +9,7 @@ export interface RunTestItem {
   name?: string;
   value: any;
   message: string;
+  options?: any;
 }
 
 export function runTestSync<T, D>(type: TypeSync<T, D>, items: RunTestItem[]): void {
@@ -19,7 +20,7 @@ export function runTestSync<T, D>(type: TypeSync<T, D>, items: RunTestItem[]): v
 
     it(`#testSync should match correctly for: ${item.name}`, () => {
       try {
-        let result: Error = type.testSync(item.value);
+        let result: Error = type.testSync(item.value, item.options);
         if (item.message === null) {
           assert.strictEqual(result, null);
         } else {

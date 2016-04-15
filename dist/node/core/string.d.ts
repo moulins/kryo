@@ -5,20 +5,24 @@ export interface StringOptions {
     trimmed?: boolean;
     minLength?: number;
     maxLength?: number;
+    looseTest?: boolean;
 }
 export declare class StringTypeSync implements TypeSync<string, string[]> {
     isSync: boolean;
     name: string;
     options: StringOptions;
-    constructor(options: StringOptions);
+    constructor(options?: StringOptions);
     readSync(format: string, val: any): string;
     writeSync(format: string, val: string): any;
-    testSync(val: any): Error;
+    testSync(val: any, opt?: StringOptions): Error;
     normalizeSync(val: any): string;
     equalsSync(val1: string, val2: string): boolean;
     cloneSync(val: string): string;
     diffSync(oldVal: string, newVal: string): string[];
     patchSync(oldVal: string, diff: string[]): string;
     revertSync(newVal: string, diff: string[]): string;
+    static assignOptions(target: StringOptions, source: StringOptions): StringOptions;
+    static cloneOptions(source: StringOptions): StringOptions;
+    static mergeOptions(target: StringOptions, source: StringOptions): StringOptions;
 }
 export declare let StringType: StaticType<string, string[]>;

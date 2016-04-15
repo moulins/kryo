@@ -8,7 +8,7 @@ function runTestSync(type, items) {
         }
         it("#testSync should match correctly for: " + item.name, function () {
             try {
-                var result = type.testSync(item.value);
+                var result = type.testSync(item.value, item.options);
                 if (item.message === null) {
                     assert.strictEqual(result, null);
                 }
