@@ -332,16 +332,16 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
     let setPromises: Promise<any>[] = _.map(diff.set, (value: any, field: string) => {
       let property:PropertyDescriptor = this.options.properties[field];
-      return property.type
-        .write(format, newVal[field])
+      return Promise.resolve(property.type
+        .write(format, newVal[field]))
         .then((encoded:any) => update.$set[field] = encoded);
     });
 
     // TODO: recursivity, etc.
     let updatePromises: Promise<any>[] = _.map(diff.update, (value: any, field: string) => {
       let property:PropertyDescriptor = this.options.properties[field];
-      return property.type
-        .write(format, newVal[field])
+      return Promise.resolve(property.type
+        .write(format, newVal[field]))
         .then((encoded:any) => update.$set[field] = encoded);
     });
 

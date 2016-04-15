@@ -1,7 +1,6 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync} from "via-core";
-import {UpdateQuery} from "~via-core/dist/node/core/interfaces/type";
+import {Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync, UpdateQuery} from "via-core";
 
 export interface ArrayOptions {
   maxLength: number;

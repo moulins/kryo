@@ -281,15 +281,15 @@ var DocumentType = (function () {
         }
         var setPromises = _.map(diff.set, function (value, field) {
             var property = _this.options.properties[field];
-            return property.type
-                .write(format, newVal[field])
+            return Promise.resolve(property.type
+                .write(format, newVal[field]))
                 .then(function (encoded) { return update.$set[field] = encoded; });
         });
         // TODO: recursivity, etc.
         var updatePromises = _.map(diff.update, function (value, field) {
             var property = _this.options.properties[field];
-            return property.type
-                .write(format, newVal[field])
+            return Promise.resolve(property.type
+                .write(format, newVal[field]))
                 .then(function (encoded) { return update.$set[field] = encoded; });
         });
         return Promise
