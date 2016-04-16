@@ -9,14 +9,14 @@ export declare class ArrayType implements CollectionTypeAsync<any[], any> {
     options: ArrayOptions;
     itemType: Type<any, any>;
     constructor(itemType: Type<any, any>, options: ArrayOptions);
+    readTrustedSync(format: string, val: any): any[];
+    readTrusted(format: string, val: any): Promise<any[]>;
     readSync(format: string, val: any): any[];
     read(format: string, val: any): Promise<any[]>;
     writeSync(format: string, val: any[]): any;
     write(format: string, val: any[]): Promise<any>;
     testSync(val: any[]): Error;
     test(val: any[]): Promise<Error>;
-    normalizeSync(val: any): any;
-    normalize(val: any): Promise<any>;
     equalsSync(val1: any, val2: any): boolean;
     equals(val1: any, val2: any): Promise<boolean>;
     cloneSync(val: any): any;

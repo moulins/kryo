@@ -3,6 +3,12 @@ var Promise = require("bluebird");
 function promisify(typeSync) {
     var type = typeSync;
     type.isSync = true;
+    if (!type.readTrusted) {
+        type.readTrusted = function (val) {
+            var _this = this;
+            return Promise.try(function () { return _this.readTrustedSync(val); });
+        };
+    }
     if (!type.read) {
         type.read = function (format, val) {
             return Promise.try(this.readSync, [format, val], this);
@@ -18,12 +24,6 @@ function promisify(typeSync) {
         type.test = function (val) {
             var _this = this;
             return Promise.try(function () { return _this.testSync(val); });
-        };
-    }
-    if (!type.normalize) {
-        type.normalize = function (val) {
-            var _this = this;
-            return Promise.try(function () { return _this.normalizeSync(val); });
         };
     }
     if (!type.equals) {

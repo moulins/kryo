@@ -1,24 +1,37 @@
 "use strict";
 var promisify_1 = require("./helpers/promisify");
+var via_type_error_1 = require("./via-type-error");
 var BooleanTypeSync = (function () {
     function BooleanTypeSync() {
         this.isSync = true;
         this.name = "boolean";
     }
+    BooleanTypeSync.prototype.readTrustedSync = function (format, val) {
+        throw this.readSync(format, val);
+    };
     BooleanTypeSync.prototype.readSync = function (format, val) {
-        return Boolean(val);
+        switch (format) {
+            case "json":
+            case "bson":
+                return val;
+            default:
+                throw new via_type_error_1.UnsupportedFormatError(format);
+        }
     };
     BooleanTypeSync.prototype.writeSync = function (format, val) {
-        return Boolean(val);
+        switch (format) {
+            case "json":
+            case "bson":
+                return val;
+            default:
+                throw new via_type_error_1.UnsupportedFormatError(format);
+        }
     };
     BooleanTypeSync.prototype.testSync = function (val) {
         if (typeof val !== "boolean") {
-            return new Error('Expected typeof val to be "boolean"');
+            return new via_type_error_1.UnexpectedTypeError(typeof val, "boolean");
         }
         return null;
-    };
-    BooleanTypeSync.prototype.normalizeSync = function (val) {
-        return Boolean(val);
     };
     BooleanTypeSync.prototype.equalsSync = function (val1, val2) {
         return val1 === val2;

@@ -2,28 +2,41 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Type, TypeSync, StaticType} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
+import {UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError} from "./via-type-error";
 
 export class BooleanTypeSync implements TypeSync<boolean, boolean> {
   isSync: boolean = true;
   name: string = "boolean";
 
+  readTrustedSync(format: string, val: any): boolean {
+    throw this.readSync(format, val);
+  }
+
   readSync(format: string, val: any): boolean {
-    return Boolean(val);
+    switch (format) {
+      case "json":
+      case "bson":
+        return val;
+      default:
+        throw new UnsupportedFormatError(format);
+    }
   }
 
   writeSync(format: string, val: boolean): any {
-    return Boolean(val);
+    switch (format) {
+      case "json":
+      case "bson":
+        return val;
+      default:
+        throw new UnsupportedFormatError(format);
+    }
   }
 
   testSync(val: any): Error {
     if (typeof val !== "boolean") {
-      return new Error('Expected typeof val to be "boolean"');
+      return new UnexpectedTypeError(typeof val, "boolean");
     }
     return null;
-  }
-
-  normalizeSync(val: boolean): boolean {
-    return Boolean(val);
   }
 
   equalsSync(val1: boolean, val2: boolean): boolean {

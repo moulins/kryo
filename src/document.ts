@@ -1,6 +1,7 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Dictionary, Document, Type, TypeSync, CollectionType, DocumentDiff, UpdateQuery} from "via-core";
+import {UnavailableSyncError, UnsupportedFormatError, ViaTypeError, UnexpectedTypeError} from "./via-type-error";
 
 export interface PropertyDescriptor {
   type?: Type<any, any>;
@@ -21,6 +22,32 @@ let defaultOptions: DocumentOptions = {
 export interface EqualsOptions {
   partial?: boolean;
   throw?: boolean;
+}
+
+export class DocumentTypeError extends ViaTypeError {}
+
+export class MissingKeysError extends DocumentTypeError {
+  constructor (keys: string[]) {
+    super (null, "MissingKeysError", {keys: keys}, `Expected missing keys: ${keys.join(", ")}`)
+  }
+}
+
+export class ExtraKeysError extends DocumentTypeError {
+  constructor (keys: string[]) {
+    super (null, "ExtraKeysError", {keys: keys}, `Unexpected extra keys (unkown properties): ${keys.join(", ")}`)
+  }
+}
+
+export class ForbiddenNullError extends DocumentTypeError {
+  constructor (propertyName: string) {
+    super (null, "ForbiddenNullError", {property: propertyName}, `The property ${propertyName} cannot be null`)
+  }
+}
+
+export class PropertiesTestError extends DocumentTypeError {
+  constructor (errors: Dictionary<Error>) {
+    super (null, "PropertiesTestError", {errors: errors}, `Failed test for the properties: ${_.keys(errors).join(", ")}`);
+  }
 }
 
 export class DocumentType implements CollectionType<Document, DocumentDiff> {
@@ -46,8 +73,16 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     return this.isSync;
   }
 
+  readTrustedSync(format: string, val: any): Document {
+    throw new UnavailableSyncError(this, "readTrusted");
+  }
+
+  readTrusted(format: string, val: any): Promise<Document> {
+    return this.read(format, val);
+  }
+
   readSync(format: string, val: any): Document {
-    throw new Error("DocumentType does not support readSync");
+    throw new UnavailableSyncError(this, "read");
   }
 
   read(format: string, val: any): Promise<Document> {
@@ -56,7 +91,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
         case "bson":
         case "json":
           if (!_.isPlainObject(val)) {
-            return Promise.reject(new Error("Expected plain object"));
+            return Promise.reject(new UnexpectedTypeError(typeof val, "object"));
           }
 
           val = <Dictionary<any>> val;
@@ -68,20 +103,23 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
                 if (property.type) {
                   return property.type.read(format, member);
                 } else {
-                  return Promise.reject(new Error(`Property property ${key} does not declare a type`));
+                  // no property type declared, leave it to be manually managed
+                  // TODO: console.warn ?
+                  return Promise.resolve(member);
                 }
               } else {
-                return Promise.reject(new Error(`Unknown property ${key}`));
+                // ignore undeclared properties
+                return Promise.resolve(undefined);
               }
             }));
         default:
-          return Promise.reject(new Error("Format is not supported"));
+          return Promise.reject(new UnsupportedFormatError(format));
       }
     });
   }
 
   writeSync(format: string, val: Document): any {
-    throw new Error("DocumentType does not support writeSync");
+    throw new UnavailableSyncError(this, "write");
   }
 
   write(format: string, val: Document): Promise<any> {
@@ -96,20 +134,22 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
                 if (property.type) {
                   return property.type.write(format, member);
                 } else {
-                  return Promise.reject(new Error(`Property property ${key} does not declare a type`));
+                  // no property type declared, leave it to be manually managed
+                  // TODO: console.warn ?
+                  return member;
                 }
               } else {
-                return Promise.reject(new Error(`Unknown property ${key}`));
+                return undefined; // ignore undeclared properties during write
               }
             }));
         default:
-          return Promise.reject(new Error("Format is not supported"));
+          return Promise.reject(new UnsupportedFormatError(format));
       }
     });
   }
 
   testSync (val: Document, options?: DocumentOptions): Error {
-    throw new Error("DocumentType does not support testSync");
+    throw new UnavailableSyncError(this, "test");
   }
 
   test (val: Document, opt?: DocumentOptions): Promise<Error> {
@@ -118,7 +158,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
       // TODO: keep this test ?
       if (!_.isPlainObject(val)) {
-        return Promise.resolve(new Error("Expected plain object"));
+        return Promise.resolve(new UnexpectedTypeError(typeof val, "object"));
       }
 
       let curKeys: string[] = _.keys(val);
@@ -127,7 +167,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
       if (!options.additionalProperties) {
         let extraKeys: string[] = _.difference(curKeys, expectedKeys);
         if (extraKeys.length) {
-          return Promise.resolve(new Error(`Unexpected extra keys: ${extraKeys.join(", ")}`));
+          return Promise.resolve(new ExtraKeysError(extraKeys));
         }
       }
 
@@ -144,7 +184,13 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
         .map(curKeys, (key: string, i: number, len: number) => {
           let property: PropertyDescriptor = options.properties[key];
           if (val[key] === null) {
-            return Promise.resolve([key, property.optional ? null : new Error("Mandatory property does not accept null")]);
+            let err: Error;
+            if (property.optional) {
+              err = null;
+            } else {
+              err = new ForbiddenNullError(key);
+            }
+            return Promise.resolve([key, err]);
           }
 
           return property.type
@@ -154,34 +200,22 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
             });
         })
         .then(function(results: Array<[string, Error]>) {
-          let errors: Error[] = [];
-          for (let i = 0, l = results.length; i<l; i++) {
-            let key: string = results[i][0];
-            let err: Error = results[i][1];
-            if (err !== null) {
-              // errors.push(new Error(err, "Invalid value at field "+results[i][0]))
-              errors.push(new Error(`Invalid value at field ${key}: ${err.message}`));
-            }
+          results = _.filter(results, (result: [string, Error]) => {
+              return result[0] !== null;
+            });
+
+          if (results.length) {
+            let errorsDictionary: Dictionary<Error> = _.fromPairs(results);
+            return new PropertiesTestError(errorsDictionary);
           }
-          if (errors.length) {
-            return new Error(`Failed test for some properties: ${errors.join(", ")}`);
-            // return new _Error(errors, "typeError", "Failed test on fields")
-          }
+
           return null;
         });
     });
   }
 
-  normalizeSync(val: Document): Document {
-    throw new Error("DocumentType does not support normalizeSync");
-  }
-
-  normalize (val: Document): Promise<Document> {
-    return Promise.resolve(val);
-  }
-
   equalsSync(val1: Document, val2: Document): boolean {
-    throw new Error("DocumentType does not support equalsSync");
+    throw new UnavailableSyncError(this, "equals");
   }
 
   equals (val1: Document, val2: Document, options?: EqualsOptions): Promise<boolean> {
@@ -203,11 +237,11 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
         let missingKeys: string[] = _.difference(val2Keys, val1Keys);
 
         if (extraKeys.length) {
-          return Promise.reject(new Error(`First argument has extra keys: ${extraKeys.join(", ")}`));
+          return Promise.reject(new ExtraKeysError(extraKeys));
         }
 
         if (missingKeys.length) {
-          return Promise.reject(new Error(`First argument has missing keys: ${missingKeys.join(", ")}`));
+          return Promise.reject(new MissingKeysError(missingKeys));
         }
 
         return Promise.resolve(val1Keys);
@@ -224,7 +258,8 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
               return Promise.resolve(true);
             } else if (options && options.throw) {
               let diffKeys: string[] = _.filter(keys, (key: string, index: number): boolean => equalsResults[index] === false);
-              return Promise.reject(`The objects are not equal because the following keys are not equal: ${diffKeys.join(", ")}`);
+              return Promise.resolve(false);
+              // return Promise.reject(new Error(`The objects are not equal because the following keys are not equal: ${diffKeys.join(", ")}`));
             } else {
               return Promise.resolve(false);
             }
@@ -240,7 +275,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
   }
 
   cloneSync(val: Document): Document {
-    throw new Error("DocumentType does not support cloneSync");
+    throw new UnavailableSyncError(this, "clone");
   }
 
   clone (val: Document): Promise<Document> {
@@ -248,7 +283,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
   }
 
   diffSync(oldVal: Document, newVal: Document): DocumentDiff {
-    throw new Error("DocumentType does not support diffSync");
+    throw new UnavailableSyncError(this, "diff");
   }
 
   diff (oldVal: Document, newVal: Document): Promise<DocumentDiff> {
@@ -256,7 +291,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
   }
 
   patchSync(oldVal: Document, diff: DocumentDiff): Document {
-    throw new Error("DocumentType does not support patchSync");
+    throw new UnavailableSyncError(this, "patch");
   }
 
   patch (oldVal: Document, diff: DocumentDiff): Promise<Document> {
@@ -264,27 +299,12 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
   }
 
   revertSync(newVal: Document, diff: DocumentDiff): Document {
-    throw new Error("DocumentType does not support revertSync");
+    throw new UnavailableSyncError(this, "revert");
   }
 
   revert (newVal: Document, diff: DocumentDiff): Promise<Document> {
     return Promise.resolve(this.revertSync(newVal, diff));
   }
-
-  // forEach (value:any, visitor:(childValue: any, key: string, childType: Type, self: CollectionType) => any): Promise<any> {
-  //   let childType: Type|CollectionType;
-  //   for(let key in this.properties){
-  //     if (!(key in value)) {
-  //       continue
-  //     }
-  //     childType = this.properties[key];
-  //     iterator(value[key], key, childType, this);
-  //     if ((<CollectionType>childType).forEach) {
-  //       (<CollectionType>childType).forEach(value[key], visitor);
-  //     }
-  //   }
-  //   return undefined;
-  // }
 
   reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any): any {
     return Promise.try(() => {
@@ -301,7 +321,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
   reflectSync (visitor: (value?: any, key?: any, parent?: CollectionType<any, any>) => any): any {
     if (!this.isSync) {
-      throw new Error("Cannot use reflectSync on DocumentType with async sub-types");
+      throw new UnavailableSyncError(this, "reflect");
     }
 
     let childType: TypeSync<any, any>;

@@ -1,12 +1,6 @@
 import {StringTypeSync} from "./string";
 import {RunTestItem, runTestSync} from "./helpers/test";
 
-interface NumberConstructorES6 extends NumberConstructor{
-  MAX_SAFE_INTEGER: number;
-  MIN_SAFE_INTEGER: number;
-  EPSILON: number;
-}
-
 describe("StringType", function () {
 
   let type: StringTypeSync = new StringTypeSync();

@@ -1,6 +1,7 @@
 "use strict";
 var Promise = require("bluebird");
 var _ = require("lodash");
+var via_type_error_1 = require("./via-type-error");
 var defaultOptions = {
     maxLength: 100
 };
@@ -12,8 +13,14 @@ var ArrayType = (function () {
         this.isSync = itemType.isSync;
         this.itemType = itemType;
     }
+    ArrayType.prototype.readTrustedSync = function (format, val) {
+        throw new via_type_error_1.UnavailableSyncError(this, "readTrusted");
+    };
+    ArrayType.prototype.readTrusted = function (format, val) {
+        return this.read(format, val);
+    };
     ArrayType.prototype.readSync = function (format, val) {
-        throw new Error("ArrayType does not support readSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "read");
     };
     ArrayType.prototype.read = function (format, val) {
         var _this = this;
@@ -26,7 +33,7 @@ var ArrayType = (function () {
                         return _this.itemType.read(format, item);
                     });
                 default:
-                    return Promise.reject(new Error("Format is not supported"));
+                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -44,7 +51,7 @@ var ArrayType = (function () {
                         return _this.itemType.write(format, item);
                     });
                 default:
-                    return Promise.reject(new Error("Format is not supported"));
+                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -55,7 +62,7 @@ var ArrayType = (function () {
         var _this = this;
         return Promise.try(function () {
             if (!_.isArray(val)) {
-                return Promise.resolve(new Error("Expected array"));
+                return Promise.reject(new via_type_error_1.UnexpectedTypeError(typeof val, "array"));
             }
             if (_this.options.maxLength !== null && val.length > _this.options.maxLength) {
                 return Promise.resolve(new Error("Array max length is " + _this.options.maxLength));
@@ -82,38 +89,32 @@ var ArrayType = (function () {
             });
         });
     };
-    ArrayType.prototype.normalizeSync = function (val) {
-        throw new Error("ArrayType does not support normalizeSync");
-    };
-    ArrayType.prototype.normalize = function (val) {
-        return Promise.resolve(val);
-    };
     ArrayType.prototype.equalsSync = function (val1, val2) {
-        throw new Error("ArrayType does not support equalsSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "equals");
     };
     ArrayType.prototype.equals = function (val1, val2) {
         return Promise.reject(new Error("ArrayType does not support equals"));
     };
     ArrayType.prototype.cloneSync = function (val) {
-        throw new Error("ArrayType does not support cloneSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "clone");
     };
     ArrayType.prototype.clone = function (val) {
         return Promise.resolve(this.cloneSync(val));
     };
     ArrayType.prototype.diffSync = function (oldVal, newVal) {
-        throw new Error("ArrayType does not support diffSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "diff");
     };
     ArrayType.prototype.diff = function (oldVal, newVal) {
         return Promise.resolve(this.diffSync(oldVal, newVal));
     };
     ArrayType.prototype.patchSync = function (oldVal, diff) {
-        throw new Error("ArrayType does not support patchSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "patch");
     };
     ArrayType.prototype.patch = function (oldVal, diff) {
         return Promise.resolve(this.patchSync(oldVal, diff));
     };
     ArrayType.prototype.revertSync = function (newVal, diff) {
-        throw new Error("ArrayType does not support revertSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "revert");
     };
     ArrayType.prototype.revert = function (newVal, diff) {
         return Promise.resolve(this.revertSync(newVal, diff));

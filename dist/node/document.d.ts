@@ -1,5 +1,6 @@
 import * as Promise from "bluebird";
 import { Dictionary, Document, Type, CollectionType, DocumentDiff, UpdateQuery } from "via-core";
+import { ViaTypeError } from "./via-type-error";
 export interface PropertyDescriptor {
     type?: Type<any, any>;
     optional?: boolean;
@@ -13,20 +14,34 @@ export interface EqualsOptions {
     partial?: boolean;
     throw?: boolean;
 }
+export declare class DocumentTypeError extends ViaTypeError {
+}
+export declare class MissingKeysError extends DocumentTypeError {
+    constructor(keys: string[]);
+}
+export declare class ExtraKeysError extends DocumentTypeError {
+    constructor(keys: string[]);
+}
+export declare class ForbiddenNullError extends DocumentTypeError {
+    constructor(propertyName: string);
+}
+export declare class PropertiesTestError extends DocumentTypeError {
+    constructor(errors: Dictionary<Error>);
+}
 export declare class DocumentType implements CollectionType<Document, DocumentDiff> {
     isSync: boolean;
     name: string;
     options: DocumentOptions;
     constructor(options?: DocumentOptions);
     updatedIsSync(): boolean;
+    readTrustedSync(format: string, val: any): Document;
+    readTrusted(format: string, val: any): Promise<Document>;
     readSync(format: string, val: any): Document;
     read(format: string, val: any): Promise<Document>;
     writeSync(format: string, val: Document): any;
     write(format: string, val: Document): Promise<any>;
     testSync(val: Document, options?: DocumentOptions): Error;
     test(val: Document, opt?: DocumentOptions): Promise<Error>;
-    normalizeSync(val: Document): Document;
-    normalize(val: Document): Promise<Document>;
     equalsSync(val1: Document, val2: Document): boolean;
     equals(val1: Document, val2: Document, options?: EqualsOptions): Promise<boolean>;
     cloneSync(val: Document): Document;

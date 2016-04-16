@@ -6,6 +6,12 @@ export function promisify<T, D>(typeSync: TypeSync<T, D>): Type<T, D> {
   let type: Type<T, D> = <any> typeSync;
   type.isSync = true;
 
+  if (!type.readTrusted) {
+    type.readTrusted = function(val: any): Promise<T> {
+      return Promise.try(() => {return this.readTrustedSync(val);});
+    };
+  }
+  
   if (!type.read) {
     type.read = function(format: string, val: any): Promise<T> {
       return (<Function> Promise.try)(this.readSync, [format, val], this);
@@ -21,12 +27,6 @@ export function promisify<T, D>(typeSync: TypeSync<T, D>): Type<T, D> {
   if (!type.test) {
     type.test = function(val: any): Promise<Error> {
       return Promise.try(() => {return this.testSync(val);});
-    };
-  }
-
-  if (!type.normalize) {
-    type.normalize = function(val: any): Promise<T> {
-      return Promise.try(() => {return this.normalizeSync(val);});
     };
   }
 

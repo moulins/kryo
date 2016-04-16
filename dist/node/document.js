@@ -1,10 +1,56 @@
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var Promise = require("bluebird");
 var _ = require("lodash");
+var via_type_error_1 = require("./via-type-error");
 var defaultOptions = {
     additionalProperties: false,
     properties: {}
 };
+var DocumentTypeError = (function (_super) {
+    __extends(DocumentTypeError, _super);
+    function DocumentTypeError() {
+        _super.apply(this, arguments);
+    }
+    return DocumentTypeError;
+}(via_type_error_1.ViaTypeError));
+exports.DocumentTypeError = DocumentTypeError;
+var MissingKeysError = (function (_super) {
+    __extends(MissingKeysError, _super);
+    function MissingKeysError(keys) {
+        _super.call(this, null, "MissingKeysError", { keys: keys }, "Expected missing keys: " + keys.join(", "));
+    }
+    return MissingKeysError;
+}(DocumentTypeError));
+exports.MissingKeysError = MissingKeysError;
+var ExtraKeysError = (function (_super) {
+    __extends(ExtraKeysError, _super);
+    function ExtraKeysError(keys) {
+        _super.call(this, null, "ExtraKeysError", { keys: keys }, "Unexpected extra keys (unkown properties): " + keys.join(", "));
+    }
+    return ExtraKeysError;
+}(DocumentTypeError));
+exports.ExtraKeysError = ExtraKeysError;
+var ForbiddenNullError = (function (_super) {
+    __extends(ForbiddenNullError, _super);
+    function ForbiddenNullError(propertyName) {
+        _super.call(this, null, "ForbiddenNullError", { property: propertyName }, "The property " + propertyName + " cannot be null");
+    }
+    return ForbiddenNullError;
+}(DocumentTypeError));
+exports.ForbiddenNullError = ForbiddenNullError;
+var PropertiesTestError = (function (_super) {
+    __extends(PropertiesTestError, _super);
+    function PropertiesTestError(errors) {
+        _super.call(this, null, "PropertiesTestError", { errors: errors }, "Failed test for the properties: " + _.keys(errors).join(", "));
+    }
+    return PropertiesTestError;
+}(DocumentTypeError));
+exports.PropertiesTestError = PropertiesTestError;
 var DocumentType = (function () {
     function DocumentType(options) {
         this.isSync = true;
@@ -23,8 +69,14 @@ var DocumentType = (function () {
         }
         return this.isSync;
     };
+    DocumentType.prototype.readTrustedSync = function (format, val) {
+        throw new via_type_error_1.UnavailableSyncError(this, "readTrusted");
+    };
+    DocumentType.prototype.readTrusted = function (format, val) {
+        return this.read(format, val);
+    };
     DocumentType.prototype.readSync = function (format, val) {
-        throw new Error("DocumentType does not support readSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "read");
     };
     DocumentType.prototype.read = function (format, val) {
         var _this = this;
@@ -33,7 +85,7 @@ var DocumentType = (function () {
                 case "bson":
                 case "json":
                     if (!_.isPlainObject(val)) {
-                        return Promise.reject(new Error("Expected plain object"));
+                        return Promise.reject(new via_type_error_1.UnexpectedTypeError(typeof val, "object"));
                     }
                     val = val;
                     return Promise
@@ -44,20 +96,23 @@ var DocumentType = (function () {
                                 return property.type.read(format, member);
                             }
                             else {
-                                return Promise.reject(new Error("Property property " + key + " does not declare a type"));
+                                // no property type declared, leave it to be manually managed
+                                // TODO: console.warn ?
+                                return Promise.resolve(member);
                             }
                         }
                         else {
-                            return Promise.reject(new Error("Unknown property " + key));
+                            // ignore undeclared properties
+                            return Promise.resolve(undefined);
                         }
                     }));
                 default:
-                    return Promise.reject(new Error("Format is not supported"));
+                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
     DocumentType.prototype.writeSync = function (format, val) {
-        throw new Error("DocumentType does not support writeSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "write");
     };
     DocumentType.prototype.write = function (format, val) {
         var _this = this;
@@ -73,20 +128,22 @@ var DocumentType = (function () {
                                 return property.type.write(format, member);
                             }
                             else {
-                                return Promise.reject(new Error("Property property " + key + " does not declare a type"));
+                                // no property type declared, leave it to be manually managed
+                                // TODO: console.warn ?
+                                return member;
                             }
                         }
                         else {
-                            return Promise.reject(new Error("Unknown property " + key));
+                            return undefined; // ignore undeclared properties during write
                         }
                     }));
                 default:
-                    return Promise.reject(new Error("Format is not supported"));
+                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
     DocumentType.prototype.testSync = function (val, options) {
-        throw new Error("DocumentType does not support testSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "test");
     };
     DocumentType.prototype.test = function (val, opt) {
         var _this = this;
@@ -94,14 +151,14 @@ var DocumentType = (function () {
             var options = DocumentType.mergeOptions(_this.options, opt);
             // TODO: keep this test ?
             if (!_.isPlainObject(val)) {
-                return Promise.resolve(new Error("Expected plain object"));
+                return Promise.resolve(new via_type_error_1.UnexpectedTypeError(typeof val, "object"));
             }
             var curKeys = _.keys(val);
             var expectedKeys = _.keys(options.properties);
             if (!options.additionalProperties) {
                 var extraKeys = _.difference(curKeys, expectedKeys);
                 if (extraKeys.length) {
-                    return Promise.resolve(new Error("Unexpected extra keys: " + extraKeys.join(", ")));
+                    return Promise.resolve(new ExtraKeysError(extraKeys));
                 }
             }
             // if (!options.allowPartial) {
@@ -115,7 +172,14 @@ var DocumentType = (function () {
                 .map(curKeys, function (key, i, len) {
                 var property = options.properties[key];
                 if (val[key] === null) {
-                    return Promise.resolve([key, property.optional ? null : new Error("Mandatory property does not accept null")]);
+                    var err = void 0;
+                    if (property.optional) {
+                        err = null;
+                    }
+                    else {
+                        err = new ForbiddenNullError(key);
+                    }
+                    return Promise.resolve([key, err]);
                 }
                 return property.type
                     .test(val[key])
@@ -124,30 +188,19 @@ var DocumentType = (function () {
                 });
             })
                 .then(function (results) {
-                var errors = [];
-                for (var i = 0, l = results.length; i < l; i++) {
-                    var key = results[i][0];
-                    var err = results[i][1];
-                    if (err !== null) {
-                        // errors.push(new Error(err, "Invalid value at field "+results[i][0]))
-                        errors.push(new Error("Invalid value at field " + key + ": " + err.message));
-                    }
-                }
-                if (errors.length) {
-                    return new Error("Failed test for some properties: " + errors.join(", "));
+                results = _.filter(results, function (result) {
+                    return result[0] !== null;
+                });
+                if (results.length) {
+                    var errorsDictionary = _.fromPairs(results);
+                    return new PropertiesTestError(errorsDictionary);
                 }
                 return null;
             });
         });
     };
-    DocumentType.prototype.normalizeSync = function (val) {
-        throw new Error("DocumentType does not support normalizeSync");
-    };
-    DocumentType.prototype.normalize = function (val) {
-        return Promise.resolve(val);
-    };
     DocumentType.prototype.equalsSync = function (val1, val2) {
-        throw new Error("DocumentType does not support equalsSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "equals");
     };
     DocumentType.prototype.equals = function (val1, val2, options) {
         var _this = this;
@@ -165,10 +218,10 @@ var DocumentType = (function () {
             var extraKeys = _.difference(val1Keys, val2Keys);
             var missingKeys = _.difference(val2Keys, val1Keys);
             if (extraKeys.length) {
-                return Promise.reject(new Error("First argument has extra keys: " + extraKeys.join(", ")));
+                return Promise.reject(new ExtraKeysError(extraKeys));
             }
             if (missingKeys.length) {
-                return Promise.reject(new Error("First argument has missing keys: " + missingKeys.join(", ")));
+                return Promise.reject(new MissingKeysError(missingKeys));
             }
             return Promise.resolve(val1Keys);
         })
@@ -185,7 +238,7 @@ var DocumentType = (function () {
                 }
                 else if (options && options.throw) {
                     var diffKeys = _.filter(keys, function (key, index) { return equalsResults[index] === false; });
-                    return Promise.reject("The objects are not equal because the following keys are not equal: " + diffKeys.join(", "));
+                    return Promise.resolve(false);
                 }
                 else {
                     return Promise.resolve(false);
@@ -202,43 +255,29 @@ var DocumentType = (function () {
         });
     };
     DocumentType.prototype.cloneSync = function (val) {
-        throw new Error("DocumentType does not support cloneSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "clone");
     };
     DocumentType.prototype.clone = function (val) {
         return Promise.resolve(this.cloneSync(val));
     };
     DocumentType.prototype.diffSync = function (oldVal, newVal) {
-        throw new Error("DocumentType does not support diffSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "diff");
     };
     DocumentType.prototype.diff = function (oldVal, newVal) {
         return Promise.resolve(this.diffSync(oldVal, newVal));
     };
     DocumentType.prototype.patchSync = function (oldVal, diff) {
-        throw new Error("DocumentType does not support patchSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "patch");
     };
     DocumentType.prototype.patch = function (oldVal, diff) {
         return Promise.resolve(this.patchSync(oldVal, diff));
     };
     DocumentType.prototype.revertSync = function (newVal, diff) {
-        throw new Error("DocumentType does not support revertSync");
+        throw new via_type_error_1.UnavailableSyncError(this, "revert");
     };
     DocumentType.prototype.revert = function (newVal, diff) {
         return Promise.resolve(this.revertSync(newVal, diff));
     };
-    // forEach (value:any, visitor:(childValue: any, key: string, childType: Type, self: CollectionType) => any): Promise<any> {
-    //   let childType: Type|CollectionType;
-    //   for(let key in this.properties){
-    //     if (!(key in value)) {
-    //       continue
-    //     }
-    //     childType = this.properties[key];
-    //     iterator(value[key], key, childType, this);
-    //     if ((<CollectionType>childType).forEach) {
-    //       (<CollectionType>childType).forEach(value[key], visitor);
-    //     }
-    //   }
-    //   return undefined;
-    // }
     DocumentType.prototype.reflect = function (visitor) {
         var _this = this;
         return Promise.try(function () {
@@ -254,7 +293,7 @@ var DocumentType = (function () {
     };
     DocumentType.prototype.reflectSync = function (visitor) {
         if (!this.isSync) {
-            throw new Error("Cannot use reflectSync on DocumentType with async sub-types");
+            throw new via_type_error_1.UnavailableSyncError(this, "reflect");
         }
         var childType;
         for (var prop in this.options.properties) {

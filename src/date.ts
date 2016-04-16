@@ -2,10 +2,29 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Type, TypeSync, StaticType} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
+import {UnsupportedFormatError, ViaTypeError} from "./via-type-error";
+
+export class DateTypeError extends ViaTypeError {}
+
+export class ReadJsonDateError extends DateTypeError {
+  constructor (val: any) {
+    super (null, "ReadJsonDateError", {value: val}, "Expected either string representation of date or finite integer");
+  }
+}
+
+export class NanTimestampError extends DateTypeError {
+  constructor (date: Date) {
+    super (null, "NanTimestampError", {date: date}, "Expected timestamp to not be NaN");
+  }
+}
 
 export class DateTypeSync implements TypeSync<Date, number> {
   isSync: boolean = true;
   name: string = "date";
+
+  readTrustedSync(format: string, val: any): Date {
+    throw this.readSync(format, val);
+  }
 
   readSync(format: string, val: any): Date {
     switch (format) {
@@ -16,11 +35,11 @@ export class DateTypeSync implements TypeSync<Date, number> {
         if (_.isFinite(val)) {
           return new Date(val);
         }
-        throw new Error("Expected value to be either string or finite number");
+        throw new ReadJsonDateError(val);
       case "bson":
         return val;
       default:
-        throw new Error("Unsupported format");
+        throw new UnsupportedFormatError(format);
     }
   }
 
@@ -31,22 +50,18 @@ export class DateTypeSync implements TypeSync<Date, number> {
       case "bson":
         return val;
       default:
-        throw new Error("Unsupported format");
+        throw new UnsupportedFormatError(format);
     }
   }
 
   testSync(val: any): Error {
     if (!(val instanceof Date)) {
-      return new Error("Expected value to be instanceof Date");
+      return new DateTypeError(null, "DateTypeError", {value: val}, "Expected value to be instanceof Date");
     }
     if (isNaN(val.getTime())) {
-      return new Error("Timestamp is NaN");
+      return new NanTimestampError(val);
     }
     return null;
-  }
-
-  normalizeSync(val: any): Date {
-    return val;
   }
 
   equalsSync(val1: Date, val2: Date): boolean {

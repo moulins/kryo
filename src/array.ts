@@ -1,6 +1,7 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync, UpdateQuery} from "via-core";
+import {UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError} from "./via-type-error";
 
 export interface ArrayOptions {
   maxLength: number;
@@ -23,8 +24,16 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
     this.itemType = itemType;
   }
 
+  readTrustedSync(format: string, val: any): any[] {
+    throw new UnavailableSyncError(this, "readTrusted");
+  }
+
+  readTrusted(format: string, val: any): Promise<any[]> {
+    return this.read(format, val);
+  }
+
   readSync(format: string, val: any): any[] {
-    throw new Error("ArrayType does not support readSync");
+    throw new UnavailableSyncError(this, "read");
   }
 
   read(format: string, val: any): Promise<any[]> {
@@ -37,7 +46,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
               return this.itemType.read(format, item);
             });
         default:
-          return Promise.reject(new Error("Format is not supported"));
+          return Promise.reject(new UnsupportedFormatError(format));
       }
     });
   }
@@ -55,9 +64,8 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
             .map(val, (item: any, i: number, len: number) => {
               return this.itemType.write(format, item);
             });
-
         default:
-          return Promise.reject(new Error("Format is not supported"));
+          return Promise.reject(new UnsupportedFormatError(format));
       }
     });
   }
@@ -69,7 +77,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   test (val: any[]): Promise<Error> {
     return Promise.try((): Promise<Error> => {
       if (!_.isArray(val)) {
-        return Promise.resolve(new Error("Expected array"));
+        return Promise.reject(new UnexpectedTypeError(typeof val, "array"));
       }
 
       if (this.options.maxLength !== null && val.length > this.options.maxLength) {
@@ -100,16 +108,8 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
     });
   }
 
-  normalizeSync(val: any): any {
-    throw new Error("ArrayType does not support normalizeSync");
-  }
-
-  normalize (val: any): Promise<any> {
-    return Promise.resolve(val);
-  }
-
   equalsSync(val1: any, val2: any): boolean {
-    throw new Error("ArrayType does not support equalsSync");
+    throw new UnavailableSyncError(this, "equals");
   }
 
   equals (val1: any, val2: any): Promise<boolean> {
@@ -117,7 +117,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   }
 
   cloneSync(val: any): any {
-    throw new Error("ArrayType does not support cloneSync");
+    throw new UnavailableSyncError(this, "clone");
   }
 
   clone (val: any): Promise<any> {
@@ -125,7 +125,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   }
 
   diffSync(oldVal: any, newVal: any): any {
-    throw new Error("ArrayType does not support diffSync");
+    throw new UnavailableSyncError(this, "diff");
   }
 
   diff (oldVal: any, newVal: any): Promise<any> {
@@ -133,7 +133,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   }
 
   patchSync(oldVal: any, diff: any): any {
-    throw new Error("ArrayType does not support patchSync");
+    throw new UnavailableSyncError(this, "patch");
   }
 
   patch (oldVal: any, diff: any): Promise<any> {
@@ -141,7 +141,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   }
 
   revertSync(newVal: any, diff: any): any {
-    throw new Error("ArrayType does not support revertSync");
+    throw new UnavailableSyncError(this, "revert");
   }
 
   revert (newVal: any, diff: any): Promise<any> {

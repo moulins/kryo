@@ -1,45 +1,70 @@
-import * as Promise from "bluebird";
-import * as _ from "lodash";
 import {Type, TypeSync, StaticType} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
+import {UnsupportedFormatError, UnexpectedTypeError, ViaTypeError} from "./via-type-error";
+
+export class IntegerTypeError extends ViaTypeError {}
+
+export class NumericError extends IntegerTypeError {
+  constructor (value: number) {
+    super (null, "NumericError", {value: value}, "Value is not a finite integer")
+  }
+}
 
 export class IntegerTypeSync implements TypeSync<number, number> {
   isSync: boolean = true;
   name: string = "boolean";
 
+  readTrustedSync(format: string, val: any): number {
+    throw this.readSync(format, val);
+  }
+
   readSync(format: string, val: any): number {
-    return val;
+    switch (format) {
+      case "json":
+      case "bson":
+        return val;
+      default:
+        throw new UnsupportedFormatError(format);
+    }
   }
 
-  writeSync(format: string, val: number): any {
-    return val;
+  writeSync (format: string, val: number): any {
+    switch (format) {
+      case "json":
+      case "bson":
+        return val;
+      default:
+        throw new UnsupportedFormatError(format);
+    }
   }
 
-  testSync(val: any): Error {
-    return typeof val === "number" && isFinite(val) && Math.floor(val) === val ? null : new Error("Not an integer");
+  testSync (val: any): Error {
+    if (!(typeof val === "number")) {
+      return new UnexpectedTypeError(typeof val, "number");
+    }
+    if (!isFinite(val) || Math.floor(val) !== val) {
+      return new NumericError(val);
+    }
+    return null;
   }
 
-  normalizeSync(val: any): number {
-    return Math.floor(val);
-  }
-
-  equalsSync(val1: number, val2: number): boolean {
+  equalsSync (val1: number, val2: number): boolean {
     return val1 === val2;
   }
 
-  cloneSync(val: number): number {
+  cloneSync (val: number): number {
     return val;
   }
 
-  diffSync(oldVal: number, newVal: number): number {
+  diffSync (oldVal: number, newVal: number): number {
     return newVal - oldVal;
   }
 
-  patchSync(oldVal: number, diff: number): number {
+  patchSync (oldVal: number, diff: number): number {
     return oldVal + diff;
   }
 
-  revertSync(newVal: number, diff: number): number {
+  revertSync (newVal: number, diff: number): number {
     return newVal - diff;
   }
 }
