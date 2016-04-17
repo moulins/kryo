@@ -1,7 +1,11 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync, UpdateQuery} from "via-core";
-import {UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError} from "./via-type-error";
+import {Type, CollectionType, CollectionTypeAsync, UpdateQuery} from "via-core";
+import {
+  UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError,
+  ViaTypeError
+} from "./helpers/via-type-error";
+import {Dictionary} from "via-core";
 
 export interface ArrayOptions {
   maxLength: number;
@@ -10,6 +14,26 @@ export interface ArrayOptions {
 let defaultOptions: ArrayOptions = {
   maxLength: 100
 };
+
+export class ArrayTypeError extends ViaTypeError {}
+
+export class ItemsTestError extends ArrayTypeError {
+  constructor (errors: Dictionary<Error>) {
+    let errorDetails = "";
+    let first = true;
+    for (let index in errors) {
+      errorDetails = errorDetails + (first ? "" : ", ") + index + ": " + errors[index];
+      first = false;
+    }
+    super (null, "ArrayTypeError", {errors: errors}, `Failed test for the items: {${errorDetails}}`);
+  }
+}
+
+export class MaxLengthError extends ArrayTypeError {
+  constructor (array: any[], maxLength: number) {
+    super (null, "via-type-array-maxlength", {array: array, maxLength: maxLength}, `Expected array length (${array.length}) to be less than or equal to ${maxLength}`);
+  }
+}
 
 export class ArrayType implements CollectionTypeAsync<any[], any> {
 
@@ -52,7 +76,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   }
 
   writeSync(format: string, val: any[]): any {
-    throw new Error("ArrayType does not support writeSync");
+    throw new UnavailableSyncError(this, "write");
   }
 
   write(format: string, val: any[]): Promise<any> {
@@ -71,7 +95,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   }
 
   testSync (val: any[]): Error {
-    throw new Error("ArrayType does not support testSync");
+    throw new UnavailableSyncError(this, "test");
   }
 
   test (val: any[]): Promise<Error> {
@@ -81,10 +105,10 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
       }
 
       if (this.options.maxLength !== null && val.length > this.options.maxLength) {
-        return Promise.resolve(new Error("Array max length is " + this.options.maxLength));
+        return Promise.resolve(new MaxLengthError(val, this.options.maxLength));
       }
 
-      if (this.itemType === null) { // any
+      if (this.itemType === null) { // manually managed type
         return Promise.resolve<Error>(null);
       }
 
@@ -93,15 +117,16 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
           return this.itemType.test(item);
         })
         .then(function(res){
-          let errors: Error[] = [];
+          let errors: Dictionary<Error> = {};
+          let noErrors = true;
           for (let i = 0, l = res.length; i < l; i++) {
             if (res[i] !== null) {
-              errors.push(new Error("Invalid type at index "+i));
+              errors[i] = res[i];
+              noErrors = false;
             }
           }
-          if (errors.length) {
-            // return new _Error(errors, "typeError", "Failed test on items")
-            return new Error("Failed test on some items");
+          if (!noErrors) {
+            return new ItemsTestError(errors);
           }
           return null;
         });
@@ -113,7 +138,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
   }
 
   equals (val1: any, val2: any): Promise<boolean> {
-    return Promise.reject(new Error("ArrayType does not support equals"));
+    return Promise.reject(new ViaTypeError("todo", "ArrayType does not support equals"));
   }
 
   cloneSync(val: any): any {
@@ -165,5 +190,4 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
 
     return Promise.resolve(update);
   }
-
 }
