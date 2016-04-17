@@ -1,16 +1,26 @@
 import * as Promise from "bluebird";
 import { Type, CollectionType, CollectionTypeAsync, UpdateQuery } from "via-core";
+import { ViaTypeError } from "./helpers/via-type-error";
+import { Dictionary } from "via-core";
 export interface ArrayOptions {
     maxLength: number;
+    itemType: Type<any, any>;
+}
+export declare class ArrayTypeError extends ViaTypeError {
+}
+export declare class ItemsTestError extends ArrayTypeError {
+    constructor(errors: Dictionary<Error>);
+}
+export declare class MaxLengthError extends ArrayTypeError {
+    constructor(array: any[], maxLength: number);
 }
 export declare class ArrayType implements CollectionTypeAsync<any[], any> {
     isSync: boolean;
     name: string;
     options: ArrayOptions;
-    itemType: Type<any, any>;
-    constructor(itemType: Type<any, any>, options: ArrayOptions);
+    constructor(options: ArrayOptions);
     readTrustedSync(format: string, val: any): any[];
-    readTrusted(format: string, val: any): Promise<any[]>;
+    readTrusted(format: string, val: any, opt: ArrayOptions): Promise<any[]>;
     readSync(format: string, val: any): any[];
     read(format: string, val: any): Promise<any[]>;
     writeSync(format: string, val: any[]): any;

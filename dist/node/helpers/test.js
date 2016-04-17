@@ -42,7 +42,9 @@ function runTest(type, items) {
                 .test(item.value)
                 .then(function (result) {
                 if (item.message === null) {
-                    assert.strictEqual(result, null);
+                    if (result !== null) {
+                        throw result;
+                    }
                 }
                 else {
                     assert.instanceOf(result, Error);

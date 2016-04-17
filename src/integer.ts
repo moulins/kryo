@@ -1,6 +1,6 @@
 import {Type, TypeSync, StaticType} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
-import {UnsupportedFormatError, UnexpectedTypeError, ViaTypeError} from "./via-type-error";
+import {UnsupportedFormatError, UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 
 export class IntegerTypeError extends ViaTypeError {}
 
@@ -15,14 +15,26 @@ export class IntegerTypeSync implements TypeSync<number, number> {
   name: string = "boolean";
 
   readTrustedSync(format: string, val: any): number {
-    throw this.readSync(format, val);
+    switch (format) {
+      case "json":
+      case "bson":
+        return val;
+      default:
+        throw new UnsupportedFormatError(format);
+    }
   }
 
   readSync(format: string, val: any): number {
     switch (format) {
       case "json":
       case "bson":
-        return val;
+        if (!(typeof val === "number")) {
+          throw new UnexpectedTypeError(typeof val, "number");
+        }
+        if (!isFinite(val)) {
+          throw new NumericError(val);
+        }
+        return Math.floor(val);
       default:
         throw new UnsupportedFormatError(format);
     }

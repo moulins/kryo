@@ -1,5 +1,5 @@
 import { TypeSync, StaticType } from "via-core";
-import { ViaTypeError } from "./via-type-error";
+import { ViaTypeError } from "./helpers/via-type-error";
 export declare class StringTypeError extends ViaTypeError {
 }
 export declare class LowerCaseError extends StringTypeError {

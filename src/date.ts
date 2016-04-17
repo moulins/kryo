@@ -2,7 +2,7 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Type, TypeSync, StaticType} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
-import {UnsupportedFormatError, ViaTypeError} from "./via-type-error";
+import {UnsupportedFormatError, ViaTypeError} from "./helpers/via-type-error";
 
 export class DateTypeError extends ViaTypeError {}
 
@@ -23,7 +23,14 @@ export class DateTypeSync implements TypeSync<Date, number> {
   name: string = "date";
 
   readTrustedSync(format: string, val: any): Date {
-    throw this.readSync(format, val);
+    switch (format) {
+      case "json":
+        return new Date(val);
+      case "bson":
+        return val;
+      default:
+        throw new UnsupportedFormatError(format);
+    }
   }
 
   readSync(format: string, val: any): Date {
@@ -32,11 +39,15 @@ export class DateTypeSync implements TypeSync<Date, number> {
         if (_.isString(val)) {
           val = Date.parse(val);
         }
-        if (_.isFinite(val)) {
-          return new Date(val);
+        if (!_.isFinite(val)) {
+          throw new ReadJsonDateError(val);
         }
-        throw new ReadJsonDateError(val);
+        return new Date(val);
       case "bson":
+        let err = this.testSync(val);
+        if (err) {
+          throw err;
+        }
         return val;
       default:
         throw new UnsupportedFormatError(format);

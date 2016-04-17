@@ -1,6 +1,6 @@
 import * as Promise from "bluebird";
 import { Dictionary, Document, Type, CollectionType, DocumentDiff, UpdateQuery } from "via-core";
-import { ViaTypeError } from "./via-type-error";
+import { ViaTypeError } from "./helpers/via-type-error";
 export interface PropertyDescriptor {
     type?: Type<any, any>;
     optional?: boolean;
@@ -13,6 +13,11 @@ export interface DocumentOptions {
 export interface EqualsOptions {
     partial?: boolean;
     throw?: boolean;
+}
+export interface KeyDiffResult {
+    commonKeys: string[];
+    missingKeys: string[];
+    extraKeys: string[];
 }
 export declare class DocumentTypeError extends ViaTypeError {
 }
@@ -35,11 +40,11 @@ export declare class DocumentType implements CollectionType<Document, DocumentDi
     constructor(options?: DocumentOptions);
     updatedIsSync(): boolean;
     readTrustedSync(format: string, val: any): Document;
-    readTrusted(format: string, val: any): Promise<Document>;
+    readTrusted(format: string, val: any, opt: DocumentOptions): Promise<Document>;
     readSync(format: string, val: any): Document;
-    read(format: string, val: any): Promise<Document>;
-    writeSync(format: string, val: Document): any;
-    write(format: string, val: Document): Promise<any>;
+    read(format: string, val: any, opt: DocumentOptions): Promise<Document>;
+    writeSync(format: string, val: Document, opt: DocumentOptions): any;
+    write(format: string, val: Document, opt: DocumentOptions): Promise<any>;
     testSync(val: Document, options?: DocumentOptions): Error;
     test(val: Document, opt?: DocumentOptions): Promise<Error>;
     equalsSync(val1: Document, val2: Document): boolean;
@@ -58,4 +63,5 @@ export declare class DocumentType implements CollectionType<Document, DocumentDi
     static assignOptions(target: DocumentOptions, source: DocumentOptions): DocumentOptions;
     static cloneOptions(source: DocumentOptions): DocumentOptions;
     static mergeOptions(target: DocumentOptions, source: DocumentOptions): DocumentOptions;
+    static keysDiff(subject: Document, reference: Document): KeyDiffResult;
 }

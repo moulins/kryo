@@ -49,7 +49,9 @@ export function runTest<T, D>(type: Type<T, D>, items: RunTestItem[]): void {
         .test(item.value)
         .then((result: Error) => {
           if (item.message === null) {
-            assert.strictEqual(result, null);
+            if (result !== null) {
+              throw result;
+            }
           } else {
             assert.instanceOf(result, Error);
             if (item.message === "") {

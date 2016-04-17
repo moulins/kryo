@@ -54,11 +54,13 @@ describe("DocumentType", function () {
       })
   });
 
-  it("#test({dateProp: null, intProp: 10}, {properties: {dateProp: {optional: true}}}) should resolve null", function() {
+  it("#test({dateProp: null, intProp: 10}, {properties: {dateProp: {nullable: true}}}) should resolve null", function() {
     return type
-      .test({dateProp: null, intProp: 10}, {properties: {dateProp: {optional: true}}})
+      .test({dateProp: null, intProp: 10}, {properties: {dateProp: {nullable: true}}})
       .then((result: Error) => {
-        assert.strictEqual(result, null);
+        if (result !== null) {
+          throw result;
+        }
       })
   });
   

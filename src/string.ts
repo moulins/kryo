@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import {TypeSync, StaticType} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
-import {UnsupportedFormatError, UnexpectedTypeError, ViaTypeError} from "./via-type-error";
+import {UnsupportedFormatError, UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 
 export class StringTypeError extends ViaTypeError {}
 
@@ -65,14 +65,20 @@ export class StringTypeSync implements TypeSync<string, string[]> {
   }
 
   readTrustedSync(format: string, val: any): string {
-    throw this.readSync(format, val);
+    switch (format) {
+      case "json":
+      case "bson":
+        return val;
+      default:
+        throw new UnsupportedFormatError(format);
+    }
   }
 
   readSync(format: string, val: any): string {
     switch (format) {
       case "json":
       case "bson":
-        return val;
+        return String(val);
       default:
         throw new UnsupportedFormatError(format);
     }

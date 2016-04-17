@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Promise = require("bluebird");
 var _ = require("lodash");
-var via_type_error_1 = require("./via-type-error");
+var via_type_error_1 = require("./helpers/via-type-error");
 var defaultOptions = {
     additionalProperties: false,
     properties: {}
@@ -46,7 +46,13 @@ exports.ForbiddenNullError = ForbiddenNullError;
 var PropertiesTestError = (function (_super) {
     __extends(PropertiesTestError, _super);
     function PropertiesTestError(errors) {
-        _super.call(this, null, "PropertiesTestError", { errors: errors }, "Failed test for the properties: " + _.keys(errors).join(", "));
+        var errorDetails = "";
+        var first = true;
+        for (var prop in errors) {
+            errorDetails = errorDetails + (first ? "" : ", ") + prop + ": " + errors[prop];
+            first = false;
+        }
+        _super.call(this, null, "PropertiesTestError", { errors: errors }, "Failed test for the properties: {" + errorDetails + "}");
     }
     return PropertiesTestError;
 }(DocumentTypeError));
@@ -72,71 +78,103 @@ var DocumentType = (function () {
     DocumentType.prototype.readTrustedSync = function (format, val) {
         throw new via_type_error_1.UnavailableSyncError(this, "readTrusted");
     };
-    DocumentType.prototype.readTrusted = function (format, val) {
-        return this.read(format, val);
-    };
-    DocumentType.prototype.readSync = function (format, val) {
-        throw new via_type_error_1.UnavailableSyncError(this, "read");
-    };
-    DocumentType.prototype.read = function (format, val) {
+    DocumentType.prototype.readTrusted = function (format, val, opt) {
         var _this = this;
         return Promise.try(function () {
+            var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
             switch (format) {
                 case "bson":
                 case "json":
-                    if (!_.isPlainObject(val)) {
-                        return Promise.reject(new via_type_error_1.UnexpectedTypeError(typeof val, "object"));
-                    }
                     val = val;
+                    var keysDiff = DocumentType.keysDiff(val, options.properties);
                     return Promise
-                        .props(_.mapValues(val, function (member, key, doc) {
-                        if (_this.options.properties[key]) {
-                            var property = _this.options.properties[key];
-                            if (property.type) {
-                                return property.type.read(format, member);
-                            }
-                            else {
-                                // no property type declared, leave it to be manually managed
-                                // TODO: console.warn ?
-                                return Promise.resolve(member);
-                            }
+                        .props(_.zipObject(keysDiff.commonKeys, _.map(keysDiff.commonKeys, function (key) {
+                        var member = val[key];
+                        var property = options.properties[key];
+                        if (member === null) {
+                            return Promise.resolve(null);
+                        }
+                        if (property.type) {
+                            return property.type.readTrusted(format, member);
                         }
                         else {
-                            // ignore undeclared properties
-                            return Promise.resolve(undefined);
+                            return Promise.resolve(member);
                         }
-                    }));
+                    })));
                 default:
                     return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
-    DocumentType.prototype.writeSync = function (format, val) {
-        throw new via_type_error_1.UnavailableSyncError(this, "write");
+    DocumentType.prototype.readSync = function (format, val) {
+        throw new via_type_error_1.UnavailableSyncError(this, "read");
     };
-    DocumentType.prototype.write = function (format, val) {
+    DocumentType.prototype.read = function (format, val, opt) {
         var _this = this;
         return Promise.try(function () {
+            var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
             switch (format) {
                 case "bson":
                 case "json":
+                    val = val;
+                    var keysDiff = DocumentType.keysDiff(val, options.properties);
+                    var missingMandatoryKeys = _.filter(keysDiff.missingKeys, function (key) {
+                        return !options.properties[key].optional;
+                    });
+                    if (missingMandatoryKeys.length) {
+                        return Promise.reject(new MissingKeysError(missingMandatoryKeys));
+                    }
                     return Promise
-                        .props(_.mapValues(val, function (member, key, doc) {
-                        if (_this.options.properties[key]) {
-                            var property = _this.options.properties[key];
-                            if (property.type) {
-                                return property.type.write(format, member);
+                        .props(_.zipObject(keysDiff.commonKeys, _.map(keysDiff.commonKeys, function (key) {
+                        var member = val[key];
+                        var property = options.properties[key];
+                        if (member === null) {
+                            if (property.nullable) {
+                                return Promise.resolve(null);
                             }
                             else {
-                                // no property type declared, leave it to be manually managed
-                                // TODO: console.warn ?
-                                return member;
+                                return Promise.reject(new ForbiddenNullError(key));
                             }
                         }
-                        else {
-                            return undefined; // ignore undeclared properties during write
+                        if (property.type) {
+                            return property.type.read(format, member);
                         }
-                    }));
+                        else {
+                            // Reading an untyped property !
+                            return Promise.resolve(member);
+                        }
+                    })));
+                default:
+                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
+            }
+        });
+    };
+    DocumentType.prototype.writeSync = function (format, val, opt) {
+        throw new via_type_error_1.UnavailableSyncError(this, "write");
+    };
+    DocumentType.prototype.write = function (format, val, opt) {
+        var _this = this;
+        return Promise.try(function () {
+            var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
+            switch (format) {
+                case "bson":
+                case "json":
+                    val = val;
+                    var keysDiff = DocumentType.keysDiff(val, options.properties);
+                    return Promise
+                        .props(_.zipObject(keysDiff.commonKeys, _.map(keysDiff.commonKeys, function (key) {
+                        var member = val[key];
+                        var property = options.properties[key];
+                        if (member === null) {
+                            return Promise.resolve(null);
+                        }
+                        if (property.type) {
+                            return property.type.write(format, member);
+                        }
+                        else {
+                            return Promise.resolve(member);
+                        }
+                    })));
                 default:
                     return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
@@ -148,7 +186,7 @@ var DocumentType = (function () {
     DocumentType.prototype.test = function (val, opt) {
         var _this = this;
         return Promise.try(function () {
-            var options = DocumentType.mergeOptions(_this.options, opt);
+            var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
             // TODO: keep this test ?
             if (!_.isPlainObject(val)) {
                 return Promise.resolve(new via_type_error_1.UnexpectedTypeError(typeof val, "object"));
@@ -161,19 +199,13 @@ var DocumentType = (function () {
                     return Promise.resolve(new ExtraKeysError(extraKeys));
                 }
             }
-            // if (!options.allowPartial) {
-            //   let missingKeys: string[] = _.difference(expectedKeys, curKeys);
-            //   if (missingKeys.length) {
-            //     return new Error("Expected missing keys: "+missingKeys);
-            //   }
-            // }
             curKeys = _.intersection(curKeys, expectedKeys);
             return Promise
                 .map(curKeys, function (key, i, len) {
                 var property = options.properties[key];
                 if (val[key] === null) {
                     var err = void 0;
-                    if (property.optional) {
+                    if (property.nullable) {
                         err = null;
                     }
                     else {
@@ -189,7 +221,7 @@ var DocumentType = (function () {
             })
                 .then(function (results) {
                 results = _.filter(results, function (result) {
-                    return result[0] !== null;
+                    return result[1] !== null;
                 });
                 if (results.length) {
                     var errorsDictionary = _.fromPairs(results);
@@ -363,6 +395,15 @@ var DocumentType = (function () {
     };
     DocumentType.mergeOptions = function (target, source) {
         return DocumentType.assignOptions(DocumentType.cloneOptions(target), source);
+    };
+    DocumentType.keysDiff = function (subject, reference) {
+        var subjectKeys = _.keys(subject);
+        var referenceKeys = _.keys(reference);
+        return {
+            commonKeys: _.intersection(subjectKeys, referenceKeys),
+            missingKeys: _.difference(referenceKeys, subjectKeys),
+            extraKeys: _.difference(subjectKeys, referenceKeys)
+        };
     };
     return DocumentType;
 }());

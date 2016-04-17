@@ -9,10 +9,12 @@ import {Dictionary} from "via-core";
 
 export interface ArrayOptions {
   maxLength: number;
+  itemType: Type<any, any>;
 }
 
 let defaultOptions: ArrayOptions = {
-  maxLength: 100
+  maxLength: 100,
+  itemType: null
 };
 
 export class ArrayTypeError extends ViaTypeError {}
@@ -36,24 +38,37 @@ export class MaxLengthError extends ArrayTypeError {
 }
 
 export class ArrayType implements CollectionTypeAsync<any[], any> {
-
   isSync: boolean = true;
   name: string = "array";
   options: ArrayOptions;
-  itemType: Type<any, any>;
 
-  constructor (itemType: Type<any, any>, options: ArrayOptions) {
+  constructor (options: ArrayOptions) {
     this.options = <ArrayOptions> _.assign(_.clone(defaultOptions), options);
-    this.isSync = itemType.isSync;
-    this.itemType = itemType;
+    this.isSync = this.options.itemType.isSync;
   }
 
   readTrustedSync(format: string, val: any): any[] {
     throw new UnavailableSyncError(this, "readTrusted");
   }
 
-  readTrusted(format: string, val: any): Promise<any[]> {
-    return this.read(format, val);
+  readTrusted(format: string, val: any, opt: ArrayOptions): Promise<any[]> {
+    return Promise.try(() => {
+      let options: ArrayOptions = this.options;
+
+      switch (format) {
+        case "bson":
+        case "json":
+          return Promise
+            .map(val, (item: any, i: number, len: number) => {
+              if (item === null) {
+                return null;
+              }
+              return options.itemType.readTrusted(format, item);
+            });
+        default:
+          return Promise.reject(new UnsupportedFormatError(format));
+      }
+    });
   }
 
   readSync(format: string, val: any): any[] {
@@ -62,12 +77,17 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
 
   read(format: string, val: any): Promise<any[]> {
     return Promise.try(() => {
+      let options: ArrayOptions = this.options;
+
       switch (format) {
         case "bson":
         case "json":
           return Promise
             .map(val, (item: any, i: number, len: number) => {
-              return this.itemType.read(format, item);
+              if (item === null) {
+                return null;
+              }
+              return options.itemType.read(format, item);
             });
         default:
           return Promise.reject(new UnsupportedFormatError(format));
@@ -81,12 +101,14 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
 
   write(format: string, val: any[]): Promise<any> {
     return Promise.try(() => {
+      let options: ArrayOptions = this.options;
+
       switch (format) {
         case "bson":
         case "json":
           return Promise
             .map(val, (item: any, i: number, len: number) => {
-              return this.itemType.write(format, item);
+              return options.itemType.write(format, item);
             });
         default:
           return Promise.reject(new UnsupportedFormatError(format));
@@ -100,21 +122,23 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
 
   test (val: any[]): Promise<Error> {
     return Promise.try((): Promise<Error> => {
+      let options: ArrayOptions = this.options;
+
       if (!_.isArray(val)) {
         return Promise.reject(new UnexpectedTypeError(typeof val, "array"));
       }
 
-      if (this.options.maxLength !== null && val.length > this.options.maxLength) {
-        return Promise.resolve(new MaxLengthError(val, this.options.maxLength));
+      if (options.maxLength !== null && val.length > options.maxLength) {
+        return Promise.resolve(new MaxLengthError(val, options.maxLength));
       }
 
-      if (this.itemType === null) { // manually managed type
+      if (options.itemType === null) { // manually managed type
         return Promise.resolve<Error>(null);
       }
 
       return Promise
         .map(val, (item: string, i: number, len: number) => {
-          return this.itemType.test(item);
+          return options.itemType.test(item);
         })
         .then(function(res){
           let errors: Dictionary<Error> = {};
@@ -175,9 +199,11 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
 
   reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any) {
     return Promise.try(() => {
-      visitor(this.itemType, null, <CollectionType<any, any>> this);
-      if ((<CollectionType<any, any>> this.itemType).reflect) {
-        (<CollectionType<any, any>> this.itemType).reflect(visitor);
+      let options: ArrayOptions = this.options;
+
+      visitor(options.itemType, null, <CollectionType<any, any>> this);
+      if ((<CollectionType<any, any>> options.itemType).reflect) {
+        (<CollectionType<any, any>> options.itemType).reflect(visitor);
       }
     });
   }

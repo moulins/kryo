@@ -2,17 +2,13 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Type, TypeSync, StaticType} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
-import {UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError} from "./via-type-error";
+import {UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError} from "./helpers/via-type-error";
 
 export class BooleanTypeSync implements TypeSync<boolean, boolean> {
   isSync: boolean = true;
   name: string = "boolean";
 
   readTrustedSync(format: string, val: any): boolean {
-    throw this.readSync(format, val);
-  }
-
-  readSync(format: string, val: any): boolean {
     switch (format) {
       case "json":
       case "bson":
@@ -20,6 +16,15 @@ export class BooleanTypeSync implements TypeSync<boolean, boolean> {
       default:
         throw new UnsupportedFormatError(format);
     }
+  }
+
+  readSync(format: string, val: any): boolean {
+    let res = this.readTrustedSync(format, val);
+    let err = this.testSync(res);
+    if (err !== null) {
+      throw err;
+    }
+    return res;
   }
 
   writeSync(format: string, val: boolean): any {

@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var promisify_1 = require("./helpers/promisify");
-var via_type_error_1 = require("./via-type-error");
+var via_type_error_1 = require("./helpers/via-type-error");
 var IntegerTypeError = (function (_super) {
     __extends(IntegerTypeError, _super);
     function IntegerTypeError() {
@@ -28,13 +28,25 @@ var IntegerTypeSync = (function () {
         this.name = "boolean";
     }
     IntegerTypeSync.prototype.readTrustedSync = function (format, val) {
-        throw this.readSync(format, val);
+        switch (format) {
+            case "json":
+            case "bson":
+                return val;
+            default:
+                throw new via_type_error_1.UnsupportedFormatError(format);
+        }
     };
     IntegerTypeSync.prototype.readSync = function (format, val) {
         switch (format) {
             case "json":
             case "bson":
-                return val;
+                if (!(typeof val === "number")) {
+                    throw new via_type_error_1.UnexpectedTypeError(typeof val, "number");
+                }
+                if (!isFinite(val)) {
+                    throw new NumericError(val);
+                }
+                return Math.floor(val);
             default:
                 throw new via_type_error_1.UnsupportedFormatError(format);
         }

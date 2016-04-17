@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var _ = require("lodash");
 var promisify_1 = require("./helpers/promisify");
-var via_type_error_1 = require("./via-type-error");
+var via_type_error_1 = require("./helpers/via-type-error");
 var DateTypeError = (function (_super) {
     __extends(DateTypeError, _super);
     function DateTypeError() {
@@ -37,7 +37,14 @@ var DateTypeSync = (function () {
         this.name = "date";
     }
     DateTypeSync.prototype.readTrustedSync = function (format, val) {
-        throw this.readSync(format, val);
+        switch (format) {
+            case "json":
+                return new Date(val);
+            case "bson":
+                return val;
+            default:
+                throw new via_type_error_1.UnsupportedFormatError(format);
+        }
     };
     DateTypeSync.prototype.readSync = function (format, val) {
         switch (format) {
@@ -45,11 +52,15 @@ var DateTypeSync = (function () {
                 if (_.isString(val)) {
                     val = Date.parse(val);
                 }
-                if (_.isFinite(val)) {
-                    return new Date(val);
+                if (!_.isFinite(val)) {
+                    throw new ReadJsonDateError(val);
                 }
-                throw new ReadJsonDateError(val);
+                return new Date(val);
             case "bson":
+                var err = this.testSync(val);
+                if (err) {
+                    throw err;
+                }
                 return val;
             default:
                 throw new via_type_error_1.UnsupportedFormatError(format);

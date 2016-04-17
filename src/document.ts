@@ -1,7 +1,7 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {Dictionary, Document, Type, TypeSync, CollectionType, DocumentDiff, UpdateQuery} from "via-core";
-import {UnavailableSyncError, UnsupportedFormatError, ViaTypeError, UnexpectedTypeError} from "./via-type-error";
+import {UnavailableSyncError, UnsupportedFormatError, ViaTypeError, UnexpectedTypeError} from "./helpers/via-type-error";
 
 export interface PropertyDescriptor {
   type?: Type<any, any>;
@@ -22,6 +22,12 @@ let defaultOptions: DocumentOptions = {
 export interface EqualsOptions {
   partial?: boolean;
   throw?: boolean;
+}
+
+export interface KeyDiffResult {
+  commonKeys: string[];
+  missingKeys: string[];
+  extraKeys: string[];
 }
 
 export class DocumentTypeError extends ViaTypeError {}
@@ -46,7 +52,13 @@ export class ForbiddenNullError extends DocumentTypeError {
 
 export class PropertiesTestError extends DocumentTypeError {
   constructor (errors: Dictionary<Error>) {
-    super (null, "PropertiesTestError", {errors: errors}, `Failed test for the properties: ${_.keys(errors).join(", ")}`);
+    let errorDetails = "";
+    let first = true;
+    for (let prop in errors) {
+      errorDetails = errorDetails + (first ? "" : ", ") + prop + ": " + errors[prop];
+      first = false;
+    }
+    super (null, "PropertiesTestError", {errors: errors}, `Failed test for the properties: {${errorDetails}}`);
   }
 }
 
@@ -77,71 +89,122 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     throw new UnavailableSyncError(this, "readTrusted");
   }
 
-  readTrusted(format: string, val: any): Promise<Document> {
-    return this.read(format, val);
-  }
-
-  readSync(format: string, val: any): Document {
-    throw new UnavailableSyncError(this, "read");
-  }
-
-  read(format: string, val: any): Promise<Document> {
+  readTrusted(format: string, val: any, opt: DocumentOptions): Promise<Document> {
     return Promise.try(() => {
+      let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
+
       switch (format) {
         case "bson":
         case "json":
-          if (!_.isPlainObject(val)) {
-            return Promise.reject(new UnexpectedTypeError(typeof val, "object"));
-          }
-
-          val = <Dictionary<any>> val;
+          val = <Document> val;
+          let keysDiff = DocumentType.keysDiff(val, options.properties);
 
           return Promise
-            .props(_.mapValues(val, (member: any, key: string, doc: Dictionary<any>) => {
-              if (this.options.properties[key]) {
-                let property = this.options.properties[key];
-                if (property.type) {
-                  return property.type.read(format, member);
-                } else {
-                  // no property type declared, leave it to be manually managed
-                  // TODO: console.warn ?
-                  return Promise.resolve(member);
-                }
-              } else {
-                // ignore undeclared properties
-                return Promise.resolve(undefined);
-              }
-            }));
+            .props(
+              _.zipObject(
+                keysDiff.commonKeys,
+                _.map(keysDiff.commonKeys, (key: string) => {
+                  let member: any = val[key];
+                  let property = options.properties[key];
+                  if (member === null) {
+                    return Promise.resolve(null);
+                  }
+                  if (property.type) {
+                    return property.type.readTrusted(format, member);
+                  } else {
+                    return Promise.resolve(member);
+                  }
+                })
+              )
+            );
         default:
           return Promise.reject(new UnsupportedFormatError(format));
       }
     });
   }
 
-  writeSync(format: string, val: Document): any {
-    throw new UnavailableSyncError(this, "write");
+  readSync(format: string, val: any): Document {
+    throw new UnavailableSyncError(this, "read");
   }
 
-  write(format: string, val: Document): Promise<any> {
+  read(format: string, val: any, opt: DocumentOptions): Promise<Document> {
     return Promise.try(() => {
+      let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
+
       switch (format) {
         case "bson":
         case "json":
+          val = <Document> val;
+          let keysDiff = DocumentType.keysDiff(val, options.properties);
+
+          let missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
+            return !options.properties[key].optional;
+          });
+          if (missingMandatoryKeys.length) {
+            return Promise.reject(new MissingKeysError(missingMandatoryKeys));
+          }
+
           return Promise
-            .props(_.mapValues(val, (member: any, key: string, doc: Dictionary<any>) => {
-              if (this.options.properties[key]) {
-                let property = this.options.properties[key];
-                if (property.type) {
-                  return property.type.write(format, member);
-                } else {
-                  // no property type declared, leave it to be manually managed
-                  // TODO: console.warn ?
-                  return member;
-                }
-              } else {
-                return undefined; // ignore undeclared properties during write
-              }
-            }));
+            .props(
+              _.zipObject(
+                keysDiff.commonKeys,
+                _.map(keysDiff.commonKeys, (key: string) => {
+                  let member: any = val[key];
+                  let property = options.properties[key];
+                  if (member === null) {
+                    if (property.nullable) {
+                      return Promise.resolve(null);
+                    } else {
+                      return Promise.reject(new ForbiddenNullError(key));
+                    }
+                  }
+                  if (property.type) {
+                    return property.type.read(format, member);
+                  } else {
+                    // Reading an untyped property !
+                    return Promise.resolve(member);
+                  }
+                })
+              )
+            );
+        default:
+          return Promise.reject(new UnsupportedFormatError(format));
+      }
+    });
+  }
+
+  writeSync(format: string, val: Document, opt: DocumentOptions): any {
+    throw new UnavailableSyncError(this, "write");
+  }
+
+  write(format: string, val: Document, opt: DocumentOptions): Promise<any> {
+    return Promise.try(() => {
+      let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
+
+      switch (format) {
+        case "bson":
+        case "json":
+          val = <Document> val;
+          let keysDiff = DocumentType.keysDiff(val, options.properties);
+
+          return Promise
+            .props(
+              _.zipObject(
+                keysDiff.commonKeys,
+                _.map(keysDiff.commonKeys, (key: string) => {
+                  let member: any = val[key];
+                  let property = options.properties[key];
+                  if (member === null) {
+                    return Promise.resolve(null);
+                  }
+                  if (property.type) {
+                    return property.type.write(format, member);
+                  } else {
+                    return Promise.resolve(member);
+                  }
+                })
+              )
+            );
         default:
           return Promise.reject(new UnsupportedFormatError(format));
       }
@@ -154,7 +217,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
   test (val: Document, opt?: DocumentOptions): Promise<Error> {
     return Promise.try(() => {
-      let options: DocumentOptions = DocumentType.mergeOptions(this.options, opt);
+      let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
 
       // TODO: keep this test ?
       if (!_.isPlainObject(val)) {
@@ -171,13 +234,6 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
         }
       }
 
-      // if (!options.allowPartial) {
-      //   let missingKeys: string[] = _.difference(expectedKeys, curKeys);
-      //   if (missingKeys.length) {
-      //     return new Error("Expected missing keys: "+missingKeys);
-      //   }
-      // }
-
       curKeys = _.intersection(curKeys, expectedKeys);
 
       return Promise
@@ -185,7 +241,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
           let property: PropertyDescriptor = options.properties[key];
           if (val[key] === null) {
             let err: Error;
-            if (property.optional) {
+            if (property.nullable) {
               err = null;
             } else {
               err = new ForbiddenNullError(key);
@@ -201,7 +257,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
         })
         .then(function(results: Array<[string, Error]>) {
           results = _.filter(results, (result: [string, Error]) => {
-              return result[0] !== null;
+              return result[1] !== null;
             });
 
           if (results.length) {
@@ -399,5 +455,16 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
 
   static mergeOptions (target: DocumentOptions, source: DocumentOptions): DocumentOptions {
     return DocumentType.assignOptions(DocumentType.cloneOptions(target), source);
+  }
+
+  static keysDiff (subject: Document, reference: Document): KeyDiffResult {
+    let subjectKeys: string[] = _.keys(subject);
+    let referenceKeys: string[] = _.keys(reference);
+
+    return {
+      commonKeys: _.intersection(subjectKeys, referenceKeys),
+      missingKeys: _.difference(referenceKeys, subjectKeys),
+      extraKeys: _.difference(subjectKeys, referenceKeys)
+    }
   }
 }

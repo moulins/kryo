@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var _ = require("lodash");
 var promisify_1 = require("./helpers/promisify");
-var via_type_error_1 = require("./via-type-error");
+var via_type_error_1 = require("./helpers/via-type-error");
 var StringTypeError = (function (_super) {
     __extends(StringTypeError, _super);
     function StringTypeError() {
@@ -70,13 +70,19 @@ var StringTypeSync = (function () {
         this.options = _.assign(_.clone(defaultOptions), options);
     }
     StringTypeSync.prototype.readTrustedSync = function (format, val) {
-        throw this.readSync(format, val);
+        switch (format) {
+            case "json":
+            case "bson":
+                return val;
+            default:
+                throw new via_type_error_1.UnsupportedFormatError(format);
+        }
     };
     StringTypeSync.prototype.readSync = function (format, val) {
         switch (format) {
             case "json":
             case "bson":
-                return val;
+                return String(val);
             default:
                 throw new via_type_error_1.UnsupportedFormatError(format);
         }

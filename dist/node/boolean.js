@@ -1,15 +1,12 @@
 "use strict";
 var promisify_1 = require("./helpers/promisify");
-var via_type_error_1 = require("./via-type-error");
+var via_type_error_1 = require("./helpers/via-type-error");
 var BooleanTypeSync = (function () {
     function BooleanTypeSync() {
         this.isSync = true;
         this.name = "boolean";
     }
     BooleanTypeSync.prototype.readTrustedSync = function (format, val) {
-        throw this.readSync(format, val);
-    };
-    BooleanTypeSync.prototype.readSync = function (format, val) {
         switch (format) {
             case "json":
             case "bson":
@@ -17,6 +14,14 @@ var BooleanTypeSync = (function () {
             default:
                 throw new via_type_error_1.UnsupportedFormatError(format);
         }
+    };
+    BooleanTypeSync.prototype.readSync = function (format, val) {
+        var res = this.readTrustedSync(format, val);
+        var err = this.testSync(res);
+        if (err !== null) {
+            throw err;
+        }
+        return res;
     };
     BooleanTypeSync.prototype.writeSync = function (format, val) {
         switch (format) {
