@@ -1,6 +1,5 @@
 import {BooleanType} from "./boolean";
 import * as chai from "chai";
-import {TypeSync} from "via-core";
 
 let assert = chai.assert;
 

@@ -1,11 +1,11 @@
-import { Type, TypeSync, StaticType } from "via-core";
+import { type } from "via-core";
 import { ViaTypeError } from "./helpers/via-type-error";
 export declare class IntegerTypeError extends ViaTypeError {
 }
 export declare class NumericError extends IntegerTypeError {
     constructor(value: number);
 }
-export declare class IntegerTypeSync implements TypeSync<number, number> {
+export declare class IntegerTypeSync implements type.TypeSync<number, number> {
     isSync: boolean;
     name: string;
     readTrustedSync(format: string, val: any): number;
@@ -18,5 +18,5 @@ export declare class IntegerTypeSync implements TypeSync<number, number> {
     patchSync(oldVal: number, diff: number): number;
     revertSync(newVal: number, diff: number): number;
 }
-export declare let IntegerType: StaticType<number, number>;
-export declare type IntegerType = Type<number, number>;
+export declare let IntegerType: type.StaticType<number, number>;
+export declare type IntegerType = type.Type<number, number>;

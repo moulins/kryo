@@ -1,15 +1,15 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Type, CollectionType, CollectionTypeAsync, UpdateQuery} from "via-core";
+import {utils, type} from "via-core";
 import {
   UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError,
   ViaTypeError
 } from "./helpers/via-type-error";
-import {Dictionary} from "via-core";
+import {NumericDictionary} from "~via-core/dist/node/interfaces/utils";
 
 export interface ArrayOptions {
   maxLength: number;
-  itemType: Type<any, any>;
+  itemType: type.Type<any, any>;
 }
 
 let defaultOptions: ArrayOptions = {
@@ -20,7 +20,7 @@ let defaultOptions: ArrayOptions = {
 export class ArrayTypeError extends ViaTypeError {}
 
 export class ItemsTestError extends ArrayTypeError {
-  constructor (errors: Dictionary<Error>) {
+  constructor (errors: utils.NumericDictionary<Error>) {
     let errorDetails = "";
     let first = true;
     for (let index in errors) {
@@ -37,7 +37,7 @@ export class MaxLengthError extends ArrayTypeError {
   }
 }
 
-export class ArrayType implements CollectionTypeAsync<any[], any> {
+export class ArrayType implements type.CollectionTypeAsync<any[], any> {
   isSync: boolean = true;
   name: string = "array";
   options: ArrayOptions;
@@ -141,7 +141,7 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
           return options.itemType.test(item);
         })
         .then(function(res){
-          let errors: Dictionary<Error> = {};
+          let errors: utils.NumericDictionary<Error> = {};
           let noErrors = true;
           for (let i = 0, l = res.length; i < l; i++) {
             if (res[i] !== null) {
@@ -197,19 +197,19 @@ export class ArrayType implements CollectionTypeAsync<any[], any> {
     return Promise.resolve(this.revertSync(newVal, diff));
   }
 
-  reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any) {
+  reflect (visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any) {
     return Promise.try(() => {
       let options: ArrayOptions = this.options;
 
-      visitor(options.itemType, null, <CollectionType<any, any>> this);
-      if ((<CollectionType<any, any>> options.itemType).reflect) {
-        (<CollectionType<any, any>> options.itemType).reflect(visitor);
+      visitor(options.itemType, null, <type.CollectionType<any, any>> this);
+      if ((<type.CollectionType<any, any>> options.itemType).reflect) {
+        (<type.CollectionType<any, any>> options.itemType).reflect(visitor);
       }
     });
   }
 
-  diffToUpdate (newVal: any, diff: any, format: string): Promise<UpdateQuery> {
-    let update: UpdateQuery = {
+  diffToUpdate (newVal: any, diff: any, format: string): Promise<type.UpdateQuery> {
+    let update: type.UpdateQuery = {
       $set: {},
       $unset: {}
     };

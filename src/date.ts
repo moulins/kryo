@@ -1,6 +1,6 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Type, TypeSync, StaticType} from "via-core";
+import {type} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
 import {UnsupportedFormatError, ViaTypeError} from "./helpers/via-type-error";
 
@@ -18,7 +18,7 @@ export class NanTimestampError extends DateTypeError {
   }
 }
 
-export class DateTypeSync implements TypeSync<Date, number> {
+export class DateTypeSync implements type.TypeSync<Date, number> {
   isSync: boolean = true;
   name: string = "date";
 
@@ -96,5 +96,5 @@ export class DateTypeSync implements TypeSync<Date, number> {
   }
 }
 
-export let DateType: StaticType<Date, number> = promisifyClass(DateTypeSync);
-export type DateType = Type<Date, number>;
+export let DateType: type.StaticType<Date, number> = promisifyClass(DateTypeSync);
+export type DateType = type.Type<Date, number>;

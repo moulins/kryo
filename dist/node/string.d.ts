@@ -1,4 +1,4 @@
-import { TypeSync, StaticType } from "via-core";
+import { type } from "via-core";
 import { ViaTypeError } from "./helpers/via-type-error";
 export declare class StringTypeError extends ViaTypeError {
 }
@@ -25,7 +25,7 @@ export interface StringOptions {
     maxLength?: number;
     looseTest?: boolean;
 }
-export declare class StringTypeSync implements TypeSync<string, string[]> {
+export declare class StringTypeSync implements type.TypeSync<string, string[]> {
     isSync: boolean;
     name: string;
     options: StringOptions;
@@ -43,4 +43,4 @@ export declare class StringTypeSync implements TypeSync<string, string[]> {
     static cloneOptions(source: StringOptions): StringOptions;
     static mergeOptions(target: StringOptions, source: StringOptions): StringOptions;
 }
-export declare let StringType: StaticType<string, string[]>;
+export declare let StringType: type.StaticType<string, string[]>;

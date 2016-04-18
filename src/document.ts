@@ -1,17 +1,17 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Dictionary, Document, Type, TypeSync, CollectionType, DocumentDiff, UpdateQuery} from "via-core";
+import {utils, type} from "via-core";
 import {UnavailableSyncError, UnsupportedFormatError, ViaTypeError, UnexpectedTypeError} from "./helpers/via-type-error";
 
 export interface PropertyDescriptor {
-  type?: Type<any, any>;
+  type?: type.Type<any, any>;
   optional?: boolean;
   nullable?: boolean;
 }
 
 export interface DocumentOptions {
   additionalProperties?: boolean;
-  properties?: Dictionary<PropertyDescriptor>;
+  properties?: utils.Dictionary<PropertyDescriptor>;
 }
 
 let defaultOptions: DocumentOptions = {
@@ -51,7 +51,7 @@ export class ForbiddenNullError extends DocumentTypeError {
 }
 
 export class PropertiesTestError extends DocumentTypeError {
-  constructor (errors: Dictionary<Error>) {
+  constructor (errors: utils.Dictionary<Error>) {
     let errorDetails = "";
     let first = true;
     for (let prop in errors) {
@@ -62,7 +62,7 @@ export class PropertiesTestError extends DocumentTypeError {
   }
 }
 
-export class DocumentType implements CollectionType<Document, DocumentDiff> {
+export class DocumentType implements type.CollectionType<utils.Document, type.DocumentDiff> {
 
   isSync: boolean = true;
   name: string = "document";
@@ -85,18 +85,18 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     return this.isSync;
   }
 
-  readTrustedSync(format: string, val: any): Document {
+  readTrustedSync(format: string, val: any): utils.Document {
     throw new UnavailableSyncError(this, "readTrusted");
   }
 
-  readTrusted(format: string, val: any, opt: DocumentOptions): Promise<Document> {
+  readTrusted(format: string, val: any, opt: DocumentOptions): Promise<utils.Document> {
     return Promise.try(() => {
       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
 
       switch (format) {
         case "bson":
         case "json":
-          val = <Document> val;
+          val = <utils.Document> val;
           let keysDiff = DocumentType.keysDiff(val, options.properties);
 
           return Promise
@@ -123,18 +123,18 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     });
   }
 
-  readSync(format: string, val: any): Document {
+  readSync(format: string, val: any): utils.Document {
     throw new UnavailableSyncError(this, "read");
   }
 
-  read(format: string, val: any, opt: DocumentOptions): Promise<Document> {
+  read(format: string, val: any, opt: DocumentOptions): Promise<utils.Document> {
     return Promise.try(() => {
       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
 
       switch (format) {
         case "bson":
         case "json":
-          val = <Document> val;
+          val = <utils.Document> val;
           let keysDiff = DocumentType.keysDiff(val, options.properties);
 
           let missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
@@ -173,18 +173,18 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     });
   }
 
-  writeSync(format: string, val: Document, opt: DocumentOptions): any {
+  writeSync(format: string, val: utils.Document, opt: DocumentOptions): any {
     throw new UnavailableSyncError(this, "write");
   }
 
-  write(format: string, val: Document, opt: DocumentOptions): Promise<any> {
+  write(format: string, val: utils.Document, opt: DocumentOptions): Promise<any> {
     return Promise.try(() => {
       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
 
       switch (format) {
         case "bson":
         case "json":
-          val = <Document> val;
+          val = <utils.Document> val;
           let keysDiff = DocumentType.keysDiff(val, options.properties);
 
           return Promise
@@ -211,11 +211,11 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     });
   }
 
-  testSync (val: Document, options?: DocumentOptions): Error {
+  testSync (val: utils.Document, options?: DocumentOptions): Error {
     throw new UnavailableSyncError(this, "test");
   }
 
-  test (val: Document, opt?: DocumentOptions): Promise<Error> {
+  test (val: utils.Document, opt?: DocumentOptions): Promise<Error> {
     return Promise.try(() => {
       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
 
@@ -261,7 +261,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
             });
 
           if (results.length) {
-            let errorsDictionary: Dictionary<Error> = _.fromPairs(results);
+            let errorsDictionary: utils.Dictionary<Error> = _.fromPairs(results);
             return new PropertiesTestError(errorsDictionary);
           }
 
@@ -270,11 +270,11 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     });
   }
 
-  equalsSync(val1: Document, val2: Document): boolean {
+  equalsSync(val1: utils.Document, val2: utils.Document): boolean {
     throw new UnavailableSyncError(this, "equals");
   }
 
-  equals (val1: Document, val2: Document, options?: EqualsOptions): Promise<boolean> {
+  equals (val1: utils.Document, val2: utils.Document, options?: EqualsOptions): Promise<boolean> {
     return Promise
       .try(() => {
         let keys: string[] = _.keys(this.options.properties);
@@ -330,70 +330,70 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
       });
   }
 
-  cloneSync(val: Document): Document {
+  cloneSync(val: utils.Document): utils.Document {
     throw new UnavailableSyncError(this, "clone");
   }
 
-  clone (val: Document): Promise<Document> {
+  clone (val: utils.Document): Promise<utils.Document> {
     return Promise.resolve(this.cloneSync(val));
   }
 
-  diffSync(oldVal: Document, newVal: Document): DocumentDiff {
+  diffSync(oldVal: utils.Document, newVal: utils.Document): type.DocumentDiff {
     throw new UnavailableSyncError(this, "diff");
   }
 
-  diff (oldVal: Document, newVal: Document): Promise<DocumentDiff> {
+  diff (oldVal: utils.Document, newVal: utils.Document): Promise<type.DocumentDiff> {
     return Promise.resolve(this.diffSync(oldVal, newVal));
   }
 
-  patchSync(oldVal: Document, diff: DocumentDiff): Document {
+  patchSync(oldVal: utils.Document, diff: type.DocumentDiff): utils.Document {
     throw new UnavailableSyncError(this, "patch");
   }
 
-  patch (oldVal: Document, diff: DocumentDiff): Promise<Document> {
+  patch (oldVal: utils.Document, diff: type.DocumentDiff): Promise<utils.Document> {
     return Promise.resolve(this.patchSync(oldVal, diff));
   }
 
-  revertSync(newVal: Document, diff: DocumentDiff): Document {
+  revertSync(newVal: utils.Document, diff: type.DocumentDiff): utils.Document {
     throw new UnavailableSyncError(this, "revert");
   }
 
-  revert (newVal: Document, diff: DocumentDiff): Promise<Document> {
+  revert (newVal: utils.Document, diff: type.DocumentDiff): Promise<utils.Document> {
     return Promise.resolve(this.revertSync(newVal, diff));
   }
 
-  reflect (visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any): any {
+  reflect (visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any): any {
     return Promise.try(() => {
-      let childType: Type<any, any>;
+      let childType: type.Type<any, any>;
       for (let prop in this.options.properties) {
         childType = this.options.properties[prop].type;
         visitor(childType, prop, this);
-        if ((<CollectionType<any, any>> childType).reflect) {
-          (<CollectionType<any, any>> childType).reflect(visitor);
+        if ((<type.CollectionType<any, any>> childType).reflect) {
+          (<type.CollectionType<any, any>> childType).reflect(visitor);
         }
       }
     });
   }
 
-  reflectSync (visitor: (value?: any, key?: any, parent?: CollectionType<any, any>) => any): any {
+  reflectSync (visitor: (value?: any, key?: any, parent?: type.CollectionType<any, any>) => any): any {
     if (!this.isSync) {
       throw new UnavailableSyncError(this, "reflect");
     }
 
-    let childType: TypeSync<any, any>;
+    let childType: type.TypeSync<any, any>;
     for (let prop in this.options.properties) {
-      childType = <TypeSync<any, any>> <any> this.options.properties[prop].type;
-      visitor(childType, prop, <CollectionType<Document, DocumentDiff>> <any> this);
-      if ((<CollectionType<any, any>> <any> childType).reflectSync) {
-        (<CollectionType<any, any>> <any> childType).reflectSync(visitor);
+      childType = <type.TypeSync<any, any>> <any> this.options.properties[prop].type;
+      visitor(childType, prop, <type.CollectionType<utils.Document, type.DocumentDiff>> <any> this);
+      if ((<type.CollectionType<any, any>> <any> childType).reflectSync) {
+        (<type.CollectionType<any, any>> <any> childType).reflectSync(visitor);
       }
     }
     return this;
   }
 
   // TODO: Promise.try
-  diffToUpdate (newVal: Document, diff: DocumentDiff, format: string): Promise<UpdateQuery> {
-    let update: UpdateQuery = {
+  diffToUpdate (newVal: utils.Document, diff: type.DocumentDiff, format: string): Promise<type.UpdateQuery> {
+    let update: type.UpdateQuery = {
       $set: {},
       $unset: {}
     };
@@ -457,7 +457,7 @@ export class DocumentType implements CollectionType<Document, DocumentDiff> {
     return DocumentType.assignOptions(DocumentType.cloneOptions(target), source);
   }
 
-  static keysDiff (subject: Document, reference: Document): KeyDiffResult {
+  static keysDiff (subject: utils.Document, reference: utils.Document): KeyDiffResult {
     let subjectKeys: string[] = _.keys(subject);
     let referenceKeys: string[] = _.keys(reference);
 

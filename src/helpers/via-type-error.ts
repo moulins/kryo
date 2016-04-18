@@ -1,5 +1,5 @@
 import {Incident} from "incident";
-import {Type} from "via-core";
+import {type} from "via-core";
 
 export class ViaTypeError extends Incident {}
 
@@ -16,7 +16,7 @@ export class UnexpectedTypeError extends ViaTypeError {
 }
 
 export class UnavailableSyncError extends ViaTypeError {
-  constructor (type: Type<any, any>, methodName: string) {
+  constructor (type: type.Type<any, any>, methodName: string) {
     super(null, "UnexpectedType", {type: methodName, methodName: methodName}, `Synchronous ${methodName} for ${type.name} is not available`);
   }
 }

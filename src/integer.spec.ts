@@ -1,5 +1,4 @@
 import {IntegerTypeSync, IntegerType} from "./integer";
-import {TypeSync} from "via-core";
 import {RunTestItem, runTestSync} from "./helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{

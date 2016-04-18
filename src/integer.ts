@@ -1,4 +1,4 @@
-import {Type, TypeSync, StaticType} from "via-core";
+import {type} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
 import {UnsupportedFormatError, UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 
@@ -10,7 +10,7 @@ export class NumericError extends IntegerTypeError {
   }
 }
 
-export class IntegerTypeSync implements TypeSync<number, number> {
+export class IntegerTypeSync implements type.TypeSync<number, number> {
   isSync: boolean = true;
   name: string = "boolean";
 
@@ -81,5 +81,5 @@ export class IntegerTypeSync implements TypeSync<number, number> {
   }
 }
 
-export let IntegerType: StaticType<number, number> = promisifyClass(IntegerTypeSync);
-export type IntegerType = Type<number, number>;
+export let IntegerType: type.StaticType<number, number> = promisifyClass(IntegerTypeSync);
+export type IntegerType = type.Type<number, number>;

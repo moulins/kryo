@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {TypeSync, StaticType} from "via-core";
+import {type} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
 import {UnsupportedFormatError, UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 
@@ -55,7 +55,7 @@ let defaultOptions: StringOptions = {
   looseTest: false
 };
 
-export class StringTypeSync implements TypeSync<string, string[]> {
+export class StringTypeSync implements type.TypeSync<string, string[]> {
   isSync: boolean = true;
   name: string = "string";
   options: StringOptions;
@@ -169,4 +169,4 @@ export class StringTypeSync implements TypeSync<string, string[]> {
   }
 }
 
-export let StringType: StaticType<string, string[]> = promisifyClass(StringTypeSync);
+export let StringType: type.StaticType<string, string[]> = promisifyClass(StringTypeSync);

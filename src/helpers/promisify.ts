@@ -1,9 +1,9 @@
 import * as Promise from "bluebird";
-import {Type, TypeSync, CollectionType, CollectionTypeAsync, CollectionTypeSync} from "via-core";
+import {type} from "via-core";
 import {StaticType, StaticTypeSync} from "./class-interfaces";
 
-export function promisify<T, D>(typeSync: TypeSync<T, D>): Type<T, D> {
-  let type: Type<T, D> = <any> typeSync;
+export function promisify<T, D>(typeSync: type.TypeSync<T, D>): type.Type<T, D> {
+  let type: type.Type<T, D> = <any> typeSync;
   type.isSync = true;
 
   if (!type.readTrusted) {

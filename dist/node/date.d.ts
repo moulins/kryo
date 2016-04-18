@@ -1,4 +1,4 @@
-import { Type, TypeSync, StaticType } from "via-core";
+import { type } from "via-core";
 import { ViaTypeError } from "./helpers/via-type-error";
 export declare class DateTypeError extends ViaTypeError {
 }
@@ -8,7 +8,7 @@ export declare class ReadJsonDateError extends DateTypeError {
 export declare class NanTimestampError extends DateTypeError {
     constructor(date: Date);
 }
-export declare class DateTypeSync implements TypeSync<Date, number> {
+export declare class DateTypeSync implements type.TypeSync<Date, number> {
     isSync: boolean;
     name: string;
     readTrustedSync(format: string, val: any): Date;
@@ -21,5 +21,5 @@ export declare class DateTypeSync implements TypeSync<Date, number> {
     patchSync(oldVal: Date, diff: number): Date;
     revertSync(newVal: Date, diff: number): Date;
 }
-export declare let DateType: StaticType<Date, number>;
-export declare type DateType = Type<Date, number>;
+export declare let DateType: type.StaticType<Date, number>;
+export declare type DateType = type.Type<Date, number>;

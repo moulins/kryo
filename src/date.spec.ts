@@ -1,5 +1,4 @@
 import {DateTypeSync, DateType} from "./date";
-import {TypeSync} from "via-core";
 import {RunTestItem, runTestSync, runReadWrite} from "./helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{

@@ -1,6 +1,4 @@
 {
-  "name": "via-type",
-  "main": "dist/node/node/main.d.ts",
   "dependencies": {
     "bluebird": "registry:npm/bluebird#3.3.4+20160411163813",
     "incident": "npm:incident",

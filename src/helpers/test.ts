@@ -1,4 +1,4 @@
-import {Type, TypeSync} from "via-core";
+import {type} from "via-core";
 import * as chai from "chai";
 import * as _ from "lodash";
 import * as Promise from "bluebird";
@@ -12,7 +12,7 @@ export interface RunTestItem {
   options?: any;
 }
 
-export function runTestSync<T, D>(type: TypeSync<T, D>, items: RunTestItem[]): void {
+export function runTestSync<T, D>(type: type.TypeSync<T, D>, items: RunTestItem[]): void {
   for (let item of items) {
     if (!("name" in item)) {
       item.name = String(item.value);
@@ -38,7 +38,7 @@ export function runTestSync<T, D>(type: TypeSync<T, D>, items: RunTestItem[]): v
   }
 }
 
-export function runTest<T, D>(type: Type<T, D>, items: RunTestItem[]): void {
+export function runTest<T, D>(type: type.Type<T, D>, items: RunTestItem[]): void {
   for (let item of items) {
     if (!("name" in item)) {
       item.name = String(item.value);
@@ -66,7 +66,7 @@ export function runTest<T, D>(type: Type<T, D>, items: RunTestItem[]): void {
 }
 
 export interface runReadWriteOptions<T, D> {
-  type: Type<T, D>;
+  type: type.Type<T, D>;
   value: T;
   format: string;
   message: string;

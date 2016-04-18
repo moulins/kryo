@@ -1,20 +1,19 @@
 import * as Promise from "bluebird";
-import { Type, CollectionType, CollectionTypeAsync, UpdateQuery } from "via-core";
+import { utils, type } from "via-core";
 import { ViaTypeError } from "./helpers/via-type-error";
-import { Dictionary } from "via-core";
 export interface ArrayOptions {
     maxLength: number;
-    itemType: Type<any, any>;
+    itemType: type.Type<any, any>;
 }
 export declare class ArrayTypeError extends ViaTypeError {
 }
 export declare class ItemsTestError extends ArrayTypeError {
-    constructor(errors: Dictionary<Error>);
+    constructor(errors: utils.NumericDictionary<Error>);
 }
 export declare class MaxLengthError extends ArrayTypeError {
     constructor(array: any[], maxLength: number);
 }
-export declare class ArrayType implements CollectionTypeAsync<any[], any> {
+export declare class ArrayType implements type.CollectionTypeAsync<any[], any> {
     isSync: boolean;
     name: string;
     options: ArrayOptions;
@@ -37,6 +36,6 @@ export declare class ArrayType implements CollectionTypeAsync<any[], any> {
     patch(oldVal: any, diff: any): Promise<any>;
     revertSync(newVal: any, diff: any): any;
     revert(newVal: any, diff: any): Promise<any>;
-    reflect(visitor: (value?: any, key?: string, parent?: CollectionType<any, any>) => any): Promise<void>;
-    diffToUpdate(newVal: any, diff: any, format: string): Promise<UpdateQuery>;
+    reflect(visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any): Promise<void>;
+    diffToUpdate(newVal: any, diff: any, format: string): Promise<type.UpdateQuery>;
 }

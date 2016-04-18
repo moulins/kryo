@@ -1,14 +1,14 @@
-import { Type, TypeSync } from "via-core";
+import { type } from "via-core";
 export interface RunTestItem {
     name?: string;
     value: any;
     message: string;
     options?: any;
 }
-export declare function runTestSync<T, D>(type: TypeSync<T, D>, items: RunTestItem[]): void;
-export declare function runTest<T, D>(type: Type<T, D>, items: RunTestItem[]): void;
+export declare function runTestSync<T, D>(type: type.TypeSync<T, D>, items: RunTestItem[]): void;
+export declare function runTest<T, D>(type: type.Type<T, D>, items: RunTestItem[]): void;
 export interface runReadWriteOptions<T, D> {
-    type: Type<T, D>;
+    type: type.Type<T, D>;
     value: T;
     format: string;
     message: string;

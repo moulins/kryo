@@ -1,10 +1,10 @@
 import * as Promise from "bluebird";
 import * as _ from "lodash";
-import {Type, TypeSync, StaticType} from "via-core";
+import {type} from "via-core";
 import {promisifyClass} from "./helpers/promisify";
 import {UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError} from "./helpers/via-type-error";
 
-export class BooleanTypeSync implements TypeSync<boolean, boolean> {
+export class BooleanTypeSync implements type.TypeSync<boolean, boolean> {
   isSync: boolean = true;
   name: string = "boolean";
 
@@ -65,5 +65,5 @@ export class BooleanTypeSync implements TypeSync<boolean, boolean> {
   }
 }
 
-export let BooleanType: StaticType<boolean, boolean> = promisifyClass(BooleanTypeSync);
-export type BooleanType = Type<boolean, boolean>;
+export let BooleanType: type.StaticType<boolean, boolean> = promisifyClass(BooleanTypeSync);
+export type BooleanType = type.Type<boolean, boolean>;
