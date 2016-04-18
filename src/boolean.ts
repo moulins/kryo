@@ -1,4 +1,3 @@
-import * as Promise from "bluebird";
 import * as _ from "lodash";
 import {type} from "via-core";
 import {promisifyClass} from "./helpers/promisify";

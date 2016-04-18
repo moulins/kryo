@@ -1,7 +1,5 @@
 import {BooleanType} from "./boolean";
-import * as chai from "chai";
-
-let assert = chai.assert;
+import {assert} from "chai";
 
 describe("BooleanType", function(){
 

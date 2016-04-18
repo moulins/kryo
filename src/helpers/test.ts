@@ -1,7 +1,7 @@
 import {type} from "via-core";
 import * as chai from "chai";
 import * as _ from "lodash";
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 
 let assert = chai.assert;
 

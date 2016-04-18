@@ -2,8 +2,7 @@ import {DateType} from "./date";
 import {IntegerType} from "./integer";
 import {DocumentType, DocumentOptions} from "./document";
 import {RunTestItem, runTest, runReadWrite} from "./helpers/test";
-import * as chai from "chai";
-let assert = chai.assert;
+import {assert} from "chai";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number;

@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Promise = require("bluebird");
+var Bluebird = require("bluebird");
 var _ = require("lodash");
 var via_type_error_1 = require("./helpers/via-type-error");
 var defaultOptions = {
@@ -53,12 +53,12 @@ var ArrayType = (function () {
     };
     ArrayType.prototype.readTrusted = function (format, val, opt) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = _this.options;
             switch (format) {
                 case "bson":
                 case "json":
-                    return Promise
+                    return Bluebird
                         .map(val, function (item, i, len) {
                         if (item === null) {
                             return null;
@@ -66,7 +66,7 @@ var ArrayType = (function () {
                         return options.itemType.readTrusted(format, item);
                     });
                 default:
-                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
+                    return Bluebird.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -75,12 +75,12 @@ var ArrayType = (function () {
     };
     ArrayType.prototype.read = function (format, val) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = _this.options;
             switch (format) {
                 case "bson":
                 case "json":
-                    return Promise
+                    return Bluebird
                         .map(val, function (item, i, len) {
                         if (item === null) {
                             return null;
@@ -88,7 +88,7 @@ var ArrayType = (function () {
                         return options.itemType.read(format, item);
                     });
                 default:
-                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
+                    return Bluebird.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -97,17 +97,17 @@ var ArrayType = (function () {
     };
     ArrayType.prototype.write = function (format, val) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = _this.options;
             switch (format) {
                 case "bson":
                 case "json":
-                    return Promise
+                    return Bluebird
                         .map(val, function (item, i, len) {
                         return options.itemType.write(format, item);
                     });
                 default:
-                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
+                    return Bluebird.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -116,18 +116,18 @@ var ArrayType = (function () {
     };
     ArrayType.prototype.test = function (val) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = _this.options;
             if (!_.isArray(val)) {
-                return Promise.reject(new via_type_error_1.UnexpectedTypeError(typeof val, "array"));
+                return Bluebird.reject(new via_type_error_1.UnexpectedTypeError(typeof val, "array"));
             }
             if (options.maxLength !== null && val.length > options.maxLength) {
-                return Promise.resolve(new MaxLengthError(val, options.maxLength));
+                return Bluebird.resolve(new MaxLengthError(val, options.maxLength));
             }
             if (options.itemType === null) {
-                return Promise.resolve(null);
+                return Bluebird.resolve(null);
             }
-            return Promise
+            return Bluebird
                 .map(val, function (item, i, len) {
                 return options.itemType.test(item);
             })
@@ -151,35 +151,35 @@ var ArrayType = (function () {
         throw new via_type_error_1.UnavailableSyncError(this, "equals");
     };
     ArrayType.prototype.equals = function (val1, val2) {
-        return Promise.reject(new via_type_error_1.ViaTypeError("todo", "ArrayType does not support equals"));
+        return Bluebird.reject(new via_type_error_1.ViaTypeError("todo", "ArrayType does not support equals"));
     };
     ArrayType.prototype.cloneSync = function (val) {
         throw new via_type_error_1.UnavailableSyncError(this, "clone");
     };
     ArrayType.prototype.clone = function (val) {
-        return Promise.resolve(this.cloneSync(val));
+        return Bluebird.resolve(this.cloneSync(val));
     };
     ArrayType.prototype.diffSync = function (oldVal, newVal) {
         throw new via_type_error_1.UnavailableSyncError(this, "diff");
     };
     ArrayType.prototype.diff = function (oldVal, newVal) {
-        return Promise.resolve(this.diffSync(oldVal, newVal));
+        return Bluebird.resolve(this.diffSync(oldVal, newVal));
     };
     ArrayType.prototype.patchSync = function (oldVal, diff) {
         throw new via_type_error_1.UnavailableSyncError(this, "patch");
     };
     ArrayType.prototype.patch = function (oldVal, diff) {
-        return Promise.resolve(this.patchSync(oldVal, diff));
+        return Bluebird.resolve(this.patchSync(oldVal, diff));
     };
     ArrayType.prototype.revertSync = function (newVal, diff) {
         throw new via_type_error_1.UnavailableSyncError(this, "revert");
     };
     ArrayType.prototype.revert = function (newVal, diff) {
-        return Promise.resolve(this.revertSync(newVal, diff));
+        return Bluebird.resolve(this.revertSync(newVal, diff));
     };
     ArrayType.prototype.reflect = function (visitor) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = _this.options;
             visitor(options.itemType, null, _this);
             if (options.itemType.reflect) {
@@ -192,7 +192,7 @@ var ArrayType = (function () {
             $set: {},
             $unset: {}
         };
-        return Promise.resolve(update);
+        return Bluebird.resolve(update);
     };
     return ArrayType;
 }());

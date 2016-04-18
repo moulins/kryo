@@ -1,4 +1,4 @@
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 import * as _ from "lodash";
 import {utils, type} from "via-core";
 import {
@@ -51,14 +51,14 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
     throw new UnavailableSyncError(this, "readTrusted");
   }
 
-  readTrusted(format: string, val: any, opt: ArrayOptions): Promise<any[]> {
-    return Promise.try(() => {
+  readTrusted(format: string, val: any, opt: ArrayOptions): Bluebird<any[]> {
+    return Bluebird.try(() => {
       let options: ArrayOptions = this.options;
 
       switch (format) {
         case "bson":
         case "json":
-          return Promise
+          return Bluebird
             .map(val, (item: any, i: number, len: number) => {
               if (item === null) {
                 return null;
@@ -66,7 +66,7 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
               return options.itemType.readTrusted(format, item);
             });
         default:
-          return Promise.reject(new UnsupportedFormatError(format));
+          return Bluebird.reject(new UnsupportedFormatError(format));
       }
     });
   }
@@ -75,14 +75,14 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
     throw new UnavailableSyncError(this, "read");
   }
 
-  read(format: string, val: any): Promise<any[]> {
-    return Promise.try(() => {
+  read(format: string, val: any): Bluebird<any[]> {
+    return Bluebird.try(() => {
       let options: ArrayOptions = this.options;
 
       switch (format) {
         case "bson":
         case "json":
-          return Promise
+          return Bluebird
             .map(val, (item: any, i: number, len: number) => {
               if (item === null) {
                 return null;
@@ -90,7 +90,7 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
               return options.itemType.read(format, item);
             });
         default:
-          return Promise.reject(new UnsupportedFormatError(format));
+          return Bluebird.reject(new UnsupportedFormatError(format));
       }
     });
   }
@@ -99,19 +99,19 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
     throw new UnavailableSyncError(this, "write");
   }
 
-  write(format: string, val: any[]): Promise<any> {
-    return Promise.try(() => {
+  write(format: string, val: any[]): Bluebird<any> {
+    return Bluebird.try(() => {
       let options: ArrayOptions = this.options;
 
       switch (format) {
         case "bson":
         case "json":
-          return Promise
+          return Bluebird
             .map(val, (item: any, i: number, len: number) => {
               return options.itemType.write(format, item);
             });
         default:
-          return Promise.reject(new UnsupportedFormatError(format));
+          return Bluebird.reject(new UnsupportedFormatError(format));
       }
     });
   }
@@ -120,23 +120,23 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
     throw new UnavailableSyncError(this, "test");
   }
 
-  test (val: any[]): Promise<Error> {
-    return Promise.try((): Promise<Error> => {
+  test (val: any[]): Bluebird<Error> {
+    return Bluebird.try((): Bluebird<Error> => {
       let options: ArrayOptions = this.options;
 
       if (!_.isArray(val)) {
-        return Promise.reject(new UnexpectedTypeError(typeof val, "array"));
+        return Bluebird.reject(new UnexpectedTypeError(typeof val, "array"));
       }
 
       if (options.maxLength !== null && val.length > options.maxLength) {
-        return Promise.resolve(new MaxLengthError(val, options.maxLength));
+        return Bluebird.resolve(new MaxLengthError(val, options.maxLength));
       }
 
       if (options.itemType === null) { // manually managed type
-        return Promise.resolve<Error>(null);
+        return Bluebird.resolve<Error>(null);
       }
 
-      return Promise
+      return Bluebird
         .map(val, (item: string, i: number, len: number) => {
           return options.itemType.test(item);
         })
@@ -161,44 +161,44 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
     throw new UnavailableSyncError(this, "equals");
   }
 
-  equals (val1: any, val2: any): Promise<boolean> {
-    return Promise.reject(new ViaTypeError("todo", "ArrayType does not support equals"));
+  equals (val1: any, val2: any): Bluebird<boolean> {
+    return Bluebird.reject(new ViaTypeError("todo", "ArrayType does not support equals"));
   }
 
   cloneSync(val: any): any {
     throw new UnavailableSyncError(this, "clone");
   }
 
-  clone (val: any): Promise<any> {
-    return Promise.resolve(this.cloneSync(val));
+  clone (val: any): Bluebird<any> {
+    return Bluebird.resolve(this.cloneSync(val));
   }
 
   diffSync(oldVal: any, newVal: any): any {
     throw new UnavailableSyncError(this, "diff");
   }
 
-  diff (oldVal: any, newVal: any): Promise<any> {
-    return Promise.resolve(this.diffSync(oldVal, newVal));
+  diff (oldVal: any, newVal: any): Bluebird<any> {
+    return Bluebird.resolve(this.diffSync(oldVal, newVal));
   }
 
   patchSync(oldVal: any, diff: any): any {
     throw new UnavailableSyncError(this, "patch");
   }
 
-  patch (oldVal: any, diff: any): Promise<any> {
-    return Promise.resolve(this.patchSync(oldVal, diff));
+  patch (oldVal: any, diff: any): Bluebird<any> {
+    return Bluebird.resolve(this.patchSync(oldVal, diff));
   }
 
   revertSync(newVal: any, diff: any): any {
     throw new UnavailableSyncError(this, "revert");
   }
 
-  revert (newVal: any, diff: any): Promise<any> {
-    return Promise.resolve(this.revertSync(newVal, diff));
+  revert (newVal: any, diff: any): Bluebird<any> {
+    return Bluebird.resolve(this.revertSync(newVal, diff));
   }
 
   reflect (visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any) {
-    return Promise.try(() => {
+    return Bluebird.try(() => {
       let options: ArrayOptions = this.options;
 
       visitor(options.itemType, null, <type.CollectionType<any, any>> this);
@@ -208,12 +208,12 @@ export class ArrayType implements type.CollectionTypeAsync<any[], any> {
     });
   }
 
-  diffToUpdate (newVal: any, diff: any, format: string): Promise<type.UpdateQuery> {
+  diffToUpdate (newVal: any, diff: any, format: string): Bluebird<type.UpdateQuery> {
     let update: type.UpdateQuery = {
       $set: {},
       $unset: {}
     };
 
-    return Promise.resolve(update);
+    return Bluebird.resolve(update);
   }
 }

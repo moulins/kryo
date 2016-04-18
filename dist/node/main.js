@@ -15,6 +15,3 @@ exports.IntegerTypeSync = integer_1.IntegerTypeSync;
 var string_1 = require("./string");
 exports.StringType = string_1.StringType;
 exports.StringTypeSync = string_1.StringTypeSync;
-var via_core_1 = require("via-core");
-var foo = via_core_1.dotPath.parse("foo.Bar");
-console.log(foo);

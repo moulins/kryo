@@ -1,4 +1,4 @@
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 import { utils, type } from "via-core";
 import { ViaTypeError } from "./helpers/via-type-error";
 export interface ArrayOptions {
@@ -19,23 +19,23 @@ export declare class ArrayType implements type.CollectionTypeAsync<any[], any> {
     options: ArrayOptions;
     constructor(options: ArrayOptions);
     readTrustedSync(format: string, val: any): any[];
-    readTrusted(format: string, val: any, opt: ArrayOptions): Promise<any[]>;
+    readTrusted(format: string, val: any, opt: ArrayOptions): Bluebird<any[]>;
     readSync(format: string, val: any): any[];
-    read(format: string, val: any): Promise<any[]>;
+    read(format: string, val: any): Bluebird<any[]>;
     writeSync(format: string, val: any[]): any;
-    write(format: string, val: any[]): Promise<any>;
+    write(format: string, val: any[]): Bluebird<any>;
     testSync(val: any[]): Error;
-    test(val: any[]): Promise<Error>;
+    test(val: any[]): Bluebird<Error>;
     equalsSync(val1: any, val2: any): boolean;
-    equals(val1: any, val2: any): Promise<boolean>;
+    equals(val1: any, val2: any): Bluebird<boolean>;
     cloneSync(val: any): any;
-    clone(val: any): Promise<any>;
+    clone(val: any): Bluebird<any>;
     diffSync(oldVal: any, newVal: any): any;
-    diff(oldVal: any, newVal: any): Promise<any>;
+    diff(oldVal: any, newVal: any): Bluebird<any>;
     patchSync(oldVal: any, diff: any): any;
-    patch(oldVal: any, diff: any): Promise<any>;
+    patch(oldVal: any, diff: any): Bluebird<any>;
     revertSync(newVal: any, diff: any): any;
-    revert(newVal: any, diff: any): Promise<any>;
-    reflect(visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any): Promise<void>;
-    diffToUpdate(newVal: any, diff: any, format: string): Promise<type.UpdateQuery>;
+    revert(newVal: any, diff: any): Bluebird<any>;
+    reflect(visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any): Bluebird<void>;
+    diffToUpdate(newVal: any, diff: any, format: string): Bluebird<type.UpdateQuery>;
 }
