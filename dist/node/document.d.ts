@@ -1,4 +1,4 @@
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 import { utils, type } from "via-core";
 import { ViaTypeError } from "./helpers/via-type-error";
 export interface PropertyDescriptor {
@@ -8,6 +8,7 @@ export interface PropertyDescriptor {
 }
 export interface DocumentOptions {
     additionalProperties?: boolean;
+    allowPartial?: boolean;
     properties?: utils.Dictionary<PropertyDescriptor>;
 }
 export interface EqualsOptions {
@@ -40,26 +41,26 @@ export declare class DocumentType implements type.CollectionType<utils.Document,
     constructor(options?: DocumentOptions);
     updatedIsSync(): boolean;
     readTrustedSync(format: string, val: any): utils.Document;
-    readTrusted(format: string, val: any, opt: DocumentOptions): Promise<utils.Document>;
+    readTrusted(format: string, val: any, opt: DocumentOptions): Bluebird<utils.Document>;
     readSync(format: string, val: any): utils.Document;
-    read(format: string, val: any, opt: DocumentOptions): Promise<utils.Document>;
+    read(format: string, val: any, opt: DocumentOptions): Bluebird<utils.Document>;
     writeSync(format: string, val: utils.Document, opt: DocumentOptions): any;
-    write(format: string, val: utils.Document, opt: DocumentOptions): Promise<any>;
+    write(format: string, val: utils.Document, opt: DocumentOptions): Bluebird<any>;
     testSync(val: utils.Document, options?: DocumentOptions): Error;
-    test(val: utils.Document, opt?: DocumentOptions): Promise<Error>;
+    test(val: utils.Document, opt?: DocumentOptions): Bluebird<Error>;
     equalsSync(val1: utils.Document, val2: utils.Document): boolean;
-    equals(val1: utils.Document, val2: utils.Document, options?: EqualsOptions): Promise<boolean>;
+    equals(val1: utils.Document, val2: utils.Document, options?: EqualsOptions): Bluebird<boolean>;
     cloneSync(val: utils.Document): utils.Document;
-    clone(val: utils.Document): Promise<utils.Document>;
+    clone(val: utils.Document): Bluebird<utils.Document>;
     diffSync(oldVal: utils.Document, newVal: utils.Document): type.DocumentDiff;
-    diff(oldVal: utils.Document, newVal: utils.Document): Promise<type.DocumentDiff>;
+    diff(oldVal: utils.Document, newVal: utils.Document): Bluebird<type.DocumentDiff>;
     patchSync(oldVal: utils.Document, diff: type.DocumentDiff): utils.Document;
-    patch(oldVal: utils.Document, diff: type.DocumentDiff): Promise<utils.Document>;
+    patch(oldVal: utils.Document, diff: type.DocumentDiff): Bluebird<utils.Document>;
     revertSync(newVal: utils.Document, diff: type.DocumentDiff): utils.Document;
-    revert(newVal: utils.Document, diff: type.DocumentDiff): Promise<utils.Document>;
+    revert(newVal: utils.Document, diff: type.DocumentDiff): Bluebird<utils.Document>;
     reflect(visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any): any;
     reflectSync(visitor: (value?: any, key?: any, parent?: type.CollectionType<any, any>) => any): any;
-    diffToUpdate(newVal: utils.Document, diff: type.DocumentDiff, format: string): Promise<type.UpdateQuery>;
+    diffToUpdate(newVal: utils.Document, diff: type.DocumentDiff, format: string): Bluebird<type.UpdateQuery>;
     static assignOptions(target: DocumentOptions, source: DocumentOptions): DocumentOptions;
     static cloneOptions(source: DocumentOptions): DocumentOptions;
     static mergeOptions(target: DocumentOptions, source: DocumentOptions): DocumentOptions;

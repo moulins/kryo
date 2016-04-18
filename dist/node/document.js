@@ -4,11 +4,12 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Promise = require("bluebird");
+var Bluebird = require("bluebird");
 var _ = require("lodash");
 var via_type_error_1 = require("./helpers/via-type-error");
 var defaultOptions = {
     additionalProperties: false,
+    allowPartial: false,
     properties: {}
 };
 var DocumentTypeError = (function (_super) {
@@ -22,7 +23,7 @@ exports.DocumentTypeError = DocumentTypeError;
 var MissingKeysError = (function (_super) {
     __extends(MissingKeysError, _super);
     function MissingKeysError(keys) {
-        _super.call(this, null, "MissingKeysError", { keys: keys }, "Expected missing keys: " + keys.join(", "));
+        _super.call(this, null, "MissingKeysError", { keys: keys }, "Expected keys are missing: " + keys.join(", "));
     }
     return MissingKeysError;
 }(DocumentTypeError));
@@ -80,29 +81,29 @@ var DocumentType = (function () {
     };
     DocumentType.prototype.readTrusted = function (format, val, opt) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
             switch (format) {
                 case "bson":
                 case "json":
                     val = val;
                     var keysDiff = DocumentType.keysDiff(val, options.properties);
-                    return Promise
+                    return Bluebird
                         .props(_.zipObject(keysDiff.commonKeys, _.map(keysDiff.commonKeys, function (key) {
                         var member = val[key];
                         var property = options.properties[key];
                         if (member === null) {
-                            return Promise.resolve(null);
+                            return Bluebird.resolve(null);
                         }
                         if (property.type) {
                             return property.type.readTrusted(format, member);
                         }
                         else {
-                            return Promise.resolve(member);
+                            return Bluebird.resolve(member);
                         }
                     })));
                 default:
-                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
+                    return Bluebird.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -111,7 +112,7 @@ var DocumentType = (function () {
     };
     DocumentType.prototype.read = function (format, val, opt) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
             switch (format) {
                 case "bson":
@@ -121,19 +122,19 @@ var DocumentType = (function () {
                     var missingMandatoryKeys = _.filter(keysDiff.missingKeys, function (key) {
                         return !options.properties[key].optional;
                     });
-                    if (missingMandatoryKeys.length) {
-                        return Promise.reject(new MissingKeysError(missingMandatoryKeys));
+                    if (missingMandatoryKeys.length && !options.allowPartial) {
+                        return Bluebird.reject(new MissingKeysError(missingMandatoryKeys));
                     }
-                    return Promise
+                    return Bluebird
                         .props(_.zipObject(keysDiff.commonKeys, _.map(keysDiff.commonKeys, function (key) {
                         var member = val[key];
                         var property = options.properties[key];
                         if (member === null) {
                             if (property.nullable) {
-                                return Promise.resolve(null);
+                                return Bluebird.resolve(null);
                             }
                             else {
-                                return Promise.reject(new ForbiddenNullError(key));
+                                return Bluebird.reject(new ForbiddenNullError(key));
                             }
                         }
                         if (property.type) {
@@ -141,11 +142,11 @@ var DocumentType = (function () {
                         }
                         else {
                             // Reading an untyped property !
-                            return Promise.resolve(member);
+                            return Bluebird.resolve(member);
                         }
                     })));
                 default:
-                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
+                    return Bluebird.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -154,29 +155,29 @@ var DocumentType = (function () {
     };
     DocumentType.prototype.write = function (format, val, opt) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
             switch (format) {
                 case "bson":
                 case "json":
                     val = val;
                     var keysDiff = DocumentType.keysDiff(val, options.properties);
-                    return Promise
+                    return Bluebird
                         .props(_.zipObject(keysDiff.commonKeys, _.map(keysDiff.commonKeys, function (key) {
                         var member = val[key];
                         var property = options.properties[key];
                         if (member === null) {
-                            return Promise.resolve(null);
+                            return Bluebird.resolve(null);
                         }
                         if (property.type) {
                             return property.type.write(format, member);
                         }
                         else {
-                            return Promise.resolve(member);
+                            return Bluebird.resolve(member);
                         }
                     })));
                 default:
-                    return Promise.reject(new via_type_error_1.UnsupportedFormatError(format));
+                    return Bluebird.reject(new via_type_error_1.UnsupportedFormatError(format));
             }
         });
     };
@@ -185,22 +186,22 @@ var DocumentType = (function () {
     };
     DocumentType.prototype.test = function (val, opt) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var options = opt ? DocumentType.mergeOptions(_this.options, opt) : _this.options;
             // TODO: keep this test ?
             if (!_.isPlainObject(val)) {
-                return Promise.resolve(new via_type_error_1.UnexpectedTypeError(typeof val, "object"));
+                return Bluebird.resolve(new via_type_error_1.UnexpectedTypeError(typeof val, "object"));
             }
             var curKeys = _.keys(val);
             var expectedKeys = _.keys(options.properties);
             if (!options.additionalProperties) {
                 var extraKeys = _.difference(curKeys, expectedKeys);
                 if (extraKeys.length) {
-                    return Promise.resolve(new ExtraKeysError(extraKeys));
+                    return Bluebird.resolve(new ExtraKeysError(extraKeys));
                 }
             }
             curKeys = _.intersection(curKeys, expectedKeys);
-            return Promise
+            return Bluebird
                 .map(curKeys, function (key, i, len) {
                 var property = options.properties[key];
                 if (val[key] === null) {
@@ -211,7 +212,7 @@ var DocumentType = (function () {
                     else {
                         err = new ForbiddenNullError(key);
                     }
-                    return Promise.resolve([key, err]);
+                    return Bluebird.resolve([key, err]);
                 }
                 return property.type
                     .test(val[key])
@@ -236,13 +237,13 @@ var DocumentType = (function () {
     };
     DocumentType.prototype.equals = function (val1, val2, options) {
         var _this = this;
-        return Promise
+        return Bluebird
             .try(function () {
             var keys = _.keys(_this.options.properties);
             var val1Keys = _.intersection(keys, _.keys(val1));
             var val2Keys = _.intersection(keys, _.keys(val2));
             if (val1Keys.length === keys.length && val2Keys.length === keys.length) {
-                return Promise.resolve(keys);
+                return Bluebird.resolve(keys);
             }
             // if (!options || !options.partial) {
             //   return Promise.resolve(new Error("Missing keys"));
@@ -250,15 +251,15 @@ var DocumentType = (function () {
             var extraKeys = _.difference(val1Keys, val2Keys);
             var missingKeys = _.difference(val2Keys, val1Keys);
             if (extraKeys.length) {
-                return Promise.reject(new ExtraKeysError(extraKeys));
+                return Bluebird.reject(new ExtraKeysError(extraKeys));
             }
             if (missingKeys.length) {
-                return Promise.reject(new MissingKeysError(missingKeys));
+                return Bluebird.reject(new MissingKeysError(missingKeys));
             }
-            return Promise.resolve(val1Keys);
+            return Bluebird.resolve(val1Keys);
         })
             .then(function (keys) {
-            return Promise
+            return Bluebird
                 .map(keys, function (key) {
                 var property = _this.options.properties[key];
                 return property.type.equals(val1[key], val2[key]);
@@ -266,23 +267,23 @@ var DocumentType = (function () {
                 .then(function (equalsResults) {
                 var equals = equalsResults.indexOf(false) < 0;
                 if (equals) {
-                    return Promise.resolve(true);
+                    return Bluebird.resolve(true);
                 }
                 else if (options && options.throw) {
                     var diffKeys = _.filter(keys, function (key, index) { return equalsResults[index] === false; });
-                    return Promise.resolve(false);
+                    return Bluebird.resolve(false);
                 }
                 else {
-                    return Promise.resolve(false);
+                    return Bluebird.resolve(false);
                 }
             });
         })
             .catch(function (err) {
             if (options && options.throw) {
-                return Promise.reject(err);
+                return Bluebird.reject(err);
             }
             else {
-                return Promise.resolve(false);
+                return Bluebird.resolve(false);
             }
         });
     };
@@ -290,29 +291,29 @@ var DocumentType = (function () {
         throw new via_type_error_1.UnavailableSyncError(this, "clone");
     };
     DocumentType.prototype.clone = function (val) {
-        return Promise.resolve(this.cloneSync(val));
+        return Bluebird.resolve(this.cloneSync(val));
     };
     DocumentType.prototype.diffSync = function (oldVal, newVal) {
         throw new via_type_error_1.UnavailableSyncError(this, "diff");
     };
     DocumentType.prototype.diff = function (oldVal, newVal) {
-        return Promise.resolve(this.diffSync(oldVal, newVal));
+        return Bluebird.resolve(this.diffSync(oldVal, newVal));
     };
     DocumentType.prototype.patchSync = function (oldVal, diff) {
         throw new via_type_error_1.UnavailableSyncError(this, "patch");
     };
     DocumentType.prototype.patch = function (oldVal, diff) {
-        return Promise.resolve(this.patchSync(oldVal, diff));
+        return Bluebird.resolve(this.patchSync(oldVal, diff));
     };
     DocumentType.prototype.revertSync = function (newVal, diff) {
         throw new via_type_error_1.UnavailableSyncError(this, "revert");
     };
     DocumentType.prototype.revert = function (newVal, diff) {
-        return Promise.resolve(this.revertSync(newVal, diff));
+        return Bluebird.resolve(this.revertSync(newVal, diff));
     };
     DocumentType.prototype.reflect = function (visitor) {
         var _this = this;
-        return Promise.try(function () {
+        return Bluebird.try(function () {
             var childType;
             for (var prop in _this.options.properties) {
                 childType = _this.options.properties[prop].type;
@@ -345,25 +346,25 @@ var DocumentType = (function () {
             $unset: {}
         };
         if (diff === null) {
-            return Promise.resolve(update);
+            return Bluebird.resolve(update);
         }
         for (var key in diff.unset) {
             update.$unset[key] = true;
         }
         var setPromises = _.map(diff.set, function (value, field) {
             var property = _this.options.properties[field];
-            return Promise.resolve(property.type
+            return Bluebird.resolve(property.type
                 .write(format, newVal[field]))
                 .then(function (encoded) { return update.$set[field] = encoded; });
         });
         // TODO: recursivity, etc.
         var updatePromises = _.map(diff.update, function (value, field) {
             var property = _this.options.properties[field];
-            return Promise.resolve(property.type
+            return Bluebird.resolve(property.type
                 .write(format, newVal[field]))
                 .then(function (encoded) { return update.$set[field] = encoded; });
         });
-        return Promise
+        return Bluebird
             .all(_.concat(setPromises, updatePromises))
             .thenReturn(update);
     };
