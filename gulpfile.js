@@ -9,7 +9,12 @@ var locations = new buildTools.config.Locations({
   root: path.resolve(__dirname)
 });
 
-buildTools.tasks.build(gulp, locations, {tsc: {typescript: typescript}});
+buildTools.tasks.build(gulp, locations, {
+  tsc: {
+    typescript: typescript,
+    target: 'es6'
+  }
+});
 buildTools.tasks.install(gulp, locations);
 buildTools.tasks.project(gulp, locations);
 buildTools.tasks.test(gulp, locations);

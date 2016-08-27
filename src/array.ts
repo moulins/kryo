@@ -1,15 +1,28 @@
+import {
+  VersionedCollectionTypeSync, VersionedCollectionTypeAsync, TypeSync,
+  TypeAsync, Type,
+  Dictionary, NumericDictionary
+} from "./interfaces";
 import * as Bluebird from "bluebird";
 import * as _ from "lodash";
-import {utils, type} from "via-core";
-import {
-  UnsupportedFormatError, UnexpectedTypeError, UnavailableSyncError,
-  ViaTypeError
-} from "./helpers/via-type-error";
-import {NumericDictionary} from "~via-core/dist/node/interfaces/utils";
+
+import {UnexpectedTypeError} from "./helpers/via-type-error";
+import {Incident} from "incident";
+
+
+const NAME = "array";
+
 
 export interface ArrayOptions {
   maxLength: number;
-  itemType: type.Type<any, any>;
+  itemType: Type<any, any, any>;
+}
+
+export interface ArrayDiff {
+  append?: any[];
+  pop?: any[];
+  prepend?: any[];
+  shift?: any[];
 }
 
 let defaultOptions: ArrayOptions = {
@@ -17,203 +30,312 @@ let defaultOptions: ArrayOptions = {
   itemType: null
 };
 
-export class ArrayTypeError extends ViaTypeError {}
+export class TemporalError extends Incident {
+  constructor() {
+    //noinspection TypeScriptValidateTypes
+    super('temporal', "Invalid temporality (sync mixed with async)");
+  }
+}
+export class MaxLengthError extends Incident {
+  constructor(array: any[], maxLength: number) {
+    //noinspection TypeScriptValidateTypes
+    super('max-length', {array: array, maxLength: maxLength}, "Error with maxlength")
+  }
+}
+export class InvalidItemsError extends Incident {
+  constructor(errors: NumericDictionary<Error>) {
+    //noinspection TypeScriptValidateTypes
+    super('invalid-items', {items: errors}, 'There are some invalid items');
+  }
+}
 
-export class ItemsTestError extends ArrayTypeError {
-  constructor (errors: utils.NumericDictionary<Error>) {
-    let errorDetails = "";
-    let first = true;
-    for (let index in errors) {
-      errorDetails = errorDetails + (first ? "" : ", ") + index + ": " + errors[index];
-      first = false;
+export class ArrayTypeAsync<I> implements
+  VersionedCollectionTypeSync<I[], ArrayDiff, ArrayOptions, I>,
+  VersionedCollectionTypeAsync<I[], ArrayDiff, ArrayOptions, I> {
+
+  isSync = true;
+  isAsync = true;
+  isCollection = true;
+  type = NAME;
+  types = [NAME];
+
+  options: ArrayOptions = null;
+
+  constructor(options: ArrayOptions) {
+    this.options = _.merge({}, defaultOptions, options);
+    this.isSync = options.itemType.isSync;
+    this.isAsync = options.itemType.isAsync;
+  }
+
+  toJSON(): null { // TODO: return options
+    return null;
+  }
+
+  readTrustedSync (format: "json-doc" | "bson-doc", val: any[]): any[] {
+    if (!this.isSync) {
+      throw new TemporalError();
     }
-    super (null, "ArrayTypeError", {errors: errors}, `Failed test for the items: {${errorDetails}}`);
-  }
-}
-
-export class MaxLengthError extends ArrayTypeError {
-  constructor (array: any[], maxLength: number) {
-    super (null, "via-type-array-maxlength", {array: array, maxLength: maxLength}, `Expected array length (${array.length}) to be less than or equal to ${maxLength}`);
-  }
-}
-
-export class ArrayType implements type.CollectionTypeAsync<any[], any> {
-  isSync: boolean = true;
-  name: string = "array";
-  options: ArrayOptions;
-
-  constructor (options: ArrayOptions) {
-    this.options = <ArrayOptions> _.assign(_.clone(defaultOptions), options);
-    this.isSync = this.options.itemType.isSync;
+    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    return _.map(val, item => itemType.readTrustedSync(format, item));
   }
 
-  readTrustedSync(format: string, val: any): any[] {
-    throw new UnavailableSyncError(this, "readTrusted");
+  readTrustedAsync (format: "json-doc" | "bson-doc", val: any[]): Bluebird<any[]> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    return Bluebird.map(val, item => itemType.readAsync(format, item));
   }
 
-  readTrusted(format: string, val: any, opt: ArrayOptions): Bluebird<any[]> {
+  readSync (format: "json-doc" | "bson-doc", val: any[]): any[] {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    if (!Array.isArray(val)) {
+      throw new Incident("Not an array");
+    }
+    return _.map(val, item => itemType.readSync(format, item));
+  }
+
+  readAsync (format: "json-doc" | "bson-doc", val: any[]): Bluebird<any[]> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    if (!Array.isArray(val)) {
+      throw new Incident("Not an array");
+    }
+    return Bluebird.map(val, item => itemType.readAsync(format, item));
+  }
+
+  writeSync (format: "json-doc" | "bson-doc", val: any[]): any[] {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    return _.map(val, item => itemType.writeSync(format, item));
+  }
+
+  writeAsync (format: "json-doc" | "bson-doc", val: any[]): Bluebird<any[]> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    return Bluebird.map(val, item => itemType.writeAsync(format, item));
+  }
+
+  testErrorSync (val: any[]): Error | null {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    if (!_.isArray(val)) {
+      return new UnexpectedTypeError(typeof val, "array");
+    }
+    if (this.options.maxLength !== null && val.length > this.options.maxLength) {
+      return new MaxLengthError(val, this.options.maxLength);
+    }
+
+    const mapped = _.map(val, item => itemType.testErrorSync(item));
+    const errors = _.reduce(
+      mapped,
+      (memo: null | NumericDictionary<Error>, current: Error | null, idx: number) => {
+        if (current === null) {
+          return memo;
+        }
+        if (memo === null) {
+          memo = {};
+        }
+        memo[idx] = current;
+        return memo
+      },
+      null
+    );
+    if (errors !== null) {
+      return new InvalidItemsError(errors); // TODO
+    }
+    return null;
+  }
+
+  testErrorAsync (val: any[]): Bluebird<Error | null> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
     return Bluebird.try(() => {
-      let options: ArrayOptions = this.options;
-
-      switch (format) {
-        case "bson":
-        case "json":
-          return Bluebird
-            .map(val, (item: any, i: number, len: number) => {
-              if (item === null) {
-                return null;
-              }
-              return options.itemType.readTrusted(format, item);
-            });
-        default:
-          return Bluebird.reject(new UnsupportedFormatError(format));
-      }
-    });
-  }
-
-  readSync(format: string, val: any): any[] {
-    throw new UnavailableSyncError(this, "read");
-  }
-
-  read(format: string, val: any): Bluebird<any[]> {
-    return Bluebird.try(() => {
-      let options: ArrayOptions = this.options;
-
-      switch (format) {
-        case "bson":
-        case "json":
-          return Bluebird
-            .map(val, (item: any, i: number, len: number) => {
-              if (item === null) {
-                return null;
-              }
-              return options.itemType.read(format, item);
-            });
-        default:
-          return Bluebird.reject(new UnsupportedFormatError(format));
-      }
-    });
-  }
-
-  writeSync(format: string, val: any[]): any {
-    throw new UnavailableSyncError(this, "write");
-  }
-
-  write(format: string, val: any[]): Bluebird<any> {
-    return Bluebird.try(() => {
-      let options: ArrayOptions = this.options;
-
-      switch (format) {
-        case "bson":
-        case "json":
-          return Bluebird
-            .map(val, (item: any, i: number, len: number) => {
-              return options.itemType.write(format, item);
-            });
-        default:
-          return Bluebird.reject(new UnsupportedFormatError(format));
-      }
-    });
-  }
-
-  testSync (val: any[]): Error {
-    throw new UnavailableSyncError(this, "test");
-  }
-
-  test (val: any[]): Bluebird<Error> {
-    return Bluebird.try((): Bluebird<Error> => {
-      let options: ArrayOptions = this.options;
-
       if (!_.isArray(val)) {
-        return Bluebird.reject(new UnexpectedTypeError(typeof val, "array"));
+        return new UnexpectedTypeError(typeof val, "array");
       }
 
-      if (options.maxLength !== null && val.length > options.maxLength) {
-        return Bluebird.resolve(new MaxLengthError(val, options.maxLength));
+      if (this.options.maxLength !== null && val.length > this.options.maxLength) {
+        return new MaxLengthError(val, this.options.maxLength);
       }
 
-      if (options.itemType === null) { // manually managed type
-        return Bluebird.resolve<Error>(null);
+      if (this.options.itemType === null) { // manually managed type
+        return null;
       }
 
-      return Bluebird
-        .map(val, (item: string, i: number, len: number) => {
-          return options.itemType.test(item);
-        })
-        .then(function(res){
-          let errors: utils.NumericDictionary<Error> = {};
-          let noErrors = true;
-          for (let i = 0, l = res.length; i < l; i++) {
-            if (res[i] !== null) {
-              errors[i] = res[i];
-              noErrors = false;
-            }
+      return Bluebird.resolve(val)
+        .map(item => itemType.testErrorAsync(item))
+        .reduce((memo: null | NumericDictionary<Error>, current: Error | null, idx: number) => {
+          if (current === null) {
+            return memo;
           }
-          if (!noErrors) {
-            return new ItemsTestError(errors);
+          if (memo === null) {
+            memo = {};
+          }
+          memo[idx] = current;
+          return memo
+        }, null)
+        .then((errors) => {
+          if (errors !== null) {
+            return new InvalidItemsError(errors); // TODO
           }
           return null;
         });
     });
   }
 
-  equalsSync(val1: any, val2: any): boolean {
-    throw new UnavailableSyncError(this, "equals");
+  testSync (val: any[]): boolean {
+    return this.testErrorSync(val) === null;
   }
 
-  equals (val1: any, val2: any): Bluebird<boolean> {
-    return Bluebird.reject(new ViaTypeError("todo", "ArrayType does not support equals"));
+  testAsync (val: any[]): Bluebird<boolean> {
+    return this.testErrorAsync(val).then(res => res === null);
   }
 
-  cloneSync(val: any): any {
-    throw new UnavailableSyncError(this, "clone");
+  equalsSync (val1: any[], val2: any[]): boolean {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    if (val1.length !== val2.length) {
+      return false;
+    }
+    const mapped = _.map(val1, (item, idx) => itemType.equalsSync(item, val2[idx]));
+    return _.reduce(mapped, (memo: boolean, current: boolean) => memo && current, true);
   }
 
-  clone (val: any): Bluebird<any> {
-    return Bluebird.resolve(this.cloneSync(val));
-  }
-
-  diffSync(oldVal: any, newVal: any): any {
-    throw new UnavailableSyncError(this, "diff");
-  }
-
-  diff (oldVal: any, newVal: any): Bluebird<any> {
-    return Bluebird.resolve(this.diffSync(oldVal, newVal));
-  }
-
-  patchSync(oldVal: any, diff: any): any {
-    throw new UnavailableSyncError(this, "patch");
-  }
-
-  patch (oldVal: any, diff: any): Bluebird<any> {
-    return Bluebird.resolve(this.patchSync(oldVal, diff));
-  }
-
-  revertSync(newVal: any, diff: any): any {
-    throw new UnavailableSyncError(this, "revert");
-  }
-
-  revert (newVal: any, diff: any): Bluebird<any> {
-    return Bluebird.resolve(this.revertSync(newVal, diff));
-  }
-
-  reflect (visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any) {
+  equalsAsync (val1: any[], val2: any[]): Bluebird<boolean> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
     return Bluebird.try(() => {
-      let options: ArrayOptions = this.options;
-
-      visitor(options.itemType, null, <type.CollectionType<any, any>> this);
-      if ((<type.CollectionType<any, any>> options.itemType).reflect) {
-        (<type.CollectionType<any, any>> options.itemType).reflect(visitor);
+      if (val1.length !== val2.length) {
+        return false;
       }
+      return Bluebird.resolve(val1)
+        .map((item, idx) => {
+          return itemType.equalsAsync(item, val2[idx]);
+        })
+        .reduce((memo: boolean, current: boolean) => memo && current, true);
     });
   }
 
-  diffToUpdate (newVal: any, diff: any, format: string): Bluebird<type.UpdateQuery> {
-    let update: type.UpdateQuery = {
-      $set: {},
-      $unset: {}
-    };
-
-    return Bluebird.resolve(update);
+  cloneSync (val: any[]): any[] {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    return _.map(val, item => itemType.cloneSync(val));
   }
+
+  cloneAsync (val: any[]): Bluebird<any[]> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    return Bluebird.map(val, (item) => itemType.cloneAsync(item));
+  }
+
+  diffSync (oldVal: any[], newVal: any[]): ArrayDiff | null {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    throw new Error("Not implemented");
+  }
+
+  diffAsync (oldVal: any[], newVal: any[]): Bluebird<ArrayDiff | null> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    return Bluebird.reject(new Error("Not implemented"));
+  }
+
+  patchSync (oldVal: any[], diff: ArrayDiff | null): any[] {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    throw new Error("Not implemented");
+  }
+
+  patchAsync (oldVal: any[], diff: ArrayDiff | null): Bluebird<any[]> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    return Bluebird.reject(new Error("Not implemented"));
+  }
+
+  reverseDiffSync(diff: ArrayDiff | null): ArrayDiff | null {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    throw new Error("Not implemented");
+  }
+
+  reverseDiffAsync(diff: ArrayDiff | null): Bluebird<ArrayDiff | null> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    return Bluebird.reject(new Error("Not implemented"));
+  }
+
+  squashSync(diff1: ArrayDiff | null, diff2: ArrayDiff | null): ArrayDiff | null {
+    if (!this.isSync) {
+      throw new TemporalError();
+    }
+    throw new Error("Not implemented");
+  }
+
+  squashAsync(diff1: ArrayDiff | null, diff2: ArrayDiff | null): Bluebird<ArrayDiff | null> {
+    if (!this.isAsync) {
+      return Bluebird.reject(new TemporalError());
+    }
+    return Bluebird.reject(new Error("Not implemented"));
+  }
+
+  //noinspection TypeScriptUnresolvedVariable
+  iterateAsync (value: any[]): IteratorResult<PromiseLike<I>> {
+    throw new Error("TODO");
+  }
+
+  //noinspection TypeScriptUnresolvedVariable
+  iterateSync (value: any[]): IteratorResult<I> {
+    throw new Error("TODO");
+  }
+
 }
+
+  //
+  // reflect (visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any) {
+  //   return Bluebird.try(() => {
+  //     let options: ArrayOptions = this.options;
+  //
+  //     visitor(options.itemType, null, <type.CollectionType<any, any>> this);
+  //     if ((<type.CollectionType<any, any>> options.itemType).reflect) {
+  //       (<type.CollectionType<any, any>> options.itemType).reflect(visitor);
+  //     }
+  //   });
+  // }
+  //
+  // diffToUpdate (newVal: any, diff: any, format: string): Bluebird<type.UpdateQuery> {
+  //   let update: type.UpdateQuery = {
+  //     $set: {},
+  //     $unset: {}
+  //   };
+  //
+  //   return Bluebird.resolve(update);
+  // }
+  //

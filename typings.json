@@ -1,9 +1,8 @@
 {
   "dependencies": {
-    "bluebird": "registry:npm/bluebird#3.3.4+20160411163813",
+    "bluebird": "registry:npm/bluebird#3.4.1+20160811213708",
     "incident": "npm:incident",
-    "lodash": "registry:npm/lodash#4.0.0+20160416211519",
-    "via-core": "npm:via-core"
+    "lodash": "registry:npm/lodash#4.0.0+20160723033700"
   },
   "devDependencies": {
     "chai": "registry:npm/chai#3.5.0+20160415060238"

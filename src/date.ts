@@ -1,100 +1,193 @@
 import * as Bluebird from "bluebird";
 import * as _ from "lodash";
-import {type} from "via-core";
-import {promisifyClass} from "./helpers/promisify";
-import {UnsupportedFormatError, ViaTypeError} from "./helpers/via-type-error";
 
-export class DateTypeError extends ViaTypeError {}
+import {VersionedTypeSync, VersionedTypeAsync} from "./interfaces";
+import {ViaTypeError} from "./helpers/via-type-error";
 
-export class ReadJsonDateError extends DateTypeError {
-  constructor (val: any) {
-    super (null, "ReadJsonDateError", {value: val}, "Expected either string representation of date or finite integer");
+export class InvalidTimestampError extends ViaTypeError {
+  constructor(date: Date) {
+    super('invalid-timestamp', {date: date}, 'Invalid timestamp');
   }
 }
 
-export class NanTimestampError extends DateTypeError {
-  constructor (date: Date) {
-    super (null, "NanTimestampError", {date: date}, "Expected timestamp to not be NaN");
+const NAME = "date";
+
+export interface DateOptions {}
+
+
+function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
+  switch (format) {
+    case "json-doc":
+      if (_.isString(val)) {
+        val = Date.parse(val);
+      }
+      if (!_.isFinite(val)) {
+        throw new ViaTypeError("Unable to read JSON date");
+      }
+      val = new Date(val);
+      break;
+    case "bson-doc":
+      break;
+    default:
+      throw new ViaTypeError("Unsupported format");
+  }
+  let err = this.testSync(val);
+  if (err) {
+    throw err;
+  }
+  return val;
+}
+
+function readTrustedSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
+  return new Date(val);
+}
+
+function writeSync(format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): any {
+  return format === "json-doc" ? val.toJSON() : val;
+}
+
+function testErrorSync (val: Date, options?: DateOptions): Error | null {
+  if (!(val instanceof Date)) {
+    return new ViaTypeError(null, "DateTypeError", {value: val}, "Expected value to be instanceof Date");
+  }
+  if (isNaN(val.getTime())) {
+    return new InvalidTimestampError(val);
+  }
+
+  return null;
+}
+
+function testSync (val: Date, options?: DateOptions): boolean {
+  return testErrorSync(val) === null;
+}
+
+function equalsSync (val1: Date, val2: Date, options?: DateOptions): boolean {
+  return val1.getTime() === val2.getTime();
+}
+
+function cloneSync (val: Date, options?: DateOptions): Date {
+  return new Date(val.getTime());
+}
+
+function diffSync (oldVal: Date, newVal: Date, options?: DateOptions): number | null {
+  return newVal.getTime() - oldVal.getTime();
+}
+
+function patchSync (oldVal: Date, diff: number | null, options?: DateOptions): Date {
+  return new Date(oldVal.getTime() + diff);
+}
+
+function reverseDiffSync (diff: number | null, options?: DateOptions): number | null {
+  return diff === null ? null : -diff;
+}
+
+function squashSync (diff1: number | null, diff2: number | null, options?: DateOptions): number | null {
+  if (diff1 === null) {
+    return diff2 === null ? null : diff2;
+  } else {
+    return diff2 === null ? diff1 : diff1 + diff2;
   }
 }
 
-export class DateTypeSync implements type.TypeSync<Date, number> {
-  isSync: boolean = true;
-  name: string = "date";
+export class DateType implements
+  VersionedTypeSync<Date, number, DateOptions>,
+  VersionedTypeAsync<Date, number, DateOptions> {
 
-  readTrustedSync(format: string, val: any): Date {
-    switch (format) {
-      case "json":
-        return new Date(val);
-      case "bson":
-        return val;
-      default:
-        throw new UnsupportedFormatError(format);
-    }
-  }
+  isSync = true;
+  isAsync = true;
+  isCollection = true;
+  type = NAME;
+  types = [NAME];
 
-  readSync(format: string, val: any): Date {
-    switch (format) {
-      case "json":
-        if (_.isString(val)) {
-          val = Date.parse(val);
-        }
-        if (!_.isFinite(val)) {
-          throw new ReadJsonDateError(val);
-        }
-        return new Date(val);
-      case "bson":
-        let err = this.testSync(val);
-        if (err) {
-          throw err;
-        }
-        return val;
-      default:
-        throw new UnsupportedFormatError(format);
-    }
-  }
-
-  writeSync(format: string, val: Date): any {
-    switch (format) {
-      case "json":
-        return val.toJSON(); // ISO8601 string with millisecond precision
-      case "bson":
-        return val;
-      default:
-        throw new UnsupportedFormatError(format);
-    }
-  }
-
-  testSync(val: any): Error {
-    if (!(val instanceof Date)) {
-      return new DateTypeError(null, "DateTypeError", {value: val}, "Expected value to be instanceof Date");
-    }
-    if (isNaN(val.getTime())) {
-      return new NanTimestampError(val);
-    }
+  toJSON(): null { // TODO: return options
     return null;
   }
 
-  equalsSync(val1: Date, val2: Date): boolean {
-    return val1.getTime() === val2.getTime();
+  readTrustedSync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
+    return readTrustedSync(format, val, options);
   }
 
-  cloneSync(val: Date): Date {
-    return new Date(val.getTime());
+  readTrustedAsync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Bluebird<Date> {
+    return Bluebird.try(() => readTrustedSync(format, val, options));
   }
 
-  diffSync(oldVal: Date, newVal: Date): number {
-    return newVal.getTime() - oldVal.getTime();
+  readSync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
+    return readSync(format, val, options);
   }
 
-  patchSync(oldVal: Date, diff: number): Date {
-    return new Date(oldVal.getTime() + diff);
+  readAsync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Bluebird<Date> {
+    return Bluebird.try(() => readSync(format, val, options));
   }
 
-  revertSync(newVal: Date, diff: number): Date {
-    return new Date(newVal.getTime() - diff);
+  writeSync (format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): any {
+    return writeSync(format, val, options);
+  }
+
+  writeAsync (format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): Bluebird<any> {
+    return Bluebird.try(() => writeSync(format, val, options));
+  }
+
+  testErrorSync (val: Date, options?: DateOptions): Error | null {
+    return testErrorSync(val, options);
+  }
+
+  testErrorAsync (val: Date, options?: DateOptions): Bluebird<Error | null> {
+    return Bluebird.try(() => testErrorSync(val, options));
+  }
+
+  testSync (val: Date, options?: DateOptions): boolean {
+    return testSync(val, options);
+  }
+
+  testAsync (val: Date, options?: DateOptions): Bluebird<boolean> {
+    return Bluebird.try(() => testSync(val, options));
+  }
+
+  equalsSync (val1: Date, val2: Date, options?: DateOptions): boolean {
+    return equalsSync(val1, val2, options);
+  }
+
+  equalsAsync (val1: Date, val2: Date, options?: DateOptions): Bluebird<boolean> {
+    return Bluebird.try(() => equalsSync(val1, val2, options));
+  }
+
+  cloneSync (val: Date, options?: DateOptions): Date {
+    return cloneSync(val, options);
+  }
+
+  cloneAsync (val: Date, options?: DateOptions): Bluebird<Date> {
+    return Bluebird.try(() => cloneSync(val, options));
+  }
+
+  diffSync (oldVal: Date, newVal: Date, options?: DateOptions): number | null {
+    return diffSync(oldVal, newVal, options);
+  }
+
+  diffAsync (oldVal: Date, newVal: Date, options?: DateOptions): Bluebird<number | null> {
+    return Bluebird.try(() => diffSync(oldVal, newVal, options));
+  }
+
+  patchSync (oldVal: Date, diff: number | null, options?: DateOptions): Date {
+    return patchSync(oldVal, diff, options);
+  }
+
+  patchAsync (oldVal: Date, diff: number | null, options?: DateOptions): Bluebird<Date> {
+    return Bluebird.try(() => patchSync(oldVal, diff, options));
+  }
+
+  reverseDiffSync(diff: number | null, options?: DateOptions): number | null {
+    return reverseDiffSync(diff, options);
+  }
+
+  reverseDiffAsync(diff: number | null, options?: DateOptions): Bluebird<number | null> {
+    return Bluebird.try(() => reverseDiffSync(diff, options));
+  }
+
+  squashSync(diff1: number | null, diff2: number | null, options?: DateOptions): number | null {
+    return squashSync(diff1, diff2, options);
+  }
+
+  squashAsync(diff1: number | null, diff2: number | null, options?: DateOptions): Bluebird<number | null> {
+    return Bluebird.try(() => squashSync(diff1, diff2, options));
   }
 }
-
-export let DateType: type.StaticType<Date, number> = promisifyClass(DateTypeSync);
-export type DateType = type.Type<Date, number>;

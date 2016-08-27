@@ -16,7 +16,7 @@ export class UnexpectedTypeError extends ViaTypeError {
 }
 
 export class UnavailableSyncError extends ViaTypeError {
-  constructor (type: type.Type<any, any>, methodName: string) {
-    super(null, "UnexpectedType", {type: methodName, methodName: methodName}, `Synchronous ${methodName} for ${type.name} is not available`);
+  constructor (type: type.Type<any, any, any>, methodName: string) {
+    super(null, "UnexpectedType", {type: methodName, methodName: methodName}, `Synchronous ${methodName} for ${type.type} is not available`);
   }
 }

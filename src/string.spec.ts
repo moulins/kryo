@@ -1,56 +1,59 @@
-import {StringTypeSync} from "./string";
-import {RunTestItem, runTestSync} from "./helpers/test";
+import {StringType} from "./string";
+import {TestItem, runTests} from "./helpers/test";
 
 describe("StringType", function () {
 
-  let type: StringTypeSync = new StringTypeSync();
+  let type: StringType = new StringType();
 
-  let truthyItems: RunTestItem[] = [
-    {name: '""', value: "", message: null},
-    {name: '"Hello World!"', value: "Hello World!", message: null}
+  let items: TestItem[] = [
+    {name: '""', value: "", valid: true},
+    {name: '"Hello World!"', value: "Hello World!", valid: true},
+    {name: 'Drop the bass', value: "ԂЯØǷ Łƕ੬ ɃɅϨϞ", valid: true},
+
+    {name: 'new String("stringObject")', value: new String("stringObject"), valid: false},
+    {name: "0.5", value: 0.5, valid: false},
+    {name: "0.0001", value: 0.0001, valid: false},
+    {name: "Infinity", value: Infinity, valid: false},
+    {name: "-Infinity", value: -Infinity, valid: false},
+    {name: "NaN", value: NaN, valid: false},
+    {name: "undefined", value: undefined, valid: false},
+    {name: "null", value: null, valid: false},
+    {name: "true", value: true, valid: false},
+    {name: "false", value: false, valid: false},
+    {name: "[]", value: [], valid: false},
+    {name: "{}", value: {}, valid: false},
+    {name: "new Date()", value: new Date(), valid: false},
+    {name: "/regex/", value: /regex/, valid: false}
   ];
 
-  runTestSync(type, truthyItems);
+  runTests(type, items);
 
-  let falsyItems: RunTestItem[] = [
-    {name: 'new String("stringObject")', value: new String("stringObject"), message: ""},
-    {name: "0.5", value: 0.5, message: ""},
-    {name: "0.0001", value: 0.0001, message: ""},
-    {name: "Infinity", value: Infinity, message: ""},
-    {name: "-Infinity", value: -Infinity, message: ""},
-    {name: "NaN", value: NaN, message: ""},
-    {name: "undefined", value: undefined, message: ""},
-    {name: "null", value: null, message: ""},
-    {name: "[]", value: [], message: ""},
-    {name: "{}", value: {}, message: ""},
-    {name: "/regex/", value: /regex/, message: ""}
-  ];
-
-  runTestSync(type, falsyItems);
-
-  describe ("options.lowerCase", function () {
-    let typeLowerCase = new StringTypeSync({lowerCase: true});
-    let items: RunTestItem[] = [
-      {name: "abc", value: "abc", message: null},
-      {name: "ABC", value: "ABC", message: ""},
-      {name: "Abc", value: "Abc", message: ""},
-      {name: "aBc", value: "aBc", message: ""}
-    ];
-    runTestSync(typeLowerCase, items);
-
-    describe ("override to true", function() {
-      runTestSync(type, [
-        {name: "abc", value: "abc", message: null, options: {lowerCase: true}},
-        {name: "Abc", value: "Abc", message: "", options: {lowerCase: true}}
-      ]);
-    });
-
-    describe ("override to false", function() {
-      runTestSync(typeLowerCase, [
-        {name: "abc", value: "abc", message: null, options: {lowerCase: false}},
-        {name: "Abc", value: "Abc", message: null, options: {lowerCase: false}}
-      ]);
-    });
-
-  });
+  //
+  // runTestSync(type, falsyItems);
+  //
+  // describe ("options.lowerCase", function () {
+  //   let typeLowerCase = new StringTypeSync({lowerCase: true});
+  //   let items: RunTestItem[] = [
+  //     {name: "abc", value: "abc", message: null},
+  //     {name: "ABC", value: "ABC", message: ""},
+  //     {name: "Abc", value: "Abc", message: ""},
+  //     {name: "aBc", value: "aBc", message: ""}
+  //   ];
+  //   runTestSync(typeLowerCase, items);
+  //
+  //   describe ("override to true", function() {
+  //     runTestSync(type, [
+  //       {name: "abc", value: "abc", message: null, options: {lowerCase: true}},
+  //       {name: "Abc", value: "Abc", message: "", options: {lowerCase: true}}
+  //     ]);
+  //   });
+  //
+  //   describe ("override to false", function() {
+  //     runTestSync(typeLowerCase, [
+  //       {name: "abc", value: "abc", message: null, options: {lowerCase: false}},
+  //       {name: "Abc", value: "Abc", message: null, options: {lowerCase: false}}
+  //     ]);
+  //   });
+  //
+  // });
 });

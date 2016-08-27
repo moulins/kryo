@@ -1,7 +1,7 @@
 {
-  "name": "via-type",
-  "version": "0.2.2",
-  "description": "Basic types for via.",
+  "name": "kryo",
+  "version": "0.3.0",
+  "description": "Expressive schemas",
   "main": "dist/node/main.js",
   "repository": {
     "type": "git",
@@ -11,20 +11,19 @@
     "test": "gulp test"
   },
   "keywords": [
-    "odm"
+    "schema", "type"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.2.1",
     "incident": "^1.0.4",
-    "lodash": "^4.11.1",
-    "via-core": "^0.4.2"
+    "lodash": "^4.11.1"
   },
   "devDependencies": {
     "chai": "^3.4.1",
     "gulp": "^3.9.0",
-    "typescript": "^1.8.10",
+    "typescript": "^2.1.0-dev.20160813",
     "via-build-tools": "^0.9.0"
   },
   "jspm": {

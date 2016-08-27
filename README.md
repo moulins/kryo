@@ -1,8 +1,8 @@
-# Via-Type
+# Kryo
 
 ## Description
 
-Simple type interfaces.
+Expressive extensible schemas.
 
 ## Install
 
