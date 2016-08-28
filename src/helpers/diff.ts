@@ -34,141 +34,241 @@
  *
  */
 
-interface Region {
-  x1: number;
-  x2: number;
-  y1: number;
-  y2: number;
+interface Sequence<T> {
+  length: number;
+  [index: number]: T;
 }
 
-interface Action {
-  type: "source" | "target" | "update" | "match",
+class Slice<T> {
+  sequence: Sequence<T>;
+  start: number;
+  end: number;
+  length: number;
+  reversed: boolean;
+
+  constructor(sequence: Sequence<T>, start: number, end: number, reversed: boolean) {
+    this.sequence = sequence;
+    this.start = start;
+    this.end = end;
+    this.length = end - start;
+    this.reversed = reversed;
+  }
+
+  indexOf(item: T) {
+    if (this.reversed) {
+      for (let i = this.end - 1; i >= this.start; i--) {
+        if (this.sequence[i] === item) {
+          return this.end - 1 - i;
+        }
+      }
+    } else {
+      for (let i = this.start; i < this.end; i++) {
+        if (this.sequence[i] === item) {
+          return i - this.start;
+        }
+      }
+    }
+    return -1;
+  }
+
+  getItem(index: number) {
+    return this.sequence[this.getAbsoluteIndex(index)];
+  }
+
+  getAbsoluteIndex(relativeIndex: number) {
+    if (this.reversed) {
+      return (this.end - 1) - relativeIndex;
+    } else {
+      return this.start + relativeIndex;
+    }
+  }
+
+  split (index: number) {
+    if (this.reversed) {
+      throw Error("Cannot split reversed");
+    }
+    const left = new Slice(this.sequence, this.start, this.start + index, false);
+    const right = new Slice(this.sequence, this.start + index, this.end, false);
+    return [left, right];
+  }
+
+  reverse () {
+    return new Slice(this.sequence, this.start, this.end, true);
+  }
+}
+
+export interface DiffAction {
+  type: "source" | "target" | "match";
   value: number;
 }
 
-function relToAbs(start: number, end: number, relIdx: number, reverse: boolean) {
-  if (reverse) {
-    return (end - 1) - relIdx;
-  } else {
-    return start + relIdx;
+type IndexValue = [number, number];
+
+
+function nearestEnd <T> (src: Slice<T>, target: Slice<T>): IndexValue {
+  const {length: x2} = src;
+  const x1 = 0;
+  const xSeq = src.sequence;
+  const {length: y2} = target;
+  const y1 = 0;
+  const ySeq = target.sequence;
+  const xLen = x2 - x1;
+  const yLen = y2 - y1;
+
+  // We do not need to store the whole matrix: we just need the current and
+  // previous rows.
+  let oldDist = Array(yLen + 1);
+  let curDist = Array(yLen + 1);
+
+  // Fill the first row
+  for (let col = 0; col <= yLen; col++) {
+    curDist[col] = col;
   }
-}
 
-// Adaptation of the Needleman–Wunsch algorithm for the Levenshtein distance
-function minDistIdxSync(seq1: string | any[], seq2: string | any[], start1: number,
-                        end1: number, start2: number, end2: number, reverse: boolean): [number, number] {
-  const len1 = end1 - start1;
-  const len2 = end2 - start2;
-  let oldScore = Array(len2 + 1);
-  let curScore = Array(len2 + 1);
+  // Traverse xSeq
+  for (let row = 1; row <= xLen; row++) {
+    [curDist, oldDist] = [oldDist, curDist];
 
-  // Initialize with the bottom left value
-  let minCol = 0;
+    const rowItem = src.getItem(row - 1);
 
-  for (let col = 0; col <= len2; col++) { // Initialize first row from 0 to len2
-    oldScore[col] = col;
-  }
-  for (let row = 1; row <= len1; row++) {
-    const rowItemIdx = relToAbs(start1, end1, row - 1, reverse);
-    const rowItem = seq1[rowItemIdx];
+    // Initialize first column
+    curDist[0] = row;
 
-    curScore[0] = row; // Initialize first column;
-    for (let col = 1; col <= len2; col++) {
-      // Nearest distance in case of add / del
-      const addDelDist = Math.min(oldScore[col] + 1, curScore[col - 1] + 1);
-      // Nearest distance in case of match
-      const matchDist = oldScore[col - 1];
+    // Compute distances
+    for (let col = 1; col <= yLen; col++) {
+      // Nearest distance in case of ADD or DEL
+      const addDelDist = 1 + Math.min(oldDist[col], curDist[col - 1]);
+      // Nearest distance in case of MATCH
+      const matchDist = oldDist[col - 1];
+      // Nearest distance in case of MUT
+      const mutDist = matchDist + 1;
 
       if (addDelDist <= matchDist) {
-        // See the comment above about skipping the test `colItem === rowItem`.
-        curScore[col] = addDelDist;
+        // See the comment above about skipping the test `colItem === rowItem`
+        curDist[col] = addDelDist;
       } else {
-        const colItemIdx = relToAbs(start2, end2, col - 1, reverse);
-        const colItem = seq2[colItemIdx];
-        curScore[col] = colItem === rowItem ? matchDist : matchDist + 1;
+        const colItem = target.getItem(col - 1);
+        curDist[col] = colItem === rowItem ? matchDist : mutDist;
       }
-    }
-    if (row == len1) { // Scan the last row to get the minIdx
-      for (let col = 1; col <= len2; col++) {
-        if (curScore[col] <= curScore[minCol]) { // Go the farthest possible
-          minCol = col;
-        }
-      }
-    } else { // Swap the active row (we do not need to store the whole matrix)
-      [curScore, oldScore] = [oldScore, curScore];
     }
   }
-  return [relToAbs(start2, end2, minCol - 1, reverse), curScore[minCol]];
-}
 
-function relativeIndexOf(item: any, seq: string | any[], start: number, end: number): number {
-  for (let i = start; i < end; i++) {
-    if (seq[i] === item) {
-      return i - start;
+  // Search for minimum in last line
+  let minDistCol = 0;
+  for (let col = 1; col <= yLen; col++) {
+    // We use allow equality to get the rightmost minimal value.
+    if (curDist[col] <= curDist[minDistCol]) {
+      minDistCol = col;
     }
   }
-  return -1;
+
+  const minDistIndex = minDistCol - 1;
+  const minDistValue = curDist[minDistCol];
+  return [minDistIndex, minDistValue];
 }
 
-function hirschbergSync (seq1: string | any[], seq2: string | any[], start1: number, end1: number, start2: number, end2: number): any[] {
-  const len1 = end1 - start1;
-  const len2 = end2 - start2;
-  if (len1 == 0) {
-    return [{type: "target", value: len2}];
-  } else if (len2 == 0) {
-    return [{type: "source", value: len1}];
-  } else if (len1 === 1) {
-    const idx = relativeIndexOf(seq1[start1], seq2, start2, end2);
-    let result: any[];
-    if (idx < 0) {
-      result = [{type: "mut", source: len1, target: len2}]
-    } else {
-      result = [];
-      if (idx > 0) {
-        result.push({type: "target", value: idx});
-      }
-      result.push({type: "match", value: 1});
-      if (len2 - idx - 1 > 0) {
-        result.push({type: "target", value: len2 - idx - 1});
-      }
+function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
+  const srcLen = source.length;
+  const tarLen = target.length;
+
+  if (srcLen === 0 || tarLen === 0) {
+    if (srcLen > 0) {
+      return [{type: "source", value: srcLen}];
+    } else if (tarLen > 0) {
+      return [{type: "target", value: tarLen}];
+    } else {  // srcLen === 0 && tarLen === 0
+      return [];
     }
-    return result;
-  } else if (len2 === 1) {
-    const idx = relativeIndexOf(seq2[start2], seq1, start1, end1);
-    let result: any[];
-    if (idx < 0) {
-      result = [{type: "mut", source: len1, target: len2}]
+  } else if (srcLen === 1 || tarLen === 1) {
+    let idx: number;
+    if (srcLen > 1 && (idx = source.indexOf(target.getItem(0))) >= 0) {
+      return [
+        {type: "source", value: idx},
+        {type: "match", value: 1},
+        {type: "source", value: srcLen - idx - 1}
+      ];
+    } else if ((idx = target.indexOf(source.getItem(0))) >= 0) {
+      return [
+        {type: "target", value: idx},
+        {type: "match", value: 1},
+        {type: "target", value: tarLen - idx - 1}
+      ];
     } else {
-      result = [];
-      if (idx > 0) {
-        result.push({type: "source", value: idx});
-      }
-      result.push({type: "match", value: 1});
-      if (len1 - idx - 1 > 0) {
-        result.push({type: "source", value: len1 - idx - 1});
-      }
+      return [
+        {type: "source", value: srcLen},
+        {type: "target", value: tarLen}
+      ];
     }
-    return result;
   } else {
-    const mid1 = start1 + Math.floor(len1 / 2);
-    const [leftMinDistIdx, leftMinVal] = minDistIdxSync(seq1, seq2, start1, mid1, start2, end2, false);
-    const [rightMinDistIdx, rightMinVal] = minDistIdxSync(seq1, seq2, mid1, end1, start2, end2, true);
-    // We add + 1 to the left index because it becomes the right end of
-    // the range (which is exclusive)
-    const mid2 = leftMinVal <= rightMinVal ? leftMinDistIdx + 1 : rightMinDistIdx;
-    const left: any[] = hirschbergSync(seq1, seq2, start1, mid1, start2, mid2);
-    const right: any[] = hirschbergSync(seq1, seq2, mid1, end1, mid2, end2);
+    const srcMid = Math.floor(srcLen / 2);
+    const [srcLeft, srcRight] = source.split(srcMid);
+    const [leftMinDistIdx, leftMinVal] = nearestEnd(srcLeft, target);
+    const [rightMinDistIdx, rightMinVal] = nearestEnd(srcRight.reverse(), target.reverse());
+    let targetMid: number;
+    if (leftMinVal <= rightMinVal) {
+      // We add one because the right of the range is exclusive
+      targetMid = leftMinDistIdx + 1;
+    } else {
+      // Convert the right index from the reversed tarRight to target
+      targetMid = (target.length - 1) - rightMinDistIdx;
+    }
+    const [tarLeft, tarRight] = target.split(targetMid);
+    const left: any[] = hirschberg(srcLeft, tarLeft);
+    const right: any[] = hirschberg(srcRight, tarRight);
     return [].concat(left, right);
   }
 }
 
-export function diffSync (seq1: string | any[], seq2: string | any[]) {
-  return hirschbergSync(seq1, seq2, 0, seq1.length, 0, seq2.length);
+export function normalizeDiff (diff: DiffAction[]): DiffAction[] {
+  let result: DiffAction[] = [];
+  if (diff.length === 0) {
+    return result;
+  }
+  let curSource: number = 0;
+  let curTarget: number = 0;
+  let curBoth: number = 0;
+  for (let action of diff) {
+    if (action.value === 0) {
+      continue;
+    }
+
+    if (action.type === "match") {
+      if (curSource > 0) {
+        result.push({type: "source", value: curSource});
+        curSource = 0;
+      }
+      if (curTarget > 0) {
+        result.push({type: "target", value: curTarget});
+        curTarget = 0;
+      }
+      curBoth += action.value;
+    } else {
+      if (curBoth > 0) {
+        result.push({type: "match", value: curBoth});
+        curBoth = 0;
+      }
+      if (action.type === "source") {
+        curSource += action.value;
+      } else { // action.type === "target"
+        curTarget += action.value;
+      }
+    }
+  }
+  if (curSource > 0) {
+    result.push({type: "source", value: curSource});
+  }
+  if (curTarget > 0) {
+    result.push({type: "target", value: curTarget});
+  }
+  if (curBoth > 0) {
+    result.push({type: "match", value: curBoth});
+  }
+  return result;
 }
 
-// R0 SETTAC O DE
-// =##===####=+=-
-// RAISETHYSWORD
+export function diffSync (seq1: string | any[], seq2: string | any[]): DiffAction[] {
+  return normalizeDiff(hirschberg(new Slice(seq1, 0, seq1.length, false), new Slice(seq2, 0, seq2.length, false)));
+}
 
 /*
  * Structure of the Levenshtein matrix
