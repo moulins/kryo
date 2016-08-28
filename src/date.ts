@@ -31,7 +31,7 @@ function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptio
     default:
       throw new ViaTypeError("Unsupported format");
   }
-  let err = this.testSync(val);
+  let err = testErrorSync(val);
   if (err) {
     throw err;
   }
