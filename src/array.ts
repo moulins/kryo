@@ -15,7 +15,7 @@ const NAME = "array";
 
 export interface ArrayOptions {
   maxLength: number;
-  itemType: Type<any, any, any>;
+  itemType: Type<any>;
 }
 
 export interface ArrayDiff {
@@ -49,9 +49,9 @@ export class InvalidItemsError extends Incident {
   }
 }
 
-export class ArrayTypeAsync<I> implements
-  VersionedCollectionTypeSync<I[], ArrayDiff, ArrayOptions, I>,
-  VersionedCollectionTypeAsync<I[], ArrayDiff, ArrayOptions, I> {
+export class ArrayType<I> implements
+  VersionedCollectionTypeSync<I[], ArrayDiff, I>,
+  VersionedCollectionTypeAsync<I[], ArrayDiff, I> {
 
   isSync = true;
   isAsync = true;
@@ -75,7 +75,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isSync) {
       throw new TemporalError();
     }
-    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeSync<any> = <any> this.options.itemType;
     return _.map(val, item => itemType.readTrustedSync(format, item));
   }
 
@@ -83,7 +83,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isAsync) {
       return Bluebird.reject(new TemporalError());
     }
-    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeAsync<any> = <any> this.options.itemType;
     return Bluebird.map(val, item => itemType.readAsync(format, item));
   }
 
@@ -91,7 +91,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isSync) {
       throw new TemporalError();
     }
-    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeSync<any> = <any> this.options.itemType;
     if (!Array.isArray(val)) {
       throw new Incident("Not an array");
     }
@@ -102,7 +102,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isAsync) {
       return Bluebird.reject(new TemporalError());
     }
-    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeAsync<any> = <any> this.options.itemType;
     if (!Array.isArray(val)) {
       throw new Incident("Not an array");
     }
@@ -113,7 +113,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isSync) {
       throw new TemporalError();
     }
-    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeSync<any> = <any> this.options.itemType;
     return _.map(val, item => itemType.writeSync(format, item));
   }
 
@@ -121,7 +121,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isAsync) {
       return Bluebird.reject(new TemporalError());
     }
-    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeAsync<any> = <any> this.options.itemType;
     return Bluebird.map(val, item => itemType.writeAsync(format, item));
   }
 
@@ -129,7 +129,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isSync) {
       throw new TemporalError();
     }
-    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeSync<any> = <any> this.options.itemType;
     if (!_.isArray(val)) {
       return new UnexpectedTypeError(typeof val, "array");
     }
@@ -162,7 +162,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isAsync) {
       return Bluebird.reject(new TemporalError());
     }
-    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeAsync<any> = <any> this.options.itemType;
     return Bluebird.try(() => {
       if (!_.isArray(val)) {
         return new UnexpectedTypeError(typeof val, "array");
@@ -209,7 +209,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isSync) {
       throw new TemporalError();
     }
-    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeSync<any> = <any> this.options.itemType;
     if (val1.length !== val2.length) {
       return false;
     }
@@ -221,7 +221,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isAsync) {
       return Bluebird.reject(new TemporalError());
     }
-    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeAsync<any> = <any> this.options.itemType;
     return Bluebird.try(() => {
       if (val1.length !== val2.length) {
         return false;
@@ -238,7 +238,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isSync) {
       throw new TemporalError();
     }
-    let itemType: TypeSync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeSync<any> = <any> this.options.itemType;
     return _.map(val, item => itemType.cloneSync(val));
   }
 
@@ -246,7 +246,7 @@ export class ArrayTypeAsync<I> implements
     if (!this.isAsync) {
       return Bluebird.reject(new TemporalError());
     }
-    let itemType: TypeAsync<any, any, any> = <any> this.options.itemType;
+    let itemType: TypeAsync<any> = <any> this.options.itemType;
     return Bluebird.map(val, (item) => itemType.cloneAsync(item));
   }
 
@@ -315,7 +315,6 @@ export class ArrayTypeAsync<I> implements
   iterateSync (value: any[]): IteratorResult<I> {
     throw new Error("TODO");
   }
-
 }
 
   //

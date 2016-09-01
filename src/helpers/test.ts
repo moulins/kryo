@@ -18,7 +18,7 @@ export interface InvalidItem extends TestItem {
   error?: Error;
 }
 
-export function testInvalidSync(type: TypeSync<any, any, any>, item: InvalidItem) {
+export function testInvalidSync(type: TypeSync<any>, item: InvalidItem) {
   it("Should return an Error for .testErrorSync", function() {
     assert.instanceOf(type.testErrorSync(item.value), Error);
   });
@@ -28,7 +28,7 @@ export function testInvalidSync(type: TypeSync<any, any, any>, item: InvalidItem
   });
 }
 
-export function testInvalidAsync(type: TypeAsync<any, any, any>, item: InvalidItem) {
+export function testInvalidAsync(type: TypeAsync<any>, item: InvalidItem) {
   it("Should return an Error for .testErrorAsync", function() {
     return Bluebird.try(async function() {
       const result = await type.testErrorAsync(item.value);
@@ -44,7 +44,7 @@ export function testInvalidAsync(type: TypeAsync<any, any, any>, item: InvalidIt
   });
 }
 
-export function testValidSync(type: TypeSync<any, any, any>, item: InvalidItem) {
+export function testValidSync(type: TypeSync<any>, item: InvalidItem) {
   it("Should return `null` for .testErrorSync", function() {
     assert.equal(type.testErrorSync(item.value), null);
   });
@@ -54,7 +54,7 @@ export function testValidSync(type: TypeSync<any, any, any>, item: InvalidItem) 
   });
 }
 
-export function testValidAsync(type: TypeAsync<any, any, any>, item: InvalidItem) {
+export function testValidAsync(type: TypeAsync<any>, item: InvalidItem) {
   it("Should return `null` for .testErrorAsync", function() {
     return Bluebird
       .try(() => type.testErrorAsync(item.value))
@@ -68,7 +68,7 @@ export function testValidAsync(type: TypeAsync<any, any, any>, item: InvalidItem
   });
 }
 
-export function runTests(type: TypeSync<any, any, any> & TypeAsync<any, any, any>, items: TestItem[]) {
+export function runTests(type: TypeSync<any> & TypeAsync<any>, items: TestItem[]) {
   for (let item of items) {
     describe(`Item ${item.name}`, function() {
       if (!item.valid) {

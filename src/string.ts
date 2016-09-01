@@ -122,8 +122,8 @@ function squashSync (diff1: [string, string] | null, diff2: [string, string] | n
 }
 
 export class StringType implements
-  VersionedTypeSync<string, [string, string], StringOptions>,
-  VersionedTypeAsync<string, [string, string], StringOptions> {
+  VersionedTypeSync<string, [string, string]>,
+  VersionedTypeAsync<string, [string, string]> {
 
   isSync = true;
   isAsync = true;

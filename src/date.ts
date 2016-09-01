@@ -38,11 +38,18 @@ function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptio
   return val;
 }
 
-function readTrustedSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
-  return new Date(val);
+function readTrustedSync(format: "json-doc" | "bson-doc", val: string | Date, options?: DateOptions): Date {
+  switch (format) {
+    case "json-doc":
+      return new Date(<string> val);
+    case "bson-doc":
+      return new Date((<Date> val).getTime());
+    default:
+      throw new Error("Unknown format");
+  }
 }
 
-function writeSync(format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): any {
+function writeSync(format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): string | Date {
   return format === "json-doc" ? val.toJSON() : val;
 }
 
@@ -90,8 +97,8 @@ function squashSync (diff1: number | null, diff2: number | null, options?: DateO
 }
 
 export class DateType implements
-  VersionedTypeSync<Date, number, DateOptions>,
-  VersionedTypeAsync<Date, number, DateOptions> {
+  VersionedTypeSync<Date, number>,
+  VersionedTypeAsync<Date, number> {
 
   isSync = true;
   isAsync = true;

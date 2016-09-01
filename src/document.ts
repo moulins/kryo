@@ -1,472 +1,428 @@
-// import * as Bluebird from "bluebird";
-// import * as _ from "lodash";
-// import {utils, type} from "via-core";
-// import {UnavailableSyncError, UnsupportedFormatError, ViaTypeError, UnexpectedTypeError} from "./helpers/via-type-error";
-//
-// export interface PropertyDescriptor {
-//   type?: type.Type<any, any>;
-//   optional?: boolean;
-//   nullable?: boolean;
-// }
-//
-// export interface DocumentOptions {
-//   additionalProperties?: boolean;
-//   allowPartial?: boolean;
-//   properties?: utils.Dictionary<PropertyDescriptor>;
-// }
-//
-// let defaultOptions: DocumentOptions = {
-//   additionalProperties: false,
-//   allowPartial: false,
-//   properties: {}
-// };
-//
-// export interface EqualsOptions {
-//   partial?: boolean;
-//   throw?: boolean;
-// }
-//
-// export interface KeyDiffResult {
-//   commonKeys: string[];
-//   missingKeys: string[];
-//   extraKeys: string[];
-// }
-//
-// export class DocumentTypeError extends ViaTypeError {}
-//
-// export class MissingKeysError extends DocumentTypeError {
-//   constructor (keys: string[]) {
-//     super (null, "MissingKeysError", {keys: keys}, `Expected keys are missing: ${keys.join(", ")}`)
-//   }
-// }
-//
-// export class ExtraKeysError extends DocumentTypeError {
-//   constructor (keys: string[]) {
-//     super (null, "ExtraKeysError", {keys: keys}, `Unexpected extra keys (unkown properties): ${keys.join(", ")}`)
-//   }
-// }
-//
-// export class ForbiddenNullError extends DocumentTypeError {
-//   constructor (propertyName: string) {
-//     super (null, "ForbiddenNullError", {property: propertyName}, `The property ${propertyName} cannot be null`)
-//   }
-// }
-//
-// export class PropertiesTestError extends DocumentTypeError {
-//   constructor (errors: utils.Dictionary<Error>) {
-//     let errorDetails = "";
-//     let first = true;
-//     for (let prop in errors) {
-//       errorDetails = errorDetails + (first ? "" : ", ") + prop + ": " + errors[prop];
-//       first = false;
-//     }
-//     super (null, "PropertiesTestError", {errors: errors}, `Failed test for the properties: {${errorDetails}}`);
-//   }
-// }
-//
-// export class DocumentType implements type.CollectionType<utils.Document, type.DocumentDiff> {
-//
-//   isSync: boolean = true;
-//   name: string = "document";
-//   options: DocumentOptions;
-//
-//   constructor (options?: DocumentOptions) {
-//     this.options = _.assign(_.clone(defaultOptions), options);
-//     this.updatedIsSync();
-//   }
-//
-//   updatedIsSync (): boolean {
-//     this.isSync = true;
-//     for (let key in this.options.properties) {
-//       let property = this.options.properties[key];
-//       if (property && property.type && !property.type.isSync) {
-//         this.isSync = false;
-//         break;
-//       }
-//     }
-//     return this.isSync;
-//   }
-//
-//   readTrustedSync(format: string, val: any): utils.Document {
-//     throw new UnavailableSyncError(this, "readTrusted");
-//   }
-//
-//   readTrusted(format: string, val: any, opt: DocumentOptions): Bluebird<utils.Document> {
-//     return Bluebird.try(() => {
-//       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
-//
-//       switch (format) {
-//         case "bson":
-//         case "json":
-//           val = <utils.Document> val;
-//           let keysDiff = DocumentType.keysDiff(val, options.properties);
-//
-//           return Bluebird
-//             .props(
-//               _.zipObject(
-//                 keysDiff.commonKeys,
-//                 _.map(keysDiff.commonKeys, (key: string) => {
-//                   let member: any = val[key];
-//                   let property = options.properties[key];
-//                   if (member === null) {
-//                     return Bluebird.resolve(null);
-//                   }
-//                   if (property.type) {
-//                     return property.type.readTrusted(format, member);
-//                   } else {
-//                     return Bluebird.resolve(member);
-//                   }
-//                 })
-//               )
-//             );
-//         default:
-//           return Bluebird.reject(new UnsupportedFormatError(format));
-//       }
-//     });
-//   }
-//
-//   readSync(format: string, val: any): utils.Document {
-//     throw new UnavailableSyncError(this, "read");
-//   }
-//
-//   read(format: string, val: any, opt: DocumentOptions): Bluebird<utils.Document> {
-//     return Bluebird.try(() => {
-//       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
-//
-//       switch (format) {
-//         case "bson":
-//         case "json":
-//           val = <utils.Document> val;
-//           let keysDiff = DocumentType.keysDiff(val, options.properties);
-//
-//           let missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
-//             return !options.properties[key].optional;
-//           });
-//           if (missingMandatoryKeys.length && !options.allowPartial) {
-//             return Bluebird.reject(new MissingKeysError(missingMandatoryKeys));
-//           }
-//
-//           return Bluebird
-//             .props(
-//               _.zipObject(
-//                 keysDiff.commonKeys,
-//                 _.map(keysDiff.commonKeys, (key: string) => {
-//                   let member: any = val[key];
-//                   let property = options.properties[key];
-//                   if (member === null) {
-//                     if (property.nullable) {
-//                       return Bluebird.resolve(null);
-//                     } else {
-//                       return Bluebird.reject(new ForbiddenNullError(key));
-//                     }
-//                   }
-//                   if (property.type) {
-//                     return property.type.read(format, member);
-//                   } else {
-//                     // Reading an untyped property !
-//                     return Bluebird.resolve(member);
-//                   }
-//                 })
-//               )
-//             );
-//         default:
-//           return Bluebird.reject(new UnsupportedFormatError(format));
-//       }
-//     });
-//   }
-//
-//   writeSync(format: string, val: utils.Document, opt: DocumentOptions): any {
-//     throw new UnavailableSyncError(this, "write");
-//   }
-//
-//   write(format: string, val: utils.Document, opt: DocumentOptions): Bluebird<any> {
-//     return Bluebird.try(() => {
-//       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
-//
-//       switch (format) {
-//         case "bson":
-//         case "json":
-//           val = <utils.Document> val;
-//           let keysDiff = DocumentType.keysDiff(val, options.properties);
-//
-//           return Bluebird
-//             .props(
-//               _.zipObject(
-//                 keysDiff.commonKeys,
-//                 _.map(keysDiff.commonKeys, (key: string) => {
-//                   let member: any = val[key];
-//                   let property = options.properties[key];
-//                   if (member === null) {
-//                     return Bluebird.resolve(null);
-//                   }
-//                   if (property.type) {
-//                     return property.type.write(format, member);
-//                   } else {
-//                     return Bluebird.resolve(member);
-//                   }
-//                 })
-//               )
-//             );
-//         default:
-//           return Bluebird.reject(new UnsupportedFormatError(format));
-//       }
-//     });
-//   }
-//
-//   testSync (val: utils.Document, options?: DocumentOptions): Error {
-//     throw new UnavailableSyncError(this, "test");
-//   }
-//
-//   test (val: utils.Document, opt?: DocumentOptions): Bluebird<Error> {
-//     return Bluebird.try(() => {
-//       let options: DocumentOptions = opt ? DocumentType.mergeOptions(this.options, opt) : this.options;
-//
-//       // TODO: keep this test ?
-//       if (!_.isPlainObject(val)) {
-//         return Bluebird.resolve(new UnexpectedTypeError(typeof val, "object"));
-//       }
-//
-//       let curKeys: string[] = _.keys(val);
-//       let expectedKeys: string[] = _.keys(options.properties);
-//
-//       if (!options.additionalProperties) {
-//         let extraKeys: string[] = _.difference(curKeys, expectedKeys);
-//         if (extraKeys.length) {
-//           return Bluebird.resolve(new ExtraKeysError(extraKeys));
-//         }
-//       }
-//
-//       curKeys = _.intersection(curKeys, expectedKeys);
-//
-//       return Bluebird
-//         .map(curKeys, (key: string, i: number, len: number) => {
-//           let property: PropertyDescriptor = options.properties[key];
-//           if (val[key] === null) {
-//             let err: Error;
-//             if (property.nullable) {
-//               err = null;
-//             } else {
-//               err = new ForbiddenNullError(key);
-//             }
-//             return Bluebird.resolve([key, err]);
-//           }
-//
-//           return property.type
-//             .test(val[key])
-//             .then((err: Error) => {
-//               return [key, err];
-//             });
-//         })
-//         .then(function(results: Array<[string, Error]>) {
-//           results = _.filter(results, (result: [string, Error]) => {
-//               return result[1] !== null;
-//             });
-//
-//           if (results.length) {
-//             let errorsDictionary: utils.Dictionary<Error> = _.fromPairs(results);
-//             return new PropertiesTestError(errorsDictionary);
-//           }
-//
-//           return null;
-//         });
-//     });
-//   }
-//
-//   equalsSync(val1: utils.Document, val2: utils.Document): boolean {
-//     throw new UnavailableSyncError(this, "equals");
-//   }
-//
-//   equals (val1: utils.Document, val2: utils.Document, options?: EqualsOptions): Bluebird<boolean> {
-//     return Bluebird
-//       .try(() => {
-//         let keys: string[] = _.keys(this.options.properties);
-//         let val1Keys: string[] = _.intersection(keys, _.keys(val1));
-//         let val2Keys: string[] = _.intersection(keys, _.keys(val2));
-//
-//         if (val1Keys.length === keys.length && val2Keys.length === keys.length) {
-//           return Bluebird.resolve(keys);
-//         }
-//
-//         // if (!options || !options.partial) {
-//         //   return Promise.resolve(new Error("Missing keys"));
-//         // }
-//
-//         let extraKeys: string[] = _.difference(val1Keys, val2Keys);
-//         let missingKeys: string[] = _.difference(val2Keys, val1Keys);
-//
-//         if (extraKeys.length) {
-//           return Bluebird.reject(new ExtraKeysError(extraKeys));
-//         }
-//
-//         if (missingKeys.length) {
-//           return Bluebird.reject(new MissingKeysError(missingKeys));
-//         }
-//
-//         return Bluebird.resolve(val1Keys);
-//       })
-//       .then<boolean>((keys: string[]) => {
-//         return Bluebird
-//           .map(keys, (key: string) => {
-//             let property: PropertyDescriptor = this.options.properties[key];
-//             return property.type.equals(val1[key], val2[key]);
-//           })
-//           .then((equalsResults: boolean[]) => {
-//             let equals: boolean = equalsResults.indexOf(false) < 0;
-//             if (equals) {
-//               return Bluebird.resolve(true);
-//             } else if (options && options.throw) {
-//               let diffKeys: string[] = _.filter(keys, (key: string, index: number): boolean => equalsResults[index] === false);
-//               return Bluebird.resolve(false);
-//               // return Promise.reject(new Error(`The objects are not equal because the following keys are not equal: ${diffKeys.join(", ")}`));
-//             } else {
-//               return Bluebird.resolve(false);
-//             }
-//           });
-//       })
-//       .catch((err: Error) => {
-//         if (options && options.throw) {
-//           return Bluebird.reject(err);
-//         } else {
-//           return Bluebird.resolve(false);
-//         }
-//       });
-//   }
-//
-//   cloneSync(val: utils.Document): utils.Document {
-//     throw new UnavailableSyncError(this, "clone");
-//   }
-//
-//   clone (val: utils.Document): Bluebird<utils.Document> {
-//     return Bluebird.resolve(this.cloneSync(val));
-//   }
-//
-//   diffSync(oldVal: utils.Document, newVal: utils.Document): type.DocumentDiff {
-//     throw new UnavailableSyncError(this, "diff");
-//   }
-//
-//   diff (oldVal: utils.Document, newVal: utils.Document): Bluebird<type.DocumentDiff> {
-//     return Bluebird.resolve(this.diffSync(oldVal, newVal));
-//   }
-//
-//   patchSync(oldVal: utils.Document, diff: type.DocumentDiff): utils.Document {
-//     throw new UnavailableSyncError(this, "patch");
-//   }
-//
-//   patch (oldVal: utils.Document, diff: type.DocumentDiff): Bluebird<utils.Document> {
-//     return Bluebird.resolve(this.patchSync(oldVal, diff));
-//   }
-//
-//   revertSync(newVal: utils.Document, diff: type.DocumentDiff): utils.Document {
-//     throw new UnavailableSyncError(this, "revert");
-//   }
-//
-//   revert (newVal: utils.Document, diff: type.DocumentDiff): Bluebird<utils.Document> {
-//     return Bluebird.resolve(this.revertSync(newVal, diff));
-//   }
-//
-//   reflect (visitor: (value?: any, key?: string, parent?: type.CollectionType<any, any>) => any): any {
-//     return Bluebird.try(() => {
-//       let childType: type.Type<any, any>;
-//       for (let prop in this.options.properties) {
-//         childType = this.options.properties[prop].type;
-//         visitor(childType, prop, this);
-//         if ((<type.CollectionType<any, any>> childType).reflect) {
-//           (<type.CollectionType<any, any>> childType).reflect(visitor);
-//         }
-//       }
-//     });
-//   }
-//
-//   reflectSync (visitor: (value?: any, key?: any, parent?: type.CollectionType<any, any>) => any): any {
-//     if (!this.isSync) {
-//       throw new UnavailableSyncError(this, "reflect");
-//     }
-//
-//     let childType: type.TypeSync<any, any>;
-//     for (let prop in this.options.properties) {
-//       childType = <type.TypeSync<any, any>> <any> this.options.properties[prop].type;
-//       visitor(childType, prop, <type.CollectionType<utils.Document, type.DocumentDiff>> <any> this);
-//       if ((<type.CollectionType<any, any>> <any> childType).reflectSync) {
-//         (<type.CollectionType<any, any>> <any> childType).reflectSync(visitor);
-//       }
-//     }
-//     return this;
-//   }
-//
-//   // TODO: Promise.try
-//   diffToUpdate (newVal: utils.Document, diff: type.DocumentDiff, format: string): Bluebird<type.UpdateQuery> {
-//     let update: type.UpdateQuery = {
-//       $set: {},
-//       $unset: {}
-//     };
-//
-//     if (diff === null) {
-//       return Bluebird.resolve(update);
-//     }
-//
-//     for (let key in diff.unset) {
-//       update.$unset[key] = true;
-//     }
-//
-//     let setPromises: Bluebird<any>[] = _.map(diff.set, (value: any, field: string) => {
-//       let property:PropertyDescriptor = this.options.properties[field];
-//       return Bluebird.resolve(property.type
-//         .write(format, newVal[field]))
-//         .then((encoded:any) => update.$set[field] = encoded);
-//     });
-//
-//     // TODO: recursivity, etc.
-//     let updatePromises: Bluebird<any>[] = _.map(diff.update, (value: any, field: string) => {
-//       let property:PropertyDescriptor = this.options.properties[field];
-//       return Bluebird.resolve(property.type
-//         .write(format, newVal[field]))
-//         .then((encoded:any) => update.$set[field] = encoded);
-//     });
-//
-//     return Bluebird
-//       .all(_.concat(setPromises, updatePromises))
-//       .thenReturn(update);
-//   }
-//
-//   static assignOptions (target: DocumentOptions, source: DocumentOptions): DocumentOptions {
-//     if (!source) {
-//       return target || {};
-//     }
-//     // TODO: cleaner assignation
-//     let oldProps = target.properties;
-//     _.assign(target, source);
-//     target.properties = oldProps;
-//     if (source.properties) {
-//       if (!target.properties) {
-//         target.properties = {};
-//       }
-//       for (let propertyName in source.properties) {
-//         if (source.properties[propertyName] === null) {
-//           delete target.properties[propertyName];
-//         } else {
-//           target.properties[propertyName] = <PropertyDescriptor> _.assign({}, target.properties[propertyName], source.properties[propertyName]);
-//         }
-//       }
-//     }
-//     return target;
-//   }
-//
-//   static cloneOptions (source: DocumentOptions): DocumentOptions {
-//     return DocumentType.assignOptions({}, source);
-//   }
-//
-//   static mergeOptions (target: DocumentOptions, source: DocumentOptions): DocumentOptions {
-//     return DocumentType.assignOptions(DocumentType.cloneOptions(target), source);
-//   }
-//
-//   static keysDiff (subject: utils.Document, reference: utils.Document): KeyDiffResult {
-//     let subjectKeys: string[] = _.keys(subject);
-//     let referenceKeys: string[] = _.keys(reference);
-//
-//     return {
-//       commonKeys: _.intersection(subjectKeys, referenceKeys),
-//       missingKeys: _.difference(referenceKeys, subjectKeys),
-//       extraKeys: _.difference(subjectKeys, referenceKeys)
-//     }
-//   }
-// }
+import * as Bluebird from "bluebird";
+import * as _ from "lodash";
+
+import {
+  Document, VersionedTypeSync, VersionedTypeAsync,
+  Dictionary, TypeSync, VersionedCollectionTypeSync,
+  VersionedCollectionTypeAsync, Type
+} from "./interfaces";
+import {ViaTypeError} from "./helpers/via-type-error";
+import {error} from "util";
+import {TemporalError} from "./array";
+
+export class InvalidTimestampError extends ViaTypeError {
+  constructor(date: Date) {
+    super('invalid-timestamp', {date: date}, 'Invalid timestamp');
+  }
+}
+
+const NAME = "document";
+
+export interface DateOptions {}
+
+
+export interface PropertyDescriptor<TypeKind> {
+  type?: TypeKind;
+  /// This property can be missing
+  optional?: boolean;
+  /// The value can be `null`
+  nullable?: boolean;
+}
+
+export interface DocumentOptions<TypeKind> {
+  additionalProperties?: boolean;
+  ignoreExtraKeys?: boolean;
+  properties?: Dictionary<PropertyDescriptor<TypeKind>>;
+}
+
+let defaultOptions: DocumentOptions<Type<any>> = {
+  additionalProperties: false,
+  ignoreExtraKeys: true,
+  properties: {}
+};
+
+export interface DocumentDiff {
+  set: Document; // val
+  update: Dictionary<any>; // diff
+  unset: Document; // val
+  toNull: Document;
+  fromNull: Document;
+}
+
+export interface DiffKeysResult {
+  commonKeys: string[];
+  missingKeys: string[];
+  extraKeys: string[];
+}
+
+function diffKeys(source: Document, target: Document): DiffKeysResult {
+  const sourcetKeys: string[] = _.keys(source);
+  const targetKeys: string[] = _.keys(target);
+
+  return {
+    commonKeys: _.intersection(sourcetKeys, targetKeys),
+    missingKeys: _.difference(sourcetKeys, targetKeys),
+    extraKeys: _.difference(targetKeys, sourcetKeys)
+  }
+}
+
+let MissingKeysError: any = null;
+let ExtraKeysError: any = null;
+let ForbiddenNullError: any = null;
+let UnsupportedFormatError: any = null;
+let InvalidProperties: any = null;
+
+
+function readSync(format: "json-doc" | "bson-doc", val: Document, options?: DocumentOptions<TypeSync<any>>): Document {
+  options = options ? options : {};
+  const keysDiff = diffKeys(options.properties, val);
+
+  const missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
+    return !options.properties[key].optional;
+  });
+
+  if (missingMandatoryKeys.length > 0) {
+    throw new MissingKeysError(missingMandatoryKeys);
+  } else if (keysDiff.extraKeys.length > 0 && options.ignoreExtraKeys) {
+    throw new ExtraKeysError(keysDiff.extraKeys);
+  }
+
+  let result: Document = {};
+
+  for (const key in keysDiff.commonKeys) {
+    const member: any = val[key];
+    const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
+    if (member === null) {
+      if (!descriptor.nullable) {
+        throw new ForbiddenNullError(key);
+      }
+      result[key] = null;
+    } else {
+      result[key] = descriptor.type.readSync(format, member);
+    }
+  }
+
+  return result;
+}
+
+function readTrustedSync(format: "json-doc" | "bson-doc", val: Document, options?: DocumentOptions<TypeSync<any>>): Document {
+  options = options ? options : {};
+  const keysDiff = diffKeys(options.properties, val);
+
+  let result: Document = {};
+
+  for (const key in keysDiff.commonKeys) {
+    const member: any = val[key];
+    const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
+    if (member === null) {
+      result[key] = null;
+    } else {
+      result[key] = descriptor.type.readSync(format, member);
+    }
+  }
+
+  return result;
+}
+
+function writeSync(format: "json-doc" | "bson-doc", val: Document, options?: DocumentOptions<TypeSync<any>>): Document {
+  options = options ? options : {};
+  const keysDiff = diffKeys(options.properties, val);
+
+  let result: Document = {};
+
+  for (const key in keysDiff.commonKeys) {
+    const member: any = val[key];
+    const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
+    if (member === null) {
+      result[key] = null;
+    } else {
+      result[key] = descriptor.type.writeSync(format, member);
+    }
+  }
+
+  return result;
+}
+
+function testErrorSync (val: Document, options?: DocumentOptions<TypeSync<any>>): Error | null {
+  options = options ? options : {};
+
+  if (typeof val !== "object") {
+    return new Error("Unexpected type");
+  }
+
+  const keysDiff = diffKeys(options.properties, val);
+
+  const missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
+    return !options.properties[key].optional;
+  });
+
+  if (missingMandatoryKeys.length > 0) {
+    throw new MissingKeysError(missingMandatoryKeys);
+  } else if (keysDiff.extraKeys.length > 0 && options.ignoreExtraKeys) {
+    throw new ExtraKeysError(keysDiff.extraKeys);
+  }
+
+  let errors: Dictionary<Error> | null = null;
+
+  for (const key in keysDiff.commonKeys) {
+    let curError: Error | null = null;
+    const member: any = val[key];
+    const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
+
+    if (member === null && !descriptor.nullable) {
+      curError = new ForbiddenNullError(key);
+    } else {
+      curError = descriptor.type.testErrorSync(member);
+    }
+
+    if (error !== null) {
+      if (errors === null) {
+        errors = {};
+      }
+      errors[key] = curError;
+    }
+  }
+
+  if (errors !== null) {
+    return InvalidProperties(errors);
+  }
+
+  return null;
+}
+
+function testSync (val: Document, options?: DocumentOptions<TypeSync<any>>): boolean {
+  return testErrorSync(val) === null;
+}
+
+function equalsSync (val1: Document, val2: Document, options?: DocumentOptions<TypeSync<any>>): boolean {
+  const keys: string[] = _.keys(options.properties);
+  const val1Keys: string[] = _.intersection(keys, (<any> _).keys(val1));
+  const val2Keys: string[] = _.intersection(keys, (<any> _).keys(val2));
+  const commonKeys: string[] = _.intersection(val1Keys, val2Keys);
+  const extraKeys: string[] = _.difference(val1Keys, val2Keys);
+  const missingKeys: string[] = _.difference(val2Keys, val1Keys);
+
+  if (extraKeys.length > 0 || missingKeys.length > 0) {
+    return false;
+  }
+
+  for (const key in commonKeys) {
+    if (val1[key] === null || val2[key] === null) {
+      if (val1[key] !== val2[key]) {
+        return false;
+      }
+    } else if (!options.properties[key].type.equalsSync(val1[key], val2[key])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function cloneSync (val: Document, options?: DocumentOptions<TypeSync<any>>): Document {
+  const keys: string[] = _.intersection(_.keys(options.properties), _.keys(val));
+
+  let result: Document = {};
+
+  for (const key in keys) {
+    if (val[key] === null) {
+      result[key] = null;
+    } else {
+      result[key] = options.properties[key].type.cloneSync(val[key]);
+    }
+  }
+
+  return result;
+}
+
+function diffSync (oldVal: Document, newVal: Document, options: DocumentOptions<VersionedTypeSync<any, any>>): DocumentDiff | null {
+  const keysDiff = diffKeys(oldVal, newVal);  // TODO: intersection with properties
+  let result: DocumentDiff = {set: {}, unset: {}, update: {}, toNull: {}, fromNull: {}};
+  let equal = (keysDiff.extraKeys.length === 0 && keysDiff.missingKeys.length === 0);
+  for (const key in keysDiff.extraKeys) {
+    if (newVal[key] === null) {
+      result.set[key] = null;
+    } else {
+      result.set[key] = options.properties[key].type.writeSync("json-doc", newVal[key]);
+    }
+  }
+  for (const key in keysDiff.missingKeys) {
+    if (oldVal[key] === null) {
+      result.unset[key] = null;
+    } else {
+      result.unset[key] = options.properties[key].type.writeSync("json-doc", oldVal[key]);
+    }
+  }
+  for (const key in keysDiff.commonKeys) {
+    if (oldVal[key] === null || newVal[key] === null) {
+      if (oldVal[key] === null && newVal[key] !== null) {
+        result.fromNull = options.properties[key].type.writeSync("json-doc", newVal[key]);
+        equal = false;
+      } else if(oldVal[key] !== null && newVal[key] === null) {
+        result.toNull = options.properties[key].type.writeSync("json-doc", oldVal[key]);
+        equal = false;
+      }
+    } else {
+      const diff: any = options.properties[key].type.diffSync(oldVal[key], newVal[key]);
+      if (diff !== null) {
+        result.update[key] = diff;
+        equal = false;
+      }
+    }
+  }
+  return equal ? null : result;
+}
+
+function patchSync (oldVal: Document, diff: DocumentDiff | null, options: DocumentOptions<VersionedTypeSync<any, any>>): Document {
+  let newVal: Document = cloneSync(oldVal);
+
+  if (diff === null) {
+    return newVal;
+  }
+
+  for (const key in diff.set) {
+    if (diff.set[key] === null) {
+      newVal[key] = null;
+    } else {
+      newVal[key] = options.properties[key].type.readSync("json-doc", diff.set[key]);
+    }
+  }
+  for (const key in diff.fromNull) {
+    newVal[key] = options.properties[key].type.readSync("json-doc", diff.fromNull[key]);
+  }
+  for (const key in diff.toNull) {
+    newVal[key] = null;
+  }
+  for (const key in diff.update) {
+    newVal[key] = options.properties[key].type.patchSync(newVal[key], diff.update[key]);
+  }
+  return newVal;
+}
+
+function reverseDiffSync (diff: DocumentDiff | null, options?: DocumentOptions<VersionedTypeSync<any, any>>): DocumentDiff | null {
+  // TODO: clone the other values
+  let reversed: DocumentDiff = {
+    set: diff.unset,
+    unset: diff.set,
+    toNull: diff.fromNull,
+    fromNull: diff.toNull,
+    update: {}
+  };
+  for (const key in diff.update) {
+    reversed.update[key] = options.properties[key].type.reverseDiffSync(diff.update[key]);
+  }
+  return reversed;
+}
+
+export class DocumentType implements
+  VersionedCollectionTypeSync<Document, DocumentDiff, any>,
+  VersionedCollectionTypeAsync<Document, DocumentDiff, any> {
+
+  isSync = true;
+  isAsync = true;
+  isCollection = true;
+  type = NAME;
+  types = [NAME];
+
+  options: DocumentOptions<any> = null;
+
+  constructor(options: DocumentOptions<Type<any>>) {
+    this.options = _.merge({}, defaultOptions, options);
+    this.isSync = _.reduce(options.properties, (memo, curProperty) => memo && curProperty.type.isSync, true);
+    this.isAsync = _.reduce(options.properties, (memo, curProperty) => memo && curProperty.type.isAsync, true);
+  }
+
+  toJSON(): null { // TODO: return options
+    return null;
+  }
+
+  readTrustedSync (format: "json-doc" | "bson-doc", val: Document): Document {
+    return readTrustedSync(format, val, this.options);
+  }
+
+  readTrustedAsync (format: "json-doc" | "bson-doc", val: Document): Bluebird<Document> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  readSync (format: "json-doc" | "bson-doc", val: Document): Document {
+    return readSync(format, val, this.options);
+  }
+
+  readAsync (format: "json-doc" | "bson-doc", val: Document): Bluebird<Document> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  writeSync (format: "json-doc" | "bson-doc", val: Document): Document {
+    return writeSync(format, val, this.options);
+  }
+
+  writeAsync (format: "json-doc" | "bson-doc", val: Document): Bluebird<Document> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  testErrorSync (val: Document): Error | null {
+    return testErrorSync(val, this.options);
+  }
+
+  testErrorAsync (val: Document): Bluebird<Error | null> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  testSync (val: Document): boolean {
+    return testSync(val);
+  }
+
+  testAsync (val: Document): Bluebird<boolean> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  equalsSync (val1: Document, val2: Document): boolean {
+    return equalsSync(val1, val2, this.options);
+  }
+
+  equalsAsync (val1: Document, val2: Document): Bluebird<boolean> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  cloneSync (val: Document): Document {
+    return cloneSync(val);
+  }
+
+  cloneAsync (val: Document): Bluebird<Document> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  diffSync (oldVal: Document, newVal: Document): DocumentDiff | null {
+    return diffSync(oldVal, newVal, this.options);
+  }
+
+  diffAsync (oldVal: Document, newVal: Document): Bluebird<DocumentDiff | null> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  patchSync (oldVal: Document, diff: DocumentDiff | null): Document {
+    return patchSync(oldVal, diff, this.options);
+  }
+
+  patchAsync (oldVal: Document, diff: DocumentDiff | null): Bluebird<Document> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  reverseDiffSync(diff: DocumentDiff | null): DocumentDiff | null {
+    return reverseDiffSync(diff, this.options);
+  }
+
+  reverseDiffAsync(diff: DocumentDiff | null): Bluebird<DocumentDiff | null> {
+    return Bluebird.reject(new TemporalError());
+  }
+
+  //noinspection TypeScriptUnresolvedVariable
+  iterateSync (value: Document): IteratorResult<any> {
+    throw new Error("TODO");
+  }
+
+  //noinspection TypeScriptUnresolvedVariable
+  iterateAsync (value: Document): IteratorResult<PromiseLike<any>> {
+    throw new TemporalError();
+  }
+}

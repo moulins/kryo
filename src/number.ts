@@ -1,6 +1,9 @@
 import {UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 import * as Bluebird from "bluebird";
-import {TypeSync, TypeAsync} from "./interfaces";
+import {
+  TypeSync, TypeAsync, VersionedTypeAsync,
+  VersionedTypeSync
+} from "./interfaces";
 
 const NAME = "number";
 
@@ -55,13 +58,13 @@ function patchSync (oldVal: number, diff: [number, number] | null, options?: Num
   return diff === null ? oldVal : diff[1];
 }
 
-function revertSync (newVal: number, diff: [number, number] | null, options?: NumberOptions): number {
-  return diff === null ? newVal : diff[0];
+function reverseDiffSync (diff: [number, number] | null, options?: NumberOptions): [number, number] | null {
+  return diff === null ? null : [diff[1], diff[0]];
 }
 
 export class NumberType implements
-  TypeSync<number, [number, number], NumberOptions>,
-  TypeAsync<number, [number, number], NumberOptions> {
+  VersionedTypeSync<number, [number, number]>,
+  VersionedTypeAsync<number, [number, number]> {
 
   isSync = true;
   isAsync = true;
@@ -145,12 +148,12 @@ export class NumberType implements
     return Bluebird.try(() => patchSync(oldVal, diff, options));
   }
 
-  revertSync(newVal: number, diff: [number, number] | null, options?: NumberOptions): number {
-    return revertSync(newVal, diff, options);
+  reverseDiffSync(diff: [number, number] | null, options?: NumberOptions): [number, number] | null {
+    return reverseDiffSync(diff, options);
   }
 
-  revertAsync(newVal: number, diff: [number, number] | null, options?: NumberOptions): Bluebird<number> {
-    return Bluebird.try(() => revertSync(newVal, diff, options));
+  reverseDiffAsync(diff: [number, number] | null, options?: NumberOptions): Bluebird<[number, number] | null> {
+    return Bluebird.try(() => reverseDiffSync(diff, options));
   }
 }
 

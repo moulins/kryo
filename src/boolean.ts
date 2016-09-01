@@ -66,8 +66,8 @@ function squashSync (diff1: boolean | null, diff2: boolean | null): boolean | nu
 }
 
 export class BooleanType implements
-  VersionedTypeSync<boolean, boolean, BooleanOptions>,
-  VersionedTypeAsync<boolean, boolean, BooleanOptions> {
+  VersionedTypeSync<boolean, boolean>,
+  VersionedTypeAsync<boolean, boolean> {
 
   isSync = true;
   isAsync = true;

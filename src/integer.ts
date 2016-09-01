@@ -1,6 +1,9 @@
 import {UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 import * as Bluebird from "bluebird";
-import {TypeSync, TypeAsync} from "./interfaces";
+import {
+  TypeSync, TypeAsync, VersionedTypeSync,
+  VersionedTypeAsync
+} from "./interfaces";
 
 import * as numberType from "./number";
 import {NumberType} from "./number";
@@ -23,8 +26,8 @@ function reverseDiffSync (diff: number | null): number | null {
 }
 
 export class IntegerType implements
-  TypeSync<number, number, NumberOptions>,
-  TypeAsync<number, number, NumberOptions> {
+  VersionedTypeSync<number, number>,
+  VersionedTypeAsync<number, number> {
 
   isSync = true;
   isAsync = true;
@@ -122,6 +125,14 @@ export class IntegerType implements
 
   patchAsync (oldVal: number, diff: number | null): Bluebird<number> {
     return Bluebird.try(() => patchSync(oldVal, diff));
+  }
+
+  reverseDiffSync(diff: number | null): number | null {
+    return reverseDiffSync(diff);
+  }
+
+  reverseDiffAsync(diff: number | null): Bluebird<number | null> {
+    return Bluebird.try(() => reverseDiffSync(diff));
   }
 }
 
