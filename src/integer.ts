@@ -2,7 +2,7 @@ import {UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 import * as Bluebird from "bluebird";
 import {
   TypeSync, TypeAsync, VersionedTypeSync,
-  VersionedTypeAsync
+  VersionedTypeAsync, SerializableTypeSync, SerializableTypeAsync
 } from "./interfaces";
 
 import * as numberType from "./number";
@@ -26,12 +26,18 @@ function reverseDiffSync (diff: number | null): number | null {
 }
 
 export class IntegerType implements
+  SerializableTypeSync<"json-doc", number, number>,
+  SerializableTypeSync<"bson-doc", number, number>,
   VersionedTypeSync<number, number>,
+  SerializableTypeAsync<"json-doc", number, number>,
+  SerializableTypeAsync<"bson-doc", number, number>,
   VersionedTypeAsync<number, number> {
 
   isSync = true;
   isAsync = true;
-  isCollection = true;
+  isSerializable = true;
+  isVersioned = true;
+  isCollection = false;
   type = NAME;
   types = [NAME];
 
@@ -45,15 +51,15 @@ export class IntegerType implements
     return null;
   }
 
-  readTrustedSync (format: "json-doc" | "bson-doc", val: any): number {
+  readTrustedSync (format: "json-doc" | "bson-doc", val: number): number {
     return val;
   }
 
-  readTrustedAsync (format: "json-doc" | "bson-doc", val: any): Bluebird<number> {
+  readTrustedAsync (format: "json-doc" | "bson-doc", val: number): Bluebird<number> {
       return Bluebird.resolve(val);
   }
 
-  readSync (format: "json-doc" | "bson-doc", val: any): number {
+  readSync (format: "json-doc" | "bson-doc", val: number): number {
     const numVal = this.numberType.readSync(format, val);
     if (Math.floor(numVal) !== numVal) {
       throw new Error("Not an integer");
@@ -61,15 +67,15 @@ export class IntegerType implements
     return numVal;
   }
 
-  readAsync (format: "json-doc" | "bson-doc", val: any): Bluebird<number> {
+  readAsync (format: "json-doc" | "bson-doc", val: number): Bluebird<number> {
     return Bluebird.try(() => this.readSync(format, val));
   }
 
-  writeSync (format: "json-doc" | "bson-doc", val: number): any {
+  writeSync (format: "json-doc" | "bson-doc", val: number): number {
     return val;
   }
 
-  writeAsync (format: "json-doc" | "bson-doc", val: number): Bluebird<any> {
+  writeAsync (format: "json-doc" | "bson-doc", val: number): Bluebird<number> {
     return Bluebird.resolve(val);
   }
 

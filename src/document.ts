@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import {
   Document, VersionedTypeSync, VersionedTypeAsync,
   Dictionary, TypeSync, VersionedCollectionTypeSync,
-  VersionedCollectionTypeAsync, Type
+  VersionedCollectionTypeAsync, Type, SerializableTypeSync
 } from "./interfaces";
 import {ViaTypeError} from "./helpers/via-type-error";
 import {error} from "util";
@@ -72,8 +72,17 @@ let ForbiddenNullError: any = null;
 let UnsupportedFormatError: any = null;
 let InvalidProperties: any = null;
 
-
-function readSync(format: "json-doc" | "bson-doc", val: Document, options?: DocumentOptions<TypeSync<any>>): Document {
+function readSync (
+  format: "json-doc",
+  val: Document,
+  options?: DocumentOptions<SerializableTypeSync<"json-doc", any, any>>
+): Bluebird<Document>;
+function readSync (
+  format: "bson-doc",
+  val: Document,
+  options?: DocumentOptions<SerializableTypeSync<"bson-doc", any, any>>
+): Bluebird<Document>;
+function readSync (format: any, val: any, options: any): any {
   options = options ? options : {};
   const keysDiff = diffKeys(options.properties, val);
 
@@ -91,7 +100,7 @@ function readSync(format: "json-doc" | "bson-doc", val: Document, options?: Docu
 
   for (const key in keysDiff.commonKeys) {
     const member: any = val[key];
-    const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
+    const descriptor = options.properties[key];
     if (member === null) {
       if (!descriptor.nullable) {
         throw new ForbiddenNullError(key);
@@ -105,7 +114,17 @@ function readSync(format: "json-doc" | "bson-doc", val: Document, options?: Docu
   return result;
 }
 
-function readTrustedSync(format: "json-doc" | "bson-doc", val: Document, options?: DocumentOptions<TypeSync<any>>): Document {
+function readTrustedSync (
+  format: "json-doc",
+  val: Document,
+  options?: DocumentOptions<SerializableTypeSync<"json-doc", any, any>>
+): Bluebird<Document>;
+function readTrustedSync (
+  format: "bson-doc",
+  val: Document,
+  options?: DocumentOptions<SerializableTypeSync<"bson-doc", any, any>>
+): Bluebird<Document>;
+function readTrustedSync (format: any, val: any, options: any): any {
   options = options ? options : {};
   const keysDiff = diffKeys(options.properties, val);
 
@@ -113,7 +132,7 @@ function readTrustedSync(format: "json-doc" | "bson-doc", val: Document, options
 
   for (const key in keysDiff.commonKeys) {
     const member: any = val[key];
-    const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
+    const descriptor = options.properties[key];
     if (member === null) {
       result[key] = null;
     } else {
@@ -124,7 +143,17 @@ function readTrustedSync(format: "json-doc" | "bson-doc", val: Document, options
   return result;
 }
 
-function writeSync(format: "json-doc" | "bson-doc", val: Document, options?: DocumentOptions<TypeSync<any>>): Document {
+function writeSync (
+  format: "json-doc",
+  val: Document,
+  options?: DocumentOptions<SerializableTypeSync<"json-doc", any, any>>
+): Bluebird<Document>;
+function writeSync (
+  format: "bson-doc",
+  val: Document,
+  options?: DocumentOptions<SerializableTypeSync<"bson-doc", any, any>>
+): Bluebird<Document>;
+function writeSync (format: any, val: any, options: any): any {
   options = options ? options : {};
   const keysDiff = diffKeys(options.properties, val);
 
@@ -132,7 +161,7 @@ function writeSync(format: "json-doc" | "bson-doc", val: Document, options?: Doc
 
   for (const key in keysDiff.commonKeys) {
     const member: any = val[key];
-    const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
+    const descriptor = options.properties[key];
     if (member === null) {
       result[key] = null;
     } else {
@@ -235,7 +264,11 @@ function cloneSync (val: Document, options?: DocumentOptions<TypeSync<any>>): Do
   return result;
 }
 
-function diffSync (oldVal: Document, newVal: Document, options: DocumentOptions<VersionedTypeSync<any, any>>): DocumentDiff | null {
+function diffSync (
+  oldVal: Document,
+  newVal: Document,
+  options: DocumentOptions<VersionedTypeSync<any, any> & SerializableTypeSync<"json-doc", any, any>>
+): DocumentDiff | null {
   const keysDiff = diffKeys(oldVal, newVal);  // TODO: intersection with properties
   let result: DocumentDiff = {set: {}, unset: {}, update: {}, toNull: {}, fromNull: {}};
   let equal = (keysDiff.extraKeys.length === 0 && keysDiff.missingKeys.length === 0);
@@ -273,7 +306,11 @@ function diffSync (oldVal: Document, newVal: Document, options: DocumentOptions<
   return equal ? null : result;
 }
 
-function patchSync (oldVal: Document, diff: DocumentDiff | null, options: DocumentOptions<VersionedTypeSync<any, any>>): Document {
+function patchSync (
+  oldVal: Document,
+  diff: DocumentDiff | null,
+  options: DocumentOptions<VersionedTypeSync<any, any> & SerializableTypeSync<"json-doc", any, any>>
+): Document {
   let newVal: Document = cloneSync(oldVal);
 
   if (diff === null) {
@@ -320,6 +357,8 @@ export class DocumentType implements
 
   isSync = true;
   isAsync = true;
+  isSerializable = true;
+  isVersioned = true;
   isCollection = true;
   type = NAME;
   types = [NAME];
@@ -336,7 +375,9 @@ export class DocumentType implements
     return null;
   }
 
-  readTrustedSync (format: "json-doc" | "bson-doc", val: Document): Document {
+  readTrustedSync (format: "json-doc", val: Document): Document;
+  readTrustedSync (format: "bson-doc", val: Document): Document;
+  readTrustedSync (format: any, val: any): any {
     return readTrustedSync(format, val, this.options);
   }
 
@@ -344,7 +385,9 @@ export class DocumentType implements
     return Bluebird.reject(new TemporalError());
   }
 
-  readSync (format: "json-doc" | "bson-doc", val: Document): Document {
+  readSync (format: "json-doc", val: Document): Document;
+  readSync (format: "bson-doc", val: Document): Document;
+  readSync (format: any, val: any): any {
     return readSync(format, val, this.options);
   }
 
@@ -352,7 +395,9 @@ export class DocumentType implements
     return Bluebird.reject(new TemporalError());
   }
 
-  writeSync (format: "json-doc" | "bson-doc", val: Document): Document {
+  writeSync (format: "json-doc", val: Document): Document;
+  writeSync (format: "bson-doc", val: Document): Document;
+  writeSync (format: any, val: any): any {
     return writeSync(format, val, this.options);
   }
 

@@ -3,7 +3,7 @@ import * as _ from "lodash";
 
 import {
   TypeSync, TypeAsync, VersionedTypeSync,
-  VersionedTypeAsync
+  VersionedTypeAsync, SerializableTypeSync, SerializableTypeAsync
 } from "./interfaces";
 import {UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 
@@ -122,12 +122,18 @@ function squashSync (diff1: [string, string] | null, diff2: [string, string] | n
 }
 
 export class StringType implements
+  SerializableTypeSync<"json-doc", string, string>,
+  SerializableTypeSync<"bson-doc", string, string>,
   VersionedTypeSync<string, [string, string]>,
+  SerializableTypeAsync<"json-doc", string, string>,
+  SerializableTypeAsync<"bson-doc", string, string>,
   VersionedTypeAsync<string, [string, string]> {
 
   isSync = true;
   isAsync = true;
-  isCollection = true;
+  isSerializable = true;
+  isVersioned = true;
+  isCollection = false;
   type = NAME;
   types = [NAME];
 
@@ -145,7 +151,9 @@ export class StringType implements
     return readTrustedSync(format, val);
   }
 
-  readTrustedAsync (format: "json-doc" | "bson-doc", val: any): Bluebird<string> {
+  readTrustedAsync (format: "json-doc", val: string): Bluebird<string>;
+  readTrustedAsync (format: "bson-doc", val: string): Bluebird<string>;
+  readTrustedAsync (format: any, val: any): any {
     return Bluebird.try(() => readTrustedSync(format, val));
   }
 
@@ -262,4 +270,3 @@ export class MaxLengthError extends StringTypeError {
     super (null, "MaxLengthError", {string: string, maxLength: maxLength}, `Expected string length (${string.length}) to be less than or equal to ${maxLength}`);
   }
 }
-

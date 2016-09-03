@@ -1,7 +1,10 @@
 import * as Bluebird from "bluebird";
 import * as _ from "lodash";
 
-import {VersionedTypeSync, VersionedTypeAsync} from "./interfaces";
+import {
+  VersionedTypeSync, VersionedTypeAsync,
+  SerializableTypeSync, SerializableTypeAsync
+} from "./interfaces";
 import {ViaTypeError} from "./helpers/via-type-error";
 
 export class InvalidTimestampError extends ViaTypeError {
@@ -13,6 +16,10 @@ export class InvalidTimestampError extends ViaTypeError {
 const NAME = "date";
 
 export interface DateOptions {}
+
+export let defaultOptions: DateOptions = {
+
+};
 
 
 function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
@@ -49,7 +56,9 @@ function readTrustedSync(format: "json-doc" | "bson-doc", val: string | Date, op
   }
 }
 
-function writeSync(format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): string | Date {
+function writeSync (format: "json-doc", val: Date, options?: DateOptions): string;
+function writeSync (format: "bson-doc", val: Date, options?: DateOptions): Date;
+function writeSync (format: any, val: any, options: any): any {
   return format === "json-doc" ? val.toJSON() : val;
 }
 
@@ -97,41 +106,65 @@ function squashSync (diff1: number | null, diff2: number | null, options?: DateO
 }
 
 export class DateType implements
+  SerializableTypeSync<"json-doc", Date, string>,
+  SerializableTypeSync<"bson-doc", Date, Date>,
   VersionedTypeSync<Date, number>,
+  SerializableTypeAsync<"json-doc", Date, string>,
+  SerializableTypeAsync<"bson-doc", Date, Date>,
   VersionedTypeAsync<Date, number> {
 
   isSync = true;
   isAsync = true;
-  isCollection = true;
+  isSerializable = true;
+  isVersioned = true;
+  isCollection = false;
   type = NAME;
   types = [NAME];
+
+  options: DateOptions = null;
+
+  constructor(options: DateOptions) {
+    this.options = _.merge({}, defaultOptions, options);
+  }
 
   toJSON(): null { // TODO: return options
     return null;
   }
 
-  readTrustedSync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
-    return readTrustedSync(format, val, options);
+  readTrustedSync (format: "json-doc", val: string): Date;
+  readTrustedSync (format: "bson-doc", val: Date): Date;
+  readTrustedSync (format: any, val: any): any {
+    return readTrustedSync(format, val, this.options);
   }
 
-  readTrustedAsync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Bluebird<Date> {
-    return Bluebird.try(() => readTrustedSync(format, val, options));
+  readTrustedAsync (format: "json-doc", val: string): Bluebird<Date>;
+  readTrustedAsync (format: "bson-doc", val: Date): Bluebird<Date>;
+  readTrustedAsync (format: any, val: any): any {
+    return Bluebird.try(() => readTrustedSync(format, val, this.options));
   }
 
-  readSync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
-    return readSync(format, val, options);
+  readSync (format: "json-doc", val: string): Date;
+  readSync (format: "bson-doc", val: Date): Date;
+  readSync (format: any, val: any): any {
+    return readSync(format, val, this.options);
   }
 
-  readAsync (format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Bluebird<Date> {
-    return Bluebird.try(() => readSync(format, val, options));
+  readAsync (format: "json-doc", val: string | number): Bluebird<Date>;
+  readAsync (format: "bson-doc", val: Date): Bluebird<Date>;
+  readAsync (format: any, val: any): any {
+    return Bluebird.try(() => readSync(format, val, this.options));
   }
 
-  writeSync (format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): any {
-    return writeSync(format, val, options);
+  writeSync (format: "json-doc", val: Date): string;
+  writeSync (format: "bson-doc", val: Date): Date;
+  writeSync (format: any, val: any): any {
+    return writeSync(format, val, this.options);
   }
 
-  writeAsync (format: "json-doc" | "bson-doc", val: Date, options?: DateOptions): Bluebird<any> {
-    return Bluebird.try(() => writeSync(format, val, options));
+  writeAsync (format: "json-doc", val: Date): Bluebird<string>;
+  writeAsync (format: "bson-doc", val: Date): Bluebird<Date>;
+  writeAsync (format: any, val: any): any {
+    return Bluebird.try(() => writeSync(format, val, this.options));
   }
 
   testErrorSync (val: Date, options?: DateOptions): Error | null {

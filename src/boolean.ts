@@ -71,7 +71,9 @@ export class BooleanType implements
 
   isSync = true;
   isAsync = true;
-  isCollection = true;
+  isSerializable = true;
+  isVersioned = true;
+  isCollection = false;
   type = NAME;
   types = [NAME];
 

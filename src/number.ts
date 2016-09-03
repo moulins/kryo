@@ -2,7 +2,7 @@ import {UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 import * as Bluebird from "bluebird";
 import {
   TypeSync, TypeAsync, VersionedTypeAsync,
-  VersionedTypeSync
+  VersionedTypeSync, SerializableTypeSync, SerializableTypeAsync
 } from "./interfaces";
 
 const NAME = "number";
@@ -63,12 +63,18 @@ function reverseDiffSync (diff: [number, number] | null, options?: NumberOptions
 }
 
 export class NumberType implements
+  SerializableTypeSync<"json-doc", number, number>,
+  SerializableTypeSync<"bson-doc", number, number>,
   VersionedTypeSync<number, [number, number]>,
+  SerializableTypeAsync<"json-doc", number, number>,
+  SerializableTypeAsync<"bson-doc", number, number>,
   VersionedTypeAsync<number, [number, number]> {
 
   isSync = true;
   isAsync = true;
-  isCollection = true;
+  isSerializable = true;
+  isVersioned = true;
+  isCollection = false;
   type = NAME;
   types = [NAME];
 

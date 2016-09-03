@@ -1,7 +1,10 @@
 import * as Bluebird from "bluebird";
 import {assert} from "chai"
 
-import {TypeAsync, TypeSync} from "../interfaces";
+import {
+  TypeAsync, TypeSync, SerializableTypeSync,
+  SerializableTypeAsync
+} from "../interfaces";
 
 export interface TestItem {
   name: string;
@@ -68,7 +71,57 @@ export function testValidAsync(type: TypeAsync<any>, item: InvalidItem) {
   });
 }
 
-export function runTests(type: TypeSync<any> & TypeAsync<any>, items: TestItem[]) {
+export function testSerializableSync<T, S> (type: SerializableTypeSync<"json-doc", T, S>, item:ValidItem) {
+  it(`Should return the same content after a synchronous write/readTrusted to JSON`, function() {
+    const dehydrated = type.writeSync('json-doc', item.value);
+    const serialized = JSON.stringify(dehydrated);
+    const deserialized = JSON.parse(serialized);
+    const hydrated = type.readTrustedSync('json-doc', deserialized);
+    assert.isTrue(type.testSync(hydrated));
+    assert.isTrue(type.equalsSync(hydrated, item.value));
+  });
+
+  it(`Should return the same content after a synchronous write/read to JSON`, function() {
+    const dehydrated = type.writeSync('json-doc', item.value);
+    const serialized = JSON.stringify(dehydrated);
+    const deserialized = JSON.parse(serialized);
+    const hydrated = type.readSync('json-doc', deserialized);
+    assert.isTrue(type.testSync(hydrated));
+    assert.isTrue(type.equalsSync(hydrated, item.value));
+  });
+}
+
+export function testSerializableAsync<T, S> (type: SerializableTypeAsync<"json-doc", T, S>, item:ValidItem) {
+  it(`Should return the same content after an asynchronous write/readTrusted to JSON`, function() {
+    return Bluebird.try(async function() {
+      const dehydrated = await type.writeAsync("json-doc", item.value);
+      const serialized = JSON.stringify(dehydrated);
+      const deserialized = JSON.parse(serialized);
+      const hydrated = await type.readTrustedAsync("json-doc", deserialized);
+      assert.isTrue(await type.testAsync(hydrated));
+      assert.isTrue(await type.equalsAsync(hydrated, item.value));
+    });
+  });
+
+  it(`Should return the same content after an asynchronous write/read to JSON`, function() {
+    return Bluebird.try(async function() {
+      const dehydrated = await type.writeAsync("json-doc", item.value);
+      const serialized = JSON.stringify(dehydrated);
+      const deserialized = JSON.parse(serialized);
+      const hydrated = await type.readAsync("json-doc", deserialized);
+      const isValid = await type.testAsync(hydrated);
+      assert.isTrue(isValid);
+      const isEqual = await type.equalsAsync(hydrated, item.value);
+      assert.isTrue(isEqual);
+    });
+  });
+}
+
+export function runTests(type: TypeSync<any>, items: TestItem[]): undefined;
+export function runTests(type: SerializableTypeSync<any, any, any>, items: TestItem[]): undefined;
+export function runTests(type: TypeAsync<any>, items: TestItem[]): undefined;
+export function runTests(type: SerializableTypeAsync<any, any, any>, items: TestItem[]): undefined;
+export function runTests(type: any, items: any): any {
   for (let item of items) {
     describe(`Item ${item.name}`, function() {
       if (!item.valid) {
@@ -85,55 +138,16 @@ export function runTests(type: TypeSync<any> & TypeAsync<any>, items: TestItem[]
 
       if (type.isSync) {
         testValidSync(type, item);
+        if (type.isSerializable) {
+          testSerializableSync(type, item);
+        }
       }
       if (type.isAsync) {
         testValidAsync(type, item);
+        if (type.isSerializable) {
+          testSerializableAsync(type, item);
+        }
       }
-
-      // write/readTrusted
-      it(`Should return the same content after a synchronous write/readTrusted to JSON`, function() {
-        const dehydrated = type.writeSync('json-doc', item.value);
-        const serialized = JSON.stringify(dehydrated);
-        const deserialized = JSON.parse(serialized);
-        const hydrated = type.readTrustedSync('json-doc', deserialized);
-        assert.isTrue(type.testSync(hydrated));
-        assert.isTrue(type.equalsSync(hydrated, item.value));
-      });
-
-      it(`Should return the same content after an asynchronous write/readTrusted to JSON`, function() {
-        return Bluebird.try(async function() {
-          const dehydrated = await type.writeAsync("json-doc", item.value);
-          const serialized = JSON.stringify(dehydrated);
-          const deserialized = JSON.parse(serialized);
-          const hydrated = await type.readTrustedAsync("json-doc", deserialized);
-          assert.isTrue(await type.testAsync(hydrated));
-          assert.isTrue(await type.equalsAsync(hydrated, item.value));
-        });
-      });
-
-      // write/read
-      it(`Should return the same content after a synchronous write/read to JSON`, function() {
-        const dehydrated = type.writeSync('json-doc', item.value);
-        const serialized = JSON.stringify(dehydrated);
-        const deserialized = JSON.parse(serialized);
-        const hydrated = type.readSync('json-doc', deserialized);
-        assert.isTrue(type.testSync(hydrated));
-        assert.isTrue(type.equalsSync(hydrated, item.value));
-      });
-
-      it(`Should return the same content after an asynchronous write/read to JSON`, function() {
-        return Bluebird.try(async function() {
-          const dehydrated = await type.writeAsync("json-doc", item.value);
-          const serialized = JSON.stringify(dehydrated);
-          const deserialized = JSON.parse(serialized);
-          const hydrated = await type.readAsync("json-doc", deserialized);
-          const isValid = await type.testAsync(hydrated);
-          assert.isTrue(isValid);
-          const isEqual = await type.equalsAsync(hydrated, item.value);
-          assert.isTrue(isEqual);
-        });
-      });
-
     });
   }
 }
