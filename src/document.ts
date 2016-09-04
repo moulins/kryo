@@ -4,7 +4,8 @@ import * as _ from "lodash";
 import {
   Document, VersionedTypeSync, VersionedTypeAsync,
   Dictionary, TypeSync, VersionedCollectionTypeSync,
-  VersionedCollectionTypeAsync, Type, SerializableTypeSync
+  VersionedCollectionTypeAsync, Type, SerializableTypeSync,
+  SerializableTypeAsync
 } from "./interfaces";
 import {ViaTypeError} from "./helpers/via-type-error";
 import {error} from "util";
@@ -267,7 +268,7 @@ function cloneSync (val: Document, options?: DocumentOptions<TypeSync<any>>): Do
 function diffSync (
   oldVal: Document,
   newVal: Document,
-  options: DocumentOptions<VersionedTypeSync<any, any> & SerializableTypeSync<"json-doc", any, any>>
+  options: DocumentOptions<VersionedTypeSync<any, any, any>>
 ): DocumentDiff | null {
   const keysDiff = diffKeys(oldVal, newVal);  // TODO: intersection with properties
   let result: DocumentDiff = {set: {}, unset: {}, update: {}, toNull: {}, fromNull: {}};
@@ -309,7 +310,7 @@ function diffSync (
 function patchSync (
   oldVal: Document,
   diff: DocumentDiff | null,
-  options: DocumentOptions<VersionedTypeSync<any, any> & SerializableTypeSync<"json-doc", any, any>>
+  options: DocumentOptions<VersionedTypeSync<any, any, any>>
 ): Document {
   let newVal: Document = cloneSync(oldVal);
 
@@ -336,7 +337,10 @@ function patchSync (
   return newVal;
 }
 
-function reverseDiffSync (diff: DocumentDiff | null, options?: DocumentOptions<VersionedTypeSync<any, any>>): DocumentDiff | null {
+function reverseDiffSync (
+  diff: DocumentDiff | null,
+  options?: DocumentOptions<VersionedTypeSync<any, any, any>>
+): DocumentDiff | null {
   // TODO: clone the other values
   let reversed: DocumentDiff = {
     set: diff.unset,
@@ -352,8 +356,10 @@ function reverseDiffSync (diff: DocumentDiff | null, options?: DocumentOptions<V
 }
 
 export class DocumentType implements
-  VersionedCollectionTypeSync<Document, DocumentDiff, any>,
-  VersionedCollectionTypeAsync<Document, DocumentDiff, any> {
+  SerializableTypeSync<Document, "bson-doc", Document>,
+  VersionedTypeSync<Document, Document, DocumentDiff>,
+  SerializableTypeAsync<Document, "bson-doc", Document>,
+  VersionedTypeAsync<Document, Document, DocumentDiff> {
 
   isSync = true;
   isAsync = true;

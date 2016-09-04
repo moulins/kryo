@@ -106,12 +106,10 @@ function squashSync (diff1: number | null, diff2: number | null, options?: DateO
 }
 
 export class DateType implements
-  SerializableTypeSync<"json-doc", Date, string>,
-  SerializableTypeSync<"bson-doc", Date, Date>,
-  VersionedTypeSync<Date, number>,
-  SerializableTypeAsync<"json-doc", Date, string>,
-  SerializableTypeAsync<"bson-doc", Date, Date>,
-  VersionedTypeAsync<Date, number> {
+  SerializableTypeSync<Date, "bson-doc", Date>,
+  VersionedTypeSync<Date, string, number>,
+  SerializableTypeAsync<Date, "bson-doc", Date>,
+  VersionedTypeAsync<Date, string, number> {
 
   isSync = true;
   isAsync = true;

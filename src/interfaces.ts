@@ -30,7 +30,7 @@ export interface TypeSync<T> extends TypeBase {
   cloneSync (val: T): T;
 }
 
-export interface SerializableTypeSync<F extends string, T, S> extends TypeSync<T> {
+export interface SerializableTypeSync<T, F extends string, S> extends TypeSync<T> {
   isSerializable: boolean;  // TODO: use literal `true` once available
 
   readTrustedSync (format: F, serialized: S): T;
@@ -38,7 +38,7 @@ export interface SerializableTypeSync<F extends string, T, S> extends TypeSync<T
   writeSync (format: F, val: T): S;
 }
 
-export interface VersionedTypeSync<T, D> extends TypeSync<T> {
+export interface VersionedTypeSync<T, S, D> extends SerializableTypeSync<T, "json-doc", S> {
   isVersioned: boolean;  // TODO: use literal `true` once available
 
   diffSync (oldVal: T, newVal: T): D | null;
@@ -63,7 +63,7 @@ export interface TypeAsync<T> extends TypeBase {
   cloneAsync (val: T): PromiseLike<T>;
 }
 
-export interface SerializableTypeAsync<F extends string, T, S> extends TypeAsync<T> {
+export interface SerializableTypeAsync<T, F extends string, S> extends TypeAsync<T> {
   isSerializable: boolean;  // TODO: use literal `true` once available
 
   readTrustedAsync (format: F, serialized: S): PromiseLike<T>;
@@ -71,7 +71,7 @@ export interface SerializableTypeAsync<F extends string, T, S> extends TypeAsync
   writeAsync (format: F, val: T): PromiseLike<S>;
 }
 
-export interface VersionedTypeAsync<T, D> extends TypeAsync<T> {
+export interface VersionedTypeAsync<T, S, D> extends SerializableTypeAsync<T, "json-doc", S> {
   isVersioned: boolean;  // TODO: use literal `true` once available
 
   diffAsync (oldVal: T, newVal: T): PromiseLike<D | null>;
@@ -88,11 +88,12 @@ export interface CollectionTypeAsync <T, D, I> extends TypeAsync<T> {
 // Other
 
 export type Type<T> = TypeAsync<T> | TypeSync<T>;
-export type VersionedType<T, D> = VersionedTypeAsync<T, D> | VersionedTypeSync<T, D>;
+export type SerializableType<T, F extends string, S> = SerializableTypeAsync<T, F, S> | SerializableTypeSync<T, F, S>;
+export type VersionedType<T, S, D> = VersionedTypeAsync<T, S, D> | VersionedTypeSync<T, S, D>;
 
-export interface VersionedCollectionTypeSync<T, D, I> extends
+export interface VersionedCollectionTypeSync<T, S, D, I> extends
   CollectionTypeSync <T, D, I>,
-  VersionedTypeSync<T, D> {}
-export interface VersionedCollectionTypeAsync<T, D, I> extends
+  VersionedTypeSync<T, S, D> {}
+export interface VersionedCollectionTypeAsync<T, S, D, I> extends
   CollectionTypeAsync <T, D, I>,
-  VersionedTypeAsync<T, D> {}
+  VersionedTypeAsync<T, S, D> {}

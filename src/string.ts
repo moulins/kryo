@@ -122,12 +122,10 @@ function squashSync (diff1: [string, string] | null, diff2: [string, string] | n
 }
 
 export class StringType implements
-  SerializableTypeSync<"json-doc", string, string>,
-  SerializableTypeSync<"bson-doc", string, string>,
-  VersionedTypeSync<string, [string, string]>,
-  SerializableTypeAsync<"json-doc", string, string>,
-  SerializableTypeAsync<"bson-doc", string, string>,
-  VersionedTypeAsync<string, [string, string]> {
+  SerializableTypeSync<string, "bson-doc", string>,
+  VersionedTypeSync<string, string, [string, string]>,
+  SerializableTypeAsync<string, "bson-doc", string>,
+  VersionedTypeAsync<string, string, [string, string]> {
 
   isSync = true;
   isAsync = true;

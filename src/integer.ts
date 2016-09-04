@@ -26,12 +26,10 @@ function reverseDiffSync (diff: number | null): number | null {
 }
 
 export class IntegerType implements
-  SerializableTypeSync<"json-doc", number, number>,
-  SerializableTypeSync<"bson-doc", number, number>,
-  VersionedTypeSync<number, number>,
-  SerializableTypeAsync<"json-doc", number, number>,
-  SerializableTypeAsync<"bson-doc", number, number>,
-  VersionedTypeAsync<number, number> {
+  SerializableTypeSync<number, "bson-doc", number>,
+  VersionedTypeSync<number, number, number>,
+  SerializableTypeAsync<number, "bson-doc", number>,
+  VersionedTypeAsync<number, number, number> {
 
   isSync = true;
   isAsync = true;

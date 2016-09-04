@@ -57,12 +57,12 @@ export class InvalidItemsError extends Incident {
 function writeSync<I, S> (
   format: "json-doc",
   val: I[],
-  options: ArrayOptions<SerializableTypeSync<"json-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "json-doc", S>>
 ): S[];
 function writeSync<I, S> (
   format: "bson-doc",
   val: I[],
-  options: ArrayOptions<SerializableTypeSync<"bson-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>
 ): S[];
 function writeSync<I, S> (format: any, val: any, options: any): any {
   return _.map(val, item => options.itemType.writeSync(format, item));
@@ -72,12 +72,12 @@ function writeSync<I, S> (format: any, val: any, options: any): any {
 function writeAsync<I, S> (
   format: "json-doc",
   val: I[],
-  options: ArrayOptions<SerializableTypeSync<"json-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "json-doc", S>>
 ): Bluebird<S[]>;
 function writeAsync<I, S> (
   format: "bson-doc",
   val: I[],
-  options: ArrayOptions<SerializableTypeSync<"bson-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>
 ): Bluebird<S[]>;
 function writeAsync<I, S> (format: any, val: any, options: any): any {
   return Bluebird.map(val, item => options.itemType.writeAsync(format, item));
@@ -87,12 +87,12 @@ function writeAsync<I, S> (format: any, val: any, options: any): any {
 function readTrustedSync<I, S> (
   format: "json-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"json-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "json-doc", S>>
 ): I[];
 function readTrustedSync<I, S> (
   format: "bson-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"bson-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>
 ): I[];
 function readTrustedSync<I, S> (format: any, val: any, options: any): any {
   return _.map(val, item => options.itemType.readTrustedSync(format, item));
@@ -102,12 +102,12 @@ function readTrustedSync<I, S> (format: any, val: any, options: any): any {
 function readTrustedAsync<I, S> (
   format: "json-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"json-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "json-doc", S>>
 ): Bluebird<I[]>;
 function readTrustedAsync<I, S> (
   format: "bson-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"bson-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>
 ): Bluebird<I[]>;
 function readTrustedAsync<I, S> (format: any, val: any, options: any): any {
   return Bluebird.map(val, item => options.itemType.readTrustedAsync(format, item));
@@ -117,12 +117,12 @@ function readTrustedAsync<I, S> (format: any, val: any, options: any): any {
 function readSync<I, S> (
   format: "json-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"json-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "json-doc", S>>
 ): I[];
 function readSync<I, S> (
   format: "bson-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"bson-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>
 ): I[];
 function readSync<I, S> (format: any, val: any, options: any): any {
   if (!Array.isArray(val)) {
@@ -135,12 +135,12 @@ function readSync<I, S> (format: any, val: any, options: any): any {
 function readAsync<I, S> (
   format: "json-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"json-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "json-doc", S>>
 ): Bluebird<I[]>;
 function readAsync<I, S> (
   format: "bson-doc",
   val: S[],
-  options: ArrayOptions<SerializableTypeSync<"bson-doc", I, S>>
+  options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>
 ): Bluebird<I[]>;
 function readAsync<I, S> (format: any, val: any, options: any): any {
   if (!Array.isArray(val)) {
@@ -151,12 +151,10 @@ function readAsync<I, S> (format: any, val: any, options: any): any {
 
 
 export class ArrayType<I> implements
-  SerializableTypeSync<"json-doc", I[], any[]>,
-  SerializableTypeSync<"bson-doc", I[], any[]>,
-  VersionedTypeSync<I[], ArrayDiff>,
-  SerializableTypeAsync<"json-doc", I[], any[]>,
-  SerializableTypeAsync<"bson-doc", I[], any[]>,
-  VersionedTypeAsync<I[], ArrayDiff> {
+  SerializableTypeSync<I[], "bson-doc", any[]>,
+  VersionedTypeSync<I[], any[], ArrayDiff>,
+  SerializableTypeAsync<I[], "bson-doc", any[]>,
+  VersionedTypeAsync<I[], any[], ArrayDiff> {
 
   isSync = true;
   isAsync = true;

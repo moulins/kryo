@@ -71,7 +71,7 @@ export function testValidAsync(type: TypeAsync<any>, item: InvalidItem) {
   });
 }
 
-export function testSerializableSync<T, S> (type: SerializableTypeSync<"json-doc", T, S>, item:ValidItem) {
+export function testSerializableSync<T, S> (type: SerializableTypeSync<T, "json-doc", S>, item:ValidItem) {
   it(`Should return the same content after a synchronous write/readTrusted to JSON`, function() {
     const dehydrated = type.writeSync('json-doc', item.value);
     const serialized = JSON.stringify(dehydrated);
@@ -91,7 +91,7 @@ export function testSerializableSync<T, S> (type: SerializableTypeSync<"json-doc
   });
 }
 
-export function testSerializableAsync<T, S> (type: SerializableTypeAsync<"json-doc", T, S>, item:ValidItem) {
+export function testSerializableAsync<T, S> (type: SerializableTypeAsync<T, "json-doc", S>, item:ValidItem) {
   it(`Should return the same content after an asynchronous write/readTrusted to JSON`, function() {
     return Bluebird.try(async function() {
       const dehydrated = await type.writeAsync("json-doc", item.value);

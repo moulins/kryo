@@ -1,7 +1,10 @@
 import * as Bluebird from "bluebird";
 import * as _ from "lodash";
 
-import {VersionedTypeSync, VersionedTypeAsync} from "./interfaces";
+import {
+  VersionedTypeSync, VersionedTypeAsync,
+  SerializableTypeSync, SerializableTypeAsync
+} from "./interfaces";
 import {UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
 
 
@@ -66,8 +69,10 @@ function squashSync (diff1: boolean | null, diff2: boolean | null): boolean | nu
 }
 
 export class BooleanType implements
-  VersionedTypeSync<boolean, boolean>,
-  VersionedTypeAsync<boolean, boolean> {
+  SerializableTypeSync<boolean, "bson-doc", boolean>,
+  VersionedTypeSync<boolean, boolean, boolean>,
+  SerializableTypeAsync<boolean, "bson-doc", boolean>,
+  VersionedTypeAsync<boolean, boolean, boolean>  {
 
   isSync = true;
   isAsync = true;
