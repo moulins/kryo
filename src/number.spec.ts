@@ -12,7 +12,19 @@ describe("NumberType", function () {
   let type: NumberType = new NumberType();
 
   let items: TypedValue[] = [
-    {name: "0", value: 0, valid: true},
+    {
+      name: "0",
+      value: 0,
+      valid: true,
+      serialized: {
+        "json-doc": {
+          canonical: 0,
+          values: [
+            {value: 0, valid: true}
+          ]
+        }
+      }
+    },
     {name: "1", value: 1, valid: true},
     {name: "-1", value: -1, valid: true},
     {name: "2", value: 2, valid: true},

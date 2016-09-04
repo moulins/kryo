@@ -134,16 +134,16 @@ export function testSerializableSync<T, S> (
     return;
   }
 
-  for (const value of jsonSerialization.values) {
-    if (value.valid) {
-      it(`.read (format: "json-doc") should accept: ${getName(value)}`, function() {
-        const imported: T = type.readSync('json-doc', value);
+  for (const item of jsonSerialization.values) {
+    if (item.valid) {
+      it(`.read (format: "json-doc") should accept: ${getName(item)}`, function() {
+        const imported: T = type.readSync('json-doc', item.value);
         assert.isTrue(type.testSync(imported));
       });
     } else {
-      it(`.read (format: "json-doc") should reject: ${getName(value)}`, function() {
+      it(`.read (format: "json-doc") should reject: ${getName(item)}`, function() {
         assert.throw(() => {
-          type.readSync('json-doc', value);
+          type.readSync('json-doc', item.value);
         });
       });
     }
