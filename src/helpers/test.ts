@@ -64,7 +64,8 @@ export function testInvalidAsync(type: TypeAsync<any>, item: InvalidTypedValue) 
 
 export function testValidValueSync(type: TypeSync<any>, item: ValidTypedValue) {
   it("Should return `null` for .testErrorSync", function() {
-    assert.equal(type.testErrorSync(item.value), null);
+    const error: Error | null = type.testErrorSync(item.value);
+    assert.isNull(error);
   });
 
   it("Should return `true` for .testSync", function() {
@@ -122,7 +123,7 @@ export function testSerializableSync<T, S> (
   if ("canonical" in jsonSerialization) {
     const canonical = jsonSerialization.canonical;
 
-    it(`Should return the canonical value for write: ${canonical}`, function() {
+    it(`Should return the canonical value for write: ${JSON.stringify(canonical)}`, function() {
       const exported = type.writeSync('json-doc', typedValue.value);
       assert.deepEqual(exported, canonical);
     });
@@ -176,7 +177,7 @@ export function testSerializableAsync<T, S> (type: SerializableTypeAsync<T, "jso
   });
 }
 
-export function testValueSync(type: TypeSync<any, any, any>, item: TypedValue): void;
+export function testValueSync(type: TypeSync<any>, item: TypedValue): void;
 export function testValueSync(type: SerializableTypeSync<any, any, any>, item: TypedValue): void;
 export function testValueSync(type: any, item: any): any {
   if (item.valid) {

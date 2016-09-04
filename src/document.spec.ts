@@ -1,73 +1,64 @@
-// import {DateType} from "./date";
-// import {IntegerType} from "./integer";
-// import {DocumentType, DocumentOptions} from "./document";
-// import {RunTestItem, runTest, runReadWrite} from "./helpers/test";
-// import {assert} from "chai";
-//
-// interface NumberConstructorES6 extends NumberConstructor{
-//   MAX_SAFE_INTEGER: number;
-//   MIN_SAFE_INTEGER: number;
-//   EPSILON: number;
-// }
-//
-// describe("DocumentType", function () {
-//
-//   let options: DocumentOptions = {
-//     properties: {
-//       "dateProp": {
-//         type: new DateType()
-//       },
-//       "intProp": {
-//         type: new IntegerType()
-//       }
-//     }
-//   };
-//
-//   let type: DocumentType = new DocumentType(options);
-//
-//   let truthyItems: RunTestItem[] = [
-//     {name: "{dateProp: new Date(), intProp: 10}", value: {dateProp: new Date(), intProp: 10}, message: null}
-//   ];
-//
-//   runTest(type, truthyItems);
-//
-//   let falsyItems: RunTestItem[] = [
-//     {name: "{dateProp: new Date(), intProp: [10]}", value: {dateProp: new Date(), intProp: [10]}, message: ""}
-//   ];
-//
-//   runTest(type, falsyItems);
-//
-//   it("#equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 10}) should resolve true", function() {
-//     return type
-//       .equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 10})
-//       .then((result: boolean) => {
-//         assert.strictEqual(result, true);
-//       })
-//   });
-//
-//   it("#equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 123}) should resolve false", function() {
-//     return type
-//       .equals({dateProp: new Date(1458408675184), intProp: 10}, {dateProp: new Date(1458408675184), intProp: 123})
-//       .then((result: boolean) => {
-//         assert.strictEqual(result, false);
-//       })
-//   });
-//
-//   it("#test({dateProp: null, intProp: 10}, {properties: {dateProp: {nullable: true}}}) should resolve null", function() {
-//     return type
-//       .test({dateProp: null, intProp: 10}, {properties: {dateProp: {nullable: true}}})
-//       .then((result: Error) => {
-//         if (result !== null) {
-//           throw result;
-//         }
-//       })
-//   });
-//
-//   runReadWrite({
-//     message: "Simple JSON encoding",
-//     type: type,
-//     value: {dateProp: new Date(), intProp: 10},
-//     format: "json"
-//   });
-//
-// });
+import {DateType} from "./date";
+import {DocumentType} from "./document";
+import {IntegerType} from "./integer";
+import {TypedValue, runTests} from "./helpers/test";
+
+describe("DocumentType", function () {
+  const documentType = new DocumentType({
+    properties: {
+      "dateProp": {
+        type: new DateType()
+      },
+      "optIntProp": {
+        optional: true,
+        type: new IntegerType()
+      },
+      "nestedDoc": {
+        nullable: true,
+        type: new DocumentType({
+          properties: {
+            "id": {
+              optional: true,
+              nullable: true,
+              type: new IntegerType()
+            },
+          }
+        })
+      }
+    }
+  });
+
+  const items: TypedValue[] = [
+    {
+      value: {
+        dateProp: new Date(0),
+        optIntProp: 50,
+        nestedDoc: {
+          id: 10
+        }
+      },
+      valid: true,
+      serialized: {
+        "json-doc": {canonical: {dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}}}
+      }
+    },
+
+    {name: "new Date(0)", value: new Date(0), valid: false},
+    {name: "0", value: 0, valid: false},
+    {name: "1", value: 1, valid: false},
+    {name: '""', value: "", valid: false},
+    {name: '"0"', value: "0", valid: false},
+    {name: '"true"', value: "true", valid: false},
+    {name: '"false"', value: "false", valid: false},
+    {name: "Infinity", value: Infinity, valid: false},
+    {name: "-Infinity", value: -Infinity, valid: false},
+    {name: "NaN", value: NaN, valid: false},
+    {name: "undefined", value: undefined, valid: false},
+    {name: "null", value: null, valid: false},
+    {name: "[]", value: [], valid: false},
+    {name: "{}", value: {}, valid: false},
+    {name: "/regex/", value: /regex/, valid: false}
+  ];
+
+  runTests(documentType, items);
+});
