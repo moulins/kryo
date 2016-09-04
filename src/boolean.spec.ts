@@ -1,11 +1,11 @@
 import {BooleanType} from "./boolean";
-import {TestItem, runTests} from "./helpers/test";
+import {TypedValue, runTests} from "./helpers/test";
 
 describe("BooleanType", function () {
 
   let type: BooleanType = new BooleanType();
 
-  let items: TestItem[] = [
+  let items: TypedValue[] = [
     {name: "true", value: true, valid: true},
     {name: "false", value: false, valid: true},
 

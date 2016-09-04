@@ -1,5 +1,5 @@
 import {IntegerType} from "./integer";
-import {TestItem, runTests} from "./helpers/test";
+import {TypedValue, runTests} from "./helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number;
@@ -11,7 +11,7 @@ describe("IntegerType", function () {
 
   let type: IntegerType = new IntegerType();
 
-  let items: TestItem[] = [
+  let items: TypedValue[] = [
     {name: "0", value: 0, valid: true},
     {name: "1", value: 1, valid: true},
     {name: "-1", value: -1, valid: true},

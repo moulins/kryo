@@ -1,11 +1,11 @@
 import {StringType} from "./string";
-import {TestItem, runTests} from "./helpers/test";
+import {runTests, TypedValue} from "./helpers/test";
 
 describe("StringType", function () {
 
   let type: StringType = new StringType();
 
-  let items: TestItem[] = [
+  let items: TypedValue[] = [
     {name: '""', value: "", valid: true},
     {name: '"Hello World!"', value: "Hello World!", valid: true},
     {name: 'Drop the bass', value: "ԂЯØǷ Łƕ੬ ɃɅϨϞ", valid: true},

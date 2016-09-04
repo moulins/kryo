@@ -121,7 +121,7 @@ export class DateType implements
 
   options: DateOptions = null;
 
-  constructor(options: DateOptions) {
+  constructor(options?: DateOptions) {
     this.options = _.merge({}, defaultOptions, options);
   }
 

@@ -1,5 +1,5 @@
 import {DateType} from "./date";
-import {TestItem, runTests} from "./helpers/test";
+import {TypedValue, runTests} from "./helpers/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number;
@@ -11,7 +11,7 @@ describe("DateType", function () {
 
   let type: DateType = new DateType();
 
-  let items: TestItem[] = [
+  let items: TypedValue[] = [
     {name: "new Date()", value: new Date(), valid: true},
     {name: "new Date(0)", value: new Date(0), valid: true},
     {name: 'new Date("1247-05-18T19:40:08.418Z")', value: new Date("1247-05-18T19:40:08.418Z"), valid: true},

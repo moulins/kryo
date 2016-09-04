@@ -6,22 +6,37 @@ import {
   SerializableTypeAsync
 } from "../interfaces";
 
-export interface TestItem {
-  name: string;
+export interface NamedValue {
+  name?: string;
   value: any;
-  valid: boolean
 }
 
-export interface ValidItem extends TestItem {
-  writeJSON?: string;
-  readJSON?: string[];
+export interface CheckedValue extends NamedValue {
+  valid: boolean;
 }
 
-export interface InvalidItem extends TestItem {
-  error?: Error;
+export interface InvalidTypedValue extends CheckedValue {
+  valid: boolean;
+  testError?: Error;
 }
 
-export function testInvalidSync(type: TypeSync<any>, item: InvalidItem) {
+export interface ValidTypedValue extends CheckedValue {
+  valid: boolean;
+  serialized?: {
+    [format: string]: {
+      canonical?: any;
+      values?: CheckedValue[]
+    }
+  }
+}
+
+export type TypedValue = InvalidTypedValue | ValidTypedValue;
+
+function getName(namedValue: NamedValue) {
+  return "name" in namedValue ? namedValue.name : JSON.stringify(namedValue.value);
+}
+
+export function testInvalidValueSync(type: TypeSync<any>, item: InvalidTypedValue) {
   it("Should return an Error for .testErrorSync", function() {
     assert.instanceOf(type.testErrorSync(item.value), Error);
   });
@@ -31,7 +46,7 @@ export function testInvalidSync(type: TypeSync<any>, item: InvalidItem) {
   });
 }
 
-export function testInvalidAsync(type: TypeAsync<any>, item: InvalidItem) {
+export function testInvalidAsync(type: TypeAsync<any>, item: InvalidTypedValue) {
   it("Should return an Error for .testErrorAsync", function() {
     return Bluebird.try(async function() {
       const result = await type.testErrorAsync(item.value);
@@ -47,7 +62,7 @@ export function testInvalidAsync(type: TypeAsync<any>, item: InvalidItem) {
   });
 }
 
-export function testValidSync(type: TypeSync<any>, item: InvalidItem) {
+export function testValidValueSync(type: TypeSync<any>, item: ValidTypedValue) {
   it("Should return `null` for .testErrorSync", function() {
     assert.equal(type.testErrorSync(item.value), null);
   });
@@ -57,7 +72,7 @@ export function testValidSync(type: TypeSync<any>, item: InvalidItem) {
   });
 }
 
-export function testValidAsync(type: TypeAsync<any>, item: InvalidItem) {
+export function testValidAsync(type: TypeAsync<any>, item: ValidTypedValue) {
   it("Should return `null` for .testErrorAsync", function() {
     return Bluebird
       .try(() => type.testErrorAsync(item.value))
@@ -71,27 +86,71 @@ export function testValidAsync(type: TypeAsync<any>, item: InvalidItem) {
   });
 }
 
-export function testSerializableSync<T, S> (type: SerializableTypeSync<T, "json-doc", S>, item:ValidItem) {
+export function testSerializableSync<T, S> (
+  type: SerializableTypeSync<T, "json-doc", S>,
+  typedValue: ValidTypedValue,
+): void {
+
+  // Blind serialization/deserialization
+
   it(`Should return the same content after a synchronous write/readTrusted to JSON`, function() {
-    const dehydrated = type.writeSync('json-doc', item.value);
-    const serialized = JSON.stringify(dehydrated);
+    const exported = type.writeSync('json-doc', typedValue.value);
+    const serialized = JSON.stringify(exported);
     const deserialized = JSON.parse(serialized);
-    const hydrated = type.readTrustedSync('json-doc', deserialized);
-    assert.isTrue(type.testSync(hydrated));
-    assert.isTrue(type.equalsSync(hydrated, item.value));
+    const imported = type.readTrustedSync('json-doc', deserialized);
+    assert.isTrue(type.testSync(imported));
+    assert.isTrue(type.equalsSync(imported, typedValue.value));
   });
 
   it(`Should return the same content after a synchronous write/read to JSON`, function() {
-    const dehydrated = type.writeSync('json-doc', item.value);
-    const serialized = JSON.stringify(dehydrated);
+    const exported = type.writeSync('json-doc', typedValue.value);
+    const serialized = JSON.stringify(exported);
     const deserialized = JSON.parse(serialized);
-    const hydrated = type.readSync('json-doc', deserialized);
-    assert.isTrue(type.testSync(hydrated));
-    assert.isTrue(type.equalsSync(hydrated, item.value));
+    const imported = type.readSync('json-doc', deserialized);
+    assert.isTrue(type.testSync(imported));
+    assert.isTrue(type.equalsSync(imported, typedValue.value));
   });
+
+  // Checked serialization
+
+  if (!("serialized" in typedValue && "json-doc" in typedValue.serialized)) {
+    return;
+  }
+
+  const jsonSerialization = typedValue.serialized["json-doc"];
+
+  if ("canonical" in jsonSerialization) {
+    const canonical = jsonSerialization.canonical;
+
+    it(`Should return the canonical value for write: ${canonical}`, function() {
+      const exported = type.writeSync('json-doc', typedValue.value);
+      assert.deepEqual(exported, canonical);
+    });
+  }
+
+  // Checked deserialization
+
+  if (!("values" in jsonSerialization)) {
+    return;
+  }
+
+  for (const value of jsonSerialization.values) {
+    if (value.valid) {
+      it(`.read (format: "json-doc") should accept: ${getName(value)}`, function() {
+        const imported: T = type.readSync('json-doc', value);
+        assert.isTrue(type.testSync(imported));
+      });
+    } else {
+      it(`.read (format: "json-doc") should reject: ${getName(value)}`, function() {
+        assert.throw(() => {
+          type.readSync('json-doc', value);
+        });
+      });
+    }
+  }
 }
 
-export function testSerializableAsync<T, S> (type: SerializableTypeAsync<T, "json-doc", S>, item:ValidItem) {
+export function testSerializableAsync<T, S> (type: SerializableTypeAsync<T, "json-doc", S>, item: ValidTypedValue) {
   it(`Should return the same content after an asynchronous write/readTrusted to JSON`, function() {
     return Bluebird.try(async function() {
       const dehydrated = await type.writeAsync("json-doc", item.value);
@@ -117,37 +176,27 @@ export function testSerializableAsync<T, S> (type: SerializableTypeAsync<T, "jso
   });
 }
 
-export function runTests(type: TypeSync<any>, items: TestItem[]): undefined;
-export function runTests(type: SerializableTypeSync<any, any, any>, items: TestItem[]): undefined;
-export function runTests(type: TypeAsync<any>, items: TestItem[]): undefined;
-export function runTests(type: SerializableTypeAsync<any, any, any>, items: TestItem[]): undefined;
+export function testValueSync(type: TypeSync<any, any, any>, item: TypedValue): void;
+export function testValueSync(type: SerializableTypeSync<any, any, any>, item: TypedValue): void;
+export function testValueSync(type: any, item: any): any {
+  if (item.valid) {
+    testValidValueSync(type, item);
+    if (type.isSerializable) {
+      testSerializableSync(type, item);
+    }
+  } else {
+    testInvalidValueSync(type, item);
+  }
+}
+
+export function runTests(type: TypeSync<any>, items: TypedValue[]): void;
+export function runTests(type: SerializableTypeSync<any, any, any>, items: TypedValue[]): void;
+export function runTests(type: TypeAsync<any>, items: TypedValue[]): void;
+export function runTests(type: SerializableTypeAsync<any, any, any>, items: TypedValue[]): void;
 export function runTests(type: any, items: any): any {
   for (let item of items) {
-    describe(`Item ${item.name}`, function() {
-      if (!item.valid) {
-        if (type.isSync) {
-          testInvalidSync(type, item);
-        }
-        if (type.isAsync) {
-          testInvalidAsync(type, item);
-        }
-        return;
-      }
-
-      // From here, the item.valid === true
-
-      if (type.isSync) {
-        testValidSync(type, item);
-        if (type.isSerializable) {
-          testSerializableSync(type, item);
-        }
-      }
-      if (type.isAsync) {
-        testValidAsync(type, item);
-        if (type.isSerializable) {
-          testSerializableAsync(type, item);
-        }
-      }
+    describe(`Item: ${getName(item)}`, function() {
+      testValueSync(type, item);
     });
   }
 }
