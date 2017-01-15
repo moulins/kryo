@@ -1,5 +1,5 @@
 import {ArrayType} from "./array";
-import {TypedValue, runTests} from "./helpers/test";
+import {TypedValue, runTests} from "../test/test";
 import {IntegerType} from "./integer";
 
 describe("ArrayType", function () {
@@ -27,8 +27,6 @@ describe("ArrayType", function () {
         "json-doc": {canonical: [2, 3]}
       }
     },
-
-
     {
       value: [4, 5, 6],
       valid: false

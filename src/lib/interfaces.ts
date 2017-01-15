@@ -22,7 +22,7 @@ export interface TypeBase {
 // Synchronous interfaces
 
 export interface TypeSync<T> extends TypeBase {
-  isSync: boolean;  // TODO: use literal `true` once available
+  isSync: true;
 
   testErrorSync (val: any): Error | null;
   testSync (val: any): boolean;
@@ -31,7 +31,7 @@ export interface TypeSync<T> extends TypeBase {
 }
 
 export interface SerializableTypeSync<T, F extends string, S> extends TypeSync<T> {
-  isSerializable: boolean;  // TODO: use literal `true` once available
+  isSerializable: true;
 
   readTrustedSync (format: F, serialized: S): T;
   readSync (format: F, serialized: any): T;
@@ -39,15 +39,22 @@ export interface SerializableTypeSync<T, F extends string, S> extends TypeSync<T
 }
 
 export interface VersionedTypeSync<T, S, D> extends SerializableTypeSync<T, "json-doc", S> {
-  isVersioned: boolean;  // TODO: use literal `true` once available
+  isVersioned: true;
 
+  /**
+   * Returns null if both values are equivalent, otherwise a diff representing the change from
+   * oldVal to newVal.
+   *
+   * @param oldVal The old value
+   * @param newVal The new value
+   */
   diffSync (oldVal: T, newVal: T): D | null;
   patchSync (oldVal: T, diff: D | null): T;
-  reverseDiffSync (diff: D | null): D;
+  reverseDiffSync (diff: D | null): D | null;
 }
 
 export interface CollectionTypeSync <T, D, I> extends TypeSync<T> {
-  isCollection: boolean;  // TODO: use literal `true` once available
+  isCollection: true;
 
   iterateSync (value: T, visitor: Function): any;
 }
@@ -55,33 +62,31 @@ export interface CollectionTypeSync <T, D, I> extends TypeSync<T> {
 // Asynchronous interfaces
 
 export interface TypeAsync<T> extends TypeBase {
-  isAsync: boolean;  // TODO: use literal `true` once available
+  isAsync: true;
 
-  testErrorAsync (val: any): PromiseLike<Error | null>;
-  testAsync (val: any): PromiseLike<boolean>;
-  equalsAsync (val1: T, val2: T): PromiseLike<boolean>;
-  cloneAsync (val: T): PromiseLike<T>;
+  testErrorAsync (val: any): Promise<Error | null>;
+  testAsync (val: any): Promise<boolean>;
+  equalsAsync (val1: T, val2: T): Promise<boolean>;
+  cloneAsync (val: T): Promise<T>;
 }
 
 export interface SerializableTypeAsync<T, F extends string, S> extends TypeAsync<T> {
-  isSerializable: boolean;  // TODO: use literal `true` once available
+  isSerializable: true;
 
-  readTrustedAsync (format: F, serialized: S): PromiseLike<T>;
-  readAsync (format: F, serialized: any): PromiseLike<T>;
-  writeAsync (format: F, val: T): PromiseLike<S>;
+  readTrustedAsync (format: F, serialized: S): Promise<T>;
+  readAsync (format: F, serialized: any): Promise<T>;
+  writeAsync (format: F, val: T): Promise<S>;
 }
 
 export interface VersionedTypeAsync<T, S, D> extends SerializableTypeAsync<T, "json-doc", S> {
-  isVersioned: boolean;  // TODO: use literal `true` once available
-
-  diffAsync (oldVal: T, newVal: T): PromiseLike<D | null>;
-  patchAsync (oldVal: T, diff: D | null): PromiseLike<T>;
-  reverseDiffAsync (diff: D | null): PromiseLike<D>;
+  isVersioned: true;
+  diffAsync (oldVal: T, newVal: T): Promise<D | null>;
+  patchAsync (oldVal: T, diff: D | null): Promise<T>;
+  reverseDiffAsync (diff: D | null): Promise<D | null>;
 }
 
 export interface CollectionTypeAsync <T, D, I> extends TypeAsync<T> {
-  isCollection: boolean;  // TODO: use literal `true` once available
-
+  isCollection: true;
   iterateAsync (value: T, visitor: Function): any;
 }
 
@@ -93,7 +98,18 @@ export type VersionedType<T, S, D> = VersionedTypeAsync<T, S, D> | VersionedType
 
 export interface VersionedCollectionTypeSync<T, S, D, I> extends
   CollectionTypeSync <T, D, I>,
-  VersionedTypeSync<T, S, D> {}
+  VersionedTypeSync<T, S, D>
+{
+  isCollection: true;
+  isVersioned: true;
+  isSerializable: true;
+}
+
 export interface VersionedCollectionTypeAsync<T, S, D, I> extends
   CollectionTypeAsync <T, D, I>,
-  VersionedTypeAsync<T, S, D> {}
+  VersionedTypeAsync<T, S, D>
+{
+  isCollection: true;
+  isVersioned: true;
+  isSerializable: true;
+}

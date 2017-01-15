@@ -4,7 +4,7 @@ import {assert} from "chai"
 import {
   TypeAsync, TypeSync, SerializableTypeSync,
   SerializableTypeAsync
-} from "../interfaces";
+} from "../lib/interfaces";
 
 export interface NamedValue {
   name?: string;

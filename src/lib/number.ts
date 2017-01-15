@@ -1,5 +1,4 @@
-import {UnexpectedTypeError, ViaTypeError} from "./helpers/via-type-error";
-import * as Bluebird from "bluebird";
+import {UnexpectedTypeError, KryoError} from "./helpers/via-type-error";
 import {
   TypeSync, TypeAsync, VersionedTypeAsync,
   VersionedTypeSync, SerializableTypeSync, SerializableTypeAsync
@@ -8,7 +7,6 @@ import {
 const NAME = "number";
 
 export interface NumberOptions {}
-
 
 function readSync(format: "json-doc" | "bson-doc", val: any, options?: NumberOptions): number {
   if (!(typeof val === "number")) {
@@ -50,8 +48,9 @@ function cloneSync (val: number, options?: NumberOptions): number {
   return val;
 }
 
-function diffSync (oldVal: number, newVal: number, options?: NumberOptions): [number, number] {
-  return oldVal === newVal ? null : [oldVal, newVal]; // We can't use an arithmetic difference due to possible precision loss
+function diffSync (oldVal: number, newVal: number, options?: NumberOptions): [number, number] | null {
+  // We can't use an arithmetic difference due to possible precision loss
+  return oldVal === newVal ? null : [oldVal, newVal];
 }
 
 function patchSync (oldVal: number, diff: [number, number] | null, options?: NumberOptions): number {
@@ -68,13 +67,13 @@ export class NumberType implements
   SerializableTypeAsync<number, "bson-doc", number>,
   VersionedTypeAsync<number, number, [number, number]> {
 
-  isSync = true;
-  isAsync = true;
-  isSerializable = true;
-  isVersioned = true;
-  isCollection = false;
-  type = NAME;
-  types = [NAME];
+  isSync: true = true;
+  isAsync: true = true;
+  isSerializable: true = true;
+  isVersioned: true = true;
+  isCollection: false = false;
+  type: string = NAME;
+  types: string[] = [NAME];
 
   toJSON(): null {  // TODO: return options
     return null;
@@ -84,87 +83,95 @@ export class NumberType implements
     return readTrustedSync(format, val, options);
   }
 
-  readTrustedAsync (format: "json-doc" | "bson-doc", val: any, options?: NumberOptions): Bluebird<number> {
-    return Bluebird.try(() => readTrustedSync(format, val, options));
+  async readTrustedAsync (format: "json-doc" | "bson-doc", val: any, options?: NumberOptions): Promise<number> {
+    return readTrustedSync(format, val, options);
   }
 
   readSync (format: "json-doc" | "bson-doc", val: any, options?: NumberOptions): number {
     return readSync(format, val, options);
   }
 
-  readAsync (format: "json-doc" | "bson-doc", val: any, options?: NumberOptions): Bluebird<number> {
-    return Bluebird.try(() => readSync(format, val, options));
+  async readAsync (format: "json-doc" | "bson-doc", val: any, options?: NumberOptions): Promise<number> {
+    return readSync(format, val, options);
   }
 
   writeSync (format: "json-doc" | "bson-doc", val: number, options?: NumberOptions): any {
     return writeSync(format, val, options);
   }
 
-  writeAsync (format: "json-doc" | "bson-doc", val: number, options?: NumberOptions): Bluebird<any> {
-    return Bluebird.try(() => writeSync(format, val, options));
+  async writeAsync (format: "json-doc" | "bson-doc", val: number, options?: NumberOptions): Promise<any> {
+    return writeSync(format, val, options);
   }
 
   testErrorSync (val: any, options?: NumberOptions): Error | null {
     return testErrorSync(val, options);
   }
 
-  testErrorAsync (val: any, options?: NumberOptions): Bluebird<Error | null> {
-    return Bluebird.try(() => testErrorSync(val, options));
+  async testErrorAsync (val: any, options?: NumberOptions): Promise<Error | null> {
+    return testErrorSync(val, options);
   }
 
   testSync (val: any, options?: NumberOptions): boolean {
     return testSync(val, options);
   }
 
-  testAsync (val: any, options?: NumberOptions): Bluebird<boolean> {
-    return Bluebird.try(() => testSync(val, options));
+  async testAsync (val: any, options?: NumberOptions): Promise<boolean> {
+    return testSync(val, options);
   }
 
   equalsSync (val1: number, val2: number, options?: NumberOptions): boolean {
     return equalsSync(val1, val2, options);
   }
 
-  equalsAsync (val1: number, val2: number, options?: NumberOptions): Bluebird<boolean> {
-    return Bluebird.try(() => equalsSync(val1, val2, options));
+  async equalsAsync (val1: number, val2: number, options?: NumberOptions): Promise<boolean> {
+    return equalsSync(val1, val2, options);
   }
 
   cloneSync (val: number, options?: NumberOptions): number {
     return cloneSync(val, options);
   }
 
-  cloneAsync (val: number, options?: NumberOptions): Bluebird<number> {
-    return Bluebird.try(() =>  cloneSync(val, options));
+  async cloneAsync (val: number, options?: NumberOptions): Promise<number> {
+    return cloneSync(val, options);
   }
 
   diffSync (oldVal: number, newVal: number, options?: NumberOptions): [number, number] | null {
     return diffSync(oldVal, newVal, options);
   }
 
-  diffAsync (oldVal: number, newVal: number, options?: NumberOptions): Bluebird<[number, number] | null> {
-    return Bluebird.try(() =>  diffSync(oldVal, newVal, options));
+  async diffAsync (oldVal: number, newVal: number, options?: NumberOptions): Promise<[number, number] | null> {
+    return diffSync(oldVal, newVal, options);
   }
 
   patchSync (oldVal: number, diff: [number, number] | null, options?: NumberOptions): number {
     return patchSync(oldVal, diff, options);
   }
 
-  patchAsync (oldVal: number, diff: [number, number] | null, options?: NumberOptions): Bluebird<number> {
-    return Bluebird.try(() => patchSync(oldVal, diff, options));
+  async patchAsync (oldVal: number, diff: [number, number] | null, options?: NumberOptions): Promise<number> {
+    return patchSync(oldVal, diff, options);
   }
 
   reverseDiffSync(diff: [number, number] | null, options?: NumberOptions): [number, number] | null {
     return reverseDiffSync(diff, options);
   }
 
-  reverseDiffAsync(diff: [number, number] | null, options?: NumberOptions): Bluebird<[number, number] | null> {
-    return Bluebird.try(() => reverseDiffSync(diff, options));
+  async reverseDiffAsync(diff: [number, number] | null, options?: NumberOptions): Promise<[number, number] | null> {
+    return reverseDiffSync(diff, options);
   }
 }
 
-export class NumberTypeError extends ViaTypeError {}
+export class NumberTypeError<D> extends KryoError<D> {}
 
-export class NumericError extends NumberTypeError {
-  constructor (value: number) {
-    super (null, "NumericError", {value: value}, "Value is not a number")
+export interface NumericErrorData {
+  value: any;
+}
+
+export class NumericError extends NumberTypeError<NumericErrorData> {
+  constructor (value: any) {
+    super (
+      "NumericError",
+      {value: value},
+      "Value is not a number"
+    );
   }
 }

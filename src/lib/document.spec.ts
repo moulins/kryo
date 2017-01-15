@@ -1,7 +1,7 @@
 import {DateType} from "./date";
 import {DocumentType} from "./document";
 import {IntegerType} from "./integer";
-import {TypedValue, runTests} from "./helpers/test";
+import {TypedValue, runTests} from "../test/test";
 
 describe("DocumentType", function () {
   const documentType = new DocumentType({

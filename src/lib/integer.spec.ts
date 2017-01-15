@@ -1,5 +1,5 @@
 import {IntegerType} from "./integer";
-import {TypedValue, runTests} from "./helpers/test";
+import {TypedValue, runTests} from "../test/test";
 
 interface NumberConstructorES6 extends NumberConstructor{
   MAX_SAFE_INTEGER: number;

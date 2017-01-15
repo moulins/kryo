@@ -1,13 +1,16 @@
-import * as Bluebird from "bluebird";
 import * as _ from "lodash";
 
 import {
   VersionedTypeSync, VersionedTypeAsync,
   SerializableTypeSync, SerializableTypeAsync
 } from "./interfaces";
-import {ViaTypeError} from "./helpers/via-type-error";
+import {KryoError, UnsupportedFormatError} from "./helpers/via-type-error";
 
-export class InvalidTimestampError extends ViaTypeError {
+export interface InvalidTimestampErrorData {
+  date: Date;
+}
+
+export class InvalidTimestampError extends KryoError<InvalidTimestampErrorData> {
   constructor(date: Date) {
     super('invalid-timestamp', {date: date}, 'Invalid timestamp');
   }
@@ -17,10 +20,9 @@ const NAME = "date";
 
 export interface DateOptions {}
 
-export let defaultOptions: DateOptions = {
+export const defaultOptions: DateOptions = {
 
 };
-
 
 function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptions): Date {
   switch (format) {
@@ -29,14 +31,14 @@ function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptio
         val = Date.parse(val);
       }
       if (!_.isFinite(val)) {
-        throw new ViaTypeError("Unable to read JSON date");
+        throw new KryoError<{}>("Unable to read JSON date");
       }
       val = new Date(val);
       break;
     case "bson-doc":
       break;
     default:
-      throw new ViaTypeError("Unsupported format");
+      throw new UnsupportedFormatError(format);
   }
   let err = testErrorSync(val);
   if (err) {
@@ -52,7 +54,7 @@ function readTrustedSync(format: "json-doc" | "bson-doc", val: string | Date, op
     case "bson-doc":
       return new Date((<Date> val).getTime());
     default:
-      throw new Error("Unknown format");
+      throw new UnsupportedFormatError(format);
   }
 }
 
@@ -64,7 +66,7 @@ function writeSync (format: any, val: any, options: any): any {
 
 function testErrorSync (val: Date, options?: DateOptions): Error | null {
   if (!(val instanceof Date)) {
-    return new ViaTypeError(null, "DateTypeError", {value: val}, "Expected value to be instanceof Date");
+    return new KryoError<{value: any}>("DateTypeError", {value: val}, "Expected value to be instanceof Date");
   }
   if (isNaN(val.getTime())) {
     return new InvalidTimestampError(val);
@@ -111,15 +113,15 @@ export class DateType implements
   SerializableTypeAsync<Date, "bson-doc", Date>,
   VersionedTypeAsync<Date, string, number> {
 
-  isSync = true;
-  isAsync = true;
-  isSerializable = true;
-  isVersioned = true;
-  isCollection = false;
-  type = NAME;
-  types = [NAME];
+  isSync: true = true;
+  isAsync: true = true;
+  isSerializable: true = true;
+  isVersioned: true = true;
+  isCollection: false = false;
+  type: string = NAME;
+  types: string[] = [NAME];
 
-  options: DateOptions = null;
+  options: DateOptions;
 
   constructor(options?: DateOptions) {
     this.options = _.merge({}, defaultOptions, options);
@@ -135,10 +137,10 @@ export class DateType implements
     return readTrustedSync(format, val, this.options);
   }
 
-  readTrustedAsync (format: "json-doc", val: string): Bluebird<Date>;
-  readTrustedAsync (format: "bson-doc", val: Date): Bluebird<Date>;
-  readTrustedAsync (format: any, val: any): any {
-    return Bluebird.try(() => readTrustedSync(format, val, this.options));
+  async readTrustedAsync (format: "json-doc", val: string): Promise<Date>;
+  async readTrustedAsync (format: "bson-doc", val: Date): Promise<Date>;
+  async readTrustedAsync (format: any, val: any): Promise<any> {
+    return readTrustedSync(format, val, this.options);
   }
 
   readSync (format: "json-doc", val: string): Date;
@@ -147,10 +149,10 @@ export class DateType implements
     return readSync(format, val, this.options);
   }
 
-  readAsync (format: "json-doc", val: string | number): Bluebird<Date>;
-  readAsync (format: "bson-doc", val: Date): Bluebird<Date>;
-  readAsync (format: any, val: any): any {
-    return Bluebird.try(() => readSync(format, val, this.options));
+  async readAsync (format: "json-doc", val: string | number): Promise<Date>;
+  async readAsync (format: "bson-doc", val: Date): Promise<Date>;
+  async readAsync (format: any, val: any): Promise<any> {
+    return readSync(format, val, this.options);
   }
 
   writeSync (format: "json-doc", val: Date): string;
@@ -159,73 +161,73 @@ export class DateType implements
     return writeSync(format, val, this.options);
   }
 
-  writeAsync (format: "json-doc", val: Date): Bluebird<string>;
-  writeAsync (format: "bson-doc", val: Date): Bluebird<Date>;
-  writeAsync (format: any, val: any): any {
-    return Bluebird.try(() => writeSync(format, val, this.options));
+  async writeAsync (format: "json-doc", val: Date): Promise<string>;
+  async writeAsync (format: "bson-doc", val: Date): Promise<Date>;
+  async writeAsync (format: any, val: any): Promise<any> {
+    return writeSync(format, val, this.options);
   }
 
   testErrorSync (val: Date, options?: DateOptions): Error | null {
     return testErrorSync(val, options);
   }
 
-  testErrorAsync (val: Date, options?: DateOptions): Bluebird<Error | null> {
-    return Bluebird.try(() => testErrorSync(val, options));
+  async testErrorAsync (val: Date, options?: DateOptions): Promise<Error | null> {
+    return testErrorSync(val, options);
   }
 
   testSync (val: Date, options?: DateOptions): boolean {
     return testSync(val, options);
   }
 
-  testAsync (val: Date, options?: DateOptions): Bluebird<boolean> {
-    return Bluebird.try(() => testSync(val, options));
+  async testAsync (val: Date, options?: DateOptions): Promise<boolean> {
+    return testSync(val, options);
   }
 
   equalsSync (val1: Date, val2: Date, options?: DateOptions): boolean {
     return equalsSync(val1, val2, options);
   }
 
-  equalsAsync (val1: Date, val2: Date, options?: DateOptions): Bluebird<boolean> {
-    return Bluebird.try(() => equalsSync(val1, val2, options));
+  async equalsAsync (val1: Date, val2: Date, options?: DateOptions): Promise<boolean> {
+    return equalsSync(val1, val2, options);
   }
 
   cloneSync (val: Date, options?: DateOptions): Date {
     return cloneSync(val, options);
   }
 
-  cloneAsync (val: Date, options?: DateOptions): Bluebird<Date> {
-    return Bluebird.try(() => cloneSync(val, options));
+  async cloneAsync (val: Date, options?: DateOptions): Promise<Date> {
+    return cloneSync(val, options);
   }
 
   diffSync (oldVal: Date, newVal: Date, options?: DateOptions): number | null {
     return diffSync(oldVal, newVal, options);
   }
 
-  diffAsync (oldVal: Date, newVal: Date, options?: DateOptions): Bluebird<number | null> {
-    return Bluebird.try(() => diffSync(oldVal, newVal, options));
+  async diffAsync (oldVal: Date, newVal: Date, options?: DateOptions): Promise<number | null> {
+    return diffSync(oldVal, newVal, options);
   }
 
   patchSync (oldVal: Date, diff: number | null, options?: DateOptions): Date {
     return patchSync(oldVal, diff, options);
   }
 
-  patchAsync (oldVal: Date, diff: number | null, options?: DateOptions): Bluebird<Date> {
-    return Bluebird.try(() => patchSync(oldVal, diff, options));
+  async patchAsync (oldVal: Date, diff: number | null, options?: DateOptions): Promise<Date> {
+    return patchSync(oldVal, diff, options);
   }
 
   reverseDiffSync(diff: number | null, options?: DateOptions): number | null {
     return reverseDiffSync(diff, options);
   }
 
-  reverseDiffAsync(diff: number | null, options?: DateOptions): Bluebird<number | null> {
-    return Bluebird.try(() => reverseDiffSync(diff, options));
+  async reverseDiffAsync(diff: number | null, options?: DateOptions): Promise<number | null> {
+    return reverseDiffSync(diff, options);
   }
 
   squashSync(diff1: number | null, diff2: number | null, options?: DateOptions): number | null {
     return squashSync(diff1, diff2, options);
   }
 
-  squashAsync(diff1: number | null, diff2: number | null, options?: DateOptions): Bluebird<number | null> {
-    return Bluebird.try(() => squashSync(diff1, diff2, options));
+  async squashAsync(diff1: number | null, diff2: number | null, options?: DateOptions): Promise<number | null> {
+    return squashSync(diff1, diff2, options);
   }
 }

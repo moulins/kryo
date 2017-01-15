@@ -215,7 +215,7 @@ function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
     const [tarLeft, tarRight] = target.split(targetMid);
     const left: any[] = hirschberg(srcLeft, tarLeft);
     const right: any[] = hirschberg(srcRight, tarRight);
-    return [].concat(left, right);
+    return [...left, ...right];
   }
 }
 

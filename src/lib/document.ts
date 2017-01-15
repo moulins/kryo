@@ -1,24 +1,13 @@
-import * as Bluebird from "bluebird";
 import * as _ from "lodash";
-
 import {
   Document, VersionedTypeSync, VersionedTypeAsync,
   Dictionary, TypeSync, VersionedCollectionTypeSync,
   VersionedCollectionTypeAsync, Type, SerializableTypeSync,
-  SerializableTypeAsync
+  SerializableTypeAsync, VersionedType
 } from "./interfaces";
-import {ViaTypeError} from "./helpers/via-type-error";
-import {error} from "util";
-import {TemporalError} from "./array";
-
-export class InvalidTimestampError extends ViaTypeError {
-  constructor(date: Date) {
-    super('invalid-timestamp', {date: date}, 'Invalid timestamp');
-  }
-}
+import {KryoError, TodoError} from "./helpers/via-type-error";
 
 const NAME = "document";
-
 
 // Configuration interfaces
 
@@ -27,7 +16,7 @@ export interface DocumentOptions<TypeKind> {
   properties: Dictionary<PropertyDescriptor<TypeKind>>;
 }
 
-export interface DocumentOptionsFull<TypeKind> extends DocumentOptions<TypeKind> {
+export interface CompleteDocumentOptions<TypeKind> extends DocumentOptions<TypeKind> {
   ignoreExtraKeys: boolean;
 }
 
@@ -73,28 +62,27 @@ function diffKeys(source: Document, target: Document): DiffKeysResult {
   }
 }
 
-export class DocumentType implements
-  SerializableTypeSync<Document, "bson-doc", Document>,
+export class DocumentType implements SerializableTypeSync<Document, "bson-doc", Document>,
   VersionedTypeSync<Document, Document, DocumentDiff>,
   SerializableTypeAsync<Document, "bson-doc", Document>,
   VersionedTypeAsync<Document, Document, DocumentDiff> {
 
-  isSync = true;
-  isAsync = true;
-  isSerializable = true;
-  isVersioned = true;
-  isCollection = true;
-  type = NAME;
-  types = [NAME];
+  isSync: true;
+  isAsync: true;
+  isSerializable: true = true;
+  isVersioned: true = true;
+  isCollection: true = true;
+  type: string = NAME;
+  types: string[] = [NAME];
 
-  options: DocumentOptionsFull<any> = null;
+  options: CompleteDocumentOptions<any>;
 
   constructor(options: DocumentOptions<Type<any>>) {
     let properties: Dictionary<PropertyDescriptorFull<any>> = {};
     for (const key in options.properties) {
       properties[key] = {
-        optional: "optional" in options.properties[key] ? options.properties[key].optional : false,
-        nullable: "nullable" in options.properties[key] ? options.properties[key].nullable : false,
+        optional: "optional" in options.properties[key] ? Boolean(options.properties[key].optional) : false,
+        nullable: "nullable" in options.properties[key] ? Boolean(options.properties[key].nullable) : false,
         type: options.properties[key].type
       };
     }
@@ -103,122 +91,116 @@ export class DocumentType implements
       properties: properties
     };
 
-    this.isSync = _.reduce(options.properties, (memo, curProperty) => memo && curProperty.type.isSync, true);
-    this.isAsync = _.reduce(options.properties, (memo, curProperty) => memo && curProperty.type.isAsync, true);
+    this.isSync = <any> _.reduce(options.properties, (memo, curProperty) => memo && curProperty.type.isSync, true);
+    this.isAsync = <any> _.reduce(options.properties, (memo, curProperty) => memo && curProperty.type.isAsync, true);
   }
 
   toJSON(): null { // TODO: return options
     return null;
   }
 
-  readTrustedSync (format: "json-doc", val: Document): Document;
-  readTrustedSync (format: "bson-doc", val: Document): Document;
-  readTrustedSync (format: any, val: any): any {
+  readTrustedSync(format: "json-doc", val: Document): Document;
+  readTrustedSync(format: "bson-doc", val: Document): Document;
+  readTrustedSync(format: any, val: any): any {
     return readTrustedSync(format, val, this.options);
   }
 
-  readTrustedAsync (format: "json-doc" | "bson-doc", val: Document): Bluebird<Document> {
-    return Bluebird.reject(new TemporalError());
+  async readTrustedAsync(format: "json-doc" | "bson-doc", val: Document): Promise<Document> {
+    throw new TodoError("Document:readTrustedAsync");
   }
 
-  readSync (format: "json-doc", val: Document): Document;
-  readSync (format: "bson-doc", val: Document): Document;
-  readSync (format: any, val: any): any {
+  readSync(format: "json-doc", val: Document): Document;
+  readSync(format: "bson-doc", val: Document): Document;
+  readSync(format: any, val: any): any {
     return readSync(format, val, this.options);
   }
 
-  readAsync (format: "json-doc" | "bson-doc", val: Document): Bluebird<Document> {
-    return Bluebird.reject(new TemporalError());
+  async readAsync(format: "json-doc" | "bson-doc", val: Document): Promise<Document> {
+    throw new TodoError("Document:readAsync");
   }
 
-  writeSync (format: "json-doc", val: Document): Document;
-  writeSync (format: "bson-doc", val: Document): Document;
-  writeSync (format: any, val: any): any {
+  writeSync(format: "json-doc", val: Document): Document;
+  writeSync(format: "bson-doc", val: Document): Document;
+  writeSync(format: any, val: any): any {
     return writeSync(format, val, this.options);
   }
 
-  writeAsync (format: "json-doc" | "bson-doc", val: Document): Bluebird<Document> {
-    return Bluebird.reject(new TemporalError());
+  async writeAsync(format: "json-doc" | "bson-doc", val: Document): Promise<Document> {
+    throw new TodoError("Document:writeAsync");
   }
 
-  testErrorSync (val: Document): Error | null {
+  testErrorSync(val: Document): Error | null {
     return testErrorSync(val, this.options);
   }
 
-  testErrorAsync (val: Document): Bluebird<Error | null> {
-    return Bluebird.reject(new TemporalError());
+  async testErrorAsync(val: Document): Promise<Error | null> {
+    throw new TodoError("Document:testErrorAsync");
   }
 
-  testSync (val: Document): boolean {
+  testSync(val: Document): boolean {
     return testSync(val, this.options);
   }
 
-  testAsync (val: Document): Bluebird<boolean> {
-    return Bluebird.reject(new TemporalError());
+  async testAsync(val: Document): Promise<boolean> {
+    throw new TodoError("Document:testAsync");
   }
 
-  equalsSync (val1: Document, val2: Document): boolean {
+  equalsSync(val1: Document, val2: Document): boolean {
     return equalsSync(val1, val2, this.options);
   }
 
-  equalsAsync (val1: Document, val2: Document): Bluebird<boolean> {
-    return Bluebird.reject(new TemporalError());
+  async equalsAsync(val1: Document, val2: Document): Promise<boolean> {
+    throw new TodoError("Document:equalsAsync");
   }
 
-  cloneSync (val: Document): Document {
+  cloneSync(val: Document): Document {
     return cloneSync(val, this.options);
   }
 
-  cloneAsync (val: Document): Bluebird<Document> {
-    return Bluebird.reject(new TemporalError());
+  async cloneAsync(val: Document): Promise<Document> {
+    throw new TodoError("Document:cloneAsync");
   }
 
-  diffSync (oldVal: Document, newVal: Document): DocumentDiff | null {
+  diffSync(oldVal: Document, newVal: Document): DocumentDiff | null {
     return diffSync(oldVal, newVal, this.options);
   }
 
-  diffAsync (oldVal: Document, newVal: Document): Bluebird<DocumentDiff | null> {
-    return Bluebird.reject(new TemporalError());
+  async diffAsync(oldVal: Document, newVal: Document): Promise<DocumentDiff | null> {
+    throw new TodoError("Document:diffAsync");
   }
 
-  patchSync (oldVal: Document, diff: DocumentDiff | null): Document {
+  patchSync(oldVal: Document, diff: DocumentDiff | null): Document {
     return patchSync(oldVal, diff, this.options);
   }
 
-  patchAsync (oldVal: Document, diff: DocumentDiff | null): Bluebird<Document> {
-    return Bluebird.reject(new TemporalError());
+  async patchAsync(oldVal: Document, diff: DocumentDiff | null): Promise<Document> {
+    throw new TodoError("Document:patchAsync");
   }
 
   reverseDiffSync(diff: DocumentDiff | null): DocumentDiff | null {
     return reverseDiffSync(diff, this.options);
   }
 
-  reverseDiffAsync(diff: DocumentDiff | null): Bluebird<DocumentDiff | null> {
-    return Bluebird.reject(new TemporalError());
+  async reverseDiffAsync(diff: DocumentDiff | null): Promise<DocumentDiff | null> {
+    throw new TodoError("Document:reverseDiffAsync");
   }
 
-  //noinspection TypeScriptUnresolvedVariable
-  iterateSync (value: Document): IteratorResult<any> {
+  iterateSync(value: Document): IteratorResult<any> {
     throw new Error("TODO");
   }
 
-  //noinspection TypeScriptUnresolvedVariable
-  iterateAsync (value: Document): IteratorResult<PromiseLike<any>> {
-    throw new TemporalError();
+  async iterateAsync(value: Document): Promise<IteratorResult<Promise<any>>> {
+    throw new TodoError("Document:iterateAsync");
   }
 }
 
-function readSync (
-  format: "json-doc",
-  val: Document,
-  options: DocumentOptionsFull<SerializableTypeSync<"json-doc", any, any>>
-): Bluebird<Document>;
-function readSync (
-  format: "bson-doc",
-  val: Document,
-  options: DocumentOptionsFull<SerializableTypeSync<"bson-doc", any, any>>
-): Bluebird<Document>;
-function readSync (format: any, val: any, options: any): any {
+function readSync(format: "json-doc",
+                  val: Document,
+                  options: CompleteDocumentOptions<SerializableTypeSync<"json-doc", any, any>>): Promise<Document>;
+function readSync(format: "bson-doc",
+                  val: Document,
+                  options: CompleteDocumentOptions<SerializableTypeSync<"bson-doc", any, any>>): Promise<Document>;
+function readSync(format: any, val: any, options: any): any {
   const keysDiff = diffKeys(options.properties, val);
 
   const missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
@@ -249,17 +231,13 @@ function readSync (format: any, val: any, options: any): any {
   return result;
 }
 
-function readTrustedSync (
-  format: "json-doc",
-  val: Document,
-  options: DocumentOptionsFull<SerializableTypeSync<"json-doc", any, any>>
-): Bluebird<Document>;
-function readTrustedSync (
-  format: "bson-doc",
-  val: Document,
-  options: DocumentOptionsFull<SerializableTypeSync<"bson-doc", any, any>>
-): Bluebird<Document>;
-function readTrustedSync (format: any, val: any, options: any): any {
+function readTrustedSync(format: "json-doc",
+                         val: Document,
+                         options: CompleteDocumentOptions<SerializableTypeSync<"json-doc", any, any>>): Promise<Document>;
+function readTrustedSync(format: "bson-doc",
+                         val: Document,
+                         options: CompleteDocumentOptions<SerializableTypeSync<"bson-doc", any, any>>): Promise<Document>;
+function readTrustedSync(format: any, val: any, options: any): any {
   const keysDiff = diffKeys(options.properties, val);
 
   let result: Document = {};
@@ -277,17 +255,13 @@ function readTrustedSync (format: any, val: any, options: any): any {
   return result;
 }
 
-function writeSync (
-  format: "json-doc",
-  val: Document,
-  options: DocumentOptionsFull<SerializableTypeSync<"json-doc", any, any>>
-): Bluebird<Document>;
-function writeSync (
-  format: "bson-doc",
-  val: Document,
-  options: DocumentOptionsFull<SerializableTypeSync<"bson-doc", any, any>>
-): Bluebird<Document>;
-function writeSync (format: any, val: any, options: any): any {
+function writeSync(format: "json-doc",
+                   val: Document,
+                   options: CompleteDocumentOptions<SerializableTypeSync<"json-doc", any, any>>): Promise<Document>;
+function writeSync(format: "bson-doc",
+                   val: Document,
+                   options: CompleteDocumentOptions<SerializableTypeSync<"bson-doc", any, any>>): Promise<Document>;
+function writeSync(format: any, val: any, options: any): any {
   const keysDiff = diffKeys(options.properties, val);
 
   let result: Document = {};
@@ -305,7 +279,7 @@ function writeSync (format: any, val: any, options: any): any {
   return result;
 }
 
-function testErrorSync (val: Document, options: DocumentOptionsFull<TypeSync<any>>): Error | null {
+function testErrorSync(val: Document, options: CompleteDocumentOptions<TypeSync<any>>): Error | null {
   if (typeof val !== "object") {
     return new Error("Unexpected type");
   }
@@ -350,11 +324,11 @@ function testErrorSync (val: Document, options: DocumentOptionsFull<TypeSync<any
   return null;
 }
 
-function testSync (val: Document, options: DocumentOptionsFull<TypeSync<any>>): boolean {
+function testSync(val: Document, options: CompleteDocumentOptions<TypeSync<any>>): boolean {
   return testErrorSync(val, options) === null;
 }
 
-function equalsSync (val1: Document, val2: Document, options: DocumentOptionsFull<TypeSync<any>>): boolean {
+function equalsSync(val1: Document, val2: Document, options: CompleteDocumentOptions<TypeSync<any>>): boolean {
   const keys: string[] = _.keys(options.properties);
   const val1Keys: string[] = _.intersection(keys, (<any> _).keys(val1));
   const val2Keys: string[] = _.intersection(keys, (<any> _).keys(val2));
@@ -379,7 +353,7 @@ function equalsSync (val1: Document, val2: Document, options: DocumentOptionsFul
   return true;
 }
 
-function cloneSync (val: Document, options: DocumentOptionsFull<TypeSync<any>>): Document {
+function cloneSync(val: Document, options: CompleteDocumentOptions<TypeSync<any>>): Document {
   const keys: string[] = _.intersection(_.keys(options.properties), _.keys(val));
 
   let result: Document = {};
@@ -395,11 +369,9 @@ function cloneSync (val: Document, options: DocumentOptionsFull<TypeSync<any>>):
   return result;
 }
 
-function diffSync (
-  oldVal: Document,
-  newVal: Document,
-  options: DocumentOptionsFull<VersionedTypeSync<any, any, any>>
-): DocumentDiff | null {
+function diffSync(oldVal: Document,
+                  newVal: Document,
+                  options: CompleteDocumentOptions<VersionedTypeSync<any, any, any>>): DocumentDiff | null {
   const keysDiff = diffKeys(oldVal, newVal);  // TODO: intersection with properties
   let result: DocumentDiff = {set: {}, unset: {}, update: {}, toNull: {}, fromNull: {}};
   let equal = (keysDiff.extraKeys.length === 0 && keysDiff.missingKeys.length === 0);
@@ -422,7 +394,7 @@ function diffSync (
       if (oldVal[key] === null && newVal[key] !== null) {
         result.fromNull = options.properties[key].type.writeSync("json-doc", newVal[key]);
         equal = false;
-      } else if(oldVal[key] !== null && newVal[key] === null) {
+      } else if (oldVal[key] !== null && newVal[key] === null) {
         result.toNull = options.properties[key].type.writeSync("json-doc", oldVal[key]);
         equal = false;
       }
@@ -437,11 +409,9 @@ function diffSync (
   return equal ? null : result;
 }
 
-function patchSync (
-  oldVal: Document,
-  diff: DocumentDiff | null,
-  options: DocumentOptionsFull<VersionedTypeSync<any, any, any>>
-): Document {
+function patchSync(oldVal: Document,
+                   diff: DocumentDiff | null,
+                   options: CompleteDocumentOptions<VersionedTypeSync<any, any, any>>): Document {
   let newVal: Document = cloneSync(oldVal, options);
 
   if (diff === null) {
@@ -467,10 +437,12 @@ function patchSync (
   return newVal;
 }
 
-function reverseDiffSync (
-  diff: DocumentDiff | null,
-  options?: DocumentOptionsFull<VersionedTypeSync<any, any, any>>
-): DocumentDiff | null {
+function reverseDiffSync(diff: DocumentDiff | null,
+                         options: CompleteDocumentOptions<VersionedTypeSync<any, any, any>>): DocumentDiff | null {
+  if (diff === null) {
+    return null;
+  }
+
   // TODO: clone the other values
   let reversed: DocumentDiff = {
     set: diff.unset,
@@ -485,28 +457,61 @@ function reverseDiffSync (
   return reversed;
 }
 
-export class DocumentTypeError extends ViaTypeError {}
+export class DocumentTypeError<D> extends KryoError<D> {
+}
 
-export class MissingKeysError extends DocumentTypeError {
-  constructor (missingKeys: string[]) {
-    super (null, "missing-keys", {missingKeys: missingKeys}, `The following keys are missing: ${JSON.stringify(missingKeys)}`);
+export interface MissingKeysErrorData {
+  missingKeys: string[];
+}
+
+export class MissingKeysError extends DocumentTypeError<MissingKeysErrorData> {
+  constructor(missingKeys: string[]) {
+    super(
+      "missing-keys",
+      {missingKeys: missingKeys},
+      `The following keys are missing: ${JSON.stringify(missingKeys)}`
+    );
   }
 }
 
-export class ExtraKeysError extends DocumentTypeError {
-  constructor (extraKeys: string[]) {
-    super (null, "extra-keys", {extraKeys: extraKeys}, `The following keys are extraneous: ${JSON.stringify(extraKeys)}`);
+export interface ExtraKeysErrorData {
+  extraKeys: string[];
+}
+
+export class ExtraKeysError extends DocumentTypeError<ExtraKeysErrorData> {
+  constructor(extraKeys: string[]) {
+    super(
+      "extra-keys",
+      {extraKeys: extraKeys},
+      `The following keys are extraneous: ${JSON.stringify(extraKeys)}`
+    );
   }
 }
 
-export class ForbiddenNullError extends DocumentTypeError {
-  constructor (key: string) {
-    super (null, "forbidden-null", {key: key}, `The value \`null\` is forbidden for the key ${key}`);
+export interface ForbiddenNullErrorData {
+  key: string;
+}
+
+export class ForbiddenNullError extends DocumentTypeError<ForbiddenNullErrorData> {
+  constructor(key: string) {
+    super(
+      "forbidden-null",
+      {key: key},
+      `The value \`null\` is forbidden for the key ${key}`
+    );
   }
 }
 
-export class InvalidProperties extends DocumentTypeError {
-  constructor (errors: Dictionary<Error>) {
-    super (null, "invalid-properties", {errors: errors}, `The following properties are invalid: ${JSON.stringify(errors)}`);
+export interface InvalidPropertiesData {
+  errors: Dictionary<Error>;
+}
+
+export class InvalidProperties extends DocumentTypeError<InvalidPropertiesData> {
+  constructor(errors: Dictionary<Error>) {
+    super(
+      "invalid-properties",
+      {errors: errors},
+      `The following properties are invalid: ${JSON.stringify(errors)}`
+    );
   }
 }

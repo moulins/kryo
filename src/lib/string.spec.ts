@@ -1,5 +1,5 @@
 import {StringType} from "./string";
-import {runTests, TypedValue} from "./helpers/test";
+import {runTests, TypedValue} from "../test/test";
 
 describe("StringType", function () {
 

@@ -1,16 +1,8 @@
 {
-  "dependencies": {
-    "bluebird": "registry:npm/bluebird#3.4.1+20160811213708",
-    "incident": "npm:incident",
-    "lodash": "registry:npm/lodash#4.0.0+20160723033700"
-  },
   "devDependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160415060238"
+    "chai": "registry:npm/chai#3.5.0+20160723033700"
   },
   "globalDevDependencies": {
-    "mocha": "registry:env/mocha#2.2.5+20160321223601"
-  },
-  "globalDependencies": {
-    "node": "registry:env/node#4.0.0+20160507210304"
+    "mocha": "registry:env/mocha#2.2.5+20160926180742"
   }
 }
