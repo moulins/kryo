@@ -1,14 +1,14 @@
+import {KryoError, UnexpectedTypeError} from "./helpers/kryo-error";
 import {
-  VersionedTypeSync, VersionedTypeAsync,
-  SerializableTypeSync, SerializableTypeAsync
+  SerializableTypeAsync,
+  SerializableTypeSync,
+  VersionedTypeAsync,
+  VersionedTypeSync
 } from "./interfaces";
-import {UnexpectedTypeError, KryoError} from "./helpers/via-type-error";
 
-
-const NAME = "boolean";
+export const NAME: string = "boolean";
 
 export interface BooleanOptions {}
-
 
 function readSync(format: "json-doc" | "bson-doc", val: any): boolean {
   return Boolean(val);

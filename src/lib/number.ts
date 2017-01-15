@@ -1,10 +1,12 @@
-import {UnexpectedTypeError, KryoError} from "./helpers/via-type-error";
+import {KryoError, UnexpectedTypeError} from "./helpers/kryo-error";
 import {
-  TypeSync, TypeAsync, VersionedTypeAsync,
-  VersionedTypeSync, SerializableTypeSync, SerializableTypeAsync
+  SerializableTypeAsync,
+  SerializableTypeSync,
+  VersionedTypeAsync,
+  VersionedTypeSync
 } from "./interfaces";
 
-const NAME = "number";
+export const NAME: string = "number";
 
 export interface NumberOptions {}
 

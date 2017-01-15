@@ -1,15 +1,15 @@
-import {StringType} from "./string";
 import {runTests, TypedValue} from "../test/test";
+import {StringType} from "./string";
 
 describe("StringType", function () {
+  const type: StringType = new StringType();
 
-  let type: StringType = new StringType();
-
-  let items: TypedValue[] = [
+  const items: TypedValue[] = [
+    // Valid items
     {name: '""', value: "", valid: true},
     {name: '"Hello World!"', value: "Hello World!", valid: true},
-    {name: 'Drop the bass', value: "ԂЯØǷ Łƕ੬ ɃɅϨϞ", valid: true},
-
+    {name: "Drop the bass", value: "ԂЯØǷ Łƕ੬ ɃɅϨϞ", valid: true},
+    // Invalid items
     {name: 'new String("stringObject")', value: new String("stringObject"), valid: false},
     {name: "0.5", value: 0.5, valid: false},
     {name: "0.0001", value: 0.0001, valid: false},

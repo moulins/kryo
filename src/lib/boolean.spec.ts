@@ -1,16 +1,15 @@
+import {runTests, TypedValue} from "../test/test";
 import {BooleanType} from "./boolean";
-import {TypedValue, runTests} from "../test/test";
 
 describe("BooleanType", function () {
+  const type: BooleanType = new BooleanType();
 
-  let type: BooleanType = new BooleanType();
-
-  let items: TypedValue[] = [
+  const items: TypedValue[] = [
     {name: "true", value: true, valid: true},
     {name: "false", value: false, valid: true},
 
-    {name: 'new Boolean(true)', value: new Boolean(true), valid: false},
-    {name: 'new Boolean(false)', value: new Boolean(false), valid: false},
+    {name: "new Boolean(true)", value: new Boolean(true), valid: false},
+    {name: "new Boolean(false)", value: new Boolean(false), valid: false},
     {name: "0", value: 0, valid: false},
     {name: "1", value: 1, valid: false},
     {name: '""', value: "", valid: false},

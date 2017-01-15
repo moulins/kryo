@@ -1,22 +1,13 @@
 import * as _ from "lodash";
-
+import {KryoError, UnsupportedFormatError} from "./helpers/kryo-error";
 import {
-  VersionedTypeSync, VersionedTypeAsync,
-  SerializableTypeSync, SerializableTypeAsync
+  SerializableTypeAsync,
+  SerializableTypeSync,
+  VersionedTypeAsync,
+  VersionedTypeSync
 } from "./interfaces";
-import {KryoError, UnsupportedFormatError} from "./helpers/via-type-error";
 
-export interface InvalidTimestampErrorData {
-  date: Date;
-}
-
-export class InvalidTimestampError extends KryoError<InvalidTimestampErrorData> {
-  constructor(date: Date) {
-    super('invalid-timestamp', {date: date}, 'Invalid timestamp');
-  }
-}
-
-const NAME = "date";
+export const NAME: string = "date";
 
 export interface DateOptions {}
 
@@ -40,8 +31,8 @@ function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptio
     default:
       throw new UnsupportedFormatError(format);
   }
-  let err = testErrorSync(val);
-  if (err) {
+  const err: Error | null = testErrorSync(val);
+  if (err !== null) {
     throw err;
   }
   return val;
@@ -229,5 +220,15 @@ export class DateType implements
 
   async squashAsync(diff1: number | null, diff2: number | null, options?: DateOptions): Promise<number | null> {
     return squashSync(diff1, diff2, options);
+  }
+}
+
+export interface InvalidTimestampErrorData {
+  date: Date;
+}
+
+export class InvalidTimestampError extends KryoError<InvalidTimestampErrorData> {
+  constructor(date: Date) {
+    super("invalid-timestamp", {date: date}, "Invalid timestamp");
   }
 }

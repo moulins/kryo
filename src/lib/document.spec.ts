@@ -1,27 +1,27 @@
+import {runTests, TypedValue} from "../test/test";
 import {DateType} from "./date";
 import {DocumentType} from "./document";
 import {IntegerType} from "./integer";
-import {TypedValue, runTests} from "../test/test";
 
 describe("DocumentType", function () {
-  const documentType = new DocumentType({
+  const documentType: DocumentType = new DocumentType({
     properties: {
-      "dateProp": {
+      dateProp: {
         type: new DateType()
       },
-      "optIntProp": {
+      optIntProp: {
         optional: true,
         type: new IntegerType()
       },
-      "nestedDoc": {
+      nestedDoc: {
         nullable: true,
         type: new DocumentType({
           properties: {
-            "id": {
+            id: {
               optional: true,
               nullable: true,
               type: new IntegerType()
-            },
+            }
           }
         })
       }

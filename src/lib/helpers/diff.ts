@@ -3,7 +3,6 @@
 // Space: O(min(m, n))
 // See: https://en.wikipedia.org/wiki/Hirschberg%27s_algorithm
 
-
 /*
  * Levenshtein distance
  *
@@ -34,16 +33,42 @@
  *
  */
 
+/**
+ * Represents a sequence of items: either a string or an array.
+ */
 interface Sequence<T> {
   length: number;
   [index: number]: T;
 }
 
+/**
+ * Represents a slice of a sequence of items. This allows to abstract the access to the items
+ * and prevent extraneous copies of the sequence.
+ */
 class Slice<T> {
+  /**
+   * The original sequence.
+   */
   sequence: Sequence<T>;
+
+  /**
+   * The index of the first item in the slice, relative to the original sequence.
+   */
   start: number;
+
+  /**
+   * The index **after** the last item in the slice, relative to the original sequence.
+   */
   end: number;
+
+  /**
+   * The length of the slice.
+   */
   length: number;
+
+  /**
+   * Reverse the access to the items: slice.get(0) will return the last item instead of the first.
+   */
   reversed: boolean;
 
   constructor(sequence: Sequence<T>, start: number, end: number, reversed: boolean) {
@@ -54,15 +79,15 @@ class Slice<T> {
     this.reversed = reversed;
   }
 
-  indexOf(item: T) {
+  indexOf(item: T): number {
     if (this.reversed) {
-      for (let i = this.end - 1; i >= this.start; i--) {
+      for (let i: number = this.end - 1; i >= this.start; i--) {
         if (this.sequence[i] === item) {
           return this.end - 1 - i;
         }
       }
     } else {
-      for (let i = this.start; i < this.end; i++) {
+      for (let i: number = this.start; i < this.end; i++) {
         if (this.sequence[i] === item) {
           return i - this.start;
         }
@@ -71,11 +96,11 @@ class Slice<T> {
     return -1;
   }
 
-  getItem(index: number) {
+  getItem(index: number): T {
     return this.sequence[this.getAbsoluteIndex(index)];
   }
 
-  getAbsoluteIndex(relativeIndex: number) {
+  getAbsoluteIndex(relativeIndex: number): number {
     if (this.reversed) {
       return (this.end - 1) - relativeIndex;
     } else {
@@ -83,16 +108,16 @@ class Slice<T> {
     }
   }
 
-  split (index: number) {
+  split (index: number): [Slice<T>, Slice<T>] {
     if (this.reversed) {
       throw Error("Cannot split reversed");
     }
-    const left = new Slice(this.sequence, this.start, this.start + index, false);
-    const right = new Slice(this.sequence, this.start + index, this.end, false);
+    const left: Slice<T> = new Slice(this.sequence, this.start, this.start + index, false);
+    const right: Slice<T> = new Slice(this.sequence, this.start + index, this.end, false);
     return [left, right];
   }
 
-  reverse () {
+  reverse (): Slice<T> {
     return new Slice(this.sequence, this.start, this.end, true);
   }
 }
@@ -104,72 +129,71 @@ export interface DiffAction {
 
 type IndexValue = [number, number];
 
-
 function nearestEnd <T> (src: Slice<T>, target: Slice<T>): IndexValue {
-  const {length: x2} = src;
-  const x1 = 0;
-  const xSeq = src.sequence;
-  const {length: y2} = target;
-  const y1 = 0;
-  const ySeq = target.sequence;
-  const xLen = x2 - x1;
-  const yLen = y2 - y1;
+  const xSeq: Sequence<T> = src.sequence;
+  const x1: number = 0;
+  const x2: number = src.length;
+  const ySeq: Sequence<T> = target.sequence;
+  const y1: number = 0;
+  const y2: number = target.length;
+  const xLen: number = x2 - x1;
+  const yLen: number = y2 - y1;
 
   // We do not need to store the whole matrix: we just need the current and
   // previous rows.
-  let oldDist = Array(yLen + 1);
-  let curDist = Array(yLen + 1);
+  let oldDist: number[] = Array(yLen + 1);
+  let curDist: number[] = Array(yLen + 1);
 
   // Fill the first row
-  for (let col = 0; col <= yLen; col++) {
+  for (let col: number = 0; col <= yLen; col++) {
     curDist[col] = col;
   }
 
   // Traverse xSeq
-  for (let row = 1; row <= xLen; row++) {
+  for (let row: number = 1; row <= xLen; row++) {
     [curDist, oldDist] = [oldDist, curDist];
 
-    const rowItem = src.getItem(row - 1);
+    const rowItem: T = src.getItem(row - 1);
 
     // Initialize first column
     curDist[0] = row;
 
     // Compute distances
-    for (let col = 1; col <= yLen; col++) {
+    for (let col: number = 1; col <= yLen; col++) {
       // Nearest distance in case of ADD or DEL
-      const addDelDist = 1 + Math.min(oldDist[col], curDist[col - 1]);
+      const addDelDist: number = 1 + Math.min(oldDist[col], curDist[col - 1]);
       // Nearest distance in case of MATCH
-      const matchDist = oldDist[col - 1];
+      const matchDist: number = oldDist[col - 1];
       // Nearest distance in case of MUT
-      const mutDist = matchDist + 1;
+      const mutDist: number = matchDist + 1;
 
       if (addDelDist <= matchDist) {
         // See the comment above about skipping the test `colItem === rowItem`
         curDist[col] = addDelDist;
       } else {
-        const colItem = target.getItem(col - 1);
+        const colItem: T = target.getItem(col - 1);
         curDist[col] = colItem === rowItem ? matchDist : mutDist;
       }
     }
   }
 
-  // Search for minimum in last line
-  let minDistCol = 0;
-  for (let col = 1; col <= yLen; col++) {
-    // We use allow equality to get the rightmost minimal value.
+  // Search for minimum in the last line
+  let minDistCol: number = 0;
+  for (let col: number = 1; col <= yLen; col++) {
+    // We use equality to get the rightmost minimal value.
     if (curDist[col] <= curDist[minDistCol]) {
       minDistCol = col;
     }
   }
 
-  const minDistIndex = minDistCol - 1;
-  const minDistValue = curDist[minDistCol];
+  const minDistIndex: number = minDistCol - 1;
+  const minDistValue: number = curDist[minDistCol];
   return [minDistIndex, minDistValue];
 }
 
 function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
-  const srcLen = source.length;
-  const tarLen = target.length;
+  const srcLen: number = source.length;
+  const tarLen: number = target.length;
 
   if (srcLen === 0 || tarLen === 0) {
     if (srcLen > 0) {
@@ -180,30 +204,33 @@ function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
       return [];
     }
   } else if (srcLen === 1 || tarLen === 1) {
-    let idx: number;
-    if (srcLen > 1 && (idx = source.indexOf(target.getItem(0))) >= 0) {
+    let idx: number = source.indexOf(target.getItem(0));
+    if (srcLen > 1 && idx >= 0) {
       return [
         {type: "source", value: idx},
         {type: "match", value: 1},
         {type: "source", value: srcLen - idx - 1}
       ];
-    } else if ((idx = target.indexOf(source.getItem(0))) >= 0) {
-      return [
-        {type: "target", value: idx},
-        {type: "match", value: 1},
-        {type: "target", value: tarLen - idx - 1}
-      ];
     } else {
-      return [
-        {type: "source", value: srcLen},
-        {type: "target", value: tarLen}
-      ];
+      idx = target.indexOf(source.getItem(0));
+      if (idx >= 0) {
+        return [
+          {type: "target", value: idx},
+          {type: "match", value: 1},
+          {type: "target", value: tarLen - idx - 1}
+        ];
+      } else {
+        return [
+          {type: "source", value: srcLen},
+          {type: "target", value: tarLen}
+        ];
+      }
     }
   } else {
-    const srcMid = Math.floor(srcLen / 2);
-    const [srcLeft, srcRight] = source.split(srcMid);
-    const [leftMinDistIdx, leftMinVal] = nearestEnd(srcLeft, target);
-    const [rightMinDistIdx, rightMinVal] = nearestEnd(srcRight.reverse(), target.reverse());
+    const srcMid: number = Math.floor(srcLen / 2);
+    const [srcLeft, srcRight]: [Slice<any>, Slice<any>] = source.split(srcMid);
+    const [leftMinDistIdx, leftMinVal]: [number, number] = nearestEnd(srcLeft, target);
+    const [rightMinDistIdx, rightMinVal]: [number, number] = nearestEnd(srcRight.reverse(), target.reverse());
     let targetMid: number;
     if (leftMinVal <= rightMinVal) {
       // We add one because the right of the range is exclusive
@@ -212,22 +239,22 @@ function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
       // Convert the right index from the reversed tarRight to target
       targetMid = (target.length - 1) - rightMinDistIdx;
     }
-    const [tarLeft, tarRight] = target.split(targetMid);
-    const left: any[] = hirschberg(srcLeft, tarLeft);
-    const right: any[] = hirschberg(srcRight, tarRight);
+    const [tarLeft, tarRight]: [Slice<any>, Slice<any>] = target.split(targetMid);
+    const left: DiffAction[] = hirschberg(srcLeft, tarLeft);
+    const right: DiffAction[] = hirschberg(srcRight, tarRight);
     return [...left, ...right];
   }
 }
 
 export function normalizeDiff (diff: DiffAction[]): DiffAction[] {
-  let result: DiffAction[] = [];
+  const result: DiffAction[] = [];
   if (diff.length === 0) {
     return result;
   }
   let curSource: number = 0;
   let curTarget: number = 0;
   let curBoth: number = 0;
-  for (let action of diff) {
+  for (const action of diff) {
     if (action.value === 0) {
       continue;
     }

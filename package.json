@@ -19,7 +19,9 @@
     "typedoc": "typedoc --out docs/api/ --module commonjs --target es2015 --exclude '**/*.spec.ts' src/lib/"
   },
   "pre-commit": {
-    "run": []
+    "run": [
+      "test"
+    ]
   },
   "keywords": [],
   "license": "MIT",

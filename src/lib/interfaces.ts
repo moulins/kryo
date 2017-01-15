@@ -96,19 +96,15 @@ export type Type<T> = TypeAsync<T> | TypeSync<T>;
 export type SerializableType<T, F extends string, S> = SerializableTypeAsync<T, F, S> | SerializableTypeSync<T, F, S>;
 export type VersionedType<T, S, D> = VersionedTypeAsync<T, S, D> | VersionedTypeSync<T, S, D>;
 
-export interface VersionedCollectionTypeSync<T, S, D, I> extends
-  CollectionTypeSync <T, D, I>,
-  VersionedTypeSync<T, S, D>
-{
+// tslint:disable-next-line:max-line-length
+export interface VersionedCollectionTypeSync<T, S, D, I> extends CollectionTypeSync <T, D, I>, VersionedTypeSync<T, S, D> {
   isCollection: true;
   isVersioned: true;
   isSerializable: true;
 }
 
-export interface VersionedCollectionTypeAsync<T, S, D, I> extends
-  CollectionTypeAsync <T, D, I>,
-  VersionedTypeAsync<T, S, D>
-{
+// tslint:disable-next-line:max-line-length
+export interface VersionedCollectionTypeAsync<T, S, D, I> extends CollectionTypeAsync <T, D, I>,  VersionedTypeAsync<T, S, D> {
   isCollection: true;
   isVersioned: true;
   isSerializable: true;

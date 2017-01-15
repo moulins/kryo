@@ -1,12 +1,13 @@
 import * as _ from "lodash";
-
+import {KryoError, UnexpectedTypeError} from "./helpers/kryo-error";
 import {
-  TypeSync, TypeAsync, VersionedTypeSync,
-  VersionedTypeAsync, SerializableTypeSync, SerializableTypeAsync
+  SerializableTypeAsync,
+  SerializableTypeSync,
+  VersionedTypeAsync,
+  VersionedTypeSync
 } from "./interfaces";
-import {UnexpectedTypeError, KryoError} from "./helpers/via-type-error";
 
-const NAME: string = "string";
+export const NAME: string = "string";
 
 export interface StringOptions {
   regex?: RegExp | null;
@@ -29,25 +30,25 @@ const DEFAULT_OPTIONS: CompleteStringOptions = {
   lowerCase: false,
   trimmed: false,
   minLength: null,
-  maxLength: null,
+  maxLength: null
 };
 
 function readSync(format: "json-doc" | "bson-doc", val: any, options: StringOptions): string {
-  val = String(val);
+  let valStr: string = String(val);
 
   if (options.lowerCase) {
-    val = val.toLowerCase();
+    valStr = valStr.toLowerCase();
   }
 
   if (options.trimmed) {
-    val = _.trim(val);
+    valStr = _.trim(valStr);
   }
 
-  let error = testErrorSync(val, options);
+  const error: Error | null = testErrorSync(val, options);
   if (error !== null) {
     throw error;
   }
-  return val;
+  return valStr;
 }
 
 function readTrustedSync(format: "json-doc" | "bson-doc", val: any): string {
@@ -58,19 +59,19 @@ function writeSync(format: "json-doc" | "bson-doc", val: string): string {
   return val;
 }
 
-function testErrorSync (val: any, options: StringOptions) {
+function testErrorSync(val: any, options: StringOptions) {
   if (!(typeof val === "string")) {
     return new UnexpectedTypeError(typeof val, "string");
   }
 
   if (options.lowerCase) {
-    if (val !== val.toLowerCase()){
+    if (val !== val.toLowerCase()) {
       return new LowerCaseError(val);
     }
   }
 
   if (options.trimmed) {
-    if (val !== _.trim(val)){
+    if (val !== _.trim(val)) {
       return new TrimError(val);
     }
   }
@@ -81,12 +82,12 @@ function testErrorSync (val: any, options: StringOptions) {
     }
   }
 
-  let minLength = options.minLength;
+  const minLength: number | null | undefined = options.minLength;
   if (typeof minLength === "number" && val.length < minLength) {
     return new MinLengthError(val, minLength);
   }
 
-  let maxLength = options.maxLength;
+  const maxLength: number | null | undefined = options.maxLength;
   if (typeof maxLength === "number" && val.length > maxLength) {
     return new MaxLengthError(val, maxLength);
   }
@@ -94,40 +95,39 @@ function testErrorSync (val: any, options: StringOptions) {
   return null;
 }
 
-function testSync (val: string, options: StringOptions): boolean {
+function testSync(val: string, options: StringOptions): boolean {
   return testErrorSync(val, options) === null;
 }
 
-function equalsSync (val1: string, val2: string): boolean {
+function equalsSync(val1: string, val2: string): boolean {
   return val1 === val2;
 }
 
-function cloneSync (val: string): string {
+function cloneSync(val: string): string {
   return val;
 }
 
-function diffSync (oldVal: string, newVal: string): [string, string] | null {
+function diffSync(oldVal: string, newVal: string): [string, string] | null {
   return oldVal === newVal ? null : [oldVal, newVal];
 }
 
-function patchSync (oldVal: string, diff: [string, string] | null): string {
+function patchSync(oldVal: string, diff: [string, string] | null): string {
   return diff === null ? oldVal : diff[1];
 }
 
-function reverseDiffSync (diff: [string, string] | null): [string, string] | null {
+function reverseDiffSync(diff: [string, string] | null): [string, string] | null {
   return diff === null ? null : [diff[1], diff[0]];
 }
 
-function squashSync (diff1: [string, string] | null, diff2: [string, string] | null): [string, string] | null {
+function squashSync(diff1: [string, string] | null, diff2: [string, string] | null): [string, string] | null {
   if (diff1 === null) {
     return diff2 === null ? null : diff2;
   } else {
-    return diff2 === null ? diff1 :  [diff1[0], diff2[1]];
+    return diff2 === null ? diff1 : [diff1[0], diff2[1]];
   }
 }
 
-export class StringType implements
-  SerializableTypeSync<string, "bson-doc", string>,
+export class StringType implements SerializableTypeSync<string, "bson-doc", string>,
   VersionedTypeSync<string, string, [string, string]>,
   SerializableTypeAsync<string, "bson-doc", string>,
   VersionedTypeAsync<string, string, [string, string]> {
@@ -137,8 +137,8 @@ export class StringType implements
   isSerializable: true = true;
   isVersioned: true = true;
   isCollection: false = false;
-  type = NAME;
-  types = [NAME];
+  type: string = NAME;
+  types: string[] = [NAME];
 
   options: CompleteStringOptions;
 
@@ -150,77 +150,77 @@ export class StringType implements
     return null;
   }
 
-  readTrustedSync (format: "json-doc" | "bson-doc", val: any): string {
+  readTrustedSync(format: "json-doc" | "bson-doc", val: any): string {
     return readTrustedSync(format, val);
   }
 
-  async readTrustedAsync (format: "json-doc", val: string): Promise<string>;
-  async readTrustedAsync (format: "bson-doc", val: string): Promise<string>;
-  async readTrustedAsync (format: any, val: any): Promise<any> {
+  async readTrustedAsync(format: "json-doc", val: string): Promise<string>;
+  async readTrustedAsync(format: "bson-doc", val: string): Promise<string>;
+  async readTrustedAsync(format: any, val: any): Promise<any> {
     return readTrustedSync(format, val);
   }
 
-  readSync (format: "json-doc" | "bson-doc", val: any): string {
+  readSync(format: "json-doc" | "bson-doc", val: any): string {
     return readSync(format, val, this.options);
   }
 
-  async readAsync (format: "json-doc" | "bson-doc", val: any): Promise<string> {
+  async readAsync(format: "json-doc" | "bson-doc", val: any): Promise<string> {
     return readSync(format, val, this.options);
   }
 
-  writeSync (format: "json-doc" | "bson-doc", val: string): any {
+  writeSync(format: "json-doc" | "bson-doc", val: string): any {
     return writeSync(format, val);
   }
 
-  async writeAsync (format: "json-doc" | "bson-doc", val: string): Promise<any> {
+  async writeAsync(format: "json-doc" | "bson-doc", val: string): Promise<any> {
     return writeSync(format, val);
   }
 
-  testErrorSync (val: any): Error | null {
+  testErrorSync(val: any): Error | null {
     return testErrorSync(val, this.options);
   }
 
-  async testErrorAsync (val: any): Promise<Error | null> {
+  async testErrorAsync(val: any): Promise<Error | null> {
     return testErrorSync(val, this.options);
   }
 
-  testSync (val: any): boolean {
+  testSync(val: any): boolean {
     return testSync(val, this.options);
   }
 
-  async testAsync (val: any): Promise<boolean> {
+  async testAsync(val: any): Promise<boolean> {
     return testSync(val, this.options);
   }
 
-  equalsSync (val1: string, val2: string): boolean {
+  equalsSync(val1: string, val2: string): boolean {
     return equalsSync(val1, val2);
   }
 
-  async equalsAsync (val1: string, val2: string): Promise<boolean> {
+  async equalsAsync(val1: string, val2: string): Promise<boolean> {
     return equalsSync(val1, val2);
   }
 
-  cloneSync (val: string): string {
+  cloneSync(val: string): string {
     return cloneSync(val);
   }
 
-  async cloneAsync (val: string): Promise<string> {
+  async cloneAsync(val: string): Promise<string> {
     return cloneSync(val);
   }
 
-  diffSync (oldVal: string, newVal: string): [string, string] | null {
+  diffSync(oldVal: string, newVal: string): [string, string] | null {
     return diffSync(oldVal, newVal);
   }
 
-  async diffAsync (oldVal: string, newVal: string): Promise<[string, string] | null> {
+  async diffAsync(oldVal: string, newVal: string): Promise<[string, string] | null> {
     return diffSync(oldVal, newVal);
   }
 
-  patchSync (oldVal: string, diff: [string, string] | null): string {
+  patchSync(oldVal: string, diff: [string, string] | null): string {
     return patchSync(oldVal, diff);
   }
 
-  async patchAsync (oldVal: string, diff: [string, string] | null): Promise<string> {
+  async patchAsync(oldVal: string, diff: [string, string] | null): Promise<string> {
     return patchSync(oldVal, diff);
   }
 
@@ -241,15 +241,16 @@ export class StringType implements
   }
 }
 
-export class StringTypeError<D> extends KryoError<D> {}
+export class StringTypeError<D> extends KryoError<D> {
+}
 
 export interface LowerCaseErrorData {
   string: string;
 }
 
 export class LowerCaseError extends StringTypeError<LowerCaseErrorData> {
-  constructor (string: string) {
-    super (
+  constructor(string: string) {
+    super(
       "CaseError",
       {string: string},
       "Expected string to be lowercase"
@@ -262,8 +263,8 @@ export interface TrimErrorData {
 }
 
 export class TrimError extends StringTypeError<TrimErrorData> {
-  constructor (string: string) {
-    super (
+  constructor(string: string) {
+    super(
       "TrimError",
       {string: string},
       "Expected string to be trimmed"
@@ -277,8 +278,8 @@ export interface PatternErrorData {
 }
 
 export class PatternError extends StringTypeError<PatternErrorData> {
-  constructor (string: string, pattern: RegExp) {
-    super (
+  constructor(string: string, pattern: RegExp) {
+    super(
       "PatternError",
       {string: string, pattern: pattern},
       `Expected string to follow pattern ${pattern}`
@@ -291,9 +292,10 @@ export interface MinLengthErrorData {
   minLength: number;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class MinLengthError extends StringTypeError<MinLengthErrorData> {
-  constructor (string: string, minLength: number) {
-    super (
+  constructor(string: string, minLength: number) {
+    super(
       "MinLengthError",
       {string: string, minLength: minLength},
       `Expected string length (${string.length}) to be greater than or equal to ${minLength}`
@@ -306,9 +308,10 @@ export interface MaxLengthErrorData {
   maxLength: number;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class MaxLengthError extends StringTypeError<MaxLengthErrorData> {
-  constructor (string: string, maxLength: number) {
-    super (
+  constructor(string: string, maxLength: number) {
+    super(
       "MaxLengthError",
       {string: string, maxLength: maxLength},
       `Expected string length (${string.length}) to be less than or equal to ${maxLength}`

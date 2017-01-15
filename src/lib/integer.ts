@@ -1,16 +1,15 @@
-import {UnexpectedTypeError, KryoError} from "./helpers/via-type-error";
+import {KryoError} from "./helpers/kryo-error";
 import {
-  TypeSync, TypeAsync, VersionedTypeSync,
-  VersionedTypeAsync, SerializableTypeSync, SerializableTypeAsync
+  SerializableTypeAsync,
+  SerializableTypeSync,
+  VersionedTypeAsync,
+  VersionedTypeSync
 } from "./interfaces";
-
-import * as numberType from "./number";
 import {NumberType} from "./number";
 
-const NAME = "integer";
+const NAME: string = "integer";
 
 export interface NumberOptions {}
-
 
 function diffSync (oldVal: number, newVal: number): number | null {
   return oldVal === newVal ? null : newVal - oldVal;
@@ -57,7 +56,7 @@ export class IntegerType implements
   }
 
   readSync (format: "json-doc" | "bson-doc", val: number): number {
-    const numVal = this.numberType.readSync(format, val);
+    const numVal: number = this.numberType.readSync(format, val);
     if (Math.floor(numVal) !== numVal) {
       throw new Error("Not an integer");
     }
@@ -77,11 +76,14 @@ export class IntegerType implements
   }
 
   testErrorSync (val: any): Error | null {
-    let err = this.numberType.testErrorSync(val);
-    if (err === null && Math.floor(val) !== val) {
-      err = new Error("Not an integer");
+    const err: Error | null = this.numberType.testErrorSync(val);
+    if (err !== null) {
+      return err;
     }
-    return err;
+    if (Math.floor(val) !== val) {
+      return new Error("Not an integer");
+    }
+    return null;
   }
 
   async testErrorAsync (val: any): Promise<Error | null> {

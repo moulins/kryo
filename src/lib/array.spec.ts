@@ -1,9 +1,9 @@
+import {runTests, TypedValue} from "../test/test";
 import {ArrayType} from "./array";
-import {TypedValue, runTests} from "../test/test";
 import {IntegerType} from "./integer";
 
 describe("ArrayType", function () {
-  const integersArray = new ArrayType({itemType: new IntegerType(), maxLength: 2});
+  const integersArray: ArrayType<number> = new ArrayType<number>({itemType: new IntegerType(), maxLength: 2});
 
   const items: TypedValue[] = [
     {

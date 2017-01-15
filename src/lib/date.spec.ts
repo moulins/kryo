@@ -1,17 +1,10 @@
+import {runTests, TypedValue} from "../test/test";
 import {DateType} from "./date";
-import {TypedValue, runTests} from "../test/test";
-
-interface NumberConstructorES6 extends NumberConstructor{
-  MAX_SAFE_INTEGER: number;
-  MIN_SAFE_INTEGER: number;
-  EPSILON: number;
-}
 
 describe("DateType", function () {
+  const type: DateType = new DateType();
 
-  let type: DateType = new DateType();
-
-  let items: TypedValue[] = [
+  const items: TypedValue[] = [
     {name: "new Date()", value: new Date(), valid: true},
     {
       name: "new Date(0)",
@@ -22,17 +15,17 @@ describe("DateType", function () {
           canonical: "1970-01-01T00:00:00.000Z",
           values: [
             {value: 0, valid: true},
-            {value: null, valid: false},
+            {value: null, valid: false}
           ]
         }
       }
     },
     {name: 'new Date("1247-05-18T19:40:08.418Z")', value: new Date("1247-05-18T19:40:08.418Z"), valid: true},
-    {name: "new Date(Number.EPSILON)", value: new Date((<NumberConstructorES6> Number).EPSILON), valid: true},
+    {name: "new Date(Number.EPSILON)", value: new Date(Number.EPSILON), valid: true},
     {name: "new Date(Math.PI)", value: new Date(Math.PI), valid: true},
 
-    {name: "new Date(Number.MAX_SAFE_INTEGER)", value: new Date((<NumberConstructorES6> Number).MAX_SAFE_INTEGER), valid: false},
-    {name: "new Date(Number.MIN_SAFE_INTEGER)", value: new Date((<NumberConstructorES6> Number).MIN_SAFE_INTEGER), valid: false},
+    {name: "new Date(Number.MAX_SAFE_INTEGER)", value: new Date(Number.MAX_SAFE_INTEGER), valid: false},
+    {name: "new Date(Number.MIN_SAFE_INTEGER)", value: new Date(Number.MIN_SAFE_INTEGER), valid: false},
     {name: "new Date(Number.MAX_VALUE)", value: new Date(Number.MAX_VALUE), valid: false},
     {name: "new Date(NaN)", value: new Date(NaN), valid: false},
     {name: "0", value: 0, valid: false},

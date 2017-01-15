@@ -1,34 +1,58 @@
 import * as _ from "lodash";
+import {KryoError, TodoError} from "./helpers/kryo-error";
 import {
-  Document, VersionedTypeSync, VersionedTypeAsync,
-  Dictionary, TypeSync, VersionedCollectionTypeSync,
-  VersionedCollectionTypeAsync, Type, SerializableTypeSync,
-  SerializableTypeAsync, VersionedType
+  Dictionary,
+  Document,
+  SerializableTypeAsync,
+  SerializableTypeSync,
+  Type,
+  TypeBase,
+  TypeSync,
+  VersionedTypeAsync,
+  VersionedTypeSync
 } from "./interfaces";
-import {KryoError, TodoError} from "./helpers/via-type-error";
 
-const NAME = "document";
+export const NAME: string = "document";
 
 // Configuration interfaces
 
-export interface DocumentOptions<TypeKind> {
+export interface DocumentOptions<TypeKind extends TypeBase> {
+  /**
+   * Do not throw error when the object contains extraneous keys.
+   */
   ignoreExtraKeys?: boolean;
+
+  /**
+   * A dictionary between a property name and its description.
+   */
   properties: Dictionary<PropertyDescriptor<TypeKind>>;
 }
 
-export interface CompleteDocumentOptions<TypeKind> extends DocumentOptions<TypeKind> {
+export interface CompleteDocumentOptions<TypeKind extends TypeBase> extends DocumentOptions<TypeKind> {
+  /**
+   * Do not throw error when the object contains extraneous keys.
+   */
   ignoreExtraKeys: boolean;
 }
 
-export interface PropertyDescriptor<TypeKind> {
-  /// This property can be missing
+export interface PropertyDescriptor<TypeKind extends TypeBase> {
+  /**
+   * Allows this property to be missing (undefined values throw errors).
+   */
   optional?: boolean;
-  /// The value can be `null`
+
+  /**
+   * Allows this property to be null.
+   */
   nullable?: boolean;
-  type: TypeKind;
+
+  /**
+   * The type of this property.
+   */
+    type: TypeKind;
 }
 
-export interface PropertyDescriptorFull<TypeKind> extends PropertyDescriptor<TypeKind> {
+export interface CompletePropertyDescriptor<TypeKind extends TypeBase> extends PropertyDescriptor<TypeKind> {
   /// This property can be missing
   optional: boolean;
   /// The value can be `null`
@@ -59,7 +83,7 @@ function diffKeys(source: Document, target: Document): DiffKeysResult {
     commonKeys: _.intersection(sourcetKeys, targetKeys),
     missingKeys: _.difference(sourcetKeys, targetKeys),
     extraKeys: _.difference(targetKeys, sourcetKeys)
-  }
+  };
 }
 
 export class DocumentType implements SerializableTypeSync<Document, "bson-doc", Document>,
@@ -78,7 +102,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   options: CompleteDocumentOptions<any>;
 
   constructor(options: DocumentOptions<Type<any>>) {
-    let properties: Dictionary<PropertyDescriptorFull<any>> = {};
+    const properties: Dictionary<CompletePropertyDescriptor<any>> = {};
     for (const key in options.properties) {
       properties[key] = {
         optional: "optional" in options.properties[key] ? Boolean(options.properties[key].optional) : false,
@@ -201,11 +225,14 @@ function readSync(format: "bson-doc",
                   val: Document,
                   options: CompleteDocumentOptions<SerializableTypeSync<"bson-doc", any, any>>): Promise<Document>;
 function readSync(format: any, val: any, options: any): any {
-  const keysDiff = diffKeys(options.properties, val);
+  const keysDiff: DiffKeysResult = diffKeys(options.properties, val);
 
-  const missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
-    return !options.properties[key].optional;
-  });
+  const missingMandatoryKeys: string[] = _.filter(
+    keysDiff.missingKeys,
+    (key: string): boolean => {
+      return !options.properties[key].optional;
+    }
+  );
 
   if (missingMandatoryKeys.length > 0) {
     throw new MissingKeysError(missingMandatoryKeys);
@@ -213,11 +240,12 @@ function readSync(format: any, val: any, options: any): any {
     throw new ExtraKeysError(keysDiff.extraKeys);
   }
 
-  let result: Document = {};
+  const result: Document = {};
 
   for (const key of keysDiff.commonKeys) {
     const member: any = val[key];
-    const descriptor = options.properties[key];
+    // TODO: remove <any>
+    const descriptor: PropertyDescriptor<any> = options.properties[key];
     if (member === null) {
       if (!descriptor.nullable) {
         throw new ForbiddenNullError(key);
@@ -231,20 +259,18 @@ function readSync(format: any, val: any, options: any): any {
   return result;
 }
 
-function readTrustedSync(format: "json-doc",
-                         val: Document,
-                         options: CompleteDocumentOptions<SerializableTypeSync<"json-doc", any, any>>): Promise<Document>;
-function readTrustedSync(format: "bson-doc",
-                         val: Document,
-                         options: CompleteDocumentOptions<SerializableTypeSync<"bson-doc", any, any>>): Promise<Document>;
+// tslint:disable-next-line:max-line-length
+function readTrustedSync(format: "json-doc", val: Document, options: CompleteDocumentOptions<SerializableTypeSync<"json-doc", any, any>>): Promise<Document>;
+// tslint:disable-next-line:max-line-length
+function readTrustedSync(format: "bson-doc", val: Document, options: CompleteDocumentOptions<SerializableTypeSync<"bson-doc", any, any>>): Promise<Document>;
 function readTrustedSync(format: any, val: any, options: any): any {
-  const keysDiff = diffKeys(options.properties, val);
+  const keysDiff: DiffKeysResult = diffKeys(options.properties, val);
 
-  let result: Document = {};
+  const result: Document = {};
 
   for (const key of keysDiff.commonKeys) {
     const member: any = val[key];
-    const descriptor = options.properties[key];
+    const descriptor: PropertyDescriptor<any> = options.properties[key];
     if (member === null) {
       result[key] = null;
     } else {
@@ -262,13 +288,12 @@ function writeSync(format: "bson-doc",
                    val: Document,
                    options: CompleteDocumentOptions<SerializableTypeSync<"bson-doc", any, any>>): Promise<Document>;
 function writeSync(format: any, val: any, options: any): any {
-  const keysDiff = diffKeys(options.properties, val);
-
-  let result: Document = {};
+  const keysDiff: DiffKeysResult = diffKeys(options.properties, val);
+  const result: Document = {};
 
   for (const key of keysDiff.commonKeys) {
     const member: any = val[key];
-    const descriptor = options.properties[key];
+    const descriptor: PropertyDescriptor<any> = options.properties[key];
     if (member === null) {
       result[key] = null;
     } else {
@@ -284,11 +309,14 @@ function testErrorSync(val: Document, options: CompleteDocumentOptions<TypeSync<
     return new Error("Unexpected type");
   }
 
-  const keysDiff = diffKeys(options.properties, val);
+  const keysDiff: DiffKeysResult = diffKeys(options.properties, val);
 
-  const missingMandatoryKeys = _.filter(keysDiff.missingKeys, (key) => {
-    return !options.properties[key].optional;
-  });
+  const missingMandatoryKeys: string[] = _.filter(
+    keysDiff.missingKeys,
+    (key: string): boolean => {
+      return !options.properties[key].optional;
+    }
+  );
 
   if (missingMandatoryKeys.length > 0) {
     return new MissingKeysError(missingMandatoryKeys);
@@ -330,8 +358,8 @@ function testSync(val: Document, options: CompleteDocumentOptions<TypeSync<any>>
 
 function equalsSync(val1: Document, val2: Document, options: CompleteDocumentOptions<TypeSync<any>>): boolean {
   const keys: string[] = _.keys(options.properties);
-  const val1Keys: string[] = _.intersection(keys, (<any> _).keys(val1));
-  const val2Keys: string[] = _.intersection(keys, (<any> _).keys(val2));
+  const val1Keys: string[] = _.intersection(keys, _.keys(val1));
+  const val2Keys: string[] = _.intersection(keys, _.keys(val2));
   const commonKeys: string[] = _.intersection(val1Keys, val2Keys);
   const extraKeys: string[] = _.difference(val1Keys, val2Keys);
   const missingKeys: string[] = _.difference(val2Keys, val1Keys);
@@ -356,7 +384,7 @@ function equalsSync(val1: Document, val2: Document, options: CompleteDocumentOpt
 function cloneSync(val: Document, options: CompleteDocumentOptions<TypeSync<any>>): Document {
   const keys: string[] = _.intersection(_.keys(options.properties), _.keys(val));
 
-  let result: Document = {};
+  const result: Document = {};
 
   for (const key of keys) {
     if (val[key] === null) {
@@ -372,9 +400,9 @@ function cloneSync(val: Document, options: CompleteDocumentOptions<TypeSync<any>
 function diffSync(oldVal: Document,
                   newVal: Document,
                   options: CompleteDocumentOptions<VersionedTypeSync<any, any, any>>): DocumentDiff | null {
-  const keysDiff = diffKeys(oldVal, newVal);  // TODO: intersection with properties
-  let result: DocumentDiff = {set: {}, unset: {}, update: {}, toNull: {}, fromNull: {}};
-  let equal = (keysDiff.extraKeys.length === 0 && keysDiff.missingKeys.length === 0);
+  const keysDiff: DiffKeysResult = diffKeys(oldVal, newVal);  // TODO: intersection with properties
+  const result: DocumentDiff = {set: {}, unset: {}, update: {}, toNull: {}, fromNull: {}};
+  let equal: boolean = (keysDiff.extraKeys.length === 0 && keysDiff.missingKeys.length === 0);
   for (const key of keysDiff.extraKeys) {
     if (newVal[key] === null) {
       result.set[key] = null;
@@ -412,7 +440,7 @@ function diffSync(oldVal: Document,
 function patchSync(oldVal: Document,
                    diff: DocumentDiff | null,
                    options: CompleteDocumentOptions<VersionedTypeSync<any, any, any>>): Document {
-  let newVal: Document = cloneSync(oldVal, options);
+  const newVal: Document = cloneSync(oldVal, options);
 
   if (diff === null) {
     return newVal;
@@ -444,7 +472,7 @@ function reverseDiffSync(diff: DocumentDiff | null,
   }
 
   // TODO: clone the other values
-  let reversed: DocumentDiff = {
+  const reversed: DocumentDiff = {
     set: diff.unset,
     unset: diff.set,
     toNull: diff.fromNull,
@@ -506,6 +534,7 @@ export interface InvalidPropertiesData {
   errors: Dictionary<Error>;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class InvalidProperties extends DocumentTypeError<InvalidPropertiesData> {
   constructor(errors: Dictionary<Error>) {
     super(

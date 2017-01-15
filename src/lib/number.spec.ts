@@ -1,17 +1,10 @@
+import {runTests, TypedValue} from "../test/test";
 import {NumberType} from "./number";
-import {TypedValue, runTests} from "../test/test";
-
-interface NumberConstructorES6 extends NumberConstructor{
-  MAX_SAFE_INTEGER: number;
-  MIN_SAFE_INTEGER: number;
-  EPSILON: number;
-}
 
 describe("NumberType", function () {
+  const type: NumberType = new NumberType();
 
-  let type: NumberType = new NumberType();
-
-  let items: TypedValue[] = [
+  const items: TypedValue[] = [
     {
       name: "0",
       value: 0,
@@ -30,14 +23,14 @@ describe("NumberType", function () {
     {name: "2", value: 2, valid: true},
     {name: "1e3", value: 1e3, valid: true},
     {name: "-1e3", value: 1e3, valid: true},
-    {name: "Number.MAX_SAFE_INTEGER", value: (<NumberConstructorES6> Number).MAX_SAFE_INTEGER, valid: true},
-    {name: "Number.MIN_SAFE_INTEGER", value: (<NumberConstructorES6> Number).MIN_SAFE_INTEGER, valid: true},
+    {name: "Number.MAX_SAFE_INTEGER", value: Number.MAX_SAFE_INTEGER, valid: true},
+    {name: "Number.MIN_SAFE_INTEGER", value: Number.MIN_SAFE_INTEGER, valid: true},
     {name: "Number.MAX_VALUE", value: Number.MAX_VALUE, valid: true},
     {name: "0.5", value: 0.5, valid: true},
     {name: "0.0001", value: 0.0001, valid: true},
-    {name: "Number.EPSILON", value: (<NumberConstructorES6> Number).EPSILON, valid: true},
+    {name: "Number.EPSILON", value: Number.EPSILON, valid: true},
 
-    {name: 'new Number(true)', value: new Number(1), valid: false},
+    {name: "new Number(1)", value: new Number(1), valid: false},
     {name: '""', value: "", valid: false},
     {name: '"0"', value: "0", valid: false},
     {name: "Infinity", value: Infinity, valid: false},
