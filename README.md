@@ -1,5 +1,9 @@
 # Kryo
 
+[![npm](https://img.shields.io/npm/v/kryo.svg?maxAge=2592000)](https://www.npmjs.com/package/kryo)
+[![Build status](https://img.shields.io/travis/demurgos/kryo/master.svg?maxAge=2592000)](https://travis-ci.org/demurgos/kryo)
+[![GitHub repository](https://img.shields.io/badge/Github-demurgos%2Fkryo-blue.svg)](https://github.com/demurgos/kryo)
+
 ## Description
 
 Expressive extensible schemas.
