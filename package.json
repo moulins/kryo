@@ -16,7 +16,7 @@
     "start": "node build/main/main/main.js",
     "prepublishOnly": "npm test",
     ":lint": "gulp :lint",
-    "typedoc": "typedoc --out docs/api/ --module commonjs --target es2015 --exclude '**/*.spec.ts' src/lib/"
+    "typedoc": "typedoc --includeDeclarations --out docs/ --module commonjs --target es2015 --exclude '**/*.spec.ts' --mode modules --name Kryo --readme README.md src/lib/"
   },
   "pre-commit": {
     "run": [

@@ -15,7 +15,7 @@
 /build/
 # The line bellow should be commented in .npmignore
 /dist/
-/docs/api/
+# /docs/api/
 
 ###############################################################################
 # Dependencies                                                                #
