@@ -6,6 +6,7 @@ notifications:
 node_js:
 - stable
 before_install:
-- npm install -g typings gulp-cli npm
+- npm install -g typings gulp-cli npm typedoc
 script:
 - npm test
+- chmod +x ./deploy-gh-pages.sh && ./deploy-gh-pages.sh
