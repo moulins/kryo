@@ -10,17 +10,17 @@ SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 GH_PAGES_DIRECTORY="dist/gh-pages/"
 
-## Pull requests shouldn't try to deploy
-#if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-#    echo "Skipping deploy, this is only Pull Request."
-#    exit 0
-#fi
-#
-## Commits to other branches shouldn't try to deploy
-#if [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
-#    echo "Skipping deploy, not on the source branch ($SOURCE_BRANCH)."
-#    exit 0
-#fi
+# Pull requests shouldn't try to deploy
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    echo "Skipping deploy, this is only Pull Request."
+    exit 0
+fi
+
+# Commits to other branches shouldn't try to deploy
+if [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
+    echo "Skipping deploy, not on the source branch ($SOURCE_BRANCH)."
+    exit 0
+fi
 
 # Save some useful information
 REPO=`git config remote.origin.url`
