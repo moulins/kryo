@@ -6,7 +6,7 @@ set -e
 
 echo "Starting deployment"
 
-SOURCE_BRANCH="docs"
+SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 GH_PAGES_DIRECTORY="dist/gh-pages/"
 
