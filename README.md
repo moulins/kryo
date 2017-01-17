@@ -73,3 +73,7 @@ interface DiffResult {
     $unset: Dictionary<jsonValues>;
 }
 ````
+
+## License
+
+[MIT License](./LICENSE.md)
