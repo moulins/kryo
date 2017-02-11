@@ -109,7 +109,7 @@
 					<div class="tsd-signature tsd-kind-icon">lower<wbr>Case<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b3c04d7/src/lib/string.ts#L47">src/lib/string.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L47">src/lib/string.ts:47</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -119,7 +119,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b3c04d7/src/lib/string.ts#L50">src/lib/string.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L70">src/lib/string.ts:70</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -129,7 +129,7 @@
 					<div class="tsd-signature tsd-kind-icon">min<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b3c04d7/src/lib/string.ts#L49">src/lib/string.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L69">src/lib/string.ts:69</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -139,7 +139,7 @@
 					<div class="tsd-signature tsd-kind-icon">regex<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b3c04d7/src/lib/string.ts#L46">src/lib/string.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L46">src/lib/string.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -149,9 +149,36 @@
 					<div class="tsd-signature tsd-kind-icon">trimmed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b3c04d7/src/lib/string.ts#L48">src/lib/string.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L68">src/lib/string.ts:68</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The string cannot start or end with any of the following whitespace and line terminator
+							characters:</p>
+						</div>
+						<ul>
+							<li>Unicode Character &#39;CHARACTER TABULATION&#39; (U+0009)</li>
+							<li>Unicode Character &#39;LINE FEED (LF)&#39; (U+000A)</li>
+							<li>Unicode Character &#39;LINE TABULATION&#39; (U+000B)</li>
+							<li>Unicode Character &#39;FORM FEED (FF)&#39; (U+000C)</li>
+							<li>Unicode Character &#39;CARRIAGE RETURN (CR)&#39; (U+000D)</li>
+							<li>Unicode Character &#39;SPACE&#39; (U+0020)</li>
+							<li>Unicode Character &#39;NO-BREAK SPACE&#39; (U+00A0)</li>
+							<li>Unicode Character &#39;LINE SEPARATOR&#39; (U+2028)</li>
+							<li>Unicode Character &#39;PARAGRAPH SEPARATOR&#39; (U+2029)</li>
+							<li>Unicode Character &#39;ZERO WIDTH NO-BREAK SPACE&#39; (U+FEFF)</li>
+							<li>Any other Unicode character of the &quot;Separator, space&quot; (Zs) general category</li>
+						</ul>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim</a></p>
+							</dd>
+							<dt>see</dt>
+							<dd><p><a href="http://www.fileformat.info/info/unicode/category/Zs/list.htm">http://www.fileformat.info/info/unicode/category/Zs/list.htm</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="unicodenormalization" class="tsd-anchor"></a>
@@ -159,7 +186,7 @@
 					<div class="tsd-signature tsd-kind-icon">unicode<wbr>Normalization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b3c04d7/src/lib/string.ts#L44">src/lib/string.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L43">src/lib/string.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -179,7 +206,7 @@
 					<div class="tsd-signature tsd-kind-icon">unicode<wbr>Supplementary<wbr>Planes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b3c04d7/src/lib/string.ts#L35">src/lib/string.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L34">src/lib/string.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
