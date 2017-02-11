@@ -94,6 +94,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_src_lib_string_.stringoptions.html#minlength" class="tsd-kind-icon">min<wbr>Length</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_src_lib_string_.stringoptions.html#regex" class="tsd-kind-icon">regex</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_src_lib_string_.stringoptions.html#trimmed" class="tsd-kind-icon">trimmed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_src_lib_string_.stringoptions.html#unicodenormalization" class="tsd-kind-icon">unicode<wbr>Normalization</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_src_lib_string_.stringoptions.html#unicodesupplementaryplanes" class="tsd-kind-icon">unicode<wbr>Supplementary<wbr>Planes</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,7 +109,7 @@
 					<div class="tsd-signature tsd-kind-icon">lower<wbr>Case<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/681cc9e/src/lib/string.ts#L19">src/lib/string.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/7c6dd0f/src/lib/string.ts#L47">src/lib/string.ts:47</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -117,7 +119,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/681cc9e/src/lib/string.ts#L22">src/lib/string.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/7c6dd0f/src/lib/string.ts#L50">src/lib/string.ts:50</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -127,7 +129,7 @@
 					<div class="tsd-signature tsd-kind-icon">min<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/681cc9e/src/lib/string.ts#L21">src/lib/string.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/7c6dd0f/src/lib/string.ts#L49">src/lib/string.ts:49</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -137,7 +139,7 @@
 					<div class="tsd-signature tsd-kind-icon">regex<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/681cc9e/src/lib/string.ts#L18">src/lib/string.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/7c6dd0f/src/lib/string.ts#L46">src/lib/string.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -147,9 +149,54 @@
 					<div class="tsd-signature tsd-kind-icon">trimmed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/681cc9e/src/lib/string.ts#L20">src/lib/string.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/7c6dd0f/src/lib/string.ts#L48">src/lib/string.ts:48</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="unicodenormalization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> unicode<wbr>Normalization</h3>
+					<div class="tsd-signature tsd-kind-icon">unicode<wbr>Normalization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/7c6dd0f/src/lib/string.ts#L44">src/lib/string.ts:44</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Ensure NFC normalization when reading strings.</p>
+						</div>
+						<p>References:</p>
+						<ul>
+							<li><a href="http://unicode.org/faq/normalization.html">http://unicode.org/faq/normalization.html</a></li>
+							<li><a href="http://unicode.org/reports/tr15/">http://unicode.org/reports/tr15/</a></li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="unicodesupplementaryplanes" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> unicode<wbr>Supplementary<wbr>Planes</h3>
+					<div class="tsd-signature tsd-kind-icon">unicode<wbr>Supplementary<wbr>Planes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/7c6dd0f/src/lib/string.ts#L35">src/lib/string.ts:35</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Use codepoints instead of codeunits when checking the length.
+								Javascript&#39;s string are lists of 16-bit code units instead of unicode codepoints so
+								codepoints outside of the Basic Multilingual Plane (BMP) are encoded as surrogate pairs.
+								It leads to <code>&quot;𝄞&quot;.length === 2</code> even if the <code>MUSICAL SYMBOL G CLEF</code> is a single codepoint.
+								If you enable unicodeSupplementaryPlanes, the string will be decoded as an array of
+								codepoints first and treated as a string with length 1. This is acts similarly to the <code>u</code>
+							flag for regular expressions.</p>
+						</div>
+						<p>Here is a concrete example:</p>
+						<pre><code><span class="hljs-keyword">new</span> StringType({<span class="hljs-string">unicodeSupplementaryPlanes:</span> <span class="hljs-literal">true</span>, <span class="hljs-string">maxLength:</span> <span class="hljs-number">1</span>}).test(<span class="hljs-string">"𝄞"</span>); <span class="hljs-comment">// true</span>
+<span class="hljs-keyword">new</span> StringType({<span class="hljs-string">unicodeSupplementaryPlanes:</span> <span class="hljs-literal">false</span>, <span class="hljs-string">maxLength:</span> <span class="hljs-number">1</span>}).test(<span class="hljs-string">"𝄞"</span>); <span class="hljs-comment">// false</span>
+</code></pre>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -191,6 +238,12 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_src_lib_string_.stringoptions.html#trimmed" class="tsd-kind-icon">trimmed</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_src_lib_string_.stringoptions.html#unicodenormalization" class="tsd-kind-icon">unicode<wbr>Normalization</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_src_lib_string_.stringoptions.html#unicodesupplementaryplanes" class="tsd-kind-icon">unicode<wbr>Supplementary<wbr>Planes</a>
 							</li>
 						</ul>
 					</li>
