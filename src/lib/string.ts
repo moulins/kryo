@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import {ucs2} from "punycode";
 import {nfc as unormNfc} from "unorm";
 import {LowerCaseError} from "./errors/case-error";
@@ -43,18 +42,54 @@ export interface StringOptions {
    */
   unicodeNormalization?: boolean;
 
+  // TODO(demurgos): Rename to `pattern`
   regex?: RegExp | null;
   lowerCase?: boolean;
+
+  /**
+   * The string cannot start or end with any of the following whitespace and line terminator
+   * characters:
+   *
+   * - Unicode Character 'CHARACTER TABULATION' (U+0009)
+   * - Unicode Character 'LINE FEED (LF)' (U+000A)
+   * - Unicode Character 'LINE TABULATION' (U+000B)
+   * - Unicode Character 'FORM FEED (FF)' (U+000C)
+   * - Unicode Character 'CARRIAGE RETURN (CR)' (U+000D)
+   * - Unicode Character 'SPACE' (U+0020)
+   * - Unicode Character 'NO-BREAK SPACE' (U+00A0)
+   * - Unicode Character 'LINE SEPARATOR' (U+2028)
+   * - Unicode Character 'PARAGRAPH SEPARATOR' (U+2029)
+   * - Unicode Character 'ZERO WIDTH NO-BREAK SPACE' (U+FEFF)
+   * - Any other Unicode character of the "Separator, space" (Zs) general category
+   *
+   * @see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim>
+   * @see <http://www.fileformat.info/info/unicode/category/Zs/list.htm>
+   */
   trimmed?: boolean;
   minLength?: number | null;
   maxLength?: number | null;
 }
 
 export interface CompleteStringOptions extends StringOptions {
+  /**
+   * @see [[StringOptions.unicodeSupplementaryPlanes]]
+   */
   unicodeSupplementaryPlanes: boolean;
+
+  /**
+   * @see [[StringOptions.unicodeNormalization]]
+   */
   unicodeNormalization: boolean;
+
+  /**
+   * @see [[StringOptions.regex]]
+   */
   regex: RegExp | null;
   lowerCase: boolean;
+
+  /**
+   * @see [[StringOptions.trimmed]]
+   */
   trimmed: boolean;
   minLength: number | null;
   maxLength: number | null;
@@ -82,7 +117,7 @@ function readSync(format: "json-doc" | "bson-doc", val: any, options: StringOpti
   }
 
   if (options.trimmed) {
-    valStr = _.trim(valStr);
+    valStr = valStr.trim();
   }
 
   const error: Error | null = testErrorSync(valStr, options);
@@ -112,7 +147,7 @@ function testErrorSync(val: any, options: StringOptions) {
   }
 
   if (options.trimmed) {
-    if (val !== _.trim(val)) {
+    if (val !== val.trim()) {
       return new TrimError(val);
     }
   }
@@ -187,7 +222,7 @@ export class StringType implements SerializableTypeSync<string, "bson-doc", stri
   options: CompleteStringOptions;
 
   constructor(options?: StringOptions) {
-    this.options = _.merge({}, DEFAULT_OPTIONS, options);
+    this.options = {...DEFAULT_OPTIONS, ...options};
   }
 
   toJSON(): null { // TODO: return options
