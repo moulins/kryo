@@ -4,7 +4,7 @@
 [![Build status](https://img.shields.io/travis/demurgos/kryo/master.svg?maxAge=2592000)](https://travis-ci.org/demurgos/kryo)
 [![GitHub repository](https://img.shields.io/badge/Github-demurgos%2Fkryo-blue.svg)](https://github.com/demurgos/kryo)
 
-https://demurgos.github.io/kryo/
+[Documentation](https://demurgos.github.io/kryo/)
 
 ## Description
 
