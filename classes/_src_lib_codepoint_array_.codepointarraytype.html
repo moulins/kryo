@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>StringType | Kryo</title>
+	<title>CodepointArrayType | Kryo</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_src_lib_string_.html">&quot;src/lib/string&quot;</a>
+					<a href="../modules/_src_lib_codepoint_array_.html">&quot;src/lib/codepoint-array&quot;</a>
 				</li>
 				<li>
-					<a href="_src_lib_string_.stringtype.html">StringType</a>
+					<a href="_src_lib_codepoint_array_.codepointarraytype.html">CodepointArrayType</a>
 				</li>
 			</ul>
-			<h1>Class StringType</h1>
+			<h1>Class CodepointArrayType</h1>
 		</div>
 	</div>
 </header>
@@ -73,17 +73,17 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">StringType</span>
+						<span class="target">CodepointArrayType</span>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_src_lib_interfaces_.serializabletypesync.html" class="tsd-signature-type">SerializableTypeSync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"bson-doc"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li><a href="../interfaces/_src_lib_interfaces_.versionedtypesync.html" class="tsd-signature-type">VersionedTypeSync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li><a href="../interfaces/_src_lib_interfaces_.serializabletypeasync.html" class="tsd-signature-type">SerializableTypeAsync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"bson-doc"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li><a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html" class="tsd-signature-type">VersionedTypeAsync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_interfaces_.serializabletypesync.html" class="tsd-signature-type">SerializableTypeSync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"bson-doc"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_interfaces_.versionedtypesync.html" class="tsd-signature-type">VersionedTypeSync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_interfaces_.serializabletypeasync.html" class="tsd-signature-type">SerializableTypeAsync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"bson-doc"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html" class="tsd-signature-type">VersionedTypeAsync</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -93,48 +93,48 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#isasync" class="tsd-kind-icon">is<wbr>Async</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#iscollection" class="tsd-kind-icon">is<wbr>Collection</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#isserializable" class="tsd-kind-icon">is<wbr>Serializable</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#issync" class="tsd-kind-icon">is<wbr>Sync</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#isversioned" class="tsd-kind-icon">is<wbr>Versioned</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#options" class="tsd-kind-icon">options</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#type" class="tsd-kind-icon">type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#types" class="tsd-kind-icon">types</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#isasync" class="tsd-kind-icon">is<wbr>Async</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#iscollection" class="tsd-kind-icon">is<wbr>Collection</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#isserializable" class="tsd-kind-icon">is<wbr>Serializable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#issync" class="tsd-kind-icon">is<wbr>Sync</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#isversioned" class="tsd-kind-icon">is<wbr>Versioned</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#options" class="tsd-kind-icon">options</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#types" class="tsd-kind-icon">types</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#cloneasync" class="tsd-kind-icon">clone<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#clonesync" class="tsd-kind-icon">clone<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#diffasync" class="tsd-kind-icon">diff<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#diffsync" class="tsd-kind-icon">diff<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#equalsasync" class="tsd-kind-icon">equals<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#equalssync" class="tsd-kind-icon">equals<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#patchasync" class="tsd-kind-icon">patch<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#patchsync" class="tsd-kind-icon">patch<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#readasync" class="tsd-kind-icon">read<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#readsync" class="tsd-kind-icon">read<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#readtrustedasync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#readtrustedsync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#reversediffasync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#reversediffsync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#squashasync" class="tsd-kind-icon">squash<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#squashsync" class="tsd-kind-icon">squash<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#testasync" class="tsd-kind-icon">test<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#testerrorasync" class="tsd-kind-icon">test<wbr>Error<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#testerrorsync" class="tsd-kind-icon">test<wbr>Error<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#testsync" class="tsd-kind-icon">test<wbr>Sync</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#writeasync" class="tsd-kind-icon">write<wbr>Async</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_string_.stringtype.html#writesync" class="tsd-kind-icon">write<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#cloneasync" class="tsd-kind-icon">clone<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#clonesync" class="tsd-kind-icon">clone<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#diffasync" class="tsd-kind-icon">diff<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#diffsync" class="tsd-kind-icon">diff<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#equalsasync" class="tsd-kind-icon">equals<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#equalssync" class="tsd-kind-icon">equals<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#patchasync" class="tsd-kind-icon">patch<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#patchsync" class="tsd-kind-icon">patch<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#readasync" class="tsd-kind-icon">read<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#readsync" class="tsd-kind-icon">read<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#readtrustedasync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#readtrustedsync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#reversediffasync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#reversediffsync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#squashasync" class="tsd-kind-icon">squash<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#squashsync" class="tsd-kind-icon">squash<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#testasync" class="tsd-kind-icon">test<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#testerrorasync" class="tsd-kind-icon">test<wbr>Error<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#testerrorsync" class="tsd-kind-icon">test<wbr>Error<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#testsync" class="tsd-kind-icon">test<wbr>Sync</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#writeasync" class="tsd-kind-icon">write<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_codepoint_array_.codepointarraytype.html#writesync" class="tsd-kind-icon">write<wbr>Sync</a></li>
 							</ul>
 						</section>
 					</div>
@@ -146,22 +146,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>String<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_src_lib_string_.stringoptions.html" class="tsd-signature-type">StringOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_string_.stringtype.html" class="tsd-signature-type">StringType</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Codepoint<wbr>Array<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_src_lib_codepoint_array_.codepointarrayoptions.html" class="tsd-signature-type">CodepointArrayOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_codepoint_array_.codepointarraytype.html" class="tsd-signature-type">CodepointArrayType</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L222">src/lib/string.ts:222</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L243">src/lib/codepoint-array.ts:243</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/_src_lib_string_.stringoptions.html" class="tsd-signature-type">StringOptions</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/_src_lib_codepoint_array_.codepointarrayoptions.html" class="tsd-signature-type">CodepointArrayOptions</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_src_lib_string_.stringtype.html" class="tsd-signature-type">StringType</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_src_lib_codepoint_array_.codepointarraytype.html" class="tsd-signature-type">CodepointArrayType</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -175,7 +175,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#isasync">isAsync</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L215">src/lib/string.ts:215</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L236">src/lib/codepoint-array.ts:236</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -186,7 +186,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#iscollection">isCollection</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L218">src/lib/string.ts:218</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L239">src/lib/codepoint-array.ts:239</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -197,7 +197,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#isserializable">isSerializable</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L216">src/lib/string.ts:216</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L237">src/lib/codepoint-array.ts:237</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,7 +208,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#issync">isSync</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L214">src/lib/string.ts:214</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L235">src/lib/codepoint-array.ts:235</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -219,17 +219,17 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#isversioned">isVersioned</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L217">src/lib/string.ts:217</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L238">src/lib/codepoint-array.ts:238</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="options" class="tsd-anchor"></a>
 					<h3>options</h3>
-					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_src_lib_string_.completestringoptions.html" class="tsd-signature-type">CompleteStringOptions</a></div>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_src_lib_codepoint_array_.completecodepointarrayoptions.html" class="tsd-signature-type">CompleteCodepointArrayOptions</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L222">src/lib/string.ts:222</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L243">src/lib/codepoint-array.ts:243</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -240,7 +240,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#type">type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L219">src/lib/string.ts:219</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L240">src/lib/codepoint-array.ts:240</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -251,7 +251,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#types">types</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L220">src/lib/string.ts:220</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L241">src/lib/codepoint-array.ts:241</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -262,22 +262,22 @@
 					<a name="cloneasync" class="tsd-anchor"></a>
 					<h3>clone<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">clone<wbr>Async<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">clone<wbr>Async<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L286">src/lib/string.ts:286</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L306">src/lib/codepoint-array.ts:306</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">string</span></h5>
+									<h5>val: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -285,22 +285,22 @@
 					<a name="clonesync" class="tsd-anchor"></a>
 					<h3>clone<wbr>Sync</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">clone<wbr>Sync<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">clone<wbr>Sync<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L282">src/lib/string.ts:282</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L302">src/lib/codepoint-array.ts:302</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">string</span></h5>
+									<h5>val: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -308,22 +308,22 @@
 					<a name="diffasync" class="tsd-anchor"></a>
 					<h3>diff<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">diff<wbr>Async<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, newVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">diff<wbr>Async<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, newVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L294">src/lib/string.ts:294</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L314">src/lib/codepoint-array.ts:314</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>oldVal: <span class="tsd-signature-type">string</span></h5>
+									<h5>oldVal: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>newVal: <span class="tsd-signature-type">string</span></h5>
+									<h5>newVal: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -334,22 +334,22 @@
 					<a name="diffsync" class="tsd-anchor"></a>
 					<h3>diff<wbr>Sync</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">diff<wbr>Sync<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, newVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">diff<wbr>Sync<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, newVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L290">src/lib/string.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L310">src/lib/codepoint-array.ts:310</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>oldVal: <span class="tsd-signature-type">string</span></h5>
+									<h5>oldVal: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>newVal: <span class="tsd-signature-type">string</span></h5>
+									<h5>newVal: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span>
@@ -363,22 +363,22 @@
 					<a name="equalsasync" class="tsd-anchor"></a>
 					<h3>equals<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">equals<wbr>Async<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<wbr>Async<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L278">src/lib/string.ts:278</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L298">src/lib/codepoint-array.ts:298</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val1: <span class="tsd-signature-type">string</span></h5>
+									<h5>val1: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>val2: <span class="tsd-signature-type">string</span></h5>
+									<h5>val2: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -389,22 +389,22 @@
 					<a name="equalssync" class="tsd-anchor"></a>
 					<h3>equals<wbr>Sync</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">equals<wbr>Sync<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<wbr>Sync<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L274">src/lib/string.ts:274</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L294">src/lib/codepoint-array.ts:294</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val1: <span class="tsd-signature-type">string</span></h5>
+									<h5>val1: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>val2: <span class="tsd-signature-type">string</span></h5>
+									<h5>val2: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -415,25 +415,25 @@
 					<a name="patchasync" class="tsd-anchor"></a>
 					<h3>patch<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">patch<wbr>Async<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, diff<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">patch<wbr>Async<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, diff<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L302">src/lib/string.ts:302</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L322">src/lib/codepoint-array.ts:322</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>oldVal: <span class="tsd-signature-type">string</span></h5>
+									<h5>oldVal: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>diff: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -441,25 +441,25 @@
 					<a name="patchsync" class="tsd-anchor"></a>
 					<h3>patch<wbr>Sync</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">patch<wbr>Sync<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, diff<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">patch<wbr>Sync<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, diff<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L298">src/lib/string.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L318">src/lib/codepoint-array.ts:318</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>oldVal: <span class="tsd-signature-type">string</span></h5>
+									<h5>oldVal: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>diff: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -467,13 +467,13 @@
 					<a name="readasync" class="tsd-anchor"></a>
 					<h3>read<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Async<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Async<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L246">src/lib/string.ts:246</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L266">src/lib/codepoint-array.ts:266</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -482,10 +482,10 @@
 									<h5>format: <span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span></h5>
 								</li>
 								<li>
-									<h5>val: <span class="tsd-signature-type">any</span></h5>
+									<h5>val: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -493,13 +493,13 @@
 					<a name="readsync" class="tsd-anchor"></a>
 					<h3>read<wbr>Sync</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Sync<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Sync<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L242">src/lib/string.ts:242</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L262">src/lib/codepoint-array.ts:262</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -508,10 +508,10 @@
 									<h5>format: <span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span></h5>
 								</li>
 								<li>
-									<h5>val: <span class="tsd-signature-type">any</span></h5>
+									<h5>val: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -519,43 +519,25 @@
 					<a name="readtrustedasync" class="tsd-anchor"></a>
 					<h3>read<wbr>Trusted<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Async<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Async<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Async<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"bson-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"json-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L236">src/lib/string.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L258">src/lib/codepoint-array.ts:258</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>format: <span class="tsd-signature-type">"json-doc"</span></h5>
+									<h5>format: <span class="tsd-signature-type">"bson-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"json-doc"</span></h5>
 								</li>
 								<li>
 									<h5>val: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L237">src/lib/string.ts:237</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>format: <span class="tsd-signature-type">"bson-doc"</span></h5>
-								</li>
-								<li>
-									<h5>val: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -563,13 +545,13 @@
 					<a name="readtrustedsync" class="tsd-anchor"></a>
 					<h3>read<wbr>Trusted<wbr>Sync</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Sync<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Sync<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L232">src/lib/string.ts:232</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L254">src/lib/codepoint-array.ts:254</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -578,10 +560,10 @@
 									<h5>format: <span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span></h5>
 								</li>
 								<li>
-									<h5>val: <span class="tsd-signature-type">any</span></h5>
+									<h5>val: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -595,7 +577,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L310">src/lib/string.ts:310</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L330">src/lib/codepoint-array.ts:330</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -618,7 +600,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L306">src/lib/string.ts:306</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L326">src/lib/codepoint-array.ts:326</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -644,7 +626,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L318">src/lib/string.ts:318</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L338">src/lib/codepoint-array.ts:338</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -670,7 +652,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L314">src/lib/string.ts:314</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L334">src/lib/codepoint-array.ts:334</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -700,7 +682,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#testasync">testAsync</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L270">src/lib/string.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L290">src/lib/codepoint-array.ts:290</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -724,7 +706,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#testerrorasync">testErrorAsync</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L262">src/lib/string.ts:262</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L282">src/lib/codepoint-array.ts:282</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -748,7 +730,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypesync.html">VersionedTypeSync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypesync.html#testerrorsync">testErrorSync</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L258">src/lib/string.ts:258</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L278">src/lib/codepoint-array.ts:278</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -775,7 +757,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypesync.html">VersionedTypeSync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypesync.html#testsync">testSync</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L266">src/lib/string.ts:266</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L286">src/lib/codepoint-array.ts:286</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -792,17 +774,17 @@
 					<a name="tojson" class="tsd-anchor"></a>
 					<h3>toJSON</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">{ type: &quot;codepoint-array&quot;; } &amp; CompleteCodepointArrayOptions</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html">VersionedTypeAsync</a>.<a href="../interfaces/_src_lib_interfaces_.versionedtypeasync.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L228">src/lib/string.ts:228</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L250">src/lib/codepoint-array.ts:250</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">{ type: &quot;codepoint-array&quot;; } &amp; CompleteCodepointArrayOptions</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -810,13 +792,13 @@
 					<a name="writeasync" class="tsd-anchor"></a>
 					<h3>write<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Async<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">write<wbr>Async<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L254">src/lib/string.ts:254</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L274">src/lib/codepoint-array.ts:274</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -825,10 +807,10 @@
 									<h5>format: <span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span></h5>
 								</li>
 								<li>
-									<h5>val: <span class="tsd-signature-type">string</span></h5>
+									<h5>val: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -836,13 +818,13 @@
 					<a name="writesync" class="tsd-anchor"></a>
 					<h3>write<wbr>Sync</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Sync<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+						<li class="tsd-signature tsd-kind-icon">write<wbr>Sync<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a8e9ed1/src/lib/string.ts#L250">src/lib/string.ts:250</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/221f307/src/lib/codepoint-array.ts#L270">src/lib/codepoint-array.ts:270</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -851,10 +833,10 @@
 									<h5>format: <span class="tsd-signature-type">"json-doc"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bson-doc"</span></h5>
 								</li>
 								<li>
-									<h5>val: <span class="tsd-signature-type">string</span></h5>
+									<h5>val: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -867,161 +849,164 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_src_lib_string_.html">"src/lib/string"</a>
+						<a href="../modules/_src_lib_codepoint_array_.html">"src/lib/codepoint-<wbr>array"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/_src_lib_codepoint_array_.normalization.html" class="tsd-kind-icon">Normalization</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_src_lib_string_.stringtype.html" class="tsd-kind-icon">String<wbr>Type</a>
+						<a href="_src_lib_codepoint_array_.codepointarraytype.html" class="tsd-kind-icon">Codepoint<wbr>Array<wbr>Type</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#isasync" class="tsd-kind-icon">is<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#isasync" class="tsd-kind-icon">is<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#iscollection" class="tsd-kind-icon">is<wbr>Collection</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#iscollection" class="tsd-kind-icon">is<wbr>Collection</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#isserializable" class="tsd-kind-icon">is<wbr>Serializable</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#isserializable" class="tsd-kind-icon">is<wbr>Serializable</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#issync" class="tsd-kind-icon">is<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#issync" class="tsd-kind-icon">is<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#isversioned" class="tsd-kind-icon">is<wbr>Versioned</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#isversioned" class="tsd-kind-icon">is<wbr>Versioned</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#options" class="tsd-kind-icon">options</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#options" class="tsd-kind-icon">options</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#type" class="tsd-kind-icon">type</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#type" class="tsd-kind-icon">type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#types" class="tsd-kind-icon">types</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#types" class="tsd-kind-icon">types</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#cloneasync" class="tsd-kind-icon">clone<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#cloneasync" class="tsd-kind-icon">clone<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#clonesync" class="tsd-kind-icon">clone<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#clonesync" class="tsd-kind-icon">clone<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#diffasync" class="tsd-kind-icon">diff<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#diffasync" class="tsd-kind-icon">diff<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#diffsync" class="tsd-kind-icon">diff<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#diffsync" class="tsd-kind-icon">diff<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#equalsasync" class="tsd-kind-icon">equals<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#equalsasync" class="tsd-kind-icon">equals<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#equalssync" class="tsd-kind-icon">equals<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#equalssync" class="tsd-kind-icon">equals<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#patchasync" class="tsd-kind-icon">patch<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#patchasync" class="tsd-kind-icon">patch<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#patchsync" class="tsd-kind-icon">patch<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#patchsync" class="tsd-kind-icon">patch<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#readasync" class="tsd-kind-icon">read<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#readasync" class="tsd-kind-icon">read<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#readsync" class="tsd-kind-icon">read<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#readsync" class="tsd-kind-icon">read<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#readtrustedasync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#readtrustedasync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#readtrustedsync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#readtrustedsync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#reversediffasync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#reversediffasync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#reversediffsync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#reversediffsync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#squashasync" class="tsd-kind-icon">squash<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#squashasync" class="tsd-kind-icon">squash<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#squashsync" class="tsd-kind-icon">squash<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#squashsync" class="tsd-kind-icon">squash<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#testasync" class="tsd-kind-icon">test<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#testasync" class="tsd-kind-icon">test<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#testerrorasync" class="tsd-kind-icon">test<wbr>Error<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#testerrorasync" class="tsd-kind-icon">test<wbr>Error<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#testerrorsync" class="tsd-kind-icon">test<wbr>Error<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#testerrorsync" class="tsd-kind-icon">test<wbr>Error<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#testsync" class="tsd-kind-icon">test<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#testsync" class="tsd-kind-icon">test<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#tojson" class="tsd-kind-icon">toJSON</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#writeasync" class="tsd-kind-icon">write<wbr>Async</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#writeasync" class="tsd-kind-icon">write<wbr>Async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_string_.stringtype.html#writesync" class="tsd-kind-icon">write<wbr>Sync</a>
+								<a href="_src_lib_codepoint_array_.codepointarraytype.html#writesync" class="tsd-kind-icon">write<wbr>Sync</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_src_lib_string_.completestringoptions.html" class="tsd-kind-icon">Complete<wbr>String<wbr>Options</a>
+						<a href="../interfaces/_src_lib_codepoint_array_.codepointarrayoptions.html" class="tsd-kind-icon">Codepoint<wbr>Array<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_src_lib_string_.stringoptions.html" class="tsd-kind-icon">String<wbr>Options</a>
+						<a href="../interfaces/_src_lib_codepoint_array_.completecodepointarrayoptions.html" class="tsd-kind-icon">Complete<wbr>Codepoint<wbr>Array<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_src_lib_string_.html#name" class="tsd-kind-icon">NAME</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#name" class="tsd-kind-icon">NAME</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#clonesync" class="tsd-kind-icon">clone<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#clonesync" class="tsd-kind-icon">clone<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#diffsync" class="tsd-kind-icon">diff<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#diffsync" class="tsd-kind-icon">diff<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#equalssync" class="tsd-kind-icon">equals<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#equalssync" class="tsd-kind-icon">equals<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#patchsync" class="tsd-kind-icon">patch<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#patchsync" class="tsd-kind-icon">patch<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#readsync" class="tsd-kind-icon">read<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#readsync" class="tsd-kind-icon">read<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#readtrustedsync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#readtrustedsync" class="tsd-kind-icon">read<wbr>Trusted<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#reversediffsync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#reversediffsync" class="tsd-kind-icon">reverse<wbr>Diff<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#squashsync" class="tsd-kind-icon">squash<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#squashsync" class="tsd-kind-icon">squash<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#testerrorsync" class="tsd-kind-icon">test<wbr>Error<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#testerrorsync" class="tsd-kind-icon">test<wbr>Error<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#testsync" class="tsd-kind-icon">test<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#testsync" class="tsd-kind-icon">test<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#writesync" class="tsd-kind-icon">write<wbr>Sync</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#writesync" class="tsd-kind-icon">write<wbr>Sync</a>
 					</li>
 					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_string_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+						<a href="../modules/_src_lib_codepoint_array_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
 					</li>
 				</ul>
 			</nav>
