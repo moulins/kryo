@@ -6,7 +6,7 @@ import {
   SerializableTypeSync,
   TypeAsync,
   TypeSync
-} from "../lib/interfaces";
+} from "../../lib/interfaces";
 
 export interface NamedValue {
   name?: string;

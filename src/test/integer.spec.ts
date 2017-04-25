@@ -1,5 +1,5 @@
-import {runTests, TypedValue} from "../test/test";
-import {IntegerType} from "./integer";
+import {IntegerType} from "../lib/integer";
+import {runTests, TypedValue} from "./helpers/test";
 
 describe("IntegerType", function () {
   const type: IntegerType = new IntegerType();

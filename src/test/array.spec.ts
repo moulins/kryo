@@ -1,6 +1,6 @@
-import {runTests, TypedValue} from "../test/test";
-import {ArrayType} from "./array";
-import {IntegerType} from "./integer";
+import {ArrayType} from "../lib/array";
+import {IntegerType} from "../lib/integer";
+import {runTests, TypedValue} from "./helpers/test";
 
 describe("ArrayType", function () {
   const integersArray: ArrayType<number> = new ArrayType<number>({itemType: new IntegerType(), maxLength: 2});

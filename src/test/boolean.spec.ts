@@ -1,5 +1,5 @@
-import {runTests, TypedValue} from "../test/test";
-import {BooleanType} from "./boolean";
+import {BooleanType} from "../lib/boolean";
+import {runTests, TypedValue} from "./helpers/test";
 
 describe("BooleanType", function () {
   const type: BooleanType = new BooleanType();

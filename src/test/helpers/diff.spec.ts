@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {DiffAction, diffSync} from "./diff";
+import {DiffAction, diffSync} from "../../lib/helpers/diff";
 
 describe("Diff", function () {
   it('"rosettacode" -> "raisethysword"', function () {

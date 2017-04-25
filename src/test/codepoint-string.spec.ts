@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {runTests, TypedValue} from "../test/test";
-import {CodepointStringType} from "./codepoint-string";
+import {CodepointStringType} from "../lib/codepoint-string";
+import {runTests, TypedValue} from "./helpers/test";
 
 describe("CodepointStringType", function () {
   describe("basic support", function() {

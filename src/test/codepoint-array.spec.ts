@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {runTests, TypedValue} from "../test/test";
-import {CodepointArrayType} from "./codepoint-array";
+import {CodepointArrayType} from "../lib/codepoint-array";
+import {runTests, TypedValue} from "./helpers/test";
 
 describe("CodepointArrayType", function () {
   describe("basic support", function() {
