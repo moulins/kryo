@@ -1,9 +1,9 @@
 import * as _ from "lodash";
-import {ExtraKeysError} from "./errors/extra-keys-error";
-import {ForbiddenNullError} from "./errors/forbidden-null-error";
-import {InvalidPropertiesError} from "./errors/invalid-properties-error";
-import {MissingKeysError} from "./errors/missing-keys-error";
-import {NotImplementedError} from "./errors/not-implemented-error";
+import {ExtraKeysError} from "./errors/extra-keys";
+import {InvalidPropertyError} from "./errors/invalid-property";
+import {MissingKeysError} from "./errors/missing-keys";
+import {NotImplementedError} from "./errors/not-implemented";
+import {NullPropertyError} from "./errors/null-property";
 import {
   Dictionary,
   Document,
@@ -134,7 +134,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async readTrustedAsync(format: "json-doc" | "bson-doc", val: Document): Promise<Document> {
-    throw new NotImplementedError("Document:readTrustedAsync");
+    throw NotImplementedError.create("Document#readTrustedAsync");
   }
 
   readSync(format: "json-doc", val: Document): Document;
@@ -144,7 +144,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async readAsync(format: "json-doc" | "bson-doc", val: Document): Promise<Document> {
-    throw new NotImplementedError("Document:readAsync");
+    throw NotImplementedError.create("Document#readAsync");
   }
 
   writeSync(format: "json-doc", val: Document): Document;
@@ -154,7 +154,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async writeAsync(format: "json-doc" | "bson-doc", val: Document): Promise<Document> {
-    throw new NotImplementedError("Document:writeAsync");
+    throw NotImplementedError.create("Document#writeAsync");
   }
 
   testErrorSync(val: Document): Error | null {
@@ -162,7 +162,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async testErrorAsync(val: Document): Promise<Error | null> {
-    throw new NotImplementedError("Document:testErrorAsync");
+    throw NotImplementedError.create("Document#testErrorAsync");
   }
 
   testSync(val: Document): boolean {
@@ -170,7 +170,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async testAsync(val: Document): Promise<boolean> {
-    throw new NotImplementedError("Document:testAsync");
+    throw NotImplementedError.create("Document#testAsync");
   }
 
   equalsSync(val1: Document, val2: Document): boolean {
@@ -178,7 +178,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async equalsAsync(val1: Document, val2: Document): Promise<boolean> {
-    throw new NotImplementedError("Document:equalsAsync");
+    throw NotImplementedError.create("Document#equalsAsync");
   }
 
   cloneSync(val: Document): Document {
@@ -186,7 +186,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async cloneAsync(val: Document): Promise<Document> {
-    throw new NotImplementedError("Document:cloneAsync");
+    throw NotImplementedError.create("Document#cloneAsync");
   }
 
   diffSync(oldVal: Document, newVal: Document): DocumentDiff | null {
@@ -194,7 +194,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async diffAsync(oldVal: Document, newVal: Document): Promise<DocumentDiff | null> {
-    throw new NotImplementedError("Document:diffAsync");
+    throw NotImplementedError.create("Document#diffAsync");
   }
 
   patchSync(oldVal: Document, diff: DocumentDiff | null): Document {
@@ -202,7 +202,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async patchAsync(oldVal: Document, diff: DocumentDiff | null): Promise<Document> {
-    throw new NotImplementedError("Document:patchAsync");
+    throw NotImplementedError.create("Document#patchAsync");
   }
 
   reverseDiffSync(diff: DocumentDiff | null): DocumentDiff | null {
@@ -210,7 +210,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async reverseDiffAsync(diff: DocumentDiff | null): Promise<DocumentDiff | null> {
-    throw new NotImplementedError("Document:reverseDiffAsync");
+    throw NotImplementedError.create("Document#reverseDiffAsync");
   }
 
   iterateSync(value: Document): IteratorResult<any> {
@@ -218,7 +218,7 @@ export class DocumentType implements SerializableTypeSync<Document, "bson-doc", 
   }
 
   async iterateAsync(value: Document): Promise<IteratorResult<Promise<any>>> {
-    throw new NotImplementedError("Document:iterateAsync");
+    throw NotImplementedError.create("Document#iterateAsync");
   }
 }
 
@@ -239,9 +239,9 @@ function readSync(format: any, val: any, options: any): any {
   );
 
   if (missingMandatoryKeys.length > 0) {
-    throw new MissingKeysError(missingMandatoryKeys);
+    throw MissingKeysError.create(missingMandatoryKeys);
   } else if (keysDiff.extraKeys.length > 0 && options.ignoreExtraKeys) {
-    throw new ExtraKeysError(keysDiff.extraKeys);
+    throw ExtraKeysError.create(keysDiff.extraKeys);
   }
 
   const result: Document = {};
@@ -252,7 +252,7 @@ function readSync(format: any, val: any, options: any): any {
     const descriptor: PropertyDescriptor<any> = options.properties[key];
     if (member === null) {
       if (!descriptor.nullable) {
-        throw new ForbiddenNullError(key);
+        throw NullPropertyError.create(key);
       }
       result[key] = null;
     } else {
@@ -323,12 +323,10 @@ function testErrorSync(val: Document, options: CompleteDocumentOptions<TypeSync<
   );
 
   if (missingMandatoryKeys.length > 0) {
-    return new MissingKeysError(missingMandatoryKeys);
+    return MissingKeysError.create(missingMandatoryKeys);
   } else if (keysDiff.extraKeys.length > 0 && options.ignoreExtraKeys) {
-    return new ExtraKeysError(keysDiff.extraKeys);
+    return ExtraKeysError.create(keysDiff.extraKeys);
   }
-
-  let errors: Dictionary<Error> | null = null;
 
   for (const key of keysDiff.commonKeys) {
     let curError: Error | null = null;
@@ -336,21 +334,14 @@ function testErrorSync(val: Document, options: CompleteDocumentOptions<TypeSync<
     const descriptor: PropertyDescriptor<TypeSync<any>> = options.properties[key];
 
     if (member === null && !descriptor.nullable) {
-      curError = new ForbiddenNullError(key);
+      curError = NullPropertyError.create(key);
     } else {
       curError = descriptor.type.testErrorSync(member);
     }
 
     if (curError !== null) {
-      if (errors === null) {
-        errors = {};
-      }
-      errors[key] = curError;
+      return InvalidPropertyError.create(key, member);
     }
-  }
-
-  if (errors !== null) {
-    return new InvalidPropertiesError(errors);
   }
 
   return null;

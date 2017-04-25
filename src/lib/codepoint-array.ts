@@ -1,11 +1,11 @@
 import {ucs2} from "punycode";
 import {nfc as unormNfc} from "unorm";
-import {LowerCaseError} from "./errors/case-error";
-import {MaxLengthError} from "./errors/max-length-error";
-import {MinLengthError} from "./errors/min-length-error";
-import {TrimError} from "./errors/not-trimmed-error";
-import {PatternError} from "./errors/pattern-error";
-import {IncidentTypeError} from "./errors/unexpected-type-error";
+import {LowerCaseError} from "./errors/lower-case";
+import {MaxArrayLengthError} from "./errors/max-array-length";
+import {MinArrayLengthError} from "./errors/min-array-length";
+import {NotTrimmedError} from "./errors/not-trimmed";
+import {PatternNotMatchedError} from "./errors/pattern-not-matched";
+import {WrongTypeError} from "./errors/wrong-type";
 import {checkedUcs2Decode} from "./helpers/checked-ucs2-decode";
 import {
   SerializableTypeAsync,
@@ -133,7 +133,7 @@ function writeSync(format: "json-doc" | "bson-doc", val: number[]): string {
 
 function testErrorSync(val: number[], options: CodepointArrayOptions): Error | null {
   if (!Array.isArray(val)) {
-    return new IncidentTypeError("array", val);
+    return WrongTypeError.create("array", val);
   }
   let valStr: string;
   try {
@@ -149,13 +149,13 @@ function testErrorSync(val: number[], options: CodepointArrayOptions): Error | n
 
   if (options.lowerCase) {
     if (valStr !== valStr.toLowerCase()) {
-      return new LowerCaseError(valStr);
+      return LowerCaseError.create(valStr);
     }
   }
 
   if (options.trimmed) {
     if (valStr !== valStr.trim()) {
-      return new TrimError(valStr);
+      return NotTrimmedError.create(valStr);
     }
   }
 
@@ -163,12 +163,12 @@ function testErrorSync(val: number[], options: CodepointArrayOptions): Error | n
 
   const minLength: number | null | undefined = options.minLength;
   if (typeof minLength === "number" && valLen < minLength) {
-    return new MinLengthError(val, minLength);
+    return MinArrayLengthError.create(val, minLength);
   }
 
   const maxLength: number | null | undefined = options.maxLength;
   if (typeof maxLength === "number" && valLen > maxLength) {
-    return new MaxLengthError(val, maxLength);
+    return MaxArrayLengthError.create(val, maxLength);
   }
 
   if (options.regex instanceof RegExp) {
@@ -177,7 +177,7 @@ function testErrorSync(val: number[], options: CodepointArrayOptions): Error | n
     }
 
     if (!options.regex.test(valStr)) {
-      return new PatternError(valStr, options.regex);
+      return PatternNotMatchedError.create(options.regex, valStr);
     }
   }
 

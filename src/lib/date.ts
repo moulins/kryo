@@ -1,7 +1,7 @@
+import {Incident} from "incident";
 import * as _ from "lodash";
-import {InvalidTimestampError} from "./errors/invalid-timestamp-error";
-import {KryoError} from "./errors/kryo-error";
-import {UnsupportedFormatError} from "./errors/unsupported-format-error";
+import {InvalidTimestampError} from "./errors/invalid-timestamp";
+import {UnknownFormatError} from "./errors/unknown-format";
 import {
   SerializableTypeAsync,
   SerializableTypeSync,
@@ -24,14 +24,14 @@ function readSync(format: "json-doc" | "bson-doc", val: any, options?: DateOptio
         val = Date.parse(val);
       }
       if (!_.isFinite(val)) {
-        throw new KryoError<{}>("Unable to read JSON date");
+        throw new Incident<"NotFiniteDate">("NotFiniteDate", "Unable to read JSON date");
       }
       val = new Date(val);
       break;
     case "bson-doc":
       break;
     default:
-      throw new UnsupportedFormatError(format);
+      throw UnknownFormatError.create(format);
   }
   const err: Error | null = testErrorSync(val);
   if (err !== null) {
@@ -47,7 +47,7 @@ function readTrustedSync(format: "json-doc" | "bson-doc", val: string | Date, op
     case "bson-doc":
       return new Date((<Date> val).getTime());
     default:
-      throw new UnsupportedFormatError(format);
+      throw UnknownFormatError.create(format);
   }
 }
 
@@ -59,10 +59,10 @@ function writeSync (format: any, val: any, options: any): any {
 
 function testErrorSync (val: Date, options?: DateOptions): Error | null {
   if (!(val instanceof Date)) {
-    return new KryoError<{value: any}>("DateTypeError", {value: val}, "Expected value to be instanceof Date");
+    return new Incident("DateTypeError", {value: val}, "Expected value to be instanceof Date");
   }
   if (isNaN(val.getTime())) {
-    return new InvalidTimestampError(val);
+    return InvalidTimestampError.create(val);
   }
 
   return null;

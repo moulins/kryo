@@ -1,9 +1,9 @@
 import * as Bluebird from "bluebird";
 import * as _ from "lodash";
-import {InvalidItemsError} from "./errors/invalid-items-error";
-import {MaxLengthError} from "./errors/max-length-error";
-import {NotImplementedError} from "./errors/not-implemented-error";
-import {IncidentTypeError} from "./errors/unexpected-type-error";
+import {InvalidArrayItemError} from "./errors/invalid-array-item";
+import {MaxArrayLengthError} from "./errors/max-array-length";
+import {NotImplementedError} from "./errors/not-implemented";
+import {WrongTypeError} from "./errors/wrong-type";
 import {
   NumericDictionary,
   SerializableTypeAsync,
@@ -107,7 +107,7 @@ function readSync<I, S>(format: "bson-doc",
                         options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>): I[];
 function readSync<I, S>(format: any, val: any, options: any): any {
   if (!Array.isArray(val)) {
-    throw new IncidentTypeError("array", val);
+    throw WrongTypeError.create("array", val);
   }
   return _.map(
     val,
@@ -125,7 +125,7 @@ async function readAsync<I, S>(format: "bson-doc",
                                options: ArrayOptions<SerializableTypeSync<I, "bson-doc", S>>): Promise<I[]>;
 async function readAsync<I, S>(format: any, val: any, options: any): Promise<any> {
   if (!Array.isArray(val)) {
-    throw new IncidentTypeError("array", val);
+    throw WrongTypeError.create("array", val);
   }
   return Promise.all(
     _.map(
@@ -222,34 +222,17 @@ export class ArrayType<I> implements SerializableTypeSync<I[], "bson-doc", any[]
     }
     const itemType: TypeSync<any> = <any> this.options.itemType;
     if (!_.isArray(val)) {
-      return new IncidentTypeError("array", val);
+      return WrongTypeError.create("array", val);
     }
     if (this.options.maxLength !== null && val.length > this.options.maxLength) {
-      return new MaxLengthError(val, this.options.maxLength);
+      return MaxArrayLengthError.create(val, this.options.maxLength);
     }
 
-    const mapped: (Error | null)[] = _.map(
-      val,
-      (item: I): Error | null => {
-        return itemType.testErrorSync(item);
+    for (let i: number = 0; i < val.length; i++) {
+      const error: Error | null = itemType.testErrorSync(val[i]);
+      if (error !== null) {
+        return InvalidArrayItemError.create(i, val[i]);
       }
-    );
-    const errors: NumericDictionary<Error> | null = _.reduce(
-      mapped,
-      (memo: NumericDictionary<Error> | null, current: Error | null, idx: number): NumericDictionary<Error> | null => {
-        if (current === null) {
-          return memo;
-        }
-        if (memo === null) {
-          memo = {};
-        }
-        memo[idx] = current;
-        return memo;
-      },
-      null
-    );
-    if (errors !== null) {
-      return new InvalidItemsError(errors); // TODO
     }
     return null;
   }
@@ -261,41 +244,27 @@ export class ArrayType<I> implements SerializableTypeSync<I[], "bson-doc", any[]
     const itemType: TypeAsync<any> = <any> this.options.itemType;
 
     if (!Array.isArray(val)) {
-      return new IncidentTypeError("array", val);
+      return WrongTypeError.create("array", val);
     }
 
     if (this.options.maxLength !== null && val.length > this.options.maxLength) {
-      return new MaxLengthError(val, this.options.maxLength);
+      return MaxArrayLengthError.create(val, this.options.maxLength);
     }
 
     if (this.options.itemType === null) { // manually managed type
       return null;
     }
 
-    return Bluebird.resolve(val)
-      .map((item: I): Promise<Error | null> => {
-        return itemType.testErrorAsync(item);
-      })
-      .reduce(
-        // tslint:disable:max-line-length
-        (memo: NumericDictionary<Error> | null, current: Error | null, idx: number): NumericDictionary<Error> | null => {
-          if (current === null) {
-            return memo;
-          }
-          if (memo === null) {
-            memo = {};
-          }
-          memo[idx] = current;
-          return memo;
-        },
-        null
-      )
-      .then((errors) => {
-        if (errors !== null) {
-          return new InvalidItemsError(errors); // TODO
-        }
-        return null;
-      });
+    const errors: (Error | null)[] = await Promise.all(val.map((item: I): Promise<Error | null> => {
+      return itemType.testErrorAsync(item);
+    }));
+
+    for (let i: number = 0; i < errors.length; i++) {
+      if (errors[i] !== null) {
+        return InvalidArrayItemError.create(i, val[i]);
+      }
+    }
+    return null;
   }
 
   testSync(val: I[]): boolean {
@@ -369,12 +338,9 @@ export class ArrayType<I> implements SerializableTypeSync<I[], "bson-doc", any[]
       throw new Error("Cannot call async method on array of sync item type");
     }
     const itemType: TypeAsync<any> = <any> this.options.itemType;
-    return Bluebird.map(
-      val,
-      (item: I): Promise<I> => {
-        return itemType.cloneAsync(item);
-      }
-    );
+    return Promise.all(val.map((item: I): Promise<I> => {
+      return itemType.cloneAsync(item);
+    }));
   }
 
   diffSync(oldVal: I[], newVal: I[]): ArrayDiff | null {
@@ -421,11 +387,11 @@ export class ArrayType<I> implements SerializableTypeSync<I[], "bson-doc", any[]
 
   //noinspection TypeScriptUnresolvedVariable
   iterateSync(value: any[]): IteratorResult<I> {
-    throw new NotImplementedError("Array:iterateAsync");
+    throw NotImplementedError.create("Array#iterateAsync");
   }
 
   //noinspection TypeScriptUnresolvedVariable
   async iterateAsync(value: any[]): Promise<IteratorResult<PromiseLike<I>>> {
-    throw new NotImplementedError("Array:iterateAsync");
+    throw NotImplementedError.create("Array#iterateAsync");
   }
 }

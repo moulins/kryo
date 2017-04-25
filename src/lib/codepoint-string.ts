@@ -1,11 +1,11 @@
 import {ucs2} from "punycode";
 import {nfc as unormNfc} from "unorm";
-import {LowerCaseError} from "./errors/case-error";
-import {MaxCodepointLengthError} from "./errors/max-codepoint-length-error";
-import {MinCodepointLengthError} from "./errors/min-codepoint-length-error";
-import {TrimError} from "./errors/not-trimmed-error";
-import {PatternError} from "./errors/pattern-error";
-import {IncidentTypeError} from "./errors/unexpected-type-error";
+import {LowerCaseError} from "./errors/lower-case";
+import {MaxCodepointsError} from "./errors/max-codepoints";
+import {MinCodepointsError} from "./errors/min-codepoints";
+import {NotTrimmedError} from "./errors/not-trimmed";
+import {PatternNotMatchedError} from "./errors/pattern-not-matched";
+import {WrongTypeError} from "./errors/wrong-type";
 import {checkedUcs2Decode} from "./helpers/checked-ucs2-decode";
 import {
   SerializableTypeAsync,
@@ -129,7 +129,7 @@ function writeSync(format: "json-doc" | "bson-doc", val: string): string {
 // TODO: Check normalization
 function testErrorSync(val: any, options: CodepointStringOptions, trustNormalization: boolean = false) {
   if (!(typeof val === "string")) {
-    return new IncidentTypeError("string", val);
+    return WrongTypeError.create("string", val);
   }
 
   if (!trustNormalization) {
@@ -140,13 +140,13 @@ function testErrorSync(val: any, options: CodepointStringOptions, trustNormaliza
 
   if (options.lowerCase) {
     if (val !== val.toLowerCase()) {
-      return new LowerCaseError(val);
+      return LowerCaseError.create(val);
     }
   }
 
   if (options.trimmed) {
     if (val !== val.trim()) {
-      return new TrimError(val);
+      return NotTrimmedError.create(val);
     }
   }
 
@@ -159,12 +159,12 @@ function testErrorSync(val: any, options: CodepointStringOptions, trustNormaliza
 
   const minLength: number | null | undefined = options.minLength;
   if (typeof minLength === "number" && cpLen < minLength) {
-    return new MinCodepointLengthError(val, minLength);
+    return MinCodepointsError.create(val, cpLen, minLength);
   }
 
   const maxLength: number | null | undefined = options.maxLength;
   if (typeof maxLength === "number" && cpLen > maxLength) {
-    return new MaxCodepointLengthError(val, maxLength);
+    return MaxCodepointsError.create(val, cpLen, maxLength);
   }
 
   if (options.regex instanceof RegExp) {
@@ -173,7 +173,7 @@ function testErrorSync(val: any, options: CodepointStringOptions, trustNormaliza
     }
 
     if (!options.regex.test(val)) {
-      return new PatternError(val, options.regex);
+      return PatternNotMatchedError.create(options.regex, val);
     }
   }
 

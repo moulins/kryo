@@ -1,4 +1,4 @@
-import {IncidentTypeError} from "./errors/unexpected-type-error";
+import {WrongTypeError} from "./errors/wrong-type";
 import {
   SerializableTypeAsync,
   SerializableTypeSync,
@@ -24,7 +24,7 @@ function writeSync(format: "json-doc" | "bson-doc", val: boolean): boolean {
 
 function testErrorSync (val: boolean): Error | null {
   if (typeof val !== "boolean") {
-    return new IncidentTypeError("boolean", val);
+    return WrongTypeError.create("boolean", val);
   }
   return null;
 }

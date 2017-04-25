@@ -1,11 +1,10 @@
-import {ucs2} from "punycode";
-import {nfc as unormNfc} from "unorm";
-import {LowerCaseError} from "./errors/case-error";
-import {MaxLengthError} from "./errors/max-length-error";
-import {MinLengthError} from "./errors/min-length-error";
-import {TrimError} from "./errors/not-trimmed-error";
-import {PatternError} from "./errors/pattern-error";
-import {IncidentTypeError} from "./errors/unexpected-type-error";
+import {Incident} from "incident";
+import {LowerCaseError} from "./errors/lower-case";
+import {MaxUcs2StringLengthError} from "./errors/max-ucs2-string-length";
+import {MinUcs2StringLengthError} from "./errors/min-ucs2-string-length";
+import {NotTrimmedError} from "./errors/not-trimmed";
+import {PatternNotMatchedError} from "./errors/pattern-not-matched";
+import {WrongTypeError} from "./errors/wrong-type";
 import {
   SerializableTypeAsync,
   SerializableTypeSync,
@@ -100,18 +99,18 @@ function writeSync(format: "json-doc" | "bson-doc", val: string): string {
 
 function testErrorSync(val: any, options: Ucs2StringOptions) {
   if (!(typeof val === "string")) {
-    return new IncidentTypeError("string", val);
+    return WrongTypeError.create("string", val);
   }
 
   if (options.lowerCase) {
     if (val !== val.toLowerCase()) {
-      return new LowerCaseError(val);
+      return LowerCaseError.create(val);
     }
   }
 
   if (options.trimmed) {
     if (val !== val.trim()) {
-      return new TrimError(val);
+      return NotTrimmedError.create(val);
     }
   }
 
@@ -119,21 +118,24 @@ function testErrorSync(val: any, options: Ucs2StringOptions) {
 
   const minLength: number | null | undefined = options.minLength;
   if (typeof minLength === "number" && strLen < minLength) {
-    return new MinLengthError(val, minLength);
+    return MinUcs2StringLengthError.create(val, minLength);
   }
 
   const maxLength: number | null | undefined = options.maxLength;
   if (typeof maxLength === "number" && strLen > maxLength) {
-    return new MaxLengthError(val, maxLength);
+    return MaxUcs2StringLengthError.create(val, maxLength);
   }
 
   if (options.regex instanceof RegExp) {
     if (options.regex.unicode && !options.allowUnicodeRegExp) {
-      throw new Error("Disallowed unicode RegExp, use `allowUnicodeRegExp` or `CodepointStringType`");
+      throw new Incident(
+        "UnicodeRegExp",
+        "Disallowed unicode RegExp, use `allowUnicodeRegExp` or `CodepointStringType`"
+      );
     }
 
     if (!options.regex.test(val)) {
-      return new PatternError(val, options.regex);
+      return PatternNotMatchedError.create(options.regex, val);
     }
   }
 
@@ -239,7 +241,7 @@ export class Ucs2StringType implements
     this.options = {...DEFAULT_OPTIONS, ...options};
   }
 
-  // TODO: Check how RegExp are handled
+  // TODO(demurgos): RegExp is rendered as {}, we should protect it
   toJSON(): {type: "ucs2-string"} & CompleteUcs2StringOptions {
     return {...this.options, type: "ucs2-string"};
   }

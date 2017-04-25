@@ -1,5 +1,5 @@
-import {NumericError} from "./errors/finite-number-error";
-import {IncidentTypeError} from "./errors/unexpected-type-error";
+import {FiniteNumberError} from "./errors/finite-number";
+import {WrongTypeError} from "./errors/wrong-type";
 import {
   SerializableTypeAsync,
   SerializableTypeSync,
@@ -13,10 +13,10 @@ export interface NumberOptions {}
 
 function readSync(format: "json-doc" | "bson-doc", val: any, options?: NumberOptions): number {
   if (!(typeof val === "number")) {
-    throw new IncidentTypeError("number", val);
+    throw WrongTypeError.create("number", val);
   }
   if (!isFinite(val)) {
-    throw new NumericError(val);
+    throw FiniteNumberError.create(val);
   }
   return val;
 }
@@ -31,10 +31,10 @@ function writeSync(format: "json-doc" | "bson-doc", val: number, options?: Numbe
 
 function testErrorSync (val: any, options?: NumberOptions): Error | null {
   if (!(typeof val === "number")) {
-    return new IncidentTypeError("number", val);
+    return WrongTypeError.create("number", val);
   }
   if (!isFinite(val)) {
-    return new NumericError(val);
+    return FiniteNumberError.create(val);
   }
   return null;
 }
