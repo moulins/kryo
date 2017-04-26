@@ -1,4 +1,4 @@
-import {DateType} from "../lib/date";
+import {DateType} from "../lib/types/date";
 import {runTests, TypedValue} from "./helpers/test";
 
 describe("DateType", function () {
@@ -11,7 +11,7 @@ describe("DateType", function () {
       value: new Date(0),
       valid: true,
       serialized: {
-        "json-doc": {
+        json: {
           canonical: "1970-01-01T00:00:00.000Z",
           values: [
             {value: 0, valid: true},

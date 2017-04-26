@@ -1,26 +1,28 @@
-import {DateType} from "../lib/date";
-import {DocumentType} from "../lib/document";
-import {IntegerType} from "../lib/integer";
+import {DateType} from "../lib/types/date";
+import {DocumentType} from "../lib/types/document";
+import {Int32Type} from "../lib/types/int32";
 import {runTests, TypedValue} from "./helpers/test";
 
 describe("DocumentType", function () {
-  const documentType: DocumentType = new DocumentType({
+  const documentType: DocumentType<any> = new DocumentType({
+    ignoreExtraKeys: true,
     properties: {
       dateProp: {
+        optional: false,
         type: new DateType()
       },
       optIntProp: {
         optional: true,
-        type: new IntegerType()
+        type: new Int32Type({})
       },
       nestedDoc: {
-        nullable: true,
+        optional: true,
         type: new DocumentType({
+          ignoreExtraKeys: true,
           properties: {
             id: {
               optional: true,
-              nullable: true,
-              type: new IntegerType()
+              type: new Int32Type({})
             }
           }
         })
@@ -39,7 +41,7 @@ describe("DocumentType", function () {
       },
       valid: true,
       serialized: {
-        "json-doc": {canonical: {dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}}}
+        json: {canonical: {dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}}}
       }
     },
 

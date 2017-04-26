@@ -1,46 +1,20 @@
-export interface Dictionary<T> {
-  [key: string]: T;
-}
-
-export interface NumericDictionary<T> {
-  [key: number]: T;
-}
-
-export type Document = Dictionary<any>;
-
-export interface TypeBase {
-  isSync: boolean;
-  isAsync: boolean;
-  isSerializable: boolean;
-  isVersioned: boolean;
-  isCollection: boolean;
-  type: string;
-  types: string[];
+export interface Type<T> {
+  name: string;
+  testError (val: T): Error | undefined;
+  test (val: T): boolean;
+  equals (val1: T, val2: T): boolean;
+  clone (val: T): T;
   toJSON(): any;
 }
 
-// Synchronous interfaces
-
-export interface TypeSync<T> extends TypeBase {
-  isSync: true;
-
-  testErrorSync (val: any): Error | null;
-  testSync (val: any): boolean;
-  equalsSync (val1: T, val2: T): boolean;
-  cloneSync (val: T): T;
+export interface SerializableType<T, FormatName extends string, Output, Input extends Output> extends Type<T> {
+  readTrusted (format: FormatName, serialized: Output): T;
+  read (format: FormatName, serialized: Input): T;
+  write (format: FormatName, val: T): Output;
 }
 
-export interface SerializableTypeSync<T, F extends string, S> extends TypeSync<T> {
-  isSerializable: true;
-
-  readTrustedSync (format: F, serialized: S): T;
-  readSync (format: F, serialized: any): T;
-  writeSync (format: F, val: T): S;
-}
-
-export interface VersionedTypeSync<T, S, D> extends SerializableTypeSync<T, "json-doc", S> {
-  isVersioned: true;
-
+export interface VersionedType<T, Output, Input extends Output, Diff>
+  extends SerializableType<T, "json", Output, Input> {
   /**
    * Returns null if both values are equivalent, otherwise a diff representing the change from
    * oldVal to newVal.
@@ -48,64 +22,20 @@ export interface VersionedTypeSync<T, S, D> extends SerializableTypeSync<T, "jso
    * @param oldVal The old value
    * @param newVal The new value
    */
-  diffSync (oldVal: T, newVal: T): D | null;
-  patchSync (oldVal: T, diff: D | null): T;
-  reverseDiffSync (diff: D | null): D | null;
+  diff (oldVal: T, newVal: T): Diff | undefined;
+  patch (oldVal: T, diff: Diff | undefined): T;
+  reverseDiff (diff: Diff | undefined): Diff | undefined;
+  squash (oldDiff: Diff | undefined, newDiff: Diff | undefined): Diff | undefined;
+  // readonly diffType: Type<Diff>;
 }
 
-export interface CollectionTypeSync <T, D, I> extends TypeSync<T> {
-  isCollection: true;
-
-  iterateSync (value: T, visitor: Function): any;
-}
-
-// Asynchronous interfaces
-
-export interface TypeAsync<T> extends TypeBase {
-  isAsync: true;
-
-  testErrorAsync (val: any): Promise<Error | null>;
-  testAsync (val: any): Promise<boolean>;
-  equalsAsync (val1: T, val2: T): Promise<boolean>;
-  cloneAsync (val: T): Promise<T>;
-}
-
-export interface SerializableTypeAsync<T, F extends string, S> extends TypeAsync<T> {
-  isSerializable: true;
-
-  readTrustedAsync (format: F, serialized: S): Promise<T>;
-  readAsync (format: F, serialized: any): Promise<T>;
-  writeAsync (format: F, val: T): Promise<S>;
-}
-
-export interface VersionedTypeAsync<T, S, D> extends SerializableTypeAsync<T, "json-doc", S> {
-  isVersioned: true;
-  diffAsync (oldVal: T, newVal: T): Promise<D | null>;
-  patchAsync (oldVal: T, diff: D | null): Promise<T>;
-  reverseDiffAsync (diff: D | null): Promise<D | null>;
-}
-
-export interface CollectionTypeAsync <T, D, I> extends TypeAsync<T> {
-  isCollection: true;
-  iterateAsync (value: T, visitor: Function): any;
-}
-
-// Other
-
-export type Type<T> = TypeAsync<T> | TypeSync<T>;
-export type SerializableType<T, F extends string, S> = SerializableTypeAsync<T, F, S> | SerializableTypeSync<T, F, S>;
-export type VersionedType<T, S, D> = VersionedTypeAsync<T, S, D> | VersionedTypeSync<T, S, D>;
-
-// tslint:disable-next-line:max-line-length
-export interface VersionedCollectionTypeSync<T, S, D, I> extends CollectionTypeSync <T, D, I>, VersionedTypeSync<T, S, D> {
-  isCollection: true;
-  isVersioned: true;
-  isSerializable: true;
+export interface CollectionType <T, D, I> extends Type<T> {
+  iterateSync (value: T, visitor: (item: I) => any): void;
 }
 
 // tslint:disable-next-line:max-line-length
-export interface VersionedCollectionTypeAsync<T, S, D, I> extends CollectionTypeAsync <T, D, I>,  VersionedTypeAsync<T, S, D> {
-  isCollection: true;
-  isVersioned: true;
-  isSerializable: true;
-}
+// export interface VersionedCollectionType<T, S, D, I> extends CollectionType <T, D, I>, VersionedType<T, S, D> {
+//   isCollection: true;
+//   isVersioned: true;
+//   isSerializable: true;
+// }

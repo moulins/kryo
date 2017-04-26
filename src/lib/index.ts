@@ -1,6 +1,6 @@
-export {ArrayType} from "./array";
-export {BooleanType} from "./boolean";
-export {DateType} from "./date";
-export {DocumentType, DocumentOptions, PropertyDescriptor} from "./document";
-export {IntegerType} from "./integer";
-export {Ucs2StringType} from "./ucs2-string";
+// export {ArrayType} from "./types/array";
+// export {BooleanType} from "./types/boolean";
+// export {DateType} from "./types/date";
+// export {DocumentType, DocumentOptions, PropertyDescriptor} from "./types/document";
+// export {IntegerType} from "./types/integer";
+// export {Ucs2StringType} from "./types/ucs2-string";

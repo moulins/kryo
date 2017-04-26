@@ -1,30 +1,30 @@
-import {ArrayType} from "../lib/array";
-import {IntegerType} from "../lib/integer";
+import {ArrayType} from "../lib/types/array";
+import {Int32Type} from "../lib/types/int32";
 import {runTests, TypedValue} from "./helpers/test";
 
 describe("ArrayType", function () {
-  const integersArray: ArrayType<number> = new ArrayType<number>({itemType: new IntegerType(), maxLength: 2});
+  const integersArray: ArrayType<number, number, number, number> = new ArrayType(new Int32Type({}), {maxLength: 2});
 
   const items: TypedValue[] = [
     {
       value: [],
       valid: true,
       serialized: {
-        "json-doc": {canonical: []}
+        json: {canonical: []}
       }
     },
     {
       value: [1],
       valid: true,
       serialized: {
-        "json-doc": {canonical: [1]}
+        json: {canonical: [1]}
       }
     },
     {
       value: [2, 3],
       valid: true,
       serialized: {
-        "json-doc": {canonical: [2, 3]}
+        json: {canonical: [2, 3]}
       }
     },
     {

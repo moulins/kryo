@@ -1,8 +1,8 @@
-import {NumberType} from "../lib/number";
+import {defaultOptions, Float64Type} from "../lib/types/float64";
 import {runTests, TypedValue} from "./helpers/test";
 
 describe("NumberType", function () {
-  const type: NumberType = new NumberType();
+  const type: Float64Type = new Float64Type(defaultOptions);
 
   const items: TypedValue[] = [
     {

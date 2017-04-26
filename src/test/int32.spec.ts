@@ -1,8 +1,8 @@
-import {IntegerType} from "../lib/integer";
+import {Int32Type} from "../lib/types/int32";
 import {runTests, TypedValue} from "./helpers/test";
 
 describe("IntegerType", function () {
-  const type: IntegerType = new IntegerType();
+  const type: Int32Type = new Int32Type({});
 
   const items: TypedValue[] = [
     // Valid values
@@ -12,13 +12,13 @@ describe("IntegerType", function () {
     {name: "2", value: 2, valid: true},
     {name: "1e3", value: 1e3, valid: true},
     {name: "-1e3", value: 1e3, valid: true},
-    {name: "Number.MAX_SAFE_INTEGER", value: Number.MAX_SAFE_INTEGER, valid: true},
-    {name: "Number.MIN_SAFE_INTEGER", value: Number.MIN_SAFE_INTEGER, valid: true},
-    {name: "Number.MAX_VALUE", value: Number.MAX_VALUE, valid: true},
     // Invalid values
     {name: "0.5", value: 0.5, valid: false},
     {name: "0.0001", value: 0.0001, valid: false},
     {name: "Number.EPSILON", value: Number.EPSILON, valid: false},
+    {name: "Number.MAX_SAFE_INTEGER", value: Number.MAX_SAFE_INTEGER, valid: false},
+    {name: "Number.MIN_SAFE_INTEGER", value: Number.MIN_SAFE_INTEGER, valid: false},
+    {name: "Number.MAX_VALUE", value: Number.MAX_VALUE, valid: false},
     {name: "new Number(true)", value: new Number(1), valid: false},
     {name: '""', value: "", valid: false},
     {name: '"0"', value: "0", valid: false},
