@@ -1,3 +1,5 @@
+export {Type, SerializableType, VersionedType} from "./interfaces";
+
 export {ArrayType} from "./types/array";
 export {BooleanType} from "./types/boolean";
 export {CodepointStringType} from "./types/codepoint-string";
