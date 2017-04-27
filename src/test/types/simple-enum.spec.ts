@@ -1,3 +1,4 @@
+import {CaseStyle} from "../../lib/helpers/rename";
 import {SimpleEnumType} from "../../lib/types/simple-enum";
 import {runTests, TypedValue} from "../helpers/test";
 
@@ -8,7 +9,7 @@ describe("SimpleEnum", function () {
     Blue
   }
 
-  const type: SimpleEnumType<Color> = new SimpleEnumType(Color);
+  const type: SimpleEnumType<Color> = new SimpleEnumType({enum: Color});
 
   const items: TypedValue[] = [
     {
@@ -75,6 +76,69 @@ describe("SimpleEnum", function () {
     {name: "[]", value: [], valid: false},
     {name: "{}", value: {}, valid: false},
     {name: "/regex/", value: /regex/, valid: false}
+  ];
+
+  runTests(type, items);
+});
+
+describe("SimpleEnum#rename", function () {
+  enum Node {
+    Expression,
+    BinaryOperator,
+    BlockStatement
+  }
+
+  const type: SimpleEnumType<Node> = new SimpleEnumType({enum: Node, rename: CaseStyle.KebabCase});
+
+  const items: TypedValue[] = [
+    {
+      name: "Node.Expression",
+      value: Node.Expression,
+      valid: true,
+      serialized: {
+        json: {canonical: "expression"}
+      }
+    },
+    {
+      name: "Node.BinaryOperator",
+      value: Node.BinaryOperator,
+      valid: true,
+      serialized: {
+        json: {canonical: "binary-operator"}
+      }
+    },
+    {
+      name: "Node.BlockStatement",
+      value: Node.BlockStatement,
+      valid: true,
+      serialized: {
+        json: {canonical: "block-statement"}
+      }
+    },
+    {
+      name: "0",
+      value: 0,
+      valid: true,
+      serialized: {
+        json: {canonical: "expression"}
+      }
+    },
+    {
+      name: "1",
+      value: 1,
+      valid: true,
+      serialized: {
+        json: {canonical: "binary-operator"}
+      }
+    },
+    {
+      name: "2",
+      value: 2,
+      valid: true,
+      serialized: {
+        json: {canonical: "block-statement"}
+      }
+    }
   ];
 
   runTests(type, items);

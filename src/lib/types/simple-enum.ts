@@ -1,6 +1,7 @@
 import {Incident} from "incident";
 import {NotImplementedError} from "../errors/not-implemented";
 import {WrongTypeError} from "../errors/wrong-type";
+import {CaseStyle, rename} from "../helpers/rename";
 import {VersionedType} from "../interfaces";
 
 export type SimpleEnum<EnumConstructor> = {
@@ -13,11 +14,15 @@ interface ReversedEnum<EC> {
 
 type DoubleEnum<EC> = SimpleEnum<EC> & ReversedEnum<EC>;
 
-type AnyDoubleEnum = {
+interface AnySimpleEnum {
   [name: string]: number;
-} & {
+}
+
+interface AnyReversedEnum {
   [value: number]: string;
-};
+}
+
+type AnyDoubleEnum = AnySimpleEnum & AnyReversedEnum;
 
 // This is strictly an alias for `number` for the moment since Typescript
 // does not use union types for enum values (as of TS 2.3)
@@ -38,6 +43,11 @@ export namespace json {
 }
 export type Diff = number;
 
+export interface Options<E extends number> {
+  enum: EnumConstructor<E> | Object;
+  rename?: CaseStyle;
+}
+
 /**
  * Supports enums from keys that are valid Javascript identifiers to unique integer values
  */
@@ -47,10 +57,40 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
   }
 
   readonly name: Name = name;
-  readonly enum: EnumConstructor<E> & Object;
+  readonly enum: EnumConstructor<E>;
+  private readonly rename?: CaseStyle;
+  private readonly outputNameToValue: AnySimpleEnum;
+  private readonly valueToOutputName: AnyReversedEnum;
 
-  constructor(e: EnumConstructor<E> | Object) {
-    this.enum = e as EnumConstructor<E> & Object;
+  constructor(options: Options<E>) {
+    this.enum = <any> options.enum;
+    this.rename = options.rename;
+
+    this.outputNameToValue = {};
+    this.valueToOutputName = {};
+    for (const key in options.enum) {
+      if (/^\d+$/.test(key)) {
+        continue;
+      }
+      const value: number = (<{[name: string]: number}> options.enum)[key];
+      if (typeof value !== "number") {
+        throw WrongTypeError.create("number", value);
+      }
+      if (!options.enum.hasOwnProperty(value) || !options.enum.hasOwnProperty(value)) {
+        throw new Incident("NotSimpleEnum", "Not owned key or value");
+      }
+      if ((<{[value: number]: string}> options.enum)[value] !== key) {
+        throw new Incident("NotReversibleEnum", "enum[enum[key]] !== key");
+      }
+      let renamed: string;
+      if (options.rename === undefined) {
+        renamed = key;
+      } else {
+        renamed = rename(key, options.rename);
+      }
+      this.outputNameToValue[renamed] = value;
+      this.valueToOutputName[value] = renamed;
+    }
   }
 
   toJSON(): json.Type {
@@ -58,21 +98,21 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
   }
 
   readTrusted(format: "json" | "bson", val: json.Output): E {
-    return this.enum[val]!;
+    return this.outputNameToValue[val] as E;
   }
 
   read(format: "json" | "bson", val: any): E {
     if (typeof val !== "string") {
       throw WrongTypeError.create("string", val);
     }
-    if (!this.enum.hasOwnProperty(val)) {
+    if (!this.outputNameToValue.hasOwnProperty(val)) {
       throw Incident("Unknown enum variant name", val);
     }
-    return this.enum[val];
+    return this.outputNameToValue[val] as E;
   }
 
   write(format: "json" | "bson", val: E): json.Output {
-    return (<any> this.enum as AnyDoubleEnum)[val as number]!;
+    return this.valueToOutputName[val as number];
   }
 
   testError(val: E): Error | undefined {
