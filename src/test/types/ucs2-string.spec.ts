@@ -1,10 +1,10 @@
 import {assert} from "chai";
-import {defaultOptions, Ucs2StringType} from "../../lib/types/ucs2-string";
+import {Ucs2StringType} from "../../lib/types/ucs2-string";
 import {runTests, TypedValue} from "../helpers/test";
 
 describe("Ucs2StringType", function () {
   describe("basic support", function() {
-    const type: Ucs2StringType = new Ucs2StringType(defaultOptions);
+    const type: Ucs2StringType = new Ucs2StringType({maxLength: 500});
 
     const items: TypedValue[] = [
       // Valid items
@@ -33,23 +33,23 @@ describe("Ucs2StringType", function () {
 
   describe("Simple UCS2 behavior", function() {
     it("should accept the empty string, when requiring length exactly 0", function() {
-      assert.isTrue(new Ucs2StringType({...defaultOptions, minLength: 0, maxLength: 0}).test(""));
+      assert.isTrue(new Ucs2StringType({minLength: 0, maxLength: 0}).test(""));
     });
     it(`should accept the string "a" (ASCII codepoint), when requiring length exactly 1`, function() {
-      assert.isTrue(new Ucs2StringType({...defaultOptions, minLength: 1, maxLength: 1}).test("a"));
+      assert.isTrue(new Ucs2StringType({minLength: 1, maxLength: 1}).test("a"));
     });
     it(`should accept the string "∑" (BMP codepoint), when requiring length exactly 1`, function() {
-      assert.isTrue(new Ucs2StringType({...defaultOptions, minLength: 1, maxLength: 1}).test("∑"));
+      assert.isTrue(new Ucs2StringType({minLength: 1, maxLength: 1}).test("∑"));
     });
     it(`should accept the string "𝄞" (non-BMP codepoint), when requiring length exactly 2`, function() {
-      assert.isTrue(new Ucs2StringType({...defaultOptions, minLength: 2, maxLength: 2}).test("𝄞"));
+      assert.isTrue(new Ucs2StringType({minLength: 2, maxLength: 2}).test("𝄞"));
     });
     it(`should reject the string "𝄞" (non-BMP codepoint), when requiring length exactly 1`, function() {
-      assert.isFalse(new Ucs2StringType({...defaultOptions, minLength: 1, maxLength: 1}).test("𝄞"));
+      assert.isFalse(new Ucs2StringType({minLength: 1, maxLength: 1}).test("𝄞"));
     });
     it(`should accept unmatched surrogate halves`, function() {
       // 𝄞 corresponds to the surrogate pair (0xd834, 0xdd1e)
-      const type: Ucs2StringType = new Ucs2StringType(defaultOptions);
+      const type: Ucs2StringType = new Ucs2StringType({maxLength: 500});
       const items: string[] = ["\ud834", "a\ud834", "\ud834b", "a\ud834b", "\udd1e", "a\udd1e", "\udd1eb", "a\udd1eb"];
       for (const item of items) {
         it (JSON.stringify(item), function() {
@@ -58,7 +58,7 @@ describe("Ucs2StringType", function () {
       }
     });
     it(`should accept reversed (invalid) surrogate pairs`, function() {
-      assert.isTrue(new Ucs2StringType(defaultOptions).test("\udd1e\ud834"));
+      assert.isTrue(new Ucs2StringType({maxLength: 500}).test("\udd1e\ud834"));
     });
   });
 });

@@ -20,7 +20,7 @@ export namespace json {
     pattern?: [string, string];
     lowerCase: boolean;
     /**
-     * @see [[Ucs2StringOptions.trimmed]]
+     * @see [[Options.trimmed]]
      */
     trimmed: boolean;
     minLength?: number;
@@ -29,9 +29,9 @@ export namespace json {
 }
 export type Diff = [string, string];
 export interface Options {
-  allowUnicodeRegExp: boolean;
+  allowUnicodeRegExp?: boolean;
   pattern?: RegExp;
-  lowerCase: boolean;
+  lowerCase?: boolean;
 
   /**
    * The string cannot start or end with any of the following whitespace and line terminator
@@ -52,16 +52,10 @@ export interface Options {
    * @see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim>
    * @see <http://www.fileformat.info/info/unicode/category/Zs/list.htm>
    */
-  trimmed: boolean;
+  trimmed?: boolean;
   minLength?: number;
   maxLength: number;
 }
-export const defaultOptions: Options = {
-  allowUnicodeRegExp: false,
-  lowerCase: false,
-  trimmed: false,
-  maxLength: Infinity
-};
 
 /**
  * The type used for simple Javascript strings.
