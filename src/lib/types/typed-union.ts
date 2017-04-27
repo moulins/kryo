@@ -15,15 +15,8 @@ export namespace json {
   }
 }
 export type Diff = [number, number];
-export interface Options {
-  notNan: boolean;
-  notInfinity: boolean;
-}
-export const defaultOptions: Options = {
-  notNan: true,
-  notInfinity: true
-};
 
+// TODO: Rename to whiteList
 export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
   static fromJSON(options: json.Type): TypedUnionType<any> {
     throw NotImplementedError.create("TypedUnionType.fromJSON");

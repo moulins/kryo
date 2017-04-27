@@ -8,14 +8,17 @@ export type T = null;
 export namespace json {
   export type Input = null;
   export type Output = null;
+  export interface Type {
+    name: Name;
+  }
 }
 export type Diff = undefined;
 
 export class NullType implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
-  toJSON(): undefined {
-    return undefined;
+  toJSON(): json.Type {
+    return {name: name};
   }
 
   readTrusted(format: "json" | "bson", val: json.Output): T {

@@ -12,21 +12,19 @@ export namespace json {
 }
 export type Diff = any;
 
-export interface Options {
+export interface Options<T, Output, Input extends Output, Diff> {
+  itemType: VersionedType<T, Output, Input, Diff>;
   maxLength: number;
 }
-export const defaultOptions: Options = {
-  maxLength: Infinity
-};
 
 export class ArrayType<T, Output, Input extends Output, Diff> implements VersionedType<T[], Output[], Input[], Diff> {
   readonly name: Name = name;
   readonly itemType: VersionedType<T, Output, Input, Diff>;
-  readonly options: Options;
+  readonly maxLength: number;
 
-  constructor(itemType: VersionedType<T, Output, Input, Diff>, options: Options) {
-    this.itemType = itemType;
-    this.options = {...defaultOptions, ...options};
+  constructor(options: Options<T, Output, Input, Diff>) {
+    this.itemType = options.itemType;
+    this.maxLength = options.maxLength;
   }
 
   toJSON(): json.Type {
@@ -57,8 +55,8 @@ export class ArrayType<T, Output, Input extends Output, Diff> implements Version
     if (!Array.isArray(val)) {
       return WrongTypeError.create("array", val);
     }
-    if (this.options.maxLength !== undefined && val.length > this.options.maxLength) {
-      return MaxArrayLengthError.create(val, this.options.maxLength);
+    if (this.maxLength !== undefined && val.length > this.maxLength) {
+      return MaxArrayLengthError.create(val, this.maxLength);
     }
     for (let i: number = 0; i < val.length; i++) {
       const error: Error | undefined = this.itemType.testError(val[i]);

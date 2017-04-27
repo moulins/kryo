@@ -128,25 +128,35 @@ export class Ucs2StringType implements VersionedType<T, json.Input, json.Output,
   }
 
   readonly name: Name = name;
-  options: Options;
+  readonly allowUnicodeRegExp: boolean;
+  readonly pattern?: RegExp;
+  readonly lowerCase: boolean;
+  readonly trimmed: boolean;
+  readonly minLength?: number;
+  readonly maxLength: number;
 
   constructor(options: Options) {
-    this.options = {...defaultOptions, ...options};
+    this.allowUnicodeRegExp = options.allowUnicodeRegExp !== undefined ? options.allowUnicodeRegExp : true;
+    this.pattern = options.pattern;
+    this.lowerCase = options.lowerCase !== undefined ? options.lowerCase : false;
+    this.trimmed = options.trimmed !== undefined ? options.trimmed : false;
+    this.minLength = options.minLength;
+    this.maxLength = options.maxLength;
   }
 
   toJSON(): json.Type {
     const jsonType: json.Type = {
       name: name,
-      allowUnicodeRegExp: this.options.allowUnicodeRegExp,
-      lowerCase: this.options.lowerCase,
-      trimmed: this.options.trimmed,
-      maxLength: this.options.maxLength
+      allowUnicodeRegExp: this.allowUnicodeRegExp,
+      lowerCase: this.lowerCase,
+      trimmed: this.trimmed,
+      maxLength: this.maxLength
     };
-    if (this.options.pattern !== undefined) {
-      jsonType.pattern = [this.options.pattern.source, this.options.pattern.flags];
+    if (this.pattern !== undefined) {
+      jsonType.pattern = [this.pattern.source, this.pattern.flags];
     }
-    if (this.options.minLength !== undefined) {
-      jsonType.minLength = this.options.minLength;
+    if (this.minLength !== undefined) {
+      jsonType.minLength = this.minLength;
     }
     return jsonType;
   }
@@ -171,31 +181,31 @@ export class Ucs2StringType implements VersionedType<T, json.Input, json.Output,
     if (typeof val !== "string") {
       return WrongTypeError.create("string", val);
     }
-    if (this.options.lowerCase && val.toLowerCase() !== val) {
+    if (this.lowerCase && val.toLowerCase() !== val) {
       return LowerCaseError.create(val);
     }
-    if (this.options.trimmed && val.trim() !== val) {
+    if (this.trimmed && val.trim() !== val) {
       return NotTrimmedError.create(val);
     }
     const strLen: number = val.length;
-    const minLength: number | undefined = this.options.minLength;
+    const minLength: number | undefined = this.minLength;
     if (minLength !== undefined && strLen < minLength) {
       return MinUcs2StringLengthError.create(val, minLength);
     }
-    if (strLen > this.options.maxLength) {
-      return MaxUcs2StringLengthError.create(val, this.options.maxLength);
+    if (strLen > this.maxLength) {
+      return MaxUcs2StringLengthError.create(val, this.maxLength);
     }
 
-    if (this.options.pattern instanceof RegExp) {
-      if (this.options.pattern.unicode && !this.options.allowUnicodeRegExp) {
+    if (this.pattern instanceof RegExp) {
+      if (this.pattern.unicode && !this.allowUnicodeRegExp) {
         throw new Incident(
           "UnicodeRegExp",
           "Disallowed unicode RegExp, use `allowUnicodeRegExp` or `CodepointStringType`"
         );
       }
 
-      if (!this.options.pattern.test(val)) {
-        return PatternNotMatchedError.create(this.options.pattern, val);
+      if (!this.pattern.test(val)) {
+        return PatternNotMatchedError.create(this.pattern, val);
       }
     }
 

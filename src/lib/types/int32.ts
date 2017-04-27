@@ -14,24 +14,18 @@ export namespace json {
   }
 }
 export type Diff = number;
-export interface Options {
-}
-export const defaultOptions: Options = {};
 
 export class Int32Type implements VersionedType<T, json.Input, json.Output, Diff> {
   static fromJSON(options: json.Type): Int32Type {
-    return new Int32Type(options);
+    return new Int32Type();
   }
 
   readonly name: Name = name;
-  options: Options;
 
-  constructor(options: Options) {
-    this.options = {...defaultOptions, ...options};
-  }
+  constructor() {}
 
   toJSON(): json.Type {
-    return {...this.options, name: name};
+    return {name: name};
   }
 
   readTrusted(format: "json" | "bson", val: json.Output): T {

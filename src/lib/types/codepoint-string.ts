@@ -44,11 +44,11 @@ export interface Options {
    * - http://unicode.org/faq/normalization.html
    * - http://unicode.org/reports/tr15/
    */
-  normalization: Normalization;
+  normalization?: Normalization;
 
-  enforceUnicodeRegExp: boolean;
+  enforceUnicodeRegExp?: boolean;
   pattern?: RegExp;
-  lowerCase: boolean;
+  lowerCase?: boolean;
 
   /**
    * The string cannot start or end with any of the following whitespace and line terminator
@@ -69,17 +69,10 @@ export interface Options {
    * @see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim>
    * @see <http://www.fileformat.info/info/unicode/category/Zs/list.htm>
    */
-  trimmed: boolean;
+  trimmed?: boolean;
   minCodepoints?: number;
   maxCodepoints: number;
 }
-export const defaultOptions: Options = {
-  normalization: Normalization.Nfc,
-  enforceUnicodeRegExp: true,
-  lowerCase: false,
-  trimmed: false,
-  maxCodepoints: Infinity
-};
 
 export class CodepointStringType implements VersionedType<T, json.Input, json.Output, Diff> {
   static fromJSON(options: json.Type): CodepointStringType {
@@ -100,26 +93,38 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
   }
 
   readonly name: Name = name;
-  options: Options;
+  readonly normalization: Normalization;
+  readonly enforceUnicodeRegExp: boolean;
+  readonly pattern?: RegExp;
+  readonly lowerCase: boolean; // TODO(demurgos): Rename to enforceLowerCase
+  readonly trimmed: boolean; // TODO(demurgos): Rename to enforceTrimmed
+  readonly minCodepoints?: number;
+  readonly maxCodepoints: number;
 
   constructor(options: Options) {
-    this.options = {...defaultOptions, ...options};
+    this.normalization = options.normalization !== undefined ? options.normalization : Normalization.Nfc;
+    this.enforceUnicodeRegExp = options.enforceUnicodeRegExp !== undefined ? options.enforceUnicodeRegExp : true;
+    this.pattern = options.pattern;
+    this.lowerCase = options.lowerCase !== undefined ? options.lowerCase : false;
+    this.trimmed = options.trimmed !== undefined ? options.trimmed : false;
+    this.minCodepoints = options.minCodepoints;
+    this.maxCodepoints = options.maxCodepoints;
   }
 
   toJSON(): json.Type {
     const jsonType: json.Type = {
       name: name,
-      normalization: this.options.normalization === Normalization.None ? "none" : "nfc",
-      enforceUnicodeRegExp: this.options.enforceUnicodeRegExp,
-      lowerCase: this.options.lowerCase,
-      trimmed: this.options.trimmed,
-      maxCodepoints: this.options.maxCodepoints
+      normalization: this.normalization === Normalization.None ? "none" : "nfc",
+      enforceUnicodeRegExp: this.enforceUnicodeRegExp,
+      lowerCase: this.lowerCase,
+      trimmed: this.trimmed,
+      maxCodepoints: this.maxCodepoints
     };
-    if (this.options.pattern !== undefined) {
-      jsonType.pattern = [this.options.pattern.source, this.options.pattern.flags];
+    if (this.pattern !== undefined) {
+      jsonType.pattern = [this.pattern.source, this.pattern.flags];
     }
-    if (this.options.minCodepoints !== undefined) {
-      jsonType.minCodepoints = this.options.minCodepoints;
+    if (this.minCodepoints !== undefined) {
+      jsonType.minCodepoints = this.minCodepoints;
     }
     return jsonType;
   }
@@ -145,7 +150,7 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
       return WrongTypeError.create("string", val);
     }
 
-    switch (this.options.normalization) {
+    switch (this.normalization) {
       case Normalization.Nfc:
         if (val !== unormNfc(val)) {
           return Incident("UnicodeNormalization", "Not NFC-Normalized");
@@ -155,11 +160,11 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
         break;
     }
 
-    if (this.options.lowerCase && val !== val.toLowerCase()) {
+    if (this.lowerCase && val !== val.toLowerCase()) {
       return LowerCaseError.create(val);
     }
 
-    if (this.options.trimmed && val !== val.trim()) {
+    if (this.trimmed && val !== val.trim()) {
       return NotTrimmedError.create(val);
     }
 
@@ -170,25 +175,25 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
       return err;
     }
 
-    const minCodepoints: number | undefined = this.options.minCodepoints;
+    const minCodepoints: number | undefined = this.minCodepoints;
     if (typeof minCodepoints === "number" && codepointCount < minCodepoints) {
       return MinCodepointsError.create(val, codepointCount, minCodepoints);
     }
 
-    if (codepointCount > this.options.maxCodepoints) {
-      return MaxCodepointsError.create(val, codepointCount, this.options.maxCodepoints);
+    if (codepointCount > this.maxCodepoints) {
+      return MaxCodepointsError.create(val, codepointCount, this.maxCodepoints);
     }
 
-    if (this.options.pattern instanceof RegExp) {
-      if (!this.options.pattern.unicode && this.options.enforceUnicodeRegExp) {
+    if (this.pattern instanceof RegExp) {
+      if (!this.pattern.unicode && this.enforceUnicodeRegExp) {
         throw new Incident(
           "NonUnicodeRegExp",
           "Enforced unicode RegExp, use `enforceUnicodeRegExp = false` or `Ucs2StringType`"
         );
       }
 
-      if (!this.options.pattern.test(val)) {
-        return PatternNotMatchedError.create(this.options.pattern, val);
+      if (!this.pattern.test(val)) {
+        return PatternNotMatchedError.create(this.pattern, val);
       }
     }
 

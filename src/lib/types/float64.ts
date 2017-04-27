@@ -17,13 +17,9 @@ export namespace json {
 }
 export type Diff = [number, number];
 export interface Options {
-  notNan: boolean;
-  notInfinity: boolean;
+  notNan?: boolean;
+  notInfinity?: boolean;
 }
-export const defaultOptions: Options = {
-  notNan: true,
-  notInfinity: true
-};
 
 export class Float64Type implements VersionedType<T, json.Input, json.Output, Diff> {
   static fromJSON(options: json.Type): Float64Type {
@@ -31,14 +27,27 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
   }
 
   readonly name: Name = name;
-  options: Options;
+  readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
+  readonly notInfinity: boolean; // TODO(demurgos): rename to allowInfinity
 
-  constructor(options: Options) {
-    this.options = {...defaultOptions, ...options};
+  constructor(options?: Options) {
+    const defaultNotNan: boolean = true;
+    const defaultNotInfinity: boolean = true;
+    if (options === undefined) {
+      this.notNan = defaultNotNan;
+      this.notInfinity = defaultNotInfinity;
+    } else {
+      this.notNan = options.notNan !== undefined ? options.notNan : defaultNotNan;
+      this.notInfinity = options.notInfinity !== undefined ? options.notInfinity : defaultNotInfinity;
+    }
   }
 
   toJSON(): json.Type {
-    return {...this.options, name: name};
+    return {
+      name: name,
+      notNan: this.notNan,
+      notInfinity: this.notInfinity
+    };
   }
 
   readTrusted(format: "json" | "bson", val: json.Output): T {
@@ -61,17 +70,17 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     }
     switch (val) {
       case "NaN":
-        if (this.options.notNan) {
+        if (this.notNan) {
           throw Incident("Nan", "NaN is not allowed");
         }
         return NaN;
       case "+Infinity":
-        if (this.options.notNan) {
+        if (this.notNan) {
           throw Incident("Infinity", "+Infinity is not allowed");
         }
         return Infinity;
       case "-Infinity":
-        if (this.options.notNan) {
+        if (this.notNan) {
           throw Incident("Infinity", "-Infinity is not allowed");
         }
         return -Infinity;
@@ -95,11 +104,11 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     if (typeof val !== "number") {
       return WrongTypeError.create("number", val);
     }
-    if (isNaN(val) && this.options.notNan) {
+    if (isNaN(val) && this.notNan) {
       return Incident("");
-    } else if (val === Infinity && this.options.notInfinity) {
+    } else if (val === Infinity && this.notInfinity) {
       return Incident("Infinity", "+Infinity is not allowed");
-    } else if (val === -Infinity && this.options.notInfinity) {
+    } else if (val === -Infinity && this.notInfinity) {
       return Incident("Infinity", "-Infinity is not allowed");
     }
     return undefined;

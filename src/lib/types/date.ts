@@ -10,7 +10,9 @@ export type T = Date;
 export namespace json {
   export type Input = string | number;
   export type Output = string;
-  export type Type = undefined;
+  export interface Type {
+    name: Name;
+  }
 }
 /* tslint:disable-next-line:no-namespace */
 export namespace bson {
@@ -22,8 +24,8 @@ export type Diff = number;
 export class DateType implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
-  toJSON(): undefined {
-    return undefined;
+  toJSON(): json.Type {
+    return {name: name};
   }
 
   readTrusted(format: "json", val: json.Output): T;

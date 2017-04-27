@@ -13,7 +13,7 @@ describe("DocumentType", function () {
       },
       optIntProp: {
         optional: true,
-        type: new Int32Type({})
+        type: new Int32Type()
       },
       nestedDoc: {
         optional: true,
@@ -22,7 +22,7 @@ describe("DocumentType", function () {
           properties: {
             id: {
               optional: true,
-              type: new Int32Type({})
+              type: new Int32Type()
             }
           }
         })

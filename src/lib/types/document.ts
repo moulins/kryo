@@ -33,7 +33,7 @@ export interface Options<TypeKind extends KryoType<any>> {
   /**
    * Do not throw error when the object contains extraneous keys.
    */
-  ignoreExtraKeys: boolean;
+  ignoreExtraKeys?: boolean;
 
   /**
    * A dictionary between a property name and its description.
@@ -41,16 +41,11 @@ export interface Options<TypeKind extends KryoType<any>> {
   properties: {[key: string]: PropertyDescriptor<TypeKind>};
 }
 
-export const defaultOptions: Options<VersionedType<any, any, any, any>> = {
-  ignoreExtraKeys: true,
-  properties: {}
-};
-
 export interface PropertyDescriptor<TypeKind extends KryoType<any>> {
   /**
    * Allows this property to be missing (undefined values throw errors).
    */
-  optional: boolean;
+  optional?: boolean;
 
   /**
    * The type of this property.
@@ -81,10 +76,14 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
   }
 
   readonly name: Name = name;
-  options: Options<VersionedType<any, any, any, any>>;
+  readonly ignoreExtraKeys: boolean;
+  readonly properties: {
+    [key: string]: PropertyDescriptor<VersionedType<any, any, any, any>>;
+  };
 
   constructor(options: Options<VersionedType<any, any, any, any>>) {
-    this.options = {...defaultOptions, ...options};
+    this.ignoreExtraKeys = options.ignoreExtraKeys || false;
+    this.properties = options.properties;
   }
 
   toJSON(): json.Type {
@@ -92,37 +91,37 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
   }
 
   readTrusted(format: "json", val: json.Output): T {
-    const keysDiff: DiffKeysResult = diffKeys(this.options.properties, val);
+    const keysDiff: DiffKeysResult = diffKeys(this.properties, val);
     const result: Partial<T> = {};
     for (const key of keysDiff.commonKeys) {
-      result[key] = this.options.properties[key].type.read(format, val[key]);
+      result[key] = this.properties[key].type.read(format, val[key]);
     }
     return result as T;
   }
 
   read(format: "json", val: any): T {
-    const keysDiff: DiffKeysResult = diffKeys(this.options.properties, val);
+    const keysDiff: DiffKeysResult = diffKeys(this.properties, val);
     const missingRequiredKeys: string[] = keysDiff.missingKeys.filter((key: string): boolean => {
-      return !this.options.properties[key].optional;
+      return !this.properties[key].optional;
     });
     if (missingRequiredKeys.length > 0) {
       throw MissingKeysError.create(missingRequiredKeys);
-    } else if (keysDiff.extraKeys.length > 0 && !this.options.ignoreExtraKeys) {
+    } else if (keysDiff.extraKeys.length > 0 && !this.ignoreExtraKeys) {
       throw ExtraKeysError.create(keysDiff.extraKeys);
     }
 
     const result: Partial<T> = {};
     for (const key of keysDiff.commonKeys) {
-      result[key] = this.options.properties[key].type.read(format, val[key]);
+      result[key] = this.properties[key].type.read(format, val[key]);
     }
     return result as T;
   }
 
   write(format: "json", val: T): json.Output {
-    const keysDiff: DiffKeysResult = diffKeys(this.options.properties, val);
+    const keysDiff: DiffKeysResult = diffKeys(this.properties, val);
     const result: {[key: string]: any} = {};
     for (const key of keysDiff.commonKeys) {
-      result[key] = this.options.properties[key].type.write(format, (<any> val)[key]);
+      result[key] = this.properties[key].type.write(format, (<any> val)[key]);
     }
     return result;
   }
@@ -134,19 +133,19 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
     if (val === null) {
       return WrongTypeError.create("!null", val);
     }
-    const keysDiff: DiffKeysResult = diffKeys(this.options.properties, val);
+    const keysDiff: DiffKeysResult = diffKeys(this.properties, val);
     const missingRequiredKeys: string[] = keysDiff.missingKeys.filter((key: string): boolean => {
-      return !this.options.properties[key].optional;
+      return !this.properties[key].optional;
     });
     if (missingRequiredKeys.length > 0) {
       return MissingKeysError.create(missingRequiredKeys);
-    } else if (keysDiff.extraKeys.length > 0 && !this.options.ignoreExtraKeys) {
+    } else if (keysDiff.extraKeys.length > 0 && !this.ignoreExtraKeys) {
       return ExtraKeysError.create(keysDiff.extraKeys);
     }
 
     for (const key of keysDiff.commonKeys) {
       const member: any = (<any> val)[key];
-      const descriptor: PropertyDescriptor<KryoType<any>> = this.options.properties[key];
+      const descriptor: PropertyDescriptor<KryoType<any>> = this.properties[key];
       if (member === undefined && !descriptor.optional) {
         return NullPropertyError.create(key);
       }
@@ -163,8 +162,8 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
   }
 
   equals(val1: T, val2: T): boolean {
-    for (const key in this.options.properties) {
-      const descriptor: PropertyDescriptor<KryoType<any>> = this.options.properties[key];
+    for (const key in this.properties) {
+      const descriptor: PropertyDescriptor<KryoType<any>> = this.properties[key];
       const member1: any = (<any> val1)[key];
       const member2: any = (<any> val2)[key];
       if (!descriptor.optional) {
@@ -184,10 +183,10 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
 
   clone(val: T): T {
     const result: Partial<T> = {};
-    for (const key in this.options.properties) {
+    for (const key in this.properties) {
       const member: any = (<any> val)[key];
       if (member !== undefined) {
-        result[key] = this.options.properties[key].type.clone(member);
+        result[key] = this.properties[key].type.clone(member);
       }
     }
     return result as T;
@@ -196,8 +195,8 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
   diff(oldVal: T, newVal: T): Diff | undefined {
     let equal: boolean = true;
     const result: Diff = {set: {}, unset: {}, update: {}};
-    for (const key in this.options.properties) {
-      const descriptor: PropertyDescriptor<VersionedType<any, any, any, any>> = this.options.properties[key];
+    for (const key in this.properties) {
+      const descriptor: PropertyDescriptor<VersionedType<any, any, any, any>> = this.properties[key];
       const oldMember: any = (<any> oldVal)[key];
       const newMember: any = (<any> newVal)[key];
       if (oldMember !== undefined) {
@@ -227,13 +226,13 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
       return result;
     }
     for (const key in diff.set) {
-      (<any> result)[key] = this.options.properties[key].type.clone(diff.set[key]);
+      (<any> result)[key] = this.properties[key].type.clone(diff.set[key]);
     }
     for (const key in diff.unset) {
       delete (<any> result)[key];
     }
     for (const key in diff.update) {
-      (<any> result)[key] = this.options.properties[key].type.patch((<any> result)[key][key], diff.update[key]);
+      (<any> result)[key] = this.properties[key].type.patch((<any> result)[key][key], diff.update[key]);
     }
     return result;
   }
@@ -248,13 +247,13 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
       update: {}
     };
     for (const key in diff.unset) {
-      result.set[key] = this.options.properties[key].type.clone(diff.unset[key]);
+      result.set[key] = this.properties[key].type.clone(diff.unset[key]);
     }
     for (const key in diff.set) {
-      result.unset[key] = this.options.properties[key].type.clone(diff.set[key]);
+      result.unset[key] = this.properties[key].type.clone(diff.set[key]);
     }
     for (const key in diff.update) {
-      result.update[key] = this.options.properties[key].type.reverseDiff(diff.update[key]);
+      result.update[key] = this.properties[key].type.reverseDiff(diff.update[key]);
     }
     return result;
   }
