@@ -80,11 +80,11 @@ export function testSerializableSync<T, S>(type: SerializableType<T, "json", S, 
   });
 
   // Checked serialization
-  if (typedValue.serialized === undefined || !("json-doc" in typedValue.serialized)) {
+  if (typedValue.serialized === undefined || !("json" in typedValue.serialized)) {
     return;
   }
 
-  const jsonSerialization: SerializationValues = typedValue.serialized["json-doc"];
+  const jsonSerialization: SerializationValues = typedValue.serialized["json"];
 
   if ("canonical" in jsonSerialization) {
     const canonical: S = jsonSerialization.canonical;
@@ -103,7 +103,7 @@ export function testSerializableSync<T, S>(type: SerializableType<T, "json", S, 
 
   for (const item of jsonSerialization.values) {
     if (item.valid) {
-      it(`.read (format: "json-doc") should accept: ${getName(item)}`, function () {
+      it(`.read (format: "json") should accept: ${getName(item)}`, function () {
         const imported: T = type.read("json", item.value);
         assert.isTrue(type.test(imported));
       });

@@ -1,6 +1,6 @@
-import {ArrayType} from "../lib/types/array";
-import {Int32Type} from "../lib/types/int32";
-import {runTests, TypedValue} from "./helpers/test";
+import {ArrayType} from "../../lib/types/array";
+import {Int32Type} from "../../lib/types/int32";
+import {runTests, TypedValue} from "../helpers/test";
 
 describe("ArrayType", function () {
   const integersArray: ArrayType<number, number, number, number> = new ArrayType(new Int32Type({}), {maxLength: 2});

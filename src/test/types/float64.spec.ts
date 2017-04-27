@@ -1,5 +1,5 @@
-import {defaultOptions, Float64Type} from "../lib/types/float64";
-import {runTests, TypedValue} from "./helpers/test";
+import {defaultOptions, Float64Type} from "../../lib/types/float64";
+import {runTests, TypedValue} from "../helpers/test";
 
 describe("NumberType", function () {
   const type: Float64Type = new Float64Type(defaultOptions);

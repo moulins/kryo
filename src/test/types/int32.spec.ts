@@ -1,5 +1,5 @@
-import {Int32Type} from "../lib/types/int32";
-import {runTests, TypedValue} from "./helpers/test";
+import {Int32Type} from "../../lib/types/int32";
+import {runTests, TypedValue} from "../helpers/test";
 
 describe("IntegerType", function () {
   const type: Int32Type = new Int32Type({});

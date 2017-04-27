@@ -8,7 +8,7 @@ export const name: Name = "date";
 export type T = Date;
 /* tslint:disable-next-line:no-namespace */
 export namespace json {
-  export type Input = string;
+  export type Input = string | number;
   export type Output = string;
   export type Type = undefined;
 }
@@ -41,10 +41,13 @@ export class DateType implements VersionedType<T, json.Input, json.Output, Diff>
     let result: Date;
     switch (format) {
       case "json":
-        if (typeof val !== "string") {
-          throw WrongTypeError.create("Date", val);
+        if (typeof val === "string") {
+          result = new Date(val);
+        } else if (typeof val === "number") {
+          result = new Date(val);
+        } else {
+          throw WrongTypeError.create("string | number", val);
         }
-        result = new Date(val);
         break;
       case "bson":
         if (!(val instanceof Date)) {

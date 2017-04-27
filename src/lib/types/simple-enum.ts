@@ -79,8 +79,11 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
     if (typeof val !== "number") {
       return WrongTypeError.create("number", val);
     }
-    if (this.enum.hasOwnProperty(val)) {
-      throw Incident("Unknown enum variant value", val);
+    if (isNaN(val) || val === Infinity || val === -Infinity || (val | 0) !== val) {
+      return WrongTypeError.create("int32", val);
+    }
+    if (!this.enum.hasOwnProperty(val)) {
+      return Incident("Unknown enum variant value", val);
     }
     return undefined;
   }

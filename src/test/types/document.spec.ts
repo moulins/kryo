@@ -1,7 +1,7 @@
-import {DateType} from "../lib/types/date";
-import {DocumentType} from "../lib/types/document";
-import {Int32Type} from "../lib/types/int32";
-import {runTests, TypedValue} from "./helpers/test";
+import {DateType} from "../../lib/types/date";
+import {DocumentType} from "../../lib/types/document";
+import {Int32Type} from "../../lib/types/int32";
+import {runTests, TypedValue} from "../helpers/test";
 
 describe("DocumentType", function () {
   const documentType: DocumentType<any> = new DocumentType({
