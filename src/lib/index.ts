@@ -39,3 +39,5 @@ export {
 
 import * as errors from "./errors/index";
 export {errors};
+
+export {CaseStyle} from "./helpers/rename";
