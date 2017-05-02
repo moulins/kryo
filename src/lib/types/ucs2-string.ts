@@ -4,12 +4,17 @@ import {MaxUcs2StringLengthError} from "../errors/max-ucs2-string-length";
 import {MinUcs2StringLengthError} from "../errors/min-ucs2-string-length";
 import {NotTrimmedError} from "../errors/not-trimmed";
 import {PatternNotMatchedError} from "../errors/pattern-not-matched";
+import {UnknownFormatError} from "../errors/unknown-format";
 import {WrongTypeError} from "../errors/wrong-type";
-import {VersionedType} from "../interfaces";
+import {SerializableType, VersionedType} from "../interfaces";
 
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";
 export type T = string;
+export namespace bson {
+  export type Input = string;
+  export type Output = string;
+}
 export namespace json {
   export type Input = string;
   export type Output = string;
@@ -25,6 +30,10 @@ export namespace json {
     minLength?: number;
     maxLength: number;
   }
+}
+export namespace qs {
+  export type Input = string;
+  export type Output = string;
 }
 export type Diff = [string, string];
 export interface Options {
@@ -103,7 +112,10 @@ export interface Options {
  * PS: This type does not deal with Unicdoe normalization either. Use CodepointString and CodepointArray if you need
  * it.
  */
-export class Ucs2StringType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class Ucs2StringType
+  implements VersionedType<T, json.Input, json.Output, Diff>,
+    SerializableType<T, "bson", bson.Output, bson.Input>,
+    SerializableType<T, "qs", qs.Output, qs.Input> {
   static fromJSON(options: json.Type): Ucs2StringType {
     const resolvedOptions: Options = {
       allowUnicodeRegExp: options.allowUnicodeRegExp,
@@ -154,19 +166,32 @@ export class Ucs2StringType implements VersionedType<T, json.Input, json.Output,
     return jsonType;
   }
 
-  readTrusted(format: "json" | "bson", val: json.Output): T {
-    return val;
+  readTrusted(format: "bson", val: bson.Output): T;
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+    return input;
   }
 
-  read(format: "json" | "bson", val: any): T {
-    const error: Error | undefined = this.testError(val);
-    if (error !== undefined) {
-      throw error;
+  read(format: "bson" | "json" | "qs", input: any): T {
+    switch (format) {
+      case "bson":
+      case "json":
+      case "qs":
+        const error: Error | undefined = this.testError(input);
+        if (error !== undefined) {
+          throw error;
+        }
+        return input;
+      default:
+        throw UnknownFormatError.create(format);
     }
-    return val;
   }
 
-  write(format: "json" | "bson", val: T): json.Output {
+  write(format: "bson", val: T): bson.Output;
+  write(format: "json", val: T): json.Output;
+  write(format: "qs", val: T): qs.Output;
+  write(format: "bson" | "json" | "qs", val: T): any {
     return val;
   }
 

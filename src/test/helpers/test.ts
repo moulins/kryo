@@ -1,4 +1,6 @@
+import {BSON} from "bson";
 import {assert} from "chai";
+import * as qs from "qs";
 import {SerializableType, Type} from "../../lib/interfaces";
 
 export interface NamedValue {
@@ -58,8 +60,12 @@ export function testValidValueSync(type: Type<any>, item: ValidTypedValue) {
   });
 }
 
-export function testSerializableSync<T, S>(type: SerializableType<T, "json", S, any>,
-                                           typedValue: ValidTypedValue): void {
+export function testSerializableSync<T, S>(
+  type: SerializableType<T, "bson", S, any>
+    & SerializableType<T, "json", S, any>
+    & SerializableType<T, "qs", S, any>,
+  typedValue: ValidTypedValue
+): void {
   // Simple serialization/deserialization
   it(`Should return the same content after a synchronous write/readTrusted to JSON`, function () {
     const exported: S = type.write("json", typedValue.value);
@@ -75,6 +81,42 @@ export function testSerializableSync<T, S>(type: SerializableType<T, "json", S, 
     const serialized: string = JSON.stringify(exported);
     const deserialized: S = JSON.parse(serialized);
     const imported: T = type.read("json", deserialized);
+    assert.isTrue(type.test(imported));
+    assert.isTrue(type.equals(imported, typedValue.value));
+  });
+
+  it(`Should return the same content after a synchronous write/readTrusted to BSON`, function () {
+    const exported: S = type.write("bson", typedValue.value);
+    const serialized: Buffer = new BSON().serialize({wrapper: exported});
+    const deserialized: S = new BSON().deserialize(serialized).wrapper;
+    const imported: T = type.readTrusted("bson", deserialized);
+    assert.isTrue(type.test(imported));
+    assert.isTrue(type.equals(imported, typedValue.value));
+  });
+
+  it(`Should return the same content after a synchronous write/read to BSON`, function () {
+    const exported: S = type.write("bson", typedValue.value);
+    const serialized: Buffer = new BSON().serialize({wrapper: exported});
+    const deserialized: S = new BSON().deserialize(serialized).wrapper;
+    const imported: T = type.read("bson", deserialized);
+    assert.isTrue(type.test(imported));
+    assert.isTrue(type.equals(imported, typedValue.value));
+  });
+
+  it(`Should return the same content after a synchronous write/readTrusted to the format used by qs`, function () {
+    const exported: S = type.write("qs", typedValue.value);
+    const serialized: string = qs.stringify({wrapper: exported});
+    const deserialized: S = qs.parse(serialized).wrapper;
+    const imported: T = type.readTrusted("qs", deserialized);
+    assert.isTrue(type.test(imported));
+    assert.isTrue(type.equals(imported, typedValue.value));
+  });
+
+  it(`Should return the same content after a synchronous write/read to the format used by qs`, function () {
+    const exported: S = type.write("qs", typedValue.value);
+    const serialized: string = qs.stringify({wrapper: exported});
+    const deserialized: S = qs.parse(serialized).wrapper;
+    const imported: T = type.read("qs", deserialized);
     assert.isTrue(type.test(imported));
     assert.isTrue(type.equals(imported, typedValue.value));
   });

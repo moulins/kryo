@@ -1,13 +1,8 @@
 {
-
   "dependencies": {
     "lodash": "registry:npm/lodash#4.0.0+20161015015725",
     "punycode": "github:types/npm-punycode#b5b92d000213704b49f30b75cbeaa14ab4d3d7b3"
   },
-  "devDependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160723033700"
-  },
-  "globalDevDependencies": {
-    "mocha": "registry:env/mocha#2.2.5+20160926180742"
-  }
+  "devDependencies": {},
+  "globalDevDependencies": {}
 }

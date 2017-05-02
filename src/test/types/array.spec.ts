@@ -3,7 +3,7 @@ import {Int32Type} from "../../lib/types/int32";
 import {runTests, TypedValue} from "../helpers/test";
 
 describe("ArrayType", function () {
-  const integersArray: ArrayType<number, number, number, number> = new ArrayType({
+  const integersArray: ArrayType<number> = new ArrayType({
     itemType: new Int32Type(),
     maxLength: 2
   });

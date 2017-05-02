@@ -1,10 +1,15 @@
-import {Incident} from "incident";
+import {InvalidInt32Error} from "../errors/invalid-int32";
+import {UnknownFormatError} from "../errors/unknown-format";
 import {WrongTypeError} from "../errors/wrong-type";
-import {VersionedType} from "../interfaces";
+import {SerializableType, VersionedType} from "../interfaces";
 
 export type Name = "int32";
 export const name: Name = "int32";
 export type T = number;
+export namespace bson {
+  export type Input = number;
+  export type Output = number;
+}
 export namespace json {
   export type Input = number;
   export type Output = number;
@@ -12,37 +17,85 @@ export namespace json {
     name: Name;
   }
 }
+export namespace qs {
+  export type Input = string;
+  export type Output = string;
+}
 export type Diff = number;
 
-export class Int32Type implements VersionedType<T, json.Input, json.Output, Diff> {
+export class Int32Type
+  implements VersionedType<T, json.Input, json.Output, Diff>,
+    SerializableType<T, "bson", bson.Output, bson.Input>,
+    SerializableType<T, "qs", qs.Output, qs.Input> {
   static fromJSON(options: json.Type): Int32Type {
     return new Int32Type();
   }
 
   readonly name: Name = name;
 
-  constructor() {}
+  constructor() {
+  }
 
   toJSON(): json.Type {
     return {name: name};
   }
 
-  readTrusted(format: "json" | "bson", val: json.Output): T {
-    return val;
+  readTrusted(format: "bson", val: bson.Output): T;
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+    switch (format) {
+      case "bson":
+        return input;
+      case "json":
+        return input;
+      case "qs":
+        return parseInt(input, 10);
+      default:
+        return undefined as never;
+    }
   }
 
-  read(format: "json" | "bson", val: any): T {
-    if (typeof val !== "number") {
-      throw WrongTypeError.create("number", val);
+  read(format: "bson" | "json" | "qs", input: any): T {
+    let val: number;
+    switch (format) {
+      case "bson":
+      case "json":
+        if (typeof input !== "number") {
+          throw WrongTypeError.create("number", input);
+        }
+        val = input;
+        break;
+      case "qs":
+        if (typeof input !== "string") {
+          throw WrongTypeError.create("string", input);
+        }
+        val = parseInt(input, 10);
+        break;
+      default:
+        throw UnknownFormatError.create(format);
     }
+
     if ((val | 0) !== val) {
-      throw Incident("NotInt32", val);
+      throw InvalidInt32Error.create(val, input);
     }
     return val;
   }
 
-  write(format: "json" | "bson", val: T): json.Output {
-    return val;
+  write(format: "bson", val: T): bson.Output;
+  write(format: "json", val: T): json.Output;
+  write(format: "qs", val: T): qs.Output;
+  write(format: "bson" | "json" | "qs", val: T): any {
+    switch (format) {
+      case "bson":
+        return val;
+      case "json":
+        return val;
+      case "qs":
+        return val.toString(10);
+      default:
+        return undefined as never;
+    }
   }
 
   testError(val: T): Error | undefined {
@@ -50,7 +103,7 @@ export class Int32Type implements VersionedType<T, json.Input, json.Output, Diff
       return WrongTypeError.create("number", val);
     }
     if ((val | 0) !== val) {
-      return Incident("NotInt32", val);
+      return InvalidInt32Error.create(val);
     }
     return undefined;
   }

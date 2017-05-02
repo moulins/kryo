@@ -1,35 +1,80 @@
+import {UnknownFormatError} from "../errors/unknown-format";
 import {WrongTypeError} from "../errors/wrong-type";
-import {VersionedType} from "../interfaces";
+import {SerializableType, VersionedType} from "../interfaces";
 
 export type Name = "boolean";
 export const name: Name = "boolean";
 export type T = boolean;
+export namespace bson {
+  export type Input = boolean;
+  export type Output = boolean;
+}
 export namespace json {
   export type Input = boolean;
   export type Output = boolean;
 }
+export namespace qs {
+  export type Input = "true" | "false";
+  export type Output = "true" | "false";
+}
 export type Diff = boolean;
 
-export class BooleanType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class BooleanType
+  implements VersionedType<T, json.Input, json.Output, Diff>,
+    SerializableType<T, "bson", bson.Output, bson.Input>,
+    SerializableType<T, "qs", qs.Output, qs.Input> {
   readonly name: Name = name;
 
   toJSON(): undefined {
     return undefined;
   }
 
-  readTrusted(format: "json" | "bson", val: json.Output): T {
-    return val;
-  }
-
-  read(format: "json" | "bson", val: any): T {
-    if (typeof val !== "boolean") {
-      throw WrongTypeError.create("boolean", val);
+  readTrusted(format: "bson", val: bson.Output): T;
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+    switch (format) {
+      case "bson":
+      case "json":
+        return input;
+      case "qs":
+        return input === "true";
+      default:
+        return undefined as never;
     }
-    return val;
   }
 
-  write(format: "json" | "bson", val: T): json.Output {
-    return val;
+  read(format: "bson" | "json" | "qs", input: any): T {
+    switch (format) {
+      case "bson":
+      case "json":
+        if (typeof input !== "boolean") {
+          throw WrongTypeError.create("boolean", input);
+        }
+        return input;
+      case "qs":
+        if (!(input === "true" || input === "false")) {
+          throw WrongTypeError.create("\"true\" | \"false\"", input);
+        }
+        return input === "true";
+      default:
+        throw UnknownFormatError.create(format);
+    }
+  }
+
+  write(format: "bson", val: T): bson.Output;
+  write(format: "json", val: T): json.Output;
+  write(format: "qs", val: T): qs.Output;
+  write(format: "bson" | "json" | "qs", val: T): any {
+    switch (format) {
+      case "bson":
+      case "json":
+        return val;
+      case "qs":
+        return val ? "true" : "false";
+      default:
+        return undefined as never;
+    }
   }
 
   testError(val: T): Error | undefined {

@@ -1,9 +1,14 @@
+import {UnknownFormatError} from "../errors/unknown-format";
 import {WrongTypeError} from "../errors/wrong-type";
-import {VersionedType} from "../interfaces";
+import {SerializableType, VersionedType} from "../interfaces";
 
 export type Name = "null";
 export const name: Name = "null";
 export type T = null;
+export namespace bson {
+  export type Input = null;
+  export type Output = null;
+}
 export namespace json {
   export type Input = null;
   export type Output = null;
@@ -11,28 +16,60 @@ export namespace json {
     name: Name;
   }
 }
+export namespace qs {
+  export type Input = "";
+  export type Output = "";
+}
 export type Diff = undefined;
 
-export class NullType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class NullType
+  implements VersionedType<T, json.Input, json.Output, Diff>,
+    SerializableType<T, "bson", bson.Output, bson.Input>,
+    SerializableType<T, "qs", qs.Output, qs.Input> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name: name};
   }
 
-  readTrusted(format: "json" | "bson", val: json.Output): T {
+  readTrusted(format: "bson", val: bson.Output): T;
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
     return null;
   }
 
-  read(format: "json" | "bson", val: any): T {
-    if (val !== null && val !== undefined) {
-      throw WrongTypeError.create("null | undefined", val);
+  read(format: "bson" | "json" | "qs", input: any): T {
+    switch (format) {
+      case "bson":
+      case "json":
+        if (input !== null) {
+          throw WrongTypeError.create("null", input);
+        }
+        return null;
+      case "qs":
+        if (input !== "") {
+          throw WrongTypeError.create("\"\"", input);
+        }
+        return null;
+      default:
+        throw UnknownFormatError.create(format);
     }
-    return null;
   }
 
-  write(format: "json" | "bson", val: T): json.Output {
-    return null;
+  write(format: "bson", val: T): bson.Output;
+  write(format: "json", val: T): json.Output;
+  write(format: "qs", val: T): qs.Output;
+  write(format: "bson" | "json" | "qs", val: T): any {
+    switch (format) {
+      case "bson":
+      case "json":
+        return null;
+      case "qs":
+        return "";
+      default:
+        return undefined as never;
+    }
   }
 
   testError(val: T): Error | undefined {

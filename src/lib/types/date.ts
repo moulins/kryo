@@ -1,11 +1,15 @@
 import {InvalidTimestampError} from "../errors/invalid-timestamp";
 import {UnknownFormatError} from "../errors/unknown-format";
 import {WrongTypeError} from "../errors/wrong-type";
-import {VersionedType} from "../interfaces";
+import {SerializableType, VersionedType} from "../interfaces";
 
 export type Name = "date";
 export const name: Name = "date";
 export type T = Date;
+export namespace bson {
+  export type Input = Date;
+  export type Output = Date;
+}
 export namespace json {
   export type Input = string | number;
   export type Output = string;
@@ -13,47 +17,60 @@ export namespace json {
     name: Name;
   }
 }
-export namespace bson {
-  export type Input = Date;
-  export type Output = Date;
+export namespace qs {
+  export type Input = string;
+  export type Output = string;
 }
 export type Diff = number;
 
-export class DateType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class DateType
+  implements VersionedType<T, json.Input, json.Output, Diff>,
+    SerializableType<T, "bson", bson.Output, bson.Input>,
+    SerializableType<T, "qs", qs.Output, qs.Input> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name: name};
   }
 
-  readTrusted(format: "json", val: json.Output): T;
   readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: any, val: any): any {
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
     switch (format) {
-      case "json":
-        return new Date(val);
       case "bson":
-        return new Date(val.getTime());
+        return new Date(input.getTime());
+      case "json":
+      case "qs":
+        return new Date(input);
+      default:
+        return undefined as never;
     }
   }
 
-  read(format: "json" | "bson", val: any): T {
+  read(format: "bson" | "json" | "qs", input: any): T {
     let result: Date;
     switch (format) {
+      case "bson":
+        if (!(input instanceof Date)) {
+          throw WrongTypeError.create("Date", input);
+        }
+        result = new Date(input.getTime());
+        break;
       case "json":
-        if (typeof val === "string") {
-          result = new Date(val);
-        } else if (typeof val === "number") {
-          result = new Date(val);
+        if (typeof input === "string") {
+          result = new Date(input);
+        } else if (typeof input === "number") {
+          result = new Date(input);
         } else {
-          throw WrongTypeError.create("string | number", val);
+          throw WrongTypeError.create("string | number", input);
         }
         break;
-      case "bson":
-        if (!(val instanceof Date)) {
-          throw WrongTypeError.create("Date", val);
+      case "qs":
+        if (typeof input !== "string") {
+          throw WrongTypeError.create("string", input);
         }
-        result = new Date(val.getTime());
+        result = new Date(input);
         break;
       default:
         throw UnknownFormatError.create(format);
@@ -65,14 +82,18 @@ export class DateType implements VersionedType<T, json.Input, json.Output, Diff>
     return result;
   }
 
-  write(format: "json", val: T): json.Output;
   write(format: "bson", val: T): bson.Output;
-  write(format: any, val: any): any {
+  write(format: "json", val: T): json.Output;
+  write(format: "qs", val: T): qs.Output;
+  write(format: "bson" | "json" | "qs", val: T): any {
     switch (format) {
-      case "json":
-        return val.toISOString();
       case "bson":
         return new Date(val.getTime());
+      case "json":
+      case "qs":
+        return val.toISOString();
+      default:
+        return undefined as never;
     }
   }
 

@@ -5,10 +5,18 @@ import {MissingKeysError} from "../errors/missing-keys";
 import {NotImplementedError} from "../errors/not-implemented";
 import {NullPropertyError} from "../errors/null-property";
 import {WrongTypeError} from "../errors/wrong-type";
-import {Type as KryoType, VersionedType} from "../interfaces";
+import {SerializableType, Type as KryoType, VersionedType} from "../interfaces";
 
 export type Name = "document";
 export const name: Name = "document";
+export namespace bson {
+  export interface Input {
+    [key: string]: any;
+  }
+  export interface Output {
+    [key: string]: any;
+  }
+}
 export namespace json {
   export interface Input {
     [key: string]: any;
@@ -20,6 +28,14 @@ export namespace json {
     name: Name;
     notNan: boolean;
     notInfinity: boolean;
+  }
+}
+export namespace qs {
+  export interface Input {
+    [key: string]: any;
+  }
+  export interface Output {
+    [key: string]: any;
   }
 }
 export interface Diff {
@@ -69,7 +85,10 @@ function diffKeys(source: {[key: string]: any}, target: {[key: string]: any}): D
   };
 }
 
-export class DocumentType<T extends {}> implements VersionedType<T, json.Input, json.Output, Diff> {
+export class DocumentType<T extends {}>
+  implements VersionedType<T, json.Input, json.Output, Diff>,
+    SerializableType<T, "bson", bson.Output, bson.Input>,
+    SerializableType<T, "qs", qs.Output, qs.Input> {
   static fromJSON(options: json.Type): DocumentType<{}> {
     throw NotImplementedError.create("DocumentType.fromJSON");
   }
@@ -89,17 +108,21 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
     throw NotImplementedError.create("DocumentType#toJSON");
   }
 
-  readTrusted(format: "json", val: json.Output): T {
-    const keysDiff: DiffKeysResult = diffKeys(this.properties, val);
+  readTrusted(format: "bson", val: bson.Output): T;
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+    const keysDiff: DiffKeysResult = diffKeys(this.properties, input);
     const result: Partial<T> = {};
     for (const key of keysDiff.commonKeys) {
-      result[key] = this.properties[key].type.read(format, val[key]);
+      // TODO(demurgos): Check if the format is supported instead of casting to `any`
+      result[key] = this.properties[key].type.read(<any> format, input[key]);
     }
     return result as T;
   }
 
-  read(format: "json", val: any): T {
-    const keysDiff: DiffKeysResult = diffKeys(this.properties, val);
+  read(format: "bson" | "json" | "qs", input: any): T {
+    const keysDiff: DiffKeysResult = diffKeys(this.properties, input);
     const missingRequiredKeys: string[] = keysDiff.missingKeys.filter((key: string): boolean => {
       return !this.properties[key].optional;
     });
@@ -111,16 +134,21 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
 
     const result: Partial<T> = {};
     for (const key of keysDiff.commonKeys) {
-      result[key] = this.properties[key].type.read(format, val[key]);
+      // TODO(demurgos): Check if the format is supported instead of casting to `any`
+      result[key] = this.properties[key].type.read(<any> format, input[key]);
     }
     return result as T;
   }
 
-  write(format: "json", val: T): json.Output {
+  write(format: "bson", val: T): bson.Output;
+  write(format: "json", val: T): json.Output;
+  write(format: "qs", val: T): qs.Output;
+  write(format: "bson" | "json" | "qs", val: T): any {
     const keysDiff: DiffKeysResult = diffKeys(this.properties, val);
     const result: {[key: string]: any} = {};
     for (const key of keysDiff.commonKeys) {
-      result[key] = this.properties[key].type.write(format, (<any> val)[key]);
+      // TODO(demurgos): Check if the format is supported instead of casting to `any`
+      result[key] = this.properties[key].type.write(<any> format, (<any> val)[key]);
     }
     return result;
   }

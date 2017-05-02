@@ -2,7 +2,7 @@ import {Incident} from "incident";
 import {NotImplementedError} from "../errors/not-implemented";
 import {WrongTypeError} from "../errors/wrong-type";
 import {CaseStyle, rename} from "../helpers/rename";
-import {VersionedType} from "../interfaces";
+import {SerializableType, VersionedType} from "../interfaces";
 
 export type SimpleEnum<EnumConstructor> = {
   [K in keyof EnumConstructor]: EnumConstructor[K];
@@ -32,6 +32,10 @@ export interface EnumConstructor<EnumValue extends number> {
 
 export type Name = "simple-enum";
 export const name: Name = "simple-enum";
+export namespace bson {
+  export type Input = string;
+  export type Output = string;
+}
 export namespace json {
   export type Input = string;
   export type Output = string;
@@ -39,6 +43,10 @@ export namespace json {
     name: Name;
     enum: EnumConstructor<number>;
   }
+}
+export namespace qs {
+  export type Input = string;
+  export type Output = string;
 }
 export type Diff = number;
 
@@ -50,7 +58,10 @@ export interface Options<E extends number> {
 /**
  * Supports enums from keys that are valid Javascript identifiers to unique integer values
  */
-export class SimpleEnumType<E extends number> implements VersionedType<E, json.Input, json.Output, Diff> {
+export class SimpleEnumType<E extends number>
+  implements VersionedType<E, json.Input, json.Output, Diff>,
+    SerializableType<E, "bson", bson.Output, bson.Input>,
+    SerializableType<E, "qs", qs.Output, qs.Input> {
   static fromJSON(): SimpleEnumType<any> {
     throw NotImplementedError.create("SimpleEnumType.fromJSON");
   }
@@ -96,21 +107,27 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
     throw NotImplementedError.create("SimpleEnumType#toJSON");
   }
 
-  readTrusted(format: "json" | "bson", val: json.Output): E {
-    return this.outputNameToValue[val] as E;
+  readTrusted(format: "bson", val: bson.Output): E;
+  readTrusted(format: "json", val: json.Output): E;
+  readTrusted(format: "qs", val: qs.Output): E;
+  readTrusted(format: "bson" | "json" | "qs", input: any): E {
+    return this.outputNameToValue[input] as E;
   }
 
-  read(format: "json" | "bson", val: any): E {
-    if (typeof val !== "string") {
-      throw WrongTypeError.create("string", val);
+  read(format: "bson" | "json" | "qs", input: any): E {
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
     }
-    if (!this.outputNameToValue.hasOwnProperty(val)) {
-      throw Incident("Unknown enum variant name", val);
+    if (!this.outputNameToValue.hasOwnProperty(input)) {
+      throw Incident("Unknown enum variant name", input);
     }
-    return this.outputNameToValue[val] as E;
+    return this.outputNameToValue[input] as E;
   }
 
-  write(format: "json" | "bson", val: E): json.Output {
+  write(format: "bson", val: E): bson.Output;
+  write(format: "json", val: E): json.Output;
+  write(format: "qs", val: E): qs.Output;
+  write(format: "bson" | "json" | "qs", val: E): any {
     return this.valueToOutputName[val as number];
   }
 

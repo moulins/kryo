@@ -12,7 +12,7 @@ export namespace UnknownFormatError {
   export type Cause = undefined;
   export type Type = Incident<Name, Data, Cause>;
   export function format({format}: Data): string {
-    return `Unknown format ${JSON.stringify(format)}, supported formats: bson-doc, json-doc`;
+    return `Unknown format ${JSON.stringify(format)}, supported formats: bson, json or qs`;
   }
   export function create(unknownFormat: string): Type {
     return new Incident(name, {format: unknownFormat}, format);

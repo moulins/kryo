@@ -5,9 +5,10 @@ import {MaxCodepointsError} from "../errors/max-codepoints";
 import {MinCodepointsError} from "../errors/min-codepoints";
 import {NotTrimmedError} from "../errors/not-trimmed";
 import {PatternNotMatchedError} from "../errors/pattern-not-matched";
+import {UnknownFormatError} from "../errors/unknown-format";
 import {WrongTypeError} from "../errors/wrong-type";
 import {checkedUcs2Decode} from "../helpers/checked-ucs2-decode";
-import {VersionedType} from "../interfaces";
+import {SerializableType, VersionedType} from "../interfaces";
 
 export enum Normalization {
   None,
@@ -17,6 +18,10 @@ export enum Normalization {
 export type Name = "codepoint-string";
 export const name: Name = "codepoint-string";
 export type T = string;
+export namespace bson {
+  export type Input = string;
+  export type Output = string;
+}
 export namespace json {
   export type Input = string;
   export type Output = string;
@@ -33,6 +38,10 @@ export namespace json {
     minCodepoints?: number;
     maxCodepoints: number;
   }
+}
+export namespace qs {
+  export type Input = string;
+  export type Output = string;
 }
 export type Diff = [string, string];
 export interface Options {
@@ -73,7 +82,10 @@ export interface Options {
   maxCodepoints: number;
 }
 
-export class CodepointStringType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class CodepointStringType
+  implements VersionedType<T, json.Input, json.Output, Diff>,
+    SerializableType<T, "bson", bson.Output, bson.Input>,
+    SerializableType<T, "qs", qs.Output, qs.Input> {
   static fromJSON(options: json.Type): CodepointStringType {
     const resolvedOptions: Options = {
       normalization: options.normalization === "none" ? Normalization.None : Normalization.Nfc,
@@ -128,19 +140,32 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
     return jsonType;
   }
 
-  readTrusted(format: "json" | "bson", val: json.Output): T {
-    return val;
+  readTrusted(format: "bson", val: bson.Output): T;
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+    return input;
   }
 
-  read(format: "json" | "bson", val: any): T {
-    const error: Error | undefined = this.testError(val);
-    if (error !== undefined) {
-      throw error;
+  read(format: "bson" | "json" | "qs", input: any): T {
+    switch (format) {
+      case "bson":
+      case "json":
+      case "qs":
+        const error: Error | undefined = this.testError(input);
+        if (error !== undefined) {
+          throw error;
+        }
+        return input;
+      default:
+        throw UnknownFormatError.create(format);
     }
-    return val;
   }
 
-  write(format: "json" | "bson", val: T): json.Output {
+  write(format: "bson", val: T): bson.Output;
+  write(format: "json", val: T): json.Output;
+  write(format: "qs", val: T): qs.Output;
+  write(format: "bson" | "json" | "qs", val: T): any {
     return val;
   }
 

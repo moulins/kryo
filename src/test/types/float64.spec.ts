@@ -1,7 +1,7 @@
 import {Float64Type} from "../../lib/types/float64";
 import {runTests, TypedValue} from "../helpers/test";
 
-describe("NumberType", function () {
+describe("Float64Type", function () {
   const type: Float64Type = new Float64Type();
 
   const items: TypedValue[] = [
