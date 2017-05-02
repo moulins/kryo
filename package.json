@@ -1,6 +1,6 @@
 {
   "name": "kryo",
-  "version": "0.5.0-alpha.2",
+  "version": "0.5.0-alpha.3",
   "description": "Serialization for documents.",
   "main": "dist/lib-es2015/lib/index.js",
   "types": "dist/lib-es2015/lib/index.d.ts",
