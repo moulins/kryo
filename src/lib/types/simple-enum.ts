@@ -135,7 +135,8 @@ export class SimpleEnumType<E extends number>
     if (typeof val !== "number") {
       return WrongTypeError.create("number", val);
     }
-    if (isNaN(val) || val === Infinity || val === -Infinity || (val | 0) !== val) {
+    // TODO(demurgos): Remove <number> once typedoc supports it
+    if (isNaN(val) || val === Infinity || val === -Infinity || (<number> val | 0) !== val) {
       return WrongTypeError.create("int32", val);
     }
     if (!this.enum.hasOwnProperty(val)) {

@@ -113,7 +113,8 @@ export class DocumentType<T extends {}>
   readTrusted(format: "qs", val: qs.Output): T;
   readTrusted(format: "bson" | "json" | "qs", input: any): T {
     const keysDiff: DiffKeysResult = diffKeys(this.properties, input);
-    const result: Partial<T> = {};
+    // TODO(demurgos): use Partial<T> once typedoc supports it
+    const result: any = {};
     for (const key of keysDiff.commonKeys) {
       // TODO(demurgos): Check if the format is supported instead of casting to `any`
       result[key] = this.properties[key].type.read(<any> format, input[key]);
@@ -132,7 +133,8 @@ export class DocumentType<T extends {}>
       throw ExtraKeysError.create(keysDiff.extraKeys);
     }
 
-    const result: Partial<T> = {};
+    // TODO(demurgos): use Partial<T> once typedoc supports it
+    const result: any = {};
     for (const key of keysDiff.commonKeys) {
       // TODO(demurgos): Check if the format is supported instead of casting to `any`
       result[key] = this.properties[key].type.read(<any> format, input[key]);
@@ -209,7 +211,8 @@ export class DocumentType<T extends {}>
   }
 
   clone(val: T): T {
-    const result: Partial<T> = {};
+    // TODO(demurgos): use Partial<T> once typedoc supports it
+    const result: any = {};
     for (const key in this.properties) {
       const member: any = (<any> val)[key];
       if (member !== undefined) {
