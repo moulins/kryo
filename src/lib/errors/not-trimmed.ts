@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace NotTrimmedError {
   export type Name = "NotTrimmed";
   export const name: Name = "NotTrimmed";

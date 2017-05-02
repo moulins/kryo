@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace MaxUcs2StringLengthError {
   export type Name = "MaxUcs2StringLength";
   export const name: Name = "MaxUcs2StringLength";

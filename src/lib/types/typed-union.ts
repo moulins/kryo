@@ -4,7 +4,6 @@ import {VersionedType} from "../interfaces";
 
 export type Name = "typed-union";
 export const name: Name = "typed-union";
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = any;
   export type Output = any;

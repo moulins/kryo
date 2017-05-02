@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace LowerCaseError {
   export type Name = "LowerCase";
   export const name: Name = "LowerCase";

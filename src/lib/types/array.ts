@@ -6,7 +6,6 @@ import {VersionedType} from "../interfaces";
 
 export type Name = "array";
 export const name: Name = "array";
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Type = undefined;
 }

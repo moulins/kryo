@@ -5,7 +5,6 @@ import {VersionedType} from "../interfaces";
 export type Name = "float64";
 export const name: Name = "float64";
 export type T = number;
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = number | "NaN" | "+Infinity" | "-Infinity";
   export type Output = number | "NaN" | "+Infinity" | "-Infinity";

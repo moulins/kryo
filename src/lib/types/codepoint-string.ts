@@ -17,7 +17,6 @@ export enum Normalization {
 export type Name = "codepoint-string";
 export const name: Name = "codepoint-string";
 export type T = string;
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = string;
   export type Output = string;

@@ -1,7 +1,6 @@
 import {Incident} from "incident";
 
 // TODO(demurgos): Rename to InvalidTypeError ?
-/* tslint:disable-next-line:no-namespace */
 export namespace WrongTypeError {
   export type Name = "WrongType";
   export const name: Name = "WrongType";

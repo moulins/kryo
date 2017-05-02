@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace MinUcs2StringLengthError {
   export type Name = "MinUcs2StringLength";
   export const name: Name = "MinUcs2StringLength";

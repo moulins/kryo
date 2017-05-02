@@ -6,7 +6,6 @@ import {VersionedType} from "../interfaces";
 export type Name = "date";
 export const name: Name = "date";
 export type T = Date;
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = string | number;
   export type Output = string;
@@ -14,7 +13,6 @@ export namespace json {
     name: Name;
   }
 }
-/* tslint:disable-next-line:no-namespace */
 export namespace bson {
   export type Input = Date;
   export type Output = Date;

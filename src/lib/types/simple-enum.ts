@@ -32,7 +32,6 @@ export interface EnumConstructor<EnumValue extends number> {
 
 export type Name = "simple-enum";
 export const name: Name = "simple-enum";
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = string;
   export type Output = string;

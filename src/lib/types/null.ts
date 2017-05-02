@@ -4,7 +4,6 @@ import {VersionedType} from "../interfaces";
 export type Name = "null";
 export const name: Name = "null";
 export type T = null;
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = null;
   export type Output = null;

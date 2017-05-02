@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace MaxCodepointsError {
   export type Name = "MaxCodepoints";
   export const name: Name = "MaxCodepoints";

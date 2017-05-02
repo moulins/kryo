@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace MaxArrayLengthError {
   export type Name = "MaxArrayLength";
   export const name: Name = "MaxArrayLength";

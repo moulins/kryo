@@ -9,7 +9,6 @@ import {Type as KryoType, VersionedType} from "../interfaces";
 
 export type Name = "document";
 export const name: Name = "document";
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export interface Input {
     [key: string]: any;

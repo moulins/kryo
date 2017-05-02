@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace MinCodepointsError {
   export type Name = "MinCodepoints";
   export const name: Name = "MinCodepoints";

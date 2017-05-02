@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace InvalidTimestampError {
   export type Name = "InvalidTimestamp";
   export const name: Name = "InvalidTimestamp";

@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace MissingKeysError {
   export type Name = "MissingKeys";
   export const name: Name = "MissingKeys";

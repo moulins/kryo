@@ -4,7 +4,6 @@ import {VersionedType} from "../interfaces";
 export type Name = "boolean";
 export const name: Name = "boolean";
 export type T = boolean;
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = boolean;
   export type Output = boolean;

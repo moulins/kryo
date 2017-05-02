@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace PatternNotMatchedError {
   export type Name = "PatternNotMatched";
   export const name: Name = "PatternNotMatched";

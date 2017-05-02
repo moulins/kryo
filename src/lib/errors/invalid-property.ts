@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace InvalidPropertyError {
   export type Name = "InvalidProperty";
   export const name: Name = "InvalidProperty";

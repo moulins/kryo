@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace UnknownFormatError {
   export type Name = "UnknownFormat";
   export const name: Name = "UnknownFormat";

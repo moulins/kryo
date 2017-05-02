@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace InvalidArrayItemError {
   export type Name = "InvalidArrayItem";
   export const name: Name = "InvalidArrayItem";

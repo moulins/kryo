@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace InvalidIntegerError {
   export type Name = "InvalidInteger";
   export const name: Name = "InvalidInteger";

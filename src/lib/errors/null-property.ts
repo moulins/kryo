@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace NullPropertyError {
   export type Name = "NullProperty";
   export const name: Name = "NullProperty";

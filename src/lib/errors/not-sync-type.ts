@@ -1,7 +1,6 @@
 import {Incident} from "incident";
 import {Type as KryoType} from "../interfaces";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace NotSyncTypeError {
   export type Name = "NotSyncType";
   export const name: Name = "NotSyncType";

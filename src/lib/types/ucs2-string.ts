@@ -10,7 +10,6 @@ import {VersionedType} from "../interfaces";
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";
 export type T = string;
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = string;
   export type Output = string;

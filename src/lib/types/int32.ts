@@ -5,7 +5,6 @@ import {VersionedType} from "../interfaces";
 export type Name = "int32";
 export const name: Name = "int32";
 export type T = number;
-/* tslint:disable-next-line:no-namespace */
 export namespace json {
   export type Input = number;
   export type Output = number;

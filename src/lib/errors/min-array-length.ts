@@ -1,6 +1,5 @@
 import {Incident} from "incident";
 
-/* tslint:disable-next-line:no-namespace */
 export namespace MinArrayLengthError {
   export type Name = "MinArrayLength";
   export const name: Name = "MinArrayLength";
