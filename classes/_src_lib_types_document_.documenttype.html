@@ -107,8 +107,11 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_types_document_.documenttype.html#ignoreextrakeys" class="tsd-kind-icon">ignore<wbr>Extra<wbr>Keys</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_src_lib_types_document_.documenttype.html#keys" class="tsd-kind-icon">keys</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_types_document_.documenttype.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_src_lib_types_document_.documenttype.html#outkeys" class="tsd-kind-icon">out<wbr>Keys</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_types_document_.documenttype.html#properties" class="tsd-kind-icon">properties</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_types_document_.documenttype.html#rename" class="tsd-kind-icon">rename</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -144,7 +147,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L100">src/lib/types/document.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L128">src/lib/types/document.ts:128</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -166,9 +169,24 @@
 					<div class="tsd-signature tsd-kind-icon">ignore<wbr>Extra<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L97">src/lib/types/document.ts:97</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L114">src/lib/types/document.ts:114</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="keys" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> keys</h3>
+					<div class="tsd-signature tsd-kind-icon">keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L123">src/lib/types/document.ts:123</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map from the document keys to the serialized names</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="name" class="tsd-anchor"></a>
@@ -177,9 +195,24 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib_interfaces_.serializabletype.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L96">src/lib/types/document.ts:96</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L113">src/lib/types/document.ts:113</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="outkeys" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> out<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">out<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L128">src/lib/types/document.ts:128</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map from the serialized names to the document keys</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="properties" class="tsd-anchor"></a>
@@ -187,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">properties<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L98">src/lib/types/document.ts:98</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L115">src/lib/types/document.ts:115</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -198,6 +231,16 @@
 							</li>
 						</ul>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="rename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> rename</h3>
+					<div class="tsd-signature tsd-kind-icon">rename<span class="tsd-signature-symbol">:</span> <a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L118">src/lib/types/document.ts:118</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -212,7 +255,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L213">src/lib/types/document.ts:213</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L256">src/lib/types/document.ts:256</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -235,7 +278,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L225">src/lib/types/document.ts:225</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L268">src/lib/types/document.ts:268</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -264,7 +307,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L193">src/lib/types/document.ts:193</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L236">src/lib/types/document.ts:236</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -290,7 +333,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L253">src/lib/types/document.ts:253</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L296">src/lib/types/document.ts:296</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -316,7 +359,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L125">src/lib/types/document.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L166">src/lib/types/document.ts:166</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -344,7 +387,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L111">src/lib/types/document.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L151">src/lib/types/document.ts:151</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -361,7 +404,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L112">src/lib/types/document.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L152">src/lib/types/document.ts:152</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -378,7 +421,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L113">src/lib/types/document.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L153">src/lib/types/document.ts:153</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -404,7 +447,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L270">src/lib/types/document.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L313">src/lib/types/document.ts:313</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -430,7 +473,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L291">src/lib/types/document.ts:291</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L334">src/lib/types/document.ts:334</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -459,7 +502,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L189">src/lib/types/document.ts:189</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L232">src/lib/types/document.ts:232</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -482,7 +525,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L158">src/lib/types/document.ts:158</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L201">src/lib/types/document.ts:201</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -509,7 +552,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib_interfaces_.serializabletype.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L107">src/lib/types/document.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L147">src/lib/types/document.ts:147</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_src_lib_types_document_.json.type.html" class="tsd-signature-type">Type</a></h4>
@@ -528,7 +571,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L145">src/lib/types/document.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L187">src/lib/types/document.ts:187</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -545,7 +588,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L146">src/lib/types/document.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L188">src/lib/types/document.ts:188</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -562,7 +605,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L147">src/lib/types/document.ts:147</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L189">src/lib/types/document.ts:189</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -588,7 +631,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/d0cb2a7/src/lib/types/document.ts#L92">src/lib/types/document.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/a4fa9f0/src/lib/types/document.ts#L109">src/lib/types/document.ts:109</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -638,11 +681,20 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_src_lib_types_document_.documenttype.html#ignoreextrakeys" class="tsd-kind-icon">ignore<wbr>Extra<wbr>Keys</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_src_lib_types_document_.documenttype.html#keys" class="tsd-kind-icon">keys</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_src_lib_types_document_.documenttype.html#name" class="tsd-kind-icon">name</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_src_lib_types_document_.documenttype.html#outkeys" class="tsd-kind-icon">out<wbr>Keys</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_src_lib_types_document_.documenttype.html#properties" class="tsd-kind-icon">properties</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_lib_types_document_.documenttype.html#rename" class="tsd-kind-icon">rename</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_lib_types_document_.documenttype.html#clone" class="tsd-kind-icon">clone</a>
@@ -690,8 +742,8 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_src_lib_types_document_.diff.html" class="tsd-kind-icon">Diff</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_src_lib_types_document_.diffkeysresult.html" class="tsd-kind-icon">Diff<wbr>Keys<wbr>Result</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/_src_lib_types_document_.diffsetsresult.html" class="tsd-kind-icon">Diff<wbr>Sets<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/_src_lib_types_document_.options.html" class="tsd-kind-icon">Options</a>
@@ -705,8 +757,8 @@
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/_src_lib_types_document_.html#name-1" class="tsd-kind-icon">name</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_src_lib_types_document_.html#diffkeys" class="tsd-kind-icon">diff<wbr>Keys</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="../modules/_src_lib_types_document_.html#diffsets" class="tsd-kind-icon">diff<wbr>Sets</a>
 					</li>
 				</ul>
 			</nav>
