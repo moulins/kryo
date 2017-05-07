@@ -1,4 +1,4 @@
-# Next
+# 0.5.0-alpha.4
 
 - **[Feature]** Implement `LiteralType`
 - **[Feature]** Implement `UnionType`
