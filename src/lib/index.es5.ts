@@ -10,6 +10,7 @@ export {DocumentType} from "./types/document";
 export {Float64Type} from "./types/float64";
 export {Int32Type} from "./types/int32";
 export {LiteralType} from "./types/literal";
+export {MapType} from "./types/map";
 export {NullType} from "./types/null";
 export {SimpleEnumType} from "./types/simple-enum";
 export {TaggedUnionType} from "./types/tagged-union";
@@ -25,6 +26,7 @@ import * as document  from "./types/document";
 import * as float64  from "./types/float64";
 import * as int32  from "./types/int32";
 import * as literal  from "./types/literal";
+import * as map  from "./types/map";
 import * as _null  from "./types/null";
 import * as simpleEnum  from "./types/simple-enum";
 import * as taggedUnion  from "./types/tagged-union";
@@ -40,6 +42,7 @@ export {
   float64,
   int32,
   literal,
+  map,
   _null as null,
   simpleEnum,
   taggedUnion,
