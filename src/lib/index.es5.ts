@@ -45,7 +45,7 @@ export {
   taggedUnion,
   typedUnion,
   ucs2String,
-  union
+  union,
 };
 
 import * as errors from "./errors/index";

@@ -62,7 +62,7 @@ export function testValidValueSync(type: Type<any>, item: ValidTypedValue) {
 
 export function testBsonSerialization<T, Input, Output extends Input>(
   type: SerializableType<T, "bson", Input, Output>,
-  typedValue: ValidTypedValue
+  typedValue: ValidTypedValue,
 ): void {
   let actualSerialized: Buffer;
 
@@ -98,7 +98,7 @@ export function testBsonSerialization<T, Input, Output extends Input>(
 
 export function testJsonSerialization<T, Input, Output extends Input>(
   type: SerializableType<T, "json", Input, Output>,
-  typedValue: ValidTypedValue
+  typedValue: ValidTypedValue,
 ): void {
   let actualSerialized: string;
 
@@ -134,7 +134,7 @@ export function testJsonSerialization<T, Input, Output extends Input>(
 
 export function testQsSerialization<T, Input, Output extends Input>(
   type: SerializableType<T, "qs", Input, Output>,
-  typedValue: ValidTypedValue
+  typedValue: ValidTypedValue,
 ): void {
   let actualSerialized: string;
 
@@ -175,7 +175,7 @@ export function testSerialization<T>(
   type: SerializableType<T, "bson", any, any>
     & SerializableType<T, "json", any, any>
     & SerializableType<T, "qs", any, any>,
-  typedValue: ValidTypedValue
+  typedValue: ValidTypedValue,
 ): void {
   testBsonSerialization(type, typedValue);
   testJsonSerialization(type, typedValue);

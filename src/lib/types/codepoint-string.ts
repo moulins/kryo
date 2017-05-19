@@ -12,7 +12,7 @@ import {SerializableType, VersionedType} from "../interfaces";
 
 export enum Normalization {
   None,
-  Nfc
+  Nfc,
 }
 
 export type Name = "codepoint-string";
@@ -86,22 +86,6 @@ export class CodepointStringType
   implements VersionedType<T, json.Input, json.Output, Diff>,
     SerializableType<T, "bson", bson.Input, bson.Output>,
     SerializableType<T, "qs", qs.Input, qs.Output> {
-  static fromJSON(options: json.Type): CodepointStringType {
-    const resolvedOptions: Options = {
-      normalization: options.normalization === "none" ? Normalization.None : Normalization.Nfc,
-      enforceUnicodeRegExp: options.enforceUnicodeRegExp,
-      lowerCase: options.lowerCase,
-      trimmed: options.trimmed,
-      maxCodepoints: options.maxCodepoints
-    };
-    if (options.pattern !== undefined) {
-      resolvedOptions.pattern = new RegExp(options.pattern[0], options.pattern[1]);
-    }
-    if (options.minCodepoints !== undefined) {
-      resolvedOptions.minCodepoints = options.minCodepoints;
-    }
-    return new CodepointStringType(resolvedOptions);
-  }
 
   readonly name: Name = name;
   readonly normalization: Normalization;
@@ -122,6 +106,23 @@ export class CodepointStringType
     this.maxCodepoints = options.maxCodepoints;
   }
 
+  static fromJSON(options: json.Type): CodepointStringType {
+    const resolvedOptions: Options = {
+      normalization: options.normalization === "none" ? Normalization.None : Normalization.Nfc,
+      enforceUnicodeRegExp: options.enforceUnicodeRegExp,
+      lowerCase: options.lowerCase,
+      trimmed: options.trimmed,
+      maxCodepoints: options.maxCodepoints,
+    };
+    if (options.pattern !== undefined) {
+      resolvedOptions.pattern = new RegExp(options.pattern[0], options.pattern[1]);
+    }
+    if (options.minCodepoints !== undefined) {
+      resolvedOptions.minCodepoints = options.minCodepoints;
+    }
+    return new CodepointStringType(resolvedOptions);
+  }
+
   toJSON(): json.Type {
     const jsonType: json.Type = {
       name: name,
@@ -129,7 +130,7 @@ export class CodepointStringType
       enforceUnicodeRegExp: this.enforceUnicodeRegExp,
       lowerCase: this.lowerCase,
       trimmed: this.trimmed,
-      maxCodepoints: this.maxCodepoints
+      maxCodepoints: this.maxCodepoints,
     };
     if (this.pattern !== undefined) {
       jsonType.pattern = [this.pattern.source, this.pattern.flags];
@@ -212,7 +213,7 @@ export class CodepointStringType
       if (!this.pattern.unicode && this.enforceUnicodeRegExp) {
         throw new Incident(
           "NonUnicodeRegExp",
-          "Enforced unicode RegExp, use `enforceUnicodeRegExp = false` or `Ucs2StringType`"
+          "Enforced unicode RegExp, use `enforceUnicodeRegExp = false` or `Ucs2StringType`",
         );
       }
 

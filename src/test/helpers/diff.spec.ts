@@ -14,7 +14,7 @@ describe("Diff", function () {
       {type: "match", value: 1},   // o    o
       {type: "target", value: 1},  //      r
       {type: "match", value: 1},   // d    d
-      {type: "source", value: 1}   // e
+      {type: "source", value: 1},  // e
     ];
     assert.deepEqual(actual, expected);
   });

@@ -11,18 +11,18 @@ describe("DateType", function () {
       value: new Date(0),
       valid: true,
       output: {
-        json: "1970-01-01T00:00:00.000Z"
+        json: "1970-01-01T00:00:00.000Z",
       },
       inputs: {
         json: [
-          0
-        ]
+          0,
+        ],
       },
       invalidInputs: {
         json: [
-          null
-        ]
-      }
+          null,
+        ],
+      },
     },
     {name: 'new Date("1247-05-18T19:40:08.418Z")', value: new Date("1247-05-18T19:40:08.418Z"), valid: true},
     {name: "new Date(Number.EPSILON)", value: new Date(Number.EPSILON), valid: true},
@@ -45,7 +45,7 @@ describe("DateType", function () {
     {name: "null", value: null, valid: false},
     {name: "[]", value: [], valid: false},
     {name: "{}", value: {}, valid: false},
-    {name: "/regex/", value: /regex/, valid: false}
+    {name: "/regex/", value: /regex/, valid: false},
   ];
 
   runTests(type, items);

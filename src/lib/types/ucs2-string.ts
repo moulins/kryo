@@ -116,22 +116,6 @@ export class Ucs2StringType
   implements VersionedType<T, json.Input, json.Output, Diff>,
     SerializableType<T, "bson", bson.Input, bson.Output>,
     SerializableType<T, "qs", qs.Input, qs.Output> {
-  static fromJSON(options: json.Type): Ucs2StringType {
-    const resolvedOptions: Options = {
-      allowUnicodeRegExp: options.allowUnicodeRegExp,
-      lowerCase: options.lowerCase,
-      trimmed: options.trimmed,
-      maxLength: options.maxLength
-    };
-    if (options.pattern !== undefined) {
-      resolvedOptions.pattern = new RegExp(options.pattern[0], options.pattern[1]);
-    }
-    if (options.minLength !== undefined) {
-      resolvedOptions.minLength = options.minLength;
-    }
-    return new Ucs2StringType(resolvedOptions);
-  }
-
   readonly name: Name = name;
   readonly allowUnicodeRegExp: boolean;
   readonly pattern?: RegExp;
@@ -149,13 +133,29 @@ export class Ucs2StringType
     this.maxLength = options.maxLength;
   }
 
+  static fromJSON(options: json.Type): Ucs2StringType {
+    const resolvedOptions: Options = {
+      allowUnicodeRegExp: options.allowUnicodeRegExp,
+      lowerCase: options.lowerCase,
+      trimmed: options.trimmed,
+      maxLength: options.maxLength,
+    };
+    if (options.pattern !== undefined) {
+      resolvedOptions.pattern = new RegExp(options.pattern[0], options.pattern[1]);
+    }
+    if (options.minLength !== undefined) {
+      resolvedOptions.minLength = options.minLength;
+    }
+    return new Ucs2StringType(resolvedOptions);
+  }
+
   toJSON(): json.Type {
     const jsonType: json.Type = {
       name: name,
       allowUnicodeRegExp: this.allowUnicodeRegExp,
       lowerCase: this.lowerCase,
       trimmed: this.trimmed,
-      maxLength: this.maxLength
+      maxLength: this.maxLength,
     };
     if (this.pattern !== undefined) {
       jsonType.pattern = [this.pattern.source, this.pattern.flags];
@@ -218,7 +218,7 @@ export class Ucs2StringType
       if (this.pattern.unicode && !this.allowUnicodeRegExp) {
         throw new Incident(
           "UnicodeRegExp",
-          "Disallowed unicode RegExp, use `allowUnicodeRegExp` or `CodepointStringType`"
+          "Disallowed unicode RegExp, use `allowUnicodeRegExp` or `CodepointStringType`",
         );
       }
 

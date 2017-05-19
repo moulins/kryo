@@ -10,11 +10,11 @@ describe("TaggedUnion", function () {
   describe("TaggedUnion<Shape>", function () {
     enum ShapeType {
       Rectangle,
-      Circle
+      Circle,
     }
     const shapeTypeType: SimpleEnumType<ShapeType> = new SimpleEnumType({
       enum: ShapeType,
-      rename: CaseStyle.KebabCase
+      rename: CaseStyle.KebabCase,
     });
 
     interface Rectangle {
@@ -27,13 +27,13 @@ describe("TaggedUnion", function () {
         type: {
           type: new LiteralType<ShapeType.Rectangle>({
             type: shapeTypeType,
-            value: ShapeType.Rectangle
-          })
+            value: ShapeType.Rectangle,
+          }),
         },
         width: {type: new Int32Type()},
-        height: {type: new Int32Type()}
+        height: {type: new Int32Type()},
       },
-      rename: CaseStyle.KebabCase
+      rename: CaseStyle.KebabCase,
     });
 
     interface Circle {
@@ -45,18 +45,18 @@ describe("TaggedUnion", function () {
         type: {
           type: new LiteralType<ShapeType.Circle>({
             type: shapeTypeType,
-            value: ShapeType.Circle
-          })
+            value: ShapeType.Circle,
+          }),
         },
-        radius: {type: new Int32Type()}
+        radius: {type: new Int32Type()},
       },
-      rename: CaseStyle.KebabCase
+      rename: CaseStyle.KebabCase,
     });
 
     type Shape = Rectangle | Circle;
     const shapeType: TaggedUnionType<Shape> = new TaggedUnionType<Shape>({
       variants: [rectangleType, circleType],
-      tag: "type"
+      tag: "type",
     });
 
     const items: TypedValue[] = [
@@ -65,71 +65,71 @@ describe("TaggedUnion", function () {
         value: <Rectangle> {
           type: ShapeType.Rectangle,
           width: 10,
-          height: 20
+          height: 20,
         },
         valid: true,
         output: {
           bson: {
             type: "rectangle",
             width: 10,
-            height: 20
+            height: 20,
           },
           json: {
             type: "rectangle",
             width: 10,
-            height: 20
+            height: 20,
           },
           qs: {
             type: "rectangle",
             width: "10",
-            height: "20"
-          }
-        }
+            height: "20",
+          },
+        },
       },
       {
         name: "Circle {type: ShapeType.Circle, radius: 15}",
         value: <Circle> {
           type: ShapeType.Circle,
-          radius: 15
+          radius: 15,
         },
         valid: true,
         output: {
           bson: {
             type: "circle",
-            radius: 15
+            radius: 15,
           },
           json: {
             type: "circle",
-            radius: 15
+            radius: 15,
           },
           qs: {
             type: "circle",
-            radius: "15"
-          }
-        }
+            radius: "15",
+          },
+        },
       },
 
       {
         name: "{type: ShapeType.Circle}",
         value: {
-          type: ShapeType.Circle
+          type: ShapeType.Circle,
         },
-        valid: false
+        valid: false,
       },
       {
         name: "{radius: 15}",
         value: {
-          radius: 15
+          radius: 15,
         },
-        valid: false
+        valid: false,
       },
       {
         name: "{type: ShapeType.Circle, radius: true}",
         value: {
           type: ShapeType.Circle,
-          radius: true
+          radius: true,
         },
-        valid: false
+        valid: false,
       },
       {name: '"foo"', value: "bar", valid: false},
       {name: "0", value: 0, valid: false},
@@ -146,7 +146,7 @@ describe("TaggedUnion", function () {
       {name: "null", value: null, valid: false},
       {name: "[]", value: [], valid: false},
       {name: "{}", value: {}, valid: false},
-      {name: "/regex/", value: /regex/, valid: false}
+      {name: "/regex/", value: /regex/, valid: false},
     ];
 
     runTests(shapeType, items);

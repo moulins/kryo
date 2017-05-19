@@ -7,7 +7,7 @@ describe("Literal", function () {
   describe("Literal<\"foo\">", function () {
     const type: LiteralType<"foo"> = new LiteralType<"foo">({
       type: new Ucs2StringType({maxLength: Infinity}),
-      value: "foo"
+      value: "foo",
     });
 
     const items: TypedValue[] = [
@@ -18,8 +18,8 @@ describe("Literal", function () {
         output: {
           bson: "foo",
           json: "foo",
-          qs: "foo"
-        }
+          qs: "foo",
+        },
       },
 
       {name: '"bar"', value: "bar", valid: false},
@@ -39,7 +39,7 @@ describe("Literal", function () {
       {name: "null", value: null, valid: false},
       {name: "[]", value: [], valid: false},
       {name: "{}", value: {}, valid: false},
-      {name: "/regex/", value: /regex/, valid: false}
+      {name: "/regex/", value: /regex/, valid: false},
     ];
 
     runTests(type, items);
@@ -49,12 +49,12 @@ describe("Literal", function () {
     enum Color {
       Red,
       Green,
-      Blue
+      Blue,
     }
 
     const type: LiteralType<Color.Red> = new LiteralType<Color.Red>({
       type: new SimpleEnumType({enum: Color}),
-      value: Color.Red
+      value: Color.Red,
     });
 
     const items: TypedValue[] = [
@@ -65,8 +65,8 @@ describe("Literal", function () {
         output: {
           bson: "Red",
           json: "Red",
-          qs: "Red"
-        }
+          qs: "Red",
+        },
       },
       {
         name: "0",
@@ -75,11 +75,11 @@ describe("Literal", function () {
         output: {
           bson: "Red",
           json: "Red",
-          qs: "Red"
-        }
+          qs: "Red",
+        },
       },
       {name: "Color.Green", value: Color.Green, valid: false},
-      {name: "undefined", value: undefined, valid: false}
+      {name: "undefined", value: undefined, valid: false},
     ];
 
     runTests(type, items);

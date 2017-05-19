@@ -10,8 +10,8 @@ describe("Float64Type", function () {
       value: 0,
       valid: true,
       output: {
-        json: 0
-      }
+        json: 0,
+      },
     },
     {name: "1", value: 1, valid: true},
     {name: "-1", value: -1, valid: true},
@@ -38,7 +38,7 @@ describe("Float64Type", function () {
     {name: "[]", value: [], valid: false},
     {name: "{}", value: {}, valid: false},
     {name: "new Date()", value: new Date(), valid: false},
-    {name: "/regex/", value: /regex/, valid: false}
+    {name: "/regex/", value: /regex/, valid: false},
   ];
 
   runTests(type, items);

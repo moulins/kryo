@@ -38,7 +38,7 @@ describe("rename", function () {
       {identifier: "Ucs2StringType", expected: CaseStyle.PascalCase},
       {identifier: "ucs2-string-type", expected: CaseStyle.KebabCase},
       {identifier: "ucs2_string_type", expected: CaseStyle.SnakeCase},
-      {identifier: "UCS2_STRING_TYPE", expected: CaseStyle.ScreamingSnakeCase}
+      {identifier: "UCS2_STRING_TYPE", expected: CaseStyle.ScreamingSnakeCase},
     ];
 
     for (const item of items) {
@@ -85,7 +85,7 @@ describe("rename", function () {
       {identifier: "Ucs2StringType", caseStyle: CaseStyle.PascalCase, parts: ["ucs2", "string", "type"]},
       {identifier: "ucs2-string-type", caseStyle: CaseStyle.KebabCase, parts: ["ucs2", "string", "type"]},
       {identifier: "ucs2_string_type", caseStyle: CaseStyle.SnakeCase, parts: ["ucs2", "string", "type"]},
-      {identifier: "UCS2_STRING_TYPE", caseStyle: CaseStyle.ScreamingSnakeCase, parts: ["ucs2", "string", "type"]}
+      {identifier: "UCS2_STRING_TYPE", caseStyle: CaseStyle.ScreamingSnakeCase, parts: ["ucs2", "string", "type"]},
     ];
 
     describe("split", function () {
@@ -117,7 +117,7 @@ describe("rename", function () {
       {identifier: "Ucs2StringType", to: CaseStyle.KebabCase, expected: "ucs2-string-type"},
       {identifier: "ucs2-string-type", to: CaseStyle.KebabCase, expected: "ucs2-string-type"},
       {identifier: "ucs2_string_type", to: CaseStyle.KebabCase, expected: "ucs2-string-type"},
-      {identifier: "UCS2_STRING_TYPE", to: CaseStyle.KebabCase, expected: "ucs2-string-type"}
+      {identifier: "UCS2_STRING_TYPE", to: CaseStyle.KebabCase, expected: "ucs2-string-type"},
     ];
 
     for (const {identifier, to, expected} of items) {

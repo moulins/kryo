@@ -25,7 +25,7 @@ describe("Ucs2StringType", function () {
       {name: "[]", value: [], valid: false},
       {name: "{}", value: {}, valid: false},
       {name: "new Date()", value: new Date(), valid: false},
-      {name: "/regex/", value: /regex/, valid: false}
+      {name: "/regex/", value: /regex/, valid: false},
     ];
 
     runTests(type, items);

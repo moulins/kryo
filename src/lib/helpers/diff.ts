@@ -209,7 +209,7 @@ function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
       return [
         {type: "source", value: idx},
         {type: "match", value: 1},
-        {type: "source", value: srcLen - idx - 1}
+        {type: "source", value: srcLen - idx - 1},
       ];
     } else {
       idx = target.indexOf(source.getItem(0));
@@ -217,12 +217,12 @@ function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
         return [
           {type: "target", value: idx},
           {type: "match", value: 1},
-          {type: "target", value: tarLen - idx - 1}
+          {type: "target", value: tarLen - idx - 1},
         ];
       } else {
         return [
           {type: "source", value: srcLen},
-          {type: "target", value: tarLen}
+          {type: "target", value: tarLen},
         ];
       }
     }

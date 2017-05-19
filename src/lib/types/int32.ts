@@ -27,13 +27,14 @@ export class Int32Type
   implements VersionedType<T, json.Input, json.Output, Diff>,
     SerializableType<T, "bson", bson.Input, bson.Output>,
     SerializableType<T, "qs", qs.Input, qs.Output> {
-  static fromJSON(options: json.Type): Int32Type {
-    return new Int32Type();
-  }
 
   readonly name: Name = name;
 
   constructor() {
+  }
+
+  static fromJSON(options: json.Type): Int32Type {
+    return new Int32Type();
   }
 
   toJSON(): json.Type {

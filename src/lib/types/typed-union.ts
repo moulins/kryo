@@ -17,10 +17,6 @@ export type Diff = [number, number];
 
 // TODO: Rename to whiteList
 export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
-  static fromJSON(options: json.Type): TypedUnionType<any> {
-    throw NotImplementedError.create("TypedUnionType.fromJSON");
-  }
-
   readonly name: Name = name;
   readonly itemType: VersionedType<any, any, any, any>;
   readonly values: T[];
@@ -28,6 +24,10 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
   constructor(itemType: VersionedType<any, any, any, any>, values: T[]) {
     this.itemType = itemType;
     this.values = values;
+  }
+
+  static fromJSON(options: json.Type): TypedUnionType<any> {
+    throw NotImplementedError.create("TypedUnionType.fromJSON");
   }
 
   toJSON(): json.Type {

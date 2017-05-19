@@ -6,7 +6,7 @@ describe("SimpleEnum", function () {
   enum Color {
     Red,
     Green,
-    Blue
+    Blue,
   }
 
   const type: SimpleEnumType<Color> = new SimpleEnumType({enum: Color});
@@ -17,48 +17,48 @@ describe("SimpleEnum", function () {
       value: Color.Red,
       valid: true,
       output: {
-        json: "Red"
-      }
+        json: "Red",
+      },
     },
     {
       name: "Color.Green",
       value: Color.Green,
       valid: true,
       output: {
-        json: "Green"
-      }
+        json: "Green",
+      },
     },
     {
       name: "Color.Blue",
       value: Color.Blue,
       valid: true,
       output: {
-        json: "Blue"
-      }
+        json: "Blue",
+      },
     },
     {
       name: "0",
       value: 0,
       valid: true,
       output: {
-        json: "Red"
-      }
+        json: "Red",
+      },
     },
     {
       name: "1",
       value: 1,
       valid: true,
       output: {
-        json: "Green"
-      }
+        json: "Green",
+      },
     },
     {
       name: "2",
       value: 2,
       valid: true,
       output: {
-        json: "Blue"
-      }
+        json: "Blue",
+      },
     },
 
     {name: "new Date()", value: new Date(), valid: false},
@@ -75,7 +75,7 @@ describe("SimpleEnum", function () {
     {name: "null", value: null, valid: false},
     {name: "[]", value: [], valid: false},
     {name: "{}", value: {}, valid: false},
-    {name: "/regex/", value: /regex/, valid: false}
+    {name: "/regex/", value: /regex/, valid: false},
   ];
 
   runTests(type, items);
@@ -85,7 +85,7 @@ describe("SimpleEnum: rename", function () {
   enum Node {
     Expression,
     BinaryOperator,
-    BlockStatement
+    BlockStatement,
   }
 
   const type: SimpleEnumType<Node> = new SimpleEnumType({enum: Node, rename: CaseStyle.KebabCase});
@@ -98,8 +98,8 @@ describe("SimpleEnum: rename", function () {
       output: {
         bson: "expression",
         json: "expression",
-        qs: "expression"
-      }
+        qs: "expression",
+      },
     },
     {
       name: "Node.BinaryOperator",
@@ -108,8 +108,8 @@ describe("SimpleEnum: rename", function () {
       output: {
         bson: "binary-operator",
         json: "binary-operator",
-        qs: "binary-operator"
-      }
+        qs: "binary-operator",
+      },
     },
     {
       name: "Node.BlockStatement",
@@ -118,8 +118,8 @@ describe("SimpleEnum: rename", function () {
       output: {
         bson: "block-statement",
         json: "block-statement",
-        qs: "block-statement"
-      }
+        qs: "block-statement",
+      },
     },
     {
       name: "0",
@@ -128,8 +128,8 @@ describe("SimpleEnum: rename", function () {
       output: {
         bson: "expression",
         json: "expression",
-        qs: "expression"
-      }
+        qs: "expression",
+      },
     },
     {
       name: "1",
@@ -138,8 +138,8 @@ describe("SimpleEnum: rename", function () {
       output: {
         bson: "binary-operator",
         json: "binary-operator",
-        qs: "binary-operator"
-      }
+        qs: "binary-operator",
+      },
     },
     {
       name: "2",
@@ -148,9 +148,9 @@ describe("SimpleEnum: rename", function () {
       output: {
         bson: "block-statement",
         json: "block-statement",
-        qs: "block-statement"
-      }
-    }
+        qs: "block-statement",
+      },
+    },
   ];
 
   runTests(type, items);

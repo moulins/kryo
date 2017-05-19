@@ -34,10 +34,6 @@ export class Float64Type
   implements VersionedType<T, json.Input, json.Output, Diff>,
     SerializableType<T, "bson", bson.Input, bson.Output>,
     SerializableType<T, "qs", qs.Input, qs.Output> {
-  static fromJSON(options: json.Type): Float64Type {
-    return new Float64Type(options);
-  }
-
   readonly name: Name = name;
   readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
   readonly notInfinity: boolean; // TODO(demurgos): rename to allowInfinity
@@ -54,11 +50,15 @@ export class Float64Type
     }
   }
 
+  static fromJSON(options: json.Type): Float64Type {
+    return new Float64Type(options);
+  }
+
   toJSON(): json.Type {
     return {
       name: name,
       notNan: this.notNan,
-      notInfinity: this.notInfinity
+      notInfinity: this.notInfinity,
     };
   }
 

@@ -62,10 +62,6 @@ export class SimpleEnumType<E extends number>
   implements VersionedType<E, json.Input, json.Output, Diff>,
     SerializableType<E, "bson", bson.Input, bson.Output>,
     SerializableType<E, "qs", qs.Input, qs.Output> {
-  static fromJSON(): SimpleEnumType<any> {
-    throw NotImplementedError.create("SimpleEnumType.fromJSON");
-  }
-
   readonly name: Name = name;
   readonly enum: EnumConstructor<E>;
   private readonly rename?: CaseStyle;
@@ -101,6 +97,10 @@ export class SimpleEnumType<E extends number>
       this.outputNameToValue[renamed] = value;
       this.valueToOutputName[value] = renamed;
     }
+  }
+
+  static fromJSON(): SimpleEnumType<any> {
+    throw NotImplementedError.create("SimpleEnumType.fromJSON");
   }
 
   toJSON(): json.Type {

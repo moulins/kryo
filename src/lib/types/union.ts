@@ -22,24 +22,24 @@ export type Diff = any;
 
 export type Matcher<T, Output, Input extends Output, Diff> = (
   value: any,
-  variants: VersionedType<T, Output, Input, Diff>[]
+  variants: VersionedType<T, Output, Input, Diff>[],
 ) => VersionedType<T, Output, Input, Diff> | undefined;
 
 export type TrustedMatcher<T, Output, Input extends Output, Diff> = (
   value: T,
-  variants: VersionedType<T, Output, Input, Diff>[]
+  variants: VersionedType<T, Output, Input, Diff>[],
 ) => VersionedType<T, Output, Input, Diff>;
 
 export type ReadMatcher<T, Output, Input extends Output, Diff> = (
   format: "bson" | "json" | "qs",
   value: T,
-  variants: VersionedType<T, Output, Input, Diff>[]
+  variants: VersionedType<T, Output, Input, Diff>[],
 ) => VersionedType<T, Output, Input, Diff> | undefined;
 
 export type ReadTrustedMatcher<T, Output, Input extends Output, Diff> = (
   format: "bson" | "json" | "qs",
   value: T,
-  variants: VersionedType<T, Output, Input, Diff>[]
+  variants: VersionedType<T, Output, Input, Diff>[],
 ) => VersionedType<T, Output, Input, Diff>;
 
 export interface Options<T, Output, Input extends Output, Diff> {

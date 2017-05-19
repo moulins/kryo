@@ -3,7 +3,7 @@ export enum CaseStyle {
   PascalCase,
   SnakeCase,
   ScreamingSnakeCase,
-  KebabCase
+  KebabCase,
 }
 
 export function detectCaseStyle(identifier: string): CaseStyle {

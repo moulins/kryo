@@ -10,11 +10,11 @@ describe("Document", function () {
     properties: {
       dateProp: {
         optional: false,
-        type: new DateType()
+        type: new DateType(),
       },
       optIntProp: {
         optional: true,
-        type: new Int32Type()
+        type: new Int32Type(),
       },
       nestedDoc: {
         optional: true,
@@ -23,12 +23,12 @@ describe("Document", function () {
           properties: {
             id: {
               optional: true,
-              type: new Int32Type()
-            }
-          }
-        })
-      }
-    }
+              type: new Int32Type(),
+            },
+          },
+        }),
+      },
+    },
   });
 
   const items: TypedValue[] = [
@@ -37,13 +37,13 @@ describe("Document", function () {
         dateProp: new Date(0),
         optIntProp: 50,
         nestedDoc: {
-          id: 10
-        }
+          id: 10,
+        },
       },
       valid: true,
       output: {
-        json: {dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}}
-      }
+        json: {dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}},
+      },
     },
 
     {name: "new Date(0)", value: new Date(0), valid: false},
@@ -60,7 +60,7 @@ describe("Document", function () {
     {name: "null", value: null, valid: false},
     {name: "[]", value: [], valid: false},
     {name: "{}", value: {}, valid: false},
-    {name: "/regex/", value: /regex/, valid: false}
+    {name: "/regex/", value: /regex/, valid: false},
   ];
 
   runTests(documentType, items);
@@ -79,9 +79,9 @@ describe("Document: rename", function () {
       xMin: {type: new Int32Type()},
       xMax: {type: new Int32Type()},
       yMin: {type: new Int32Type()},
-      yMax: {type: new Int32Type()}
+      yMax: {type: new Int32Type()},
     },
-    rename: CaseStyle.KebabCase
+    rename: CaseStyle.KebabCase,
   });
 
   const items: TypedValue[] = [
@@ -91,7 +91,7 @@ describe("Document: rename", function () {
         xMin: 0,
         xMax: 10,
         yMin: 20,
-        yMax: 30
+        yMax: 30,
       },
       valid: true,
       output: {
@@ -99,22 +99,22 @@ describe("Document: rename", function () {
           "x-min": 0,
           "x-max": 10,
           "y-min": 20,
-          "y-max": 30
+          "y-max": 30,
         },
         json: {
           "x-min": 0,
           "x-max": 10,
           "y-min": 20,
-          "y-max": 30
+          "y-max": 30,
         },
         qs: {
           "x-min": "0",
           "x-max": "10",
           "y-min": "20",
-          "y-max": "30"
-        }
-      }
-    }
+          "y-max": "30",
+        },
+      },
+    },
   ];
 
   runTests(type, items);

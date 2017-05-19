@@ -5,7 +5,7 @@ import {runTests, TypedValue} from "../helpers/test";
 describe("ArrayType", function () {
   const integersArray: ArrayType<number> = new ArrayType({
     itemType: new Int32Type(),
-    maxLength: 2
+    maxLength: 2,
   });
 
   const items: TypedValue[] = [
@@ -13,55 +13,55 @@ describe("ArrayType", function () {
       value: [],
       valid: true,
       output: {
-        json: []
-      }
+        json: [],
+      },
     },
     {
       value: [1],
       valid: true,
       output: {
-        json: [1]
-      }
+        json: [1],
+      },
     },
     {
       value: [2, 3],
       valid: true,
       output: {
-        json: [2, 3]
-      }
+        json: [2, 3],
+      },
     },
     {
       value: [4, 5, 6],
-      valid: false
+      valid: false,
     },
     {
       value: [0.5],
-      valid: false
+      valid: false,
     },
     {
       name: "[null]",
       value: [null],
-      valid: false
+      valid: false,
     },
     {
       name: "[undefined]",
       value: [undefined],
-      valid: false
+      valid: false,
     },
     {
       name: "new Array()",
       value: new Array(),
-      valid: true
+      valid: true,
     },
     {
       name: "new Array(0)",
       value: new Array(0),
-      valid: true
+      valid: true,
     },
     {
       name: "new Array(1)",
       value: new Array(1),
-      valid: false
+      valid: false,
     },
 
     {name: "new Date(0)", value: new Date(0), valid: false},
@@ -77,7 +77,7 @@ describe("ArrayType", function () {
     {name: "undefined", value: undefined, valid: false},
     {name: "null", value: null, valid: false},
     {name: "{}", value: {}, valid: false},
-    {name: "/regex/", value: /regex/, valid: false}
+    {name: "/regex/", value: /regex/, valid: false},
   ];
 
   runTests(integersArray, items);

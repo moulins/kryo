@@ -106,10 +106,6 @@ export class DocumentType<T extends {}>
   implements VersionedType<T, json.Input, json.Output, Diff>,
     SerializableType<T, "bson", bson.Input, bson.Output>,
     SerializableType<T, "qs", qs.Input, qs.Output> {
-  static fromJSON(options: json.Type): DocumentType<{}> {
-    throw NotImplementedError.create("DocumentType.fromJSON");
-  }
-
   readonly name: Name = name;
   readonly ignoreExtraKeys: boolean;
   readonly properties: {
@@ -142,6 +138,10 @@ export class DocumentType<T extends {}>
       }
       this.outKeys.set(renamed, key);
     }
+  }
+
+  static fromJSON(options: json.Type): DocumentType<{}> {
+    throw NotImplementedError.create("DocumentType.fromJSON");
   }
 
   toJSON(): json.Type {
@@ -314,7 +314,7 @@ export class DocumentType<T extends {}>
     const result: Diff = {
       set: {},
       unset: {},
-      update: {}
+      update: {},
     };
     for (const key in diff.unset) {
       result.set[key] = this.properties[key].type.clone(diff.unset[key]);

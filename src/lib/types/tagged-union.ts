@@ -47,11 +47,11 @@ function toUnionOptions<T extends {}>(options: Options<T, any, any, any>): union
   const outValuesMap: {
     bson: Map<number | string, DocumentType<T>>,
     json: Map<number | string, DocumentType<T>>,
-    qs: Map<number | string, DocumentType<T>>
+    qs: Map<number | string, DocumentType<T>>,
   } = {
     bson: new Map(),
     json: new Map(),
-    qs: new Map()
+    qs: new Map(),
   };
 
   for (const variant of options.variants) {
@@ -107,7 +107,7 @@ function toUnionOptions<T extends {}>(options: Options<T, any, any, any>): union
   };
   const readTrustedMatcher: union.ReadTrustedMatcher<T, any, any, any> = (
     format: "bson" | "json" | "qs",
-    value: T
+    value: T,
   ) => {
     return (<any> outValuesMap)[format].get((<any> value)[tagName])!;
   };

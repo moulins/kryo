@@ -2,11 +2,11 @@ import {Int32Type} from "../../lib/types/int32";
 import {MapType} from "../../lib/types/map";
 import {runTests, TypedValue} from "../helpers/test";
 
-describe.only("Map", function () {
+describe("Map", function () {
   const mapType: MapType<number, number> = new MapType({
     keyType: new Int32Type(),
     valueType: new Int32Type(),
-    maxSize: 5
+    maxSize: 5,
   });
 
   const items: TypedValue[] = [
@@ -16,8 +16,8 @@ describe.only("Map", function () {
       valid: true,
       output: {
         json: {1: 100, 2: 200},
-        qs: "ignore"
-      }
+        qs: "ignore",
+      },
     },
 
     {name: "new Date(0)", value: new Date(0), valid: false},
@@ -34,7 +34,7 @@ describe.only("Map", function () {
     {name: "null", value: null, valid: false},
     {name: "[]", value: [], valid: false},
     {name: "{}", value: {}, valid: false},
-    {name: "/regex/", value: /regex/, valid: false}
+    {name: "/regex/", value: /regex/, valid: false},
   ];
 
   runTests(mapType, items);
