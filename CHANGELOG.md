@@ -1,3 +1,8 @@
+# 0.5.0-alpha.6
+
+- **[Feature]** Implement `MapType`
+- **[Internal]** Update build-tools to use TSLint 8
+
 # 0.5.0-alpha.5
 
 - **[Patch]** Export `TaggedUnionType`
