@@ -1,3 +1,7 @@
+# Next
+
+- **[Fix]** Mark `bson` as a normal dependency (instead of a dev dependency).
+
 # 0.5.0-alpha.7 (2017-07-10)
 
 - **[Feature]** Implement `BufferType`

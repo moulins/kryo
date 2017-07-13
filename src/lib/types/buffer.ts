@@ -28,7 +28,7 @@ export interface Options {
 }
 
 function isBinary(val: any): val is Binary {
-  return (val instanceof Binary) || val._bsontype === "Binary";
+  return val._bsontype === "Binary";
 }
 
 export class BufferType
