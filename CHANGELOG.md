@@ -1,4 +1,4 @@
-# Next
+# 0.5.0-alpha.9 (2017-07-14)
 
 - **[Fix]** Treat `{foo: undefined}` as `{}` if `foo` is an optional document property.
 

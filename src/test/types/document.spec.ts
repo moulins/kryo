@@ -4,7 +4,7 @@ import {DocumentType} from "../../lib/types/document";
 import {Int32Type} from "../../lib/types/int32";
 import {runTests, TypedValue} from "../helpers/test";
 
-describe.only("Document", function () {
+describe("Document", function () {
   const documentType: DocumentType<any> = new DocumentType({
     ignoreExtraKeys: true,
     properties: {
