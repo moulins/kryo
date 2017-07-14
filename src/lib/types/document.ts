@@ -14,6 +14,7 @@ export namespace bson {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
@@ -22,9 +23,11 @@ export namespace json {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
+
   export interface Type {
     name: Name;
     notNan: boolean;
@@ -35,10 +38,12 @@ export namespace qs {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
 }
+
 export interface Diff {
   set: {[key: string]: any}; // val
   update: {[key: string]: any}; // diff
@@ -191,6 +196,9 @@ export class DocumentType<T extends {}>
     const keysDiff: DiffSetsResult<string> = diffSets(this.keys.keys(), Object.keys(val));
     const result: {[key: string]: any} = {};
     for (const key of keysDiff.commonKeys) {
+      if ((<any> val)[key] === undefined && this.properties[key].optional) {
+        continue;
+      }
       const outKey: string = this.keys.get(key)!;
       // TODO(demurgos): Check if the format is supported instead of casting to `any`
       result[outKey] = this.properties[key].type.write(<any> format, (<any> val)[key]);
@@ -215,8 +223,12 @@ export class DocumentType<T extends {}>
     for (const key of keysDiff.commonKeys) {
       const member: any = (<any> val)[key];
       const descriptor: PropertyDescriptor<KryoType<any>> = this.properties[key];
-      if (member === undefined && !descriptor.optional) {
-        return NullPropertyError.create(key);
+      if (member === undefined) {
+        if (descriptor.optional) {
+          continue;
+        } else {
+          return NullPropertyError.create(key);
+        }
       }
       const error: Error | undefined = descriptor.type.testError(member);
       if (error !== undefined) {
@@ -240,10 +252,12 @@ export class DocumentType<T extends {}>
           return false;
         }
       } else {
-        if (val1.hasOwnProperty(key) || val2.hasOwnProperty(key)) {
-          if (!(val1.hasOwnProperty(key) && val2.hasOwnProperty(key) && descriptor.type.equals(member1, member2))) {
+        if (val1.hasOwnProperty(key) && val2.hasOwnProperty(key)) {
+          if (!descriptor.type.equals(member1, member2)) {
             return false;
           }
+        } else if (!(member1 === undefined && member2 === undefined)) {
+          return false;
         }
       }
     }

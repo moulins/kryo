@@ -4,7 +4,7 @@ import {DocumentType} from "../../lib/types/document";
 import {Int32Type} from "../../lib/types/int32";
 import {runTests, TypedValue} from "../helpers/test";
 
-describe("Document", function () {
+describe.only("Document", function () {
   const documentType: DocumentType<any> = new DocumentType({
     ignoreExtraKeys: true,
     properties: {
@@ -43,6 +43,19 @@ describe("Document", function () {
       valid: true,
       output: {
         json: {dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}},
+      },
+    },
+    {
+      value: {
+        dateProp: new Date(0),
+        optIntProp: undefined,
+        nestedDoc: {
+          id: 10,
+        },
+      },
+      valid: true,
+      output: {
+        json: {dateProp: "1970-01-01T00:00:00.000Z", nestedDoc: {id: 10}},
       },
     },
 

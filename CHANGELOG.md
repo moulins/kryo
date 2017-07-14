@@ -1,3 +1,7 @@
+# Next
+
+- **[Fix]** Treat `{foo: undefined}` as `{}` if `foo` is an optional document property.
+
 # 0.5.0-alpha.8 (2017-07-13)
 
 - **[Fix]** Mark `bson` as a normal dependency (instead of a dev dependency).
