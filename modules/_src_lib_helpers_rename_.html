@@ -94,13 +94,13 @@
 					<a name="detectcasestyle" class="tsd-anchor"></a>
 					<h3>detect<wbr>Case<wbr>Style</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">detect<wbr>Case<wbr>Style<span class="tsd-signature-symbol">(</span>identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></li>
+						<li class="tsd-signature tsd-kind-icon">detect<wbr>Case<wbr>Style<span class="tsd-signature-symbol">(</span>identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/5eca75f/src/lib/helpers/rename.ts#L9">src/lib/helpers/rename.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/e904582/src/lib/helpers/rename.ts#L9">src/lib/helpers/rename.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -109,7 +109,16 @@
 									<h5>identifier: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">CaseStyle.CamelCase</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">CaseStyle.PascalCase</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">CaseStyle.SnakeCase</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">CaseStyle.KebabCase</span>
+							</h4>
 						</li>
 					</ul>
 				</section>
@@ -117,19 +126,19 @@
 					<a name="join" class="tsd-anchor"></a>
 					<h3>join</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">join<span class="tsd-signature-symbol">(</span>caseStyle<span class="tsd-signature-symbol">: </span><a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a>, parts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">join<span class="tsd-signature-symbol">(</span>caseStyle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span>, parts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/5eca75f/src/lib/helpers/rename.ts#L38">src/lib/helpers/rename.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/e904582/src/lib/helpers/rename.ts#L38">src/lib/helpers/rename.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>caseStyle: <a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></h5>
+									<h5>caseStyle: <span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span></h5>
 								</li>
 								<li>
 									<h5>parts: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
@@ -143,14 +152,14 @@
 					<a name="rename" class="tsd-anchor"></a>
 					<h3>rename</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">rename<span class="tsd-signature-symbol">(</span>identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, to<span class="tsd-signature-symbol">: </span><a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-						<li class="tsd-signature tsd-kind-icon">rename<span class="tsd-signature-symbol">(</span>identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, from<span class="tsd-signature-symbol">: </span><a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a>, to<span class="tsd-signature-symbol">: </span><a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">rename<span class="tsd-signature-symbol">(</span>identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, to<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">rename<span class="tsd-signature-symbol">(</span>identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, from<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span>, to<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/5eca75f/src/lib/helpers/rename.ts#L58">src/lib/helpers/rename.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/e904582/src/lib/helpers/rename.ts#L58">src/lib/helpers/rename.ts:58</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -159,7 +168,7 @@
 									<h5>identifier: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>to: <a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></h5>
+									<h5>to: <span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -167,7 +176,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/5eca75f/src/lib/helpers/rename.ts#L59">src/lib/helpers/rename.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/e904582/src/lib/helpers/rename.ts#L59">src/lib/helpers/rename.ts:59</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -176,10 +185,10 @@
 									<h5>identifier: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>from: <a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></h5>
+									<h5>from: <span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span></h5>
 								</li>
 								<li>
-									<h5>to: <a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></h5>
+									<h5>to: <span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -190,19 +199,19 @@
 					<a name="split" class="tsd-anchor"></a>
 					<h3>split</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">split<span class="tsd-signature-symbol">(</span>caseStyle<span class="tsd-signature-symbol">: </span><a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a>, identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">split<span class="tsd-signature-symbol">(</span>caseStyle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span>, identifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/5eca75f/src/lib/helpers/rename.ts#L23">src/lib/helpers/rename.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/e904582/src/lib/helpers/rename.ts#L23">src/lib/helpers/rename.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>caseStyle: <a href="../enums/_src_lib_helpers_rename_.casestyle.html" class="tsd-signature-type">CaseStyle</a></h5>
+									<h5>caseStyle: <span class="tsd-signature-type">CaseStyle.CamelCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.PascalCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.SnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.ScreamingSnakeCase</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CaseStyle.KebabCase</span></h5>
 								</li>
 								<li>
 									<h5>identifier: <span class="tsd-signature-type">string</span></h5>
