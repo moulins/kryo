@@ -1004,9 +1004,9 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
 
-demurgos-web-build-tools@^0.15.0-beta.2:
-  version "0.15.0-beta.2"
-  resolved "https://registry.yarnpkg.com/demurgos-web-build-tools/-/demurgos-web-build-tools-0.15.0-beta.2.tgz#7beb5f6a5c151da52fb8f8642977ed444a6bc73a"
+demurgos-web-build-tools@^0.15.0-beta.3:
+  version "0.15.0-beta.3"
+  resolved "https://registry.yarnpkg.com/demurgos-web-build-tools/-/demurgos-web-build-tools-0.15.0-beta.3.tgz#36b762363c3708c0ed1b9f526be32f1d3325611b"
   dependencies:
     "@types/del" "^2.2.32"
     "@types/gulp" "^4.0.4"
@@ -1158,8 +1158,8 @@ error-ex@^1.2.0:
     is-arrayish "^0.2.1"
 
 es5-ext@^0.10.13, es5-ext@^0.10.14, es5-ext@^0.10.9, es5-ext@~0.10.14, es5-ext@~0.10.2:
-  version "0.10.26"
-  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.26.tgz#51b2128a531b70c4f6764093a73cbebb82186372"
+  version "0.10.27"
+  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.27.tgz#bf926b058c62b1cb5de1a887930673b6aa6d9a66"
   dependencies:
     es6-iterator "2"
     es6-symbol "~3.1"
