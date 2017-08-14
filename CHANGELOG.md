@@ -1,5 +1,6 @@
 # Next
 
+- **[Feature]** Support lazy `Union` definition.
 - **[Internal]** Update build tools.
 
 # 0.5.0-alpha.10 (2017-08-11)

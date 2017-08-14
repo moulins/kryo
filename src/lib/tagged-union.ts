@@ -119,7 +119,7 @@ export class TaggedUnionType<T extends {}> extends union.UnionType<T> {
   readonly variants: DocumentType<T>[];
 
   constructor(options: Options<T, any, any, any>) {
-    super(toUnionOptions(options));
+    super(() => toUnionOptions(options));
   }
 
   toJSON(): json.Type {

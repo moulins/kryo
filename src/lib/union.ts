@@ -1,7 +1,7 @@
 import {Incident} from "incident";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {UnknownFormatError} from "./_errors/unknown-format";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "union";
 export const name: Name = "union";
@@ -50,6 +50,31 @@ export interface Options<T, Output, Input extends Output, Diff> {
   readTrustedMatcher?: ReadTrustedMatcher<T, Output, Input, Diff>;
 }
 
+function lazyProperties<T>(target: T, apply: () => void, keys: Iterable<string>): void {
+  function restoreProperties() {
+    for (const key of keys) {
+      Object.defineProperty(target, key, {
+        configurable: true,
+        value: undefined,
+        writable: true,
+      });
+    }
+    apply.call(target);
+  }
+
+  for (const key of keys) {
+    Object.defineProperty(target, key, {
+      get: () => {
+        restoreProperties();
+        return (target as any)[key];
+      },
+      set: undefined,
+      enumerable: true,
+      configurable: true,
+    });
+  }
+}
+
 export class UnionType<T>
   implements VersionedType<T, json.Input, json.Output, Diff>,
     SerializableType<T, "bson", bson.Input, bson.Output>,
@@ -61,14 +86,22 @@ export class UnionType<T>
   readonly readMatcher: ReadMatcher<T, any, any, Diff>;
   readonly readTrustedMatcher: ReadTrustedMatcher<T, any, any, Diff>;
 
-  constructor(options: Options<T, any, any, any>) {
-    this.variants = options.variants;
-    this.matcher = options.matcher;
-    /* tslint:disable-next-line:strict-boolean-expressions */
-    this.trustedMatcher = options.trustedMatcher || this.matcher as TrustedMatcher<T, any, any, Diff>;
-    this.readMatcher = options.readMatcher;
-    /* tslint:disable-next-line:strict-boolean-expressions */
-    this.readTrustedMatcher = options.readTrustedMatcher || this.readMatcher as ReadTrustedMatcher<T, any, any, Diff>;
+  private _options?: Lazy<Options<T, any, any, any>>;
+
+  constructor(options: Lazy<Options<T, any, any, any>>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["variants", "matcher", "trustedMatcher", "readMatcher", "readTrustedMatcher"],
+      );
+    }
   }
 
   toJSON(): json.Type {
@@ -148,6 +181,23 @@ export class UnionType<T>
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
     throw NotImplementedError.create("UnionType#squash");
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options<T, any, any, any> = typeof this._options === "function" ? this._options() : this._options;
+    delete this._options;
+    const variants: VersionedType<T, any, any, Diff>[] = options.variants;
+    const matcher: Matcher<T, any, any, Diff> = options.matcher;
+    /* tslint:disable-next-line:max-line-length strict-boolean-expressions */
+    const trustedMatcher: TrustedMatcher<T, any, any, Diff> = options.trustedMatcher || matcher as TrustedMatcher<T, any, any, Diff>;
+    const readMatcher: ReadMatcher<T, any, any, Diff> = options.readMatcher;
+    /* tslint:disable-next-line:max-line-length strict-boolean-expressions */
+    const readTrustedMatcher: ReadTrustedMatcher<T, any, any, Diff> = options.readTrustedMatcher || readMatcher as ReadTrustedMatcher<T, any, any, Diff>;
+    Object.assign(this, {variants, matcher, trustedMatcher, readMatcher, readTrustedMatcher});
+    Object.freeze(this);
   }
 }
 

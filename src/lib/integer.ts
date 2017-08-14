@@ -41,7 +41,16 @@ export interface Options {
   max?: number;
 }
 
+/**
+ * Default value for the `min` option.
+ * It corresponds to `-(2**53)`.
+ */
 export const DEFAULT_MIN: number = Number.MIN_SAFE_INTEGER - 1;
+
+/**
+ * Default value for the `max` option.
+ * It corresponds to `2**53 - 1`.
+ */
 export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 
 export class IntegerType
