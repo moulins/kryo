@@ -15,8 +15,8 @@
     "start": "npm test",
     "prepublishOnly": "npm test",
     ":lint": "gulp :lint",
-    "typedoc": "npm run gulp lib:dist && cd dist/lib && typedoc --includeDeclarations --out docs --module commonjs --target es2015 --mode modules --name Kryo --readme README.md .",
-    "gh-pages": "npm run gulp lib:dist && rm -rf build/gh-pages/ && cd dist/lib && typedoc --includeDeclarations --out ../../build/gh-pages/ --module commonjs --target es2015 --mode modules --name Kryo --readme README.md . && cd ../.. && touch build/gh-pages/.nojekyll && cp -r build/gh-pages/. dist/gh-pages/"
+    "typedoc": "gulp lib:typedoc",
+    "gh-pages": "rm -rf typedoc/ && gulp lib:typedoc && touch typedoc/.nojekyll && cp -r typedoc/. dist/gh-pages/"
   },
   "pre-commit": {
     "run": [
@@ -40,11 +40,11 @@
     "@types/node": "^8.0.20",
     "@types/qs": "^6.2.31",
     "chai": "^3.5.0",
-    "demurgos-web-build-tools": "^0.15.0-beta.3",
+    "demurgos-web-build-tools": "^0.15.0-beta.5",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-cli": "^1.4.0",
     "pre-commit": "^1.2.2",
-    "qs": "^6.4.0",
+    "qs": "^6.5.0",
     "ts-node": "^3.3.0",
     "typedoc": "^0.8.0",
     "typescript": "^2.4.2"

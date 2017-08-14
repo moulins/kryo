@@ -1,5 +1,9 @@
 # Next
 
+- **[Internal]** Update build tools.
+
+# 0.5.0-alpha.10 (2017-08-11)
+
 - **[Breaking]** Replace `"browser"` with ES5 CommonJS modules by `"module""` with ES6 modules in `package.json`
 - **[Breaking]** Drop library support of ES5, use a shim or transpiler if needed.
 - **[Breaking]** Mark `unorm` and `bson` as optional dependencies.
