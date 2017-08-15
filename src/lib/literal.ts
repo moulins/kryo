@@ -1,7 +1,8 @@
 import {Incident} from "incident";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {UnknownFormatError} from "./_errors/unknown-format";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "literal";
 export const name: Name = "literal";
@@ -33,9 +34,22 @@ export class LiteralType<T>
   readonly type: VersionedType<T, any, any, Diff>;
   readonly value: T;
 
-  constructor(options: Options<T, any, any, any>) {
-    this.type = options.type;
-    this.value = options.value;
+  private _options: Lazy<Options<T, any, any, any>>;
+
+  constructor(options: Lazy<Options<T, any, any, any>>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["min", "max"],
+      );
+    }
   }
 
   toJSON(): json.Type {
@@ -107,6 +121,19 @@ export class LiteralType<T>
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
     throw NotImplementedError.create("LiteralType#squash");
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options<T, any, any, any> = typeof this._options === "function" ? this._options() : this._options;
+
+    const type: VersionedType<T, any, any, Diff> = options.type;
+    const value: T = options.value;
+
+    Object.assign(this, {type, value});
+    Object.freeze(this);
   }
 }
 

@@ -1,7 +1,8 @@
 import {Incident} from "incident";
 import {UnknownFormatError} from "./_errors/unknown-format";
 import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "float64";
 export const name: Name = "float64";
@@ -38,15 +39,26 @@ export class Float64Type
   readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
   readonly notInfinity: boolean; // TODO(demurgos): rename to allowInfinity
 
-  constructor(options?: Options) {
-    const defaultNotNan: boolean = true;
-    const defaultNotInfinity: boolean = true;
+  private _options: Lazy<Options>;
+
+  constructor(options?: Lazy<Options>, lazy?: boolean) {
     if (options === undefined) {
-      this.notNan = defaultNotNan;
-      this.notInfinity = defaultNotInfinity;
+      this._options = {};
+      this._applyOptions();
+      return;
+    }
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
     } else {
-      this.notNan = options.notNan !== undefined ? options.notNan : defaultNotNan;
-      this.notInfinity = options.notInfinity !== undefined ? options.notInfinity : defaultNotInfinity;
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["notNan", "notInfinity"],
+      );
     }
   }
 
@@ -228,6 +240,23 @@ export class Float64Type
       return [diff1[0], diff1[1]];
     }
     return this.equals(diff1[0], diff2[1]) ? undefined : [diff1[0], diff2[1]];
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options = typeof this._options === "function" ? this._options() : this._options;
+
+    let notNan: boolean = true;
+    let notInfinity: boolean = true;
+    if (options !== undefined) {
+      notNan = options.notNan !== undefined ? options.notNan : notNan;
+      notInfinity = options.notInfinity !== undefined ? options.notInfinity : notInfinity;
+    }
+
+    Object.assign(this, {notNan, notInfinity});
+    Object.freeze(this);
   }
 }
 

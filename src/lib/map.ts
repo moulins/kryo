@@ -2,7 +2,8 @@ import {Incident} from "incident";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {UnknownFormatError} from "./_errors/unknown-format";
 import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "map";
 export const name: Name = "map";
@@ -51,11 +52,22 @@ export class MapType<K, V>
   readonly maxSize: number;
   readonly assumeStringKey: boolean;
 
-  constructor(options: Options<K, V>) {
-    this.keyType = options.keyType;
-    this.valueType = options.valueType;
-    this.maxSize = options.maxSize;
-    this.assumeStringKey = options.assumeStringKey || false;
+  private _options: Lazy<Options<K, V>>;
+
+  constructor(options: Lazy<Options<K, V>>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["keyType", "valueType", "maxSize", "assumeStringKey"],
+      );
+    }
   }
 
   toJSON(): json.Type {
@@ -193,6 +205,21 @@ export class MapType<K, V>
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
     throw NotImplementedError.create("MapType#squash");
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options<K, V> = typeof this._options === "function" ? this._options() : this._options;
+
+    const keyType: VersionedType<K, any, any, any> = options.keyType;
+    const valueType: VersionedType<V, any, any, any> = options.valueType;
+    const maxSize: number = options.maxSize;
+    const assumeStringKey: boolean = options.assumeStringKey || false;
+
+    Object.assign(this, {keyType, valueType, maxSize, assumeStringKey});
+    Object.freeze(this);
   }
 }
 

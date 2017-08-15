@@ -8,7 +8,8 @@ import {PatternNotMatchedError} from "./_errors/pattern-not-matched";
 import {UnknownFormatError} from "./_errors/unknown-format";
 import {WrongTypeError} from "./_errors/wrong-type";
 import {checkedUcs2Decode} from "./_helpers/checked-ucs2-decode";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 let unormNfc: ((str: string) => string) | undefined = undefined;
 try {
@@ -106,14 +107,22 @@ export class CodepointStringType
   readonly minCodepoints?: number;
   readonly maxCodepoints: number;
 
-  constructor(options: Options) {
-    this.normalization = options.normalization !== undefined ? options.normalization : Normalization.Nfc;
-    this.enforceUnicodeRegExp = options.enforceUnicodeRegExp !== undefined ? options.enforceUnicodeRegExp : true;
-    this.pattern = options.pattern;
-    this.lowerCase = options.lowerCase !== undefined ? options.lowerCase : false;
-    this.trimmed = options.trimmed !== undefined ? options.trimmed : false;
-    this.minCodepoints = options.minCodepoints;
-    this.maxCodepoints = options.maxCodepoints;
+  private _options: Lazy<Options>;
+
+  constructor(options: Lazy<Options>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["normalization", "enforceUnicodeRegExp", "pattern", "lowerCase", "trimmed", "minCodepoints", "maxCodepoints"],
+      );
+    }
   }
 
   static fromJSON(options: json.Type): CodepointStringType {
@@ -269,6 +278,31 @@ export class CodepointStringType
       return [diff1[0], diff1[1]];
     }
     return diff1[0] === diff2[1] ? undefined : [diff1[0], diff2[1]];
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options = typeof this._options === "function" ? this._options() : this._options;
+
+    const normalization: Normalization = options.normalization !== undefined ?
+      options.normalization :
+      Normalization.Nfc;
+    const enforceUnicodeRegExp: boolean = options.enforceUnicodeRegExp !== undefined ?
+      options.enforceUnicodeRegExp :
+      true;
+    const pattern: RegExp | undefined = options.pattern;
+    const lowerCase: boolean = options.lowerCase !== undefined ? options.lowerCase : false;
+    const trimmed: boolean = options.trimmed !== undefined ? options.trimmed : false;
+    const minCodepoints: number | undefined = options.minCodepoints;
+    const maxCodepoints: number = options.maxCodepoints;
+
+    Object.assign(
+      this,
+      {normalization, enforceUnicodeRegExp, pattern, lowerCase, trimmed, minCodepoints, maxCodepoints},
+    );
+    Object.freeze(this);
   }
 }
 

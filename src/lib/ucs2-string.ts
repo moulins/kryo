@@ -6,7 +6,8 @@ import {NotTrimmedError} from "./_errors/not-trimmed";
 import {PatternNotMatchedError} from "./_errors/pattern-not-matched";
 import {UnknownFormatError} from "./_errors/unknown-format";
 import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";
@@ -124,13 +125,22 @@ export class Ucs2StringType
   readonly minLength?: number;
   readonly maxLength: number;
 
-  constructor(options: Options) {
-    this.allowUnicodeRegExp = options.allowUnicodeRegExp !== undefined ? options.allowUnicodeRegExp : true;
-    this.pattern = options.pattern;
-    this.lowerCase = options.lowerCase !== undefined ? options.lowerCase : false;
-    this.trimmed = options.trimmed !== undefined ? options.trimmed : false;
-    this.minLength = options.minLength;
-    this.maxLength = options.maxLength;
+  private _options: Lazy<Options>;
+
+  constructor(options: Lazy<Options>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["allowUnicodeRegExp", "pattern", "lowerCase", "trimmed", "minLength", "maxLength"],
+      );
+    }
   }
 
   static fromJSON(options: json.Type): Ucs2StringType {
@@ -261,6 +271,23 @@ export class Ucs2StringType
       return [diff1[0], diff1[1]];
     }
     return diff1[0] === diff2[1] ? undefined : [diff1[0], diff2[1]];
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options = typeof this._options === "function" ? this._options() : this._options;
+
+    const allowUnicodeRegExp: boolean = options.allowUnicodeRegExp !== undefined ? options.allowUnicodeRegExp : true;
+    const pattern: RegExp | undefined = options.pattern;
+    const lowerCase: boolean = options.lowerCase !== undefined ? options.lowerCase : false;
+    const trimmed: boolean = options.trimmed !== undefined ? options.trimmed : false;
+    const minLength: number | undefined = options.minLength;
+    const maxLength: number = options.maxLength;
+
+    Object.assign(this, {allowUnicodeRegExp, pattern, lowerCase, trimmed, minLength, maxLength});
+    Object.freeze(this);
   }
 }
 

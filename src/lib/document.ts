@@ -5,8 +5,9 @@ import {MissingKeysError} from "./_errors/missing-keys";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {NullPropertyError} from "./_errors/null-property";
 import {WrongTypeError} from "./_errors/wrong-type";
+import {lazyProperties} from "./_helpers/lazy-properties";
 import {CaseStyle, rename} from "./_helpers/rename";
-import {SerializableType, Type as KryoType, VersionedType} from "./_interfaces";
+import {Lazy, SerializableType, Type as KryoType, VersionedType} from "./_interfaces";
 
 export type Name = "document";
 export const name: Name = "document";
@@ -128,20 +129,21 @@ export class DocumentType<T extends {}>
    */
   private readonly outKeys: Map<string, string>;
 
-  constructor(options: Options<VersionedType<any, any, any, any>>) {
-    this.ignoreExtraKeys = options.ignoreExtraKeys || false;
-    this.properties = options.properties;
-    this.rename = options.rename;
-    this.keys = new Map<string, string>();
-    this.outKeys = new Map<string, string>();
+  private _options: Lazy<Options<VersionedType<any, any, any, any>>>;
 
-    for (const key in this.properties) {
-      const renamed: string = this.rename === undefined ? key : rename(key, this.rename);
-      this.keys.set(key, renamed);
-      if (this.outKeys.has(renamed)) {
-        throw new Incident("NonBijectiveKeyRename", "Some keys are the same after renaming");
-      }
-      this.outKeys.set(renamed, key);
+  constructor(options: Lazy<Options<VersionedType<any, any, any, any>>>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["ignoreExtraKeys", "properties", "rename", "keys", "outKeys"],
+      );
     }
   }
 
@@ -344,6 +346,33 @@ export class DocumentType<T extends {}>
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
     throw NotImplementedError.create("DocumentType#squash");
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options<VersionedType<any, any, any, any>> = typeof this._options === "function" ?
+      this._options() :
+      this._options;
+
+    const ignoreExtraKeys: boolean = options.ignoreExtraKeys || false;
+    const properties: {[key: string]: PropertyDescriptor<VersionedType<any, any, any, any>>} = options.properties;
+    const renameAll: CaseStyle | undefined = options.rename;
+    const keys: Map<string, string> = new Map<string, string>();
+    const outKeys: Map<string, string> = new Map<string, string>();
+
+    for (const key in properties) {
+      const renamed: string = renameAll === undefined ? key : rename(key, renameAll);
+      keys.set(key, renamed);
+      if (outKeys.has(renamed)) {
+        throw new Incident("NonBijectiveKeyRename", "Some keys are the same after renaming");
+      }
+      outKeys.set(renamed, key);
+    }
+
+    Object.assign(this, {ignoreExtraKeys, properties, rename: renameAll, keys, outKeys});
+    Object.freeze(this);
   }
 }
 

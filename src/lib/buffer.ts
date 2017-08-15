@@ -1,10 +1,12 @@
 import {Binary as BinaryType} from "bson";
+import {Incident} from "incident";
 import {MaxArrayLengthError} from "./_errors/max-array-length";
 import {MissingDependencyError} from "./_errors/missing-dependency";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {UnknownFormatError} from "./_errors/unknown-format";
 import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "buffer";
 export const name: Name = "buffer";
@@ -49,8 +51,22 @@ export class BufferType
   readonly name: Name = name;
   readonly maxLength: number;
 
-  constructor(options: Options) {
-    this.maxLength = options.maxLength;
+  private _options: Lazy<Options>;
+
+  constructor(options: Lazy<Options>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["maxLength"],
+      );
+    }
   }
 
   toJSON(): json.Type {
@@ -183,6 +199,18 @@ export class BufferType
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
     throw NotImplementedError.create("BufferType#squash");
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options = typeof this._options === "function" ? this._options() : this._options;
+
+    const maxLength: number = options.maxLength;
+
+    Object.assign(this, {maxLength});
+    Object.freeze(this);
   }
 }
 

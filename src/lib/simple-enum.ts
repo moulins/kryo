@@ -1,8 +1,9 @@
 import {Incident} from "incident";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {WrongTypeError} from "./_errors/wrong-type";
+import {lazyProperties} from "./_helpers/lazy-properties";
 import {CaseStyle, rename} from "./_helpers/rename";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type SimpleEnum<EnumConstructor> = {
   [K in keyof EnumConstructor]: EnumConstructor[K];
@@ -68,34 +69,21 @@ export class SimpleEnumType<E extends number>
   private readonly outputNameToValue: AnySimpleEnum;
   private readonly valueToOutputName: AnyReversedEnum;
 
-  constructor(options: Options<E>) {
-    this.enum = <any> options.enum;
-    this.rename = options.rename;
+  private _options: Lazy<Options<E>>;
 
-    this.outputNameToValue = {};
-    this.valueToOutputName = {};
-    for (const key in options.enum) {
-      if (/^\d+$/.test(key)) {
-        continue;
-      }
-      const value: number = (<{[name: string]: number}> options.enum)[key];
-      if (typeof value !== "number") {
-        throw WrongTypeError.create("number", value);
-      }
-      if (!options.enum.hasOwnProperty(value) || !options.enum.hasOwnProperty(value)) {
-        throw new Incident("NotSimpleEnum", "Not owned key or value");
-      }
-      if ((<{[value: number]: string}> options.enum)[value] !== key) {
-        throw new Incident("NotReversibleEnum", "enum[enum[key]] !== key");
-      }
-      let renamed: string;
-      if (options.rename === undefined) {
-        renamed = key;
-      } else {
-        renamed = rename(key, options.rename);
-      }
-      this.outputNameToValue[renamed] = value;
-      this.valueToOutputName[value] = renamed;
+  constructor(options: Lazy<Options<E>>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["enum", "rename", "outputNameToValue", "valueToOutputName"],
+      );
     }
   }
 
@@ -177,6 +165,45 @@ export class SimpleEnumType<E extends number>
       return diff1;
     }
     return diff2 === -diff1 ? undefined : diff1 + diff2;
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options<E> = typeof this._options === "function" ? this._options() : this._options;
+
+  const baseEnum: EnumConstructor<E> = <any> options.enum;
+  const renameAll: CaseStyle | undefined = options.rename;
+  const outputNameToValue: AnySimpleEnum = {};
+  const valueToOutputName: AnyReversedEnum = {};
+
+    for (const key in baseEnum) {
+      if (/^\d+$/.test(key)) {
+        continue;
+      }
+      const value: number = (<{[name: string]: number}> options.enum)[key];
+      if (typeof value !== "number") {
+        throw WrongTypeError.create("number", value);
+      }
+      if (!baseEnum.hasOwnProperty(value) || !baseEnum.hasOwnProperty(value)) {
+        throw new Incident("NotSimpleEnum", "Not owned key or value");
+      }
+      if ((<any> baseEnum[value] as string) !== key) {
+        throw new Incident("NotReversibleEnum", "enum[enum[key]] !== key");
+      }
+      let renamed: string;
+      if (renameAll === undefined) {
+        renamed = key;
+      } else {
+        renamed = rename(key, renameAll);
+      }
+      outputNameToValue[renamed] = value;
+      valueToOutputName[value] = renamed;
+    }
+
+    Object.assign(this, {enum: baseEnum, rename: renameAll, outputNameToValue, valueToOutputName});
+    Object.freeze(this);
   }
 }
 

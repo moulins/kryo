@@ -1,9 +1,11 @@
+import {Incident} from "incident";
 import {InvalidArrayItemError} from "./_errors/invalid-array-item";
 import {MaxArrayLengthError} from "./_errors/max-array-length";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {UnknownFormatError} from "./_errors/unknown-format";
 import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "array";
 export const name: Name = "array";
@@ -36,9 +38,22 @@ export class ArrayType<T>
   readonly itemType: VersionedType<T, any, any, any>;
   readonly maxLength: number;
 
-  constructor(options: Options<T, any, any, any>) {
-    this.itemType = options.itemType;
-    this.maxLength = options.maxLength;
+  private _options: Lazy<Options<T, any, any, any>>;
+
+  constructor(options: Lazy<Options<T, any, any, any>>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["itemType", "maxLength"],
+      );
+    }
   }
 
   toJSON(): json.Type {
@@ -173,6 +188,19 @@ export class ArrayType<T>
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
     throw NotImplementedError.create("ArrayType#squash");
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options<T, any, any, any> = typeof this._options === "function" ? this._options() : this._options;
+
+    const itemType: VersionedType<T, any, any, any> = options.itemType;
+    const maxLength: number = options.maxLength;
+
+    Object.assign(this, {itemType, maxLength});
+    Object.freeze(this);
   }
 }
 

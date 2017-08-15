@@ -2,7 +2,8 @@ import {Incident} from "incident";
 import {InvalidIntegerError} from "./_errors/invalid-integer";
 import {UnknownFormatError} from "./_errors/unknown-format";
 import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "int";
 export const name: Name = "int";
@@ -62,14 +63,27 @@ export class IntegerType
   readonly min: number;
   readonly max: number;
 
-  constructor(options?: Options) {
+  private _options: Lazy<Options>;
+
+  constructor(options?: Lazy<Options>, lazy?: boolean) {
     if (options === undefined) {
-      this.min = DEFAULT_MIN;
-      this.max = DEFAULT_MAX;
+      this._options = {};
+      this._applyOptions();
       return;
     }
-    this.min = options.min !== undefined ? options.min : DEFAULT_MIN;
-    this.max = options.max !== undefined ? options.max : DEFAULT_MAX;
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["min", "max"],
+      );
+    }
   }
 
   static fromJSON(options: json.Type): IntegerType {
@@ -184,6 +198,19 @@ export class IntegerType
       return diff1;
     }
     return diff2 === -diff1 ? undefined : diff1 + diff2;
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options = typeof this._options === "function" ? this._options() : this._options;
+
+    const min: number = options.min !== undefined ? options.min : DEFAULT_MIN;
+    const max: number = options.max !== undefined ? options.max : DEFAULT_MAX;
+
+    Object.assign(this, {min, max});
+    Object.freeze(this);
   }
 }
 

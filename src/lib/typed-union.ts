@@ -1,6 +1,7 @@
 import {Incident} from "incident";
 import {NotImplementedError} from "./_errors/not-implemented";
-import {VersionedType} from "./_interfaces";
+import {lazyProperties} from "./_helpers/lazy-properties";
+import {Lazy, VersionedType} from "./_interfaces";
 
 export type Name = "typed-union";
 export const name: Name = "typed-union";
@@ -9,11 +10,14 @@ export namespace json {
   export type Output = any;
   export interface Type {
     name: Name;
-    notNan: boolean;
-    notInfinity: boolean;
   }
 }
 export type Diff = [number, number];
+
+export interface Options<T> {
+  itemType: VersionedType<any, any, any, any>;
+  values: T[];
+}
 
 // TODO: Rename to whiteList
 export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
@@ -21,9 +25,22 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
   readonly itemType: VersionedType<any, any, any, any>;
   readonly values: T[];
 
-  constructor(itemType: VersionedType<any, any, any, any>, values: T[]) {
-    this.itemType = itemType;
-    this.values = values;
+  private _options: Lazy<Options<T>>;
+
+  constructor(options: Lazy<Options<T>>, lazy?: boolean) {
+    this._options = options;
+    if (lazy === undefined) {
+      lazy = typeof options === "function";
+    }
+    if (!lazy) {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["itemType", "values"],
+      );
+    }
   }
 
   static fromJSON(options: json.Type): TypedUnionType<any> {
@@ -91,6 +108,19 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
     return this.itemType.squash(diff1, diff2);
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw new Incident("No pending options");
+    }
+    const options: Options<T> = typeof this._options === "function" ? this._options() : this._options;
+
+    const itemType: VersionedType<any, any, any, any> = options.itemType;
+    const values: T[] = options.values;
+
+    Object.assign(this, {itemType, values});
+    Object.freeze(this);
   }
 }
 

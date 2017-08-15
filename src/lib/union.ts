@@ -1,6 +1,7 @@
 import {Incident} from "incident";
 import {NotImplementedError} from "./_errors/not-implemented";
 import {UnknownFormatError} from "./_errors/unknown-format";
+import {lazyProperties} from "./_helpers/lazy-properties";
 import {Lazy, SerializableType, VersionedType} from "./_interfaces";
 
 export type Name = "union";
@@ -48,31 +49,6 @@ export interface Options<T, Output, Input extends Output, Diff> {
   trustedMatcher?: TrustedMatcher<T, Output, Input, Diff>;
   readMatcher: ReadMatcher<T, Output, Input, Diff>;
   readTrustedMatcher?: ReadTrustedMatcher<T, Output, Input, Diff>;
-}
-
-function lazyProperties<T>(target: T, apply: () => void, keys: Iterable<string>): void {
-  function restoreProperties() {
-    for (const key of keys) {
-      Object.defineProperty(target, key, {
-        configurable: true,
-        value: undefined,
-        writable: true,
-      });
-    }
-    apply.call(target);
-  }
-
-  for (const key of keys) {
-    Object.defineProperty(target, key, {
-      get: () => {
-        restoreProperties();
-        return (target as any)[key];
-      },
-      set: undefined,
-      enumerable: true,
-      configurable: true,
-    });
-  }
 }
 
 export class UnionType<T>
