@@ -1,5 +1,6 @@
 # Next
 
+- **[Feature]** Add free-form JSON type, contains any valid `JSON` value.
 - **[Feature]** Support lazy options definition. Instead of an option object, you can now pass a function returning an
   option object. It will be evaluated only once one of its values is needed. This enables circular dependencies.
 - **[Internal]** Update build tools.

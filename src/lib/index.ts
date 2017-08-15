@@ -8,6 +8,7 @@ export {DateType} from "./date";
 export {DocumentType} from "./document";
 export {Float64Type} from "./float64";
 export {IntegerType} from "./integer";
+export {JsonType} from "./json";
 export {LiteralType} from "./literal";
 export {MapType} from "./map";
 export {NullType} from "./null";
@@ -24,7 +25,9 @@ import * as codepointString  from "./codepoint-string";
 import * as date  from "./date";
 import * as document  from "./document";
 import * as float64  from "./float64";
+// TODO(demurgos): Rename to `integer` (`integer` is the new name, it covers up to 53 bits).
 import * as int32  from "./integer";
+import * as json  from "./json";
 import * as literal  from "./literal";
 import * as map  from "./map";
 import * as _null  from "./null";
@@ -43,6 +46,7 @@ export {
   float64,
   int32,
   literal,
+  json,
   map,
   _null as null,
   simpleEnum,
