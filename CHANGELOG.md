@@ -1,4 +1,4 @@
-# Next
+# 0.5.0-alpha.12 (2017-08-16)
 
 - **[Fix]** Support lazy options for `TaggedUnion`.
 
