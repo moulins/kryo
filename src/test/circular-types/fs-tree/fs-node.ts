@@ -6,10 +6,10 @@ export type FsNode =
   Directory
   | File;
 
-export const $FsNode: TaggedUnionType<FsNode> = new TaggedUnionType<FsNode>({
+export const $FsNode: TaggedUnionType<FsNode> = new TaggedUnionType<FsNode>(() => ({
   variants: [
     $Directory,
     $File,
   ],
   tag: "type",
-});
+}));

@@ -1,3 +1,7 @@
+# Next
+
+- **[Fix]** Support lazy options for `TaggedUnion`.
+
 # 0.5.0-alpha.11 (2017-08-15)
 
 - **[Feature]** Add free-form JSON type, contains any valid `JSON` value.

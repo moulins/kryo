@@ -1,6 +1,6 @@
 import {Incident} from "incident";
 import {NotImplementedError} from "./_errors/not-implemented";
-import {SerializableType} from "./_interfaces";
+import {Lazy, SerializableType} from "./_interfaces";
 import {DocumentType} from "./document";
 import {LiteralType} from "./literal";
 import {SimpleEnumType} from "./simple-enum";
@@ -12,6 +12,7 @@ export namespace bson {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
@@ -20,15 +21,18 @@ export namespace json {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
+
   export type Type = undefined;
 }
 export namespace qs {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
@@ -55,6 +59,11 @@ function toUnionOptions<T extends {}>(options: Options<T, any, any, any>): union
   };
 
   for (const variant of options.variants) {
+    if (variant === undefined) {
+      /* tslint:disable-next-line:max-line-length */
+      throw new Incident("UndefinedVariant", {options}, "The supplied TaggedUnion options contain undefined variants. If you have circular dependencies, try to use lazy options.");
+    }
+
     if (!(tagName in variant.properties)) {
       throw new Incident("TagNotFound", "Tag not found in variant of tagged union");
     }
@@ -118,8 +127,8 @@ export class TaggedUnionType<T extends {}> extends union.UnionType<T> {
   readonly names: string[] = [this.name, name];
   readonly variants: DocumentType<T>[];
 
-  constructor(options: Options<T, any, any, any>) {
-    super(() => toUnionOptions(options));
+  constructor(options: Lazy<Options<T, any, any, any>>, lazy?: boolean) {
+    super(() => toUnionOptions(typeof options === "function" ? options() : options), lazy);
   }
 
   toJSON(): json.Type {
