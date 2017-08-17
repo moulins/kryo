@@ -1,4 +1,4 @@
-# Next
+# 0.5.0-alpha.13 (2017-08-17)
 
 - **[Feature]** Add `TryUnion` type
 - **[Feature]** Add methods to get the variant used by union types.
