@@ -1,3 +1,8 @@
+# Next
+
+- **[Feature]** Add `TryUnion` type
+- **[Feature]** Add methods to get the variant used by union types.
+
 # 0.5.0-alpha.12 (2017-08-16)
 
 - **[Fix]** Support lazy options for `TaggedUnion`.

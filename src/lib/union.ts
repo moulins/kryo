@@ -51,6 +51,9 @@ export interface Options<T, Output, Input extends Output, Diff> {
   readTrustedMatcher?: ReadTrustedMatcher<T, Output, Input, Diff>;
 }
 
+/* tslint:disable-next-line:max-line-length */
+export type TestWithVariantResult<T> = [true, VersionedType<T, any, any, any>] | [false, VersionedType<T, any, any, any> | undefined];
+
 export class UnionType<T>
   implements VersionedType<T, json.Input, json.Output, Diff>,
     SerializableType<T, "bson", bson.Input, bson.Output>,
@@ -84,28 +87,40 @@ export class UnionType<T>
     throw NotImplementedError.create("UnionType#toJSON");
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+  readTrustedWithVariant(format: "bson", val: bson.Output): [T, VersionedType<T, any, any, Diff>];
+  readTrustedWithVariant(format: "json", val: json.Output): [T, VersionedType<T, any, any, Diff>];
+  readTrustedWithVariant(format: "qs", val: qs.Output): [T, VersionedType<T, any, any, Diff>];
+  readTrustedWithVariant(format: "bson" | "json" | "qs", input: any): [T, VersionedType<T, any, any, Diff>] {
+    const variant: VersionedType<T, any, any, Diff> = this.readTrustedMatcher(format, input, this.variants);
     // TODO(demurgos): Check if the format is supported instead of casting to `any`
-    return this.readTrustedMatcher(format, input, this.variants).readTrusted(<any> format, input);
+    return [variant.readTrusted(<any> format, input), variant];
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
+  readWithVariant(format: "bson" | "json" | "qs", input: any): [T, VersionedType<T, any, any, Diff>] {
     switch (format) {
       case "bson":
       case "json":
       case "qs":
         // TODO(demurgos): Check if the format is supported instead of casting to `any`
-        const type: VersionedType<T, any, any, any> | undefined = this.readMatcher(format, input, this.variants);
-        if (type === undefined) {
+        const variant: VersionedType<T, any, any, any> | undefined = this.readMatcher(format, input, this.variants);
+        if (variant === undefined) {
           throw Incident("UnknownUnionVariant", "Unknown union variant");
         }
-        return type.read(<any> format, input);
+        return [variant.read(<any> format, input), variant];
       default:
         throw UnknownFormatError.create(format);
     }
+  }
+
+  readTrusted(format: "bson", val: bson.Output): T;
+  readTrusted(format: "json", val: json.Output): T;
+  readTrusted(format: "qs", val: qs.Output): T;
+  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+    return this.readTrustedWithVariant(format as any, input)[0];
+  }
+
+  read(format: "bson" | "json" | "qs", input: any): T {
+    return this.readWithVariant(format as any, input)[0];
   }
 
   write(format: "bson", val: T): bson.Output;
@@ -122,6 +137,14 @@ export class UnionType<T>
       return Incident("UnknownUnionVariant", "Unknown union variant");
     }
     return type.testError(val);
+  }
+
+  testWithVariant(val: T): TestWithVariantResult<T> {
+    const variant: VersionedType<T, any, any, any> | undefined = this.matcher(val, this.variants);
+    if (variant === undefined) {
+      return [false, undefined];
+    }
+    return [variant.test(val), variant] as TestWithVariantResult<T>;
   }
 
   test(val: T): boolean {
@@ -167,11 +190,38 @@ export class UnionType<T>
     delete this._options;
     const variants: VersionedType<T, any, any, Diff>[] = options.variants;
     const matcher: Matcher<T, any, any, Diff> = options.matcher;
-    /* tslint:disable-next-line:max-line-length strict-boolean-expressions */
-    const trustedMatcher: TrustedMatcher<T, any, any, Diff> = options.trustedMatcher || matcher as TrustedMatcher<T, any, any, Diff>;
+
+    let trustedMatcher: TrustedMatcher<T, any, any, Diff>;
+    if (options.trustedMatcher !== undefined) {
+      trustedMatcher = options.trustedMatcher;
+    } else {
+      trustedMatcher = (value: T, variants: VersionedType<T, any, any, any>[]) => {
+        const variant: VersionedType<T, any, any, Diff> | undefined = matcher(value, variants);
+        if (variant === undefined) {
+          throw Incident("UnknownUnionVariant", "Unknown union variant");
+        }
+        return variant;
+      };
+    }
+
     const readMatcher: ReadMatcher<T, any, any, Diff> = options.readMatcher;
-    /* tslint:disable-next-line:max-line-length strict-boolean-expressions */
-    const readTrustedMatcher: ReadTrustedMatcher<T, any, any, Diff> = options.readTrustedMatcher || readMatcher as ReadTrustedMatcher<T, any, any, Diff>;
+
+    let readTrustedMatcher: ReadTrustedMatcher<T, any, any, Diff>;
+    if (options.readTrustedMatcher !== undefined) {
+      readTrustedMatcher = options.readTrustedMatcher;
+    } else {
+      readTrustedMatcher = (
+        format: "bson" | "json" | "qs",
+        value: any,
+        variants: VersionedType<T, any, any, any>[],
+      ): VersionedType<T, any, any, any> => {
+        const variant: VersionedType<T, any, any, Diff> | undefined = readMatcher(format, value, variants);
+        if (variant === undefined) {
+          throw Incident("UnknownUnionVariant", "Unknown union variant");
+        }
+        return variant;
+      };
+    }
     Object.assign(this, {variants, matcher, trustedMatcher, readMatcher, readTrustedMatcher});
     Object.freeze(this);
   }

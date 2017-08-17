@@ -14,6 +14,7 @@ export {MapType} from "./map";
 export {NullType} from "./null";
 export {SimpleEnumType} from "./simple-enum";
 export {TaggedUnionType} from "./tagged-union";
+export {TryUnionType} from "./try-union";
 export {TypedUnionType} from "./typed-union";
 export {Ucs2StringType} from "./ucs2-string";
 export {UnionType} from "./union";
@@ -33,6 +34,7 @@ import * as map  from "./map";
 import * as _null  from "./null";
 import * as simpleEnum  from "./simple-enum";
 import * as taggedUnion  from "./tagged-union";
+import * as tryUnion  from "./try-union";
 import * as typedUnion  from "./typed-union";
 import * as ucs2String  from "./ucs2-string";
 import * as union  from "./union";
@@ -51,6 +53,7 @@ export {
   _null as null,
   simpleEnum,
   taggedUnion,
+  tryUnion,
   typedUnion,
   ucs2String,
   union,
