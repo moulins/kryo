@@ -104,7 +104,6 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_typed_union_.typeduniontype.html#_options" class="tsd-kind-icon">_options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_typed_union_.typeduniontype.html#itemtype" class="tsd-kind-icon">item<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_typed_union_.typeduniontype.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_typed_union_.typeduniontype.html#values" class="tsd-kind-icon">values</a></li>
@@ -113,7 +112,6 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_typed_union_.typeduniontype.html#_applyoptions" class="tsd-kind-icon">_apply<wbr>Options</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typed_union_.typeduniontype.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typed_union_.typeduniontype.html#diff" class="tsd-kind-icon">diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typed_union_.typeduniontype.html#equals" class="tsd-kind-icon">equals</a></li>
@@ -138,22 +136,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Typed<wbr>Union<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/__interfaces_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_typed_union_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>, lazy<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_typed_union_.typeduniontype.html" class="tsd-signature-type">TypedUnionType</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Typed<wbr>Union<wbr>Type<span class="tsd-signature-symbol">(</span>itemType<span class="tsd-signature-symbol">: </span><a href="../interfaces/__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_typed_union_.typeduniontype.html" class="tsd-signature-type">TypedUnionType</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L28">typed-union.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L22">typed-union.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>options: <a href="../modules/__interfaces_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_typed_union_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>itemType: <a href="../interfaces/__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> lazy: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>values: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_typed_union_.typeduniontype.html" class="tsd-signature-type">TypedUnionType</a></h4>
@@ -163,23 +161,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_options" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _options</h3>
-					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/__interfaces_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_typed_union_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L28">typed-union.ts:28</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="itemtype" class="tsd-anchor"></a>
 					<h3>item<wbr>Type</h3>
 					<div class="tsd-signature tsd-kind-icon">item<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../interfaces/__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L25">typed-union.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L21">typed-union.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -190,7 +178,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L24">typed-union.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L20">typed-union.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -200,30 +188,13 @@
 					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L26">typed-union.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L22">typed-union.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="_applyoptions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _apply<wbr>Options</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_apply<wbr>Options<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L113">typed-union.ts:113</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="clone" class="tsd-anchor"></a>
 					<h3>clone</h3>
@@ -235,7 +206,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L93">typed-union.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L76">typed-union.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -259,7 +230,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#diff">diff</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L97">typed-union.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L80">typed-union.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -289,7 +260,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L89">typed-union.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L72">typed-union.ts:72</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -315,7 +286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L101">typed-union.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L84">typed-union.ts:84</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -341,7 +312,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L58">typed-union.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L41">typed-union.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -367,7 +338,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L54">typed-union.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L37">typed-union.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -393,7 +364,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L105">typed-union.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L88">typed-union.ts:88</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -419,7 +390,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L109">typed-union.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L92">typed-union.ts:92</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -449,7 +420,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#test">test</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L85">typed-union.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L68">typed-union.ts:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -473,7 +444,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#testerror">testError</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L72">typed-union.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L55">typed-union.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -500,7 +471,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L50">typed-union.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L33">typed-union.ts:33</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_typed_union_.json.type.html" class="tsd-signature-type">Type</a></h4>
@@ -518,7 +489,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/__interfaces_.versionedtype.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L68">typed-union.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L51">typed-union.ts:51</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -544,7 +515,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/46932d0/src/lib/typed-union.ts#L46">typed-union.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/aa0010a/src/lib/typed-union.ts#L29">typed-union.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -585,9 +556,6 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="_typed_union_.typeduniontype.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_typed_union_.typeduniontype.html#_options" class="tsd-kind-icon">_options</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_typed_union_.typeduniontype.html#itemtype" class="tsd-kind-icon">item<wbr>Type</a>
 							</li>
@@ -596,9 +564,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_typed_union_.typeduniontype.html#values" class="tsd-kind-icon">values</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="_typed_union_.typeduniontype.html#_applyoptions" class="tsd-kind-icon">_apply<wbr>Options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_typed_union_.typeduniontype.html#clone" class="tsd-kind-icon">clone</a>
@@ -643,9 +608,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../interfaces/_typed_union_.options.html" class="tsd-kind-icon">Options</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="../modules/_typed_union_.html#diff" class="tsd-kind-icon">Diff</a>
 					</li>
