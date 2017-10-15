@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace MinArrayLengthError {
   export type Name = "MinArrayLength";
@@ -8,7 +8,7 @@ export namespace MinArrayLengthError {
     min: number;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({array, min}: Data): string {
     return `Expected array length (${array.length}) to be greater than or equal to ${min}`;
   }
@@ -18,5 +18,3 @@ export namespace MinArrayLengthError {
 }
 
 export type MinArrayLengthError = MinArrayLengthError.Type;
-
-export default MinArrayLengthError;

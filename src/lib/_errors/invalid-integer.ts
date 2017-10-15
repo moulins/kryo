@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace InvalidIntegerError {
   export type Name = "InvalidInteger";
@@ -8,7 +8,7 @@ export namespace InvalidIntegerError {
     source?: any;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({value, source}: Data): string {
     return `Invalid integer: ${value}` + (source === undefined ? "" : `, from ${source}`);
   }
@@ -18,5 +18,3 @@ export namespace InvalidIntegerError {
 }
 
 export type InvalidIntegerError = InvalidIntegerError.Type;
-
-export default InvalidIntegerError;

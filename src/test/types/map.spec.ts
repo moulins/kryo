@@ -1,6 +1,6 @@
-import {IntegerType} from "../../lib/integer";
-import {MapType} from "../../lib/map";
-import {runTests, TypedValue} from "../helpers/test";
+import { IntegerType } from "../../lib/integer";
+import { MapType } from "../../lib/map";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("Map", function () {
   const mapType: MapType<number, number> = new MapType({

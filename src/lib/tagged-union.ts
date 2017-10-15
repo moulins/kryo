@@ -1,9 +1,9 @@
-import {Incident} from "incident";
-import {NotImplementedError} from "./_errors/not-implemented";
-import {Lazy, SerializableType} from "./_interfaces";
-import {DocumentType} from "./document";
-import {LiteralType} from "./literal";
-import {SimpleEnumType} from "./simple-enum";
+import { Incident } from "incident";
+import { NotImplementedError } from "./_errors/not-implemented";
+import { Lazy, SerializableType } from "./_interfaces";
+import { DocumentType } from "./document";
+import { LiteralType } from "./literal";
+import { SimpleEnumType } from "./simple-enum";
 import * as union from "./union";
 
 export type Name = "tagged-union";
@@ -49,9 +49,9 @@ function toUnionOptions<T extends {}>(options: Options<T, any, any, any>): union
   let tagBaseType: SerializableType<any, any, any, any> | undefined = undefined;
   const tagValuesMap: Map<number | string, DocumentType<T>> = new Map();
   const outValuesMap: {
-    bson: Map<number | string, DocumentType<T>>,
-    json: Map<number | string, DocumentType<T>>,
-    qs: Map<number | string, DocumentType<T>>,
+    bson: Map<number | string, DocumentType<T>>;
+    json: Map<number | string, DocumentType<T>>;
+    qs: Map<number | string, DocumentType<T>>;
   } = {
     bson: new Map(),
     json: new Map(),

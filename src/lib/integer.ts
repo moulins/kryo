@@ -1,9 +1,9 @@
-import {Incident} from "incident";
-import {InvalidIntegerError} from "./_errors/invalid-integer";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import { Incident } from "incident";
+import { InvalidIntegerError } from "./_errors/invalid-integer";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "int";
 export const name: Name = "int";
@@ -91,7 +91,7 @@ export class IntegerType
   }
 
   toJSON(): json.Type {
-    return {name: name, min: this.min, max: this.max};
+    return {name, min: this.min, max: this.max};
   }
 
   readTrusted(format: "bson", val: bson.Output): T;

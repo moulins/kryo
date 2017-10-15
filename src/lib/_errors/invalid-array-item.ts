@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace InvalidArrayItemError {
   export type Name = "InvalidArrayItem";
@@ -8,7 +8,7 @@ export namespace InvalidArrayItemError {
     value: any;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({index, value}: Data): string {
     return `Invalid value ${value} for the item at index ${index}`;
   }
@@ -18,5 +18,3 @@ export namespace InvalidArrayItemError {
 }
 
 export type InvalidArrayItemError = InvalidArrayItemError.Type;
-
-export default InvalidArrayItemError;

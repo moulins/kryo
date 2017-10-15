@@ -1,13 +1,13 @@
-import {Incident} from "incident";
-import {NotImplementedError} from "./_errors/not-implemented";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {CaseStyle, rename} from "./_helpers/rename";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import { Incident } from "incident";
+import { NotImplementedError } from "./_errors/not-implemented";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { CaseStyle, rename } from "./_helpers/rename";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 export type SimpleEnum<EnumConstructor> = {
   [K in keyof EnumConstructor]: EnumConstructor[K];
-};
+  };
 
 interface ReversedEnum<EC> {
   [index: number]: (keyof EC) | undefined;
@@ -40,6 +40,7 @@ export namespace bson {
 export namespace json {
   export type Input = string;
   export type Output = string;
+
   export interface Type {
     name: Name;
     enum: EnumConstructor<number>;
@@ -128,7 +129,7 @@ export class SimpleEnumType<E extends number>
       return WrongTypeError.create("int32", val);
     }
     if (!this.enum.hasOwnProperty(val)) {
-      return Incident("Unknown enum variant value", val);
+      return Incident("UnknownVariantError", {value: val}, "Unknown enum variant value");
     }
     return undefined;
   }
@@ -173,10 +174,10 @@ export class SimpleEnumType<E extends number>
     }
     const options: Options<E> = typeof this._options === "function" ? this._options() : this._options;
 
-  const baseEnum: EnumConstructor<E> = <any> options.enum;
-  const renameAll: CaseStyle | undefined = options.rename;
-  const outputNameToValue: AnySimpleEnum = {};
-  const valueToOutputName: AnyReversedEnum = {};
+    const baseEnum: EnumConstructor<E> = <any> options.enum;
+    const renameAll: CaseStyle | undefined = options.rename;
+    const outputNameToValue: AnySimpleEnum = {};
+    const valueToOutputName: AnyReversedEnum = {};
 
     for (const key in baseEnum) {
       if (/^\d+$/.test(key)) {
@@ -207,4 +208,4 @@ export class SimpleEnumType<E extends number>
   }
 }
 
-export {SimpleEnumType as Type};
+export { SimpleEnumType as Type };

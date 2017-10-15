@@ -1,13 +1,13 @@
-import {Incident} from "incident";
-import {LowerCaseError} from "./_errors/lower-case";
-import {MaxUcs2StringLengthError} from "./_errors/max-ucs2-string-length";
-import {MinUcs2StringLengthError} from "./_errors/min-ucs2-string-length";
-import {NotTrimmedError} from "./_errors/not-trimmed";
-import {PatternNotMatchedError} from "./_errors/pattern-not-matched";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import { Incident } from "incident";
+import { LowerCaseError } from "./_errors/lower-case";
+import { MaxUcs2StringLengthError } from "./_errors/max-ucs2-string-length";
+import { MinUcs2StringLengthError } from "./_errors/min-ucs2-string-length";
+import { NotTrimmedError } from "./_errors/not-trimmed";
+import { PatternNotMatchedError } from "./_errors/pattern-not-matched";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";
@@ -161,7 +161,7 @@ export class Ucs2StringType
 
   toJSON(): json.Type {
     const jsonType: json.Type = {
-      name: name,
+      name,
       allowUnicodeRegExp: this.allowUnicodeRegExp,
       lowerCase: this.lowerCase,
       trimmed: this.trimmed,

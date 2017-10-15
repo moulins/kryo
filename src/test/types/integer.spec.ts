@@ -1,7 +1,7 @@
-import {assert} from "chai";
-import {$Sint8} from "../../lib/_builtins/integer";
-import {IntegerType} from "../../lib/integer";
-import {runTests, TypedValue} from "../helpers/test";
+import { assert } from "chai";
+import { $Sint8 } from "../../lib/_builtins/integer";
+import { IntegerType } from "../../lib/integer";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("IntegerType", function () {
   describe("General", function () {
@@ -29,6 +29,7 @@ describe("IntegerType", function () {
       {name: "Number.MAX_SAFE_INTEGER + 1", value: Number.MAX_SAFE_INTEGER + 1, valid: false},
       {name: "Number.MIN_SAFE_INTEGER - 2", value: Number.MIN_SAFE_INTEGER - 2, valid: true},
       {name: "Number.MAX_VALUE", value: Number.MAX_VALUE, valid: false},
+      /* tslint:disable-next-line:no-construct */
       {name: "new Number(true)", value: new Number(1), valid: false},
       {name: '""', value: "", valid: false},
       {name: '"0"', value: "0", valid: false},

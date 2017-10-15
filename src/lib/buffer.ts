@@ -1,12 +1,12 @@
-import {Binary as BinaryType} from "bson";
-import {Incident} from "incident";
-import {MaxArrayLengthError} from "./_errors/max-array-length";
-import {MissingDependencyError} from "./_errors/missing-dependency";
-import {NotImplementedError} from "./_errors/not-implemented";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import {Binary as BinaryType } from "bson";
+import { Incident } from "incident";
+import { MaxArrayLengthError } from "./_errors/max-array-length";
+import { MissingDependencyError } from "./_errors/missing-dependency";
+import { NotImplementedError } from "./_errors/not-implemented";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "buffer";
 export const name: Name = "buffer";
@@ -38,7 +38,7 @@ function isBinary(val: any): val is BinaryType {
 let Binary: {new(b: Uint8Array): BinaryType} | undefined = undefined;
 try {
   // TODO: Fix BSON type definitions
-  /* tslint:disable-next-line:no-var-requires */
+  /* tslint:disable-next-line:no-var-requires no-require-imports */
   Binary = require("bson").Binary;
 } catch (err) {
   // Ignore dependency not found error.

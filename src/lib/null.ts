@@ -1,6 +1,6 @@
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "null";
 export const name: Name = "null";
@@ -29,7 +29,7 @@ export class NullType
   readonly name: Name = name;
 
   toJSON(): json.Type {
-    return {name: name};
+    return {name};
   }
 
   readTrusted(format: "bson", val: bson.Output): T;
@@ -97,6 +97,7 @@ export class NullType
    * @returns `true` if there is a difference, `undefined` otherwise
    */
   diff(oldVal: T, newVal: T): Diff | undefined {
+    /* tslint:disable-next-line:return-undefined */
     return undefined;
   }
 
@@ -105,10 +106,12 @@ export class NullType
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
+    /* tslint:disable-next-line:return-undefined */
     return undefined;
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
+    /* tslint:disable-next-line:return-undefined */
     return undefined;
   }
 }

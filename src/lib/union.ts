@@ -1,8 +1,8 @@
-import {Incident} from "incident";
-import {NotImplementedError} from "./_errors/not-implemented";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import { Incident } from "incident";
+import { NotImplementedError } from "./_errors/not-implemented";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "union";
 export const name: Name = "union";

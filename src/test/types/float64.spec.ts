@@ -1,5 +1,5 @@
-import {Float64Type} from "../../lib/float64";
-import {runTests, TypedValue} from "../helpers/test";
+import { Float64Type } from "../../lib/float64";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("Float64Type", function () {
   const type: Float64Type = new Float64Type();
@@ -25,6 +25,7 @@ describe("Float64Type", function () {
     {name: "0.0001", value: 0.0001, valid: true},
     {name: "Number.EPSILON", value: Number.EPSILON, valid: true},
 
+    /* tslint:disable-next-line:no-construct */
     {name: "new Number(1)", value: new Number(1), valid: false},
     {name: '""', value: "", valid: false},
     {name: '"0"', value: "0", valid: false},

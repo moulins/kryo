@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace NullPropertyError {
   export type Name = "NullProperty";
@@ -7,7 +7,7 @@ export namespace NullPropertyError {
     key: string;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({key}: Data): string {
     return `The property ${key} is not allowed to be null`;
   }
@@ -17,5 +17,3 @@ export namespace NullPropertyError {
 }
 
 export type NullPropertyError = NullPropertyError.Type;
-
-export default NullPropertyError;

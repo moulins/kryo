@@ -1,6 +1,18 @@
-import * as buildTools from "demurgos-web-build-tools";
+import * as buildTools from "turbo-gulp";
+
 import * as gulp from "gulp";
-import * as typescript from "typescript";
+import * as minimist from "minimist";
+import { ParsedArgs } from "minimist";
+
+interface Options {
+  devDist?: string;
+}
+
+const options: Options & ParsedArgs = minimist(process.argv.slice(2), {
+  string: ["devDist"],
+  default: {devDist: undefined},
+  alias: {devDist: "dev-dist"},
+});
 
 const project: buildTools.Project = {
   root: __dirname,
@@ -11,34 +23,54 @@ const project: buildTools.Project = {
 };
 
 const lib: buildTools.LibTarget = {
+  project,
   name: "lib",
   srcDir: "src/lib",
   scripts: ["**/*.ts"],
   mainModule: "index",
-  dist: true,
+  dist: {
+    packageJsonMap: (old: buildTools.PackageJson): buildTools.PackageJson => {
+      const version: string = options.devDist !== undefined ? `${old.version}-build.${options.devDist}` : old.version;
+      return <any> {...old, version, scripts: undefined, private: false};
+    },
+    npmPublish: {
+      tag: options.devDist !== undefined ? "next" : "latest",
+    },
+  },
+  customTypingsDir: "src/custom-typings",
   tscOptions: {
     skipLibCheck: true,
   },
-};
-
-buildTools.registerLibTargetTasks(gulp, project, lib);
-
-// `lib-test` target
-const libTestTarget: buildTools.TestTarget = {
-  ...buildTools.LIB_TEST_TARGET,
-  name: "test",
-  scripts: ["test/**/*.ts", "lib/**/*.ts"],
-  typescript: {
-    compilerOptions: {
-      skipLibCheck: true,
+  typedoc: {
+    dir: "typedoc",
+    name: "Kryo",
+    deploy: {
+      repository: "git@github.com:demurgos/kryo.git",
+      branch: "gh-pages",
     },
-    typescript: typescript,
-    tsconfigJson: ["test/tsconfig.json"],
+  },
+  clean: {
+    dirs: ["build/lib", "dist/lib"],
   },
 };
 
+const test: buildTools.MochaTarget = {
+  project,
+  name: "test",
+  srcDir: "src",
+  scripts: ["test/**/*.ts", "lib/**/*.ts"],
+  customTypingsDir: "src/custom-typings",
+  tscOptions: {
+    skipLibCheck: true,
+  },
+  clean: {
+    dirs: ["build/test"],
+  },
+};
+
+const libTasks: any = buildTools.registerLibTasks(gulp, lib);
+buildTools.registerMochaTasks(gulp, test);
 buildTools.projectTasks.registerAll(gulp, project);
-buildTools.targetGenerators.test.generateTarget(gulp, project, libTestTarget);
 
 gulp.task("all:tsconfig.json", gulp.parallel("lib:tsconfig.json", "test:tsconfig.json"));
-gulp.task("all:dist", gulp.parallel("lib:dist"));
+gulp.task("dist", libTasks.dist);

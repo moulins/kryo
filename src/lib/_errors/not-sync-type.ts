@@ -1,5 +1,5 @@
-import {Incident} from "incident";
-import {Type as KryoType} from "../_interfaces";
+import { Incident } from "incident";
+import {Type as KryoType } from "../_interfaces";
 
 export namespace NotSyncTypeError {
   export type Name = "NotSyncType";
@@ -9,7 +9,7 @@ export namespace NotSyncTypeError {
     methodName: string;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({type, methodName}: Data): string {
     return `The method ${methodName} of the type ${type}) is not supported`;
   }
@@ -19,5 +19,3 @@ export namespace NotSyncTypeError {
 }
 
 export type NotSyncTypeError = NotSyncTypeError.Type;
-
-export default NotSyncTypeError;

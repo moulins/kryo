@@ -1,7 +1,7 @@
-import {InvalidTimestampError} from "./_errors/invalid-timestamp";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import { InvalidTimestampError } from "./_errors/invalid-timestamp";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "date";
 export const name: Name = "date";
@@ -30,7 +30,7 @@ export class DateType
   readonly name: Name = name;
 
   toJSON(): json.Type {
-    return {name: name};
+    return {name};
   }
 
   readTrusted(format: "bson", val: bson.Output): T;

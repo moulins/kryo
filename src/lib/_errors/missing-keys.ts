@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace MissingKeysError {
   export type Name = "MissingKeys";
@@ -7,7 +7,7 @@ export namespace MissingKeysError {
     keys: string[];
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({keys}: Data): string {
     return `Expected missing keys: ${JSON.stringify(keys)}`;
   }
@@ -17,5 +17,3 @@ export namespace MissingKeysError {
 }
 
 export type MissingKeysError = MissingKeysError.Type;
-
-export default MissingKeysError;

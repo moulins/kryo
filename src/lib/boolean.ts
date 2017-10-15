@@ -1,6 +1,6 @@
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {SerializableType, VersionedType} from "./_interfaces";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "boolean";
 export const name: Name = "boolean";
@@ -26,6 +26,7 @@ export class BooleanType
   readonly name: Name = name;
 
   toJSON(): undefined {
+    /* tslint:disable-next-line:return-undefined */
     return undefined;
   }
 

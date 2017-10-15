@@ -1,7 +1,7 @@
-import {CaseStyle} from "../../../lib/_helpers/rename";
-import {DocumentType} from "../../../lib/document";
-import {Ucs2StringType} from "../../../lib/ucs2-string";
-import {$FsNodeType, FsNodeType} from "./fs-node-type";
+import { CaseStyle } from "../../../lib/_helpers/rename";
+import { DocumentType } from "../../../lib/document";
+import { Ucs2StringType } from "../../../lib/ucs2-string";
+import { $FsNodeType, FsNodeType } from "./fs-node-type";
 
 export interface FsNodeBase {
   type: FsNodeType;

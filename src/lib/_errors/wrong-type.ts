@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 // TODO(demurgos): Rename to InvalidTypeError ?
 export namespace WrongTypeError {
@@ -22,7 +22,7 @@ export namespace WrongTypeError {
     variableName?: string;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({typeName, value, variableName}: Data): string {
     // TODO(demurgos): use utils.repr instead of stringifying value directly (because its type, `any`, is unsafe)
     if (typeof variableName === "string") {
@@ -37,5 +37,3 @@ export namespace WrongTypeError {
 }
 
 export type WrongTypeError = WrongTypeError.Type;
-
-export default WrongTypeError;

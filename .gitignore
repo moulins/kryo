@@ -5,17 +5,14 @@
 .idea/
 *.iml
 
-# Komodo
-*.komodoproject
-.komodotools
-
 ###############################################################################
 # Build                                                                       #
 ###############################################################################
 /build/
-/typedoc/
-# The line bellow should be commented in .npmignore
 /dist/
+/typedoc/
+/.nyc_output/
+/coverage/
 
 ###############################################################################
 # Dependencies                                                                #

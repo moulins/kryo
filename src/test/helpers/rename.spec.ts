@@ -1,5 +1,5 @@
-import {assert} from "chai";
-import {CaseStyle, detectCaseStyle, join, rename, split} from "../../lib/_helpers/rename";
+import { assert } from "chai";
+import { CaseStyle, detectCaseStyle, join, rename, split } from "../../lib/_helpers/rename";
 
 describe("rename", function () {
   describe("detectCaseStyle", function () {

@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace PatternNotMatchedError {
   export type Name = "PatternNotMatched";
@@ -8,7 +8,7 @@ export namespace PatternNotMatchedError {
     pattern: RegExp;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({pattern, string}: Data): string {
     return `The regular expression ${pattern} does not match the string ${JSON.stringify(string)}`;
   }
@@ -18,5 +18,3 @@ export namespace PatternNotMatchedError {
 }
 
 export type PatternNotMatchedError = PatternNotMatchedError.Type;
-
-export default PatternNotMatchedError;

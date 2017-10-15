@@ -1,10 +1,10 @@
-import {CaseStyle} from "../../lib/_helpers/rename";
-import {DocumentType} from "../../lib/document";
-import {IntegerType} from "../../lib/integer";
-import {LiteralType} from "../../lib/literal";
-import {SimpleEnumType} from "../../lib/simple-enum";
-import {UnionType} from "../../lib/union";
-import {runTests, TypedValue} from "../helpers/test";
+import { CaseStyle } from "../../lib/_helpers/rename";
+import { DocumentType } from "../../lib/document";
+import { IntegerType } from "../../lib/integer";
+import { LiteralType } from "../../lib/literal";
+import { SimpleEnumType } from "../../lib/simple-enum";
+import { UnionType } from "../../lib/union";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("Union", function () {
   describe("Union<Shape>", function () {

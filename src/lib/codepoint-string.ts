@@ -1,19 +1,19 @@
-import {Incident} from "incident";
-import {LowerCaseError} from "./_errors/lower-case";
-import {MaxCodepointsError} from "./_errors/max-codepoints";
-import {MinCodepointsError} from "./_errors/min-codepoints";
-import {MissingDependencyError} from "./_errors/missing-dependency";
-import {NotTrimmedError} from "./_errors/not-trimmed";
-import {PatternNotMatchedError} from "./_errors/pattern-not-matched";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {checkedUcs2Decode} from "./_helpers/checked-ucs2-decode";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import { Incident } from "incident";
+import { LowerCaseError } from "./_errors/lower-case";
+import { MaxCodepointsError } from "./_errors/max-codepoints";
+import { MinCodepointsError } from "./_errors/min-codepoints";
+import { MissingDependencyError } from "./_errors/missing-dependency";
+import { NotTrimmedError } from "./_errors/not-trimmed";
+import { PatternNotMatchedError } from "./_errors/pattern-not-matched";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { checkedUcs2Decode } from "./_helpers/checked-ucs2-decode";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 let unormNfc: ((str: string) => string) | undefined = undefined;
 try {
-  /* tslint:disable-next-line:no-var-requires */
+  /* tslint:disable-next-line:no-var-requires no-require-imports */
   unormNfc = require("unorm").nfc;
 } catch (err) {
   // Ignore dependency not found error.
@@ -144,7 +144,7 @@ export class CodepointStringType
 
   toJSON(): json.Type {
     const jsonType: json.Type = {
-      name: name,
+      name,
       normalization: this.normalization === Normalization.None ? "none" : "nfc",
       enforceUnicodeRegExp: this.enforceUnicodeRegExp,
       lowerCase: this.lowerCase,
@@ -205,6 +205,10 @@ export class CodepointStringType
         break;
       case Normalization.None:
         break;
+      default:
+        throw new Incident(
+          `IncompleteSwitch: Received unexpected variant for this.normalization: ${this.normalization}`,
+        );
     }
 
     if (this.lowerCase && val !== val.toLowerCase()) {
@@ -306,4 +310,4 @@ export class CodepointStringType
   }
 }
 
-export {CodepointStringType as Type};
+export { CodepointStringType as Type };

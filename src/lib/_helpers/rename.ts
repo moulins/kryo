@@ -1,3 +1,5 @@
+import { Incident } from "incident";
+
 export enum CaseStyle {
   CamelCase,
   PascalCase,
@@ -32,6 +34,8 @@ export function split(caseStyle: CaseStyle, identifier: string): string[] {
       return identifier.split(/(?=[A-Z])/).map((part: string): string => part.toLowerCase());
     case CaseStyle.PascalCase:
       return identifier.split(/(?=[A-Z])/).map((part: string): string => part.toLowerCase());
+    default:
+      throw new Incident(`IncompleteSwitch: Received unexpected variant for caseStyle: ${caseStyle}`);
   }
 }
 
@@ -52,12 +56,15 @@ export function join(caseStyle: CaseStyle, parts: string[]): string {
       return parts.map((part: string): string => {
         return part.substr(0, 1).toUpperCase() + part.substring(1).toLowerCase();
       }).join("");
+    default:
+      throw new Incident(`IncompleteSwitch: Received unexpected variant for caseStyle: ${caseStyle}`);
   }
 }
 
 export function rename(identifier: string, to: CaseStyle): string;
+/* tslint:disable-next-line:unified-signatures */
 export function rename(identifier: string, from: CaseStyle, to: CaseStyle): string;
-export function rename(identifier: any, from: any, to?: any): any {
+export function rename(identifier: string, from: CaseStyle, to?: CaseStyle): string {
   if (to === undefined) {
     to = from;
     from = detectCaseStyle(identifier);

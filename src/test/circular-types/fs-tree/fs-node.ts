@@ -1,6 +1,6 @@
-import {TaggedUnionType} from "../../../lib/tagged-union";
-import {$Directory, Directory} from "./directory";
-import {$File, File} from "./file";
+import { TaggedUnionType } from "../../../lib/tagged-union";
+import { $Directory, Directory } from "./directory";
+import { $File, File } from "./file";
 
 export type FsNode =
   Directory

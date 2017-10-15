@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace MissingDependencyError {
   export type Name = "MissingDependency";
@@ -8,7 +8,7 @@ export namespace MissingDependencyError {
     role: string;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({name, role}: Data): string {
     return `Missing optional dependencies ${JSON.stringify(name)}: ${role}`;
   }
@@ -18,5 +18,3 @@ export namespace MissingDependencyError {
 }
 
 export type MissingDependencyError = MissingDependencyError.Type;
-
-export default MissingDependencyError;

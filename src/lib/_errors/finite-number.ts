@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace FiniteNumberError {
   export type Name = "FiniteNumber";
@@ -7,7 +7,7 @@ export namespace FiniteNumberError {
     value: number;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({value}: Data): string {
     return `Expected a finite number, received ${value}`;
   }
@@ -17,5 +17,3 @@ export namespace FiniteNumberError {
 }
 
 export type FiniteNumberError = FiniteNumberError.Type;
-
-export default FiniteNumberError;

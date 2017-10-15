@@ -1,8 +1,8 @@
-import {Incident} from "incident";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import { Incident } from "incident";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "float64";
 export const name: Name = "float64";
@@ -68,7 +68,7 @@ export class Float64Type
 
   toJSON(): json.Type {
     return {
-      name: name,
+      name,
       notNan: this.notNan,
       notInfinity: this.notInfinity,
     };

@@ -108,7 +108,7 @@ class Slice<T> {
     }
   }
 
-  split (index: number): [Slice<T>, Slice<T>] {
+  split(index: number): [Slice<T>, Slice<T>] {
     if (this.reversed) {
       throw Error("Cannot split reversed");
     }
@@ -117,7 +117,7 @@ class Slice<T> {
     return [left, right];
   }
 
-  reverse (): Slice<T> {
+  reverse(): Slice<T> {
     return new Slice(this.sequence, this.start, this.end, true);
   }
 }
@@ -129,7 +129,7 @@ export interface DiffAction {
 
 type IndexValue = [number, number];
 
-function nearestEnd <T> (src: Slice<T>, target: Slice<T>): IndexValue {
+function nearestEnd <T>(src: Slice<T>, target: Slice<T>): IndexValue {
   const xSeq: Sequence<T> = src.sequence;
   const x1: number = 0;
   const x2: number = src.length;
@@ -161,7 +161,7 @@ function nearestEnd <T> (src: Slice<T>, target: Slice<T>): IndexValue {
     // Compute distances
     for (let col: number = 1; col <= yLen; col++) {
       // Nearest distance in case of ADD or DEL
-      const addDelDist: number = 1 + Math.min(oldDist[col], curDist[col - 1]);
+      const addDelDist: number = Math.min(oldDist[col], curDist[col - 1]) + 1;
       // Nearest distance in case of MATCH
       const matchDist: number = oldDist[col - 1];
       // Nearest distance in case of MUT
@@ -191,7 +191,7 @@ function nearestEnd <T> (src: Slice<T>, target: Slice<T>): IndexValue {
   return [minDistIndex, minDistValue];
 }
 
-function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
+function hirschberg(source: Slice<any>, target: Slice<any>): DiffAction[] {
   const srcLen: number = source.length;
   const tarLen: number = target.length;
 
@@ -246,7 +246,7 @@ function hirschberg (source: Slice<any>, target: Slice<any>): DiffAction[] {
   }
 }
 
-export function normalizeDiff (diff: DiffAction[]): DiffAction[] {
+export function normalizeDiff(diff: DiffAction[]): DiffAction[] {
   const result: DiffAction[] = [];
   if (diff.length === 0) {
     return result;
@@ -293,7 +293,7 @@ export function normalizeDiff (diff: DiffAction[]): DiffAction[] {
   return result;
 }
 
-export function diffSync (seq1: string | any[], seq2: string | any[]): DiffAction[] {
+export function diffSync(seq1: string | any[], seq2: string | any[]): DiffAction[] {
   return normalizeDiff(hirschberg(new Slice(seq1, 0, seq1.length, false), new Slice(seq2, 0, seq2.length, false)));
 }
 

@@ -1,5 +1,5 @@
-import {DateType} from "../../lib/date";
-import {runTests, TypedValue} from "../helpers/test";
+import { DateType } from "../../lib/date";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("DateType", function () {
   const type: DateType = new DateType();

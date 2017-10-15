@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace MinCodepointsError {
   export type Name = "MinCodepoints";
@@ -9,7 +9,7 @@ export namespace MinCodepointsError {
     min: number;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({count, min}: Data): string {
     return `Expected codepoints count (${count}) to be greater than or equal to ${min}`;
   }
@@ -19,5 +19,3 @@ export namespace MinCodepointsError {
 }
 
 export type MinCodepointsError = MinCodepointsError.Type;
-
-export default MinCodepointsError;

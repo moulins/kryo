@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace LowerCaseError {
   export type Name = "LowerCase";
@@ -7,7 +7,7 @@ export namespace LowerCaseError {
     string: string;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({string}: Data): string {
     return `Expected the following string to be lowercase: ${JSON.stringify(string)}`;
   }
@@ -17,5 +17,3 @@ export namespace LowerCaseError {
 }
 
 export type LowerCaseError = LowerCaseError.Type;
-
-export default LowerCaseError;

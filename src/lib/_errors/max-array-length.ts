@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace MaxArrayLengthError {
   export type Name = "MaxArrayLength";
@@ -8,7 +8,7 @@ export namespace MaxArrayLengthError {
     max: number;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({array, max}: Data): string {
     return `Expected array length (${array.length}) to be less than or equal to ${max}`;
   }
@@ -18,5 +18,3 @@ export namespace MaxArrayLengthError {
 }
 
 export type MaxArrayLengthError = MaxArrayLengthError.Type;
-
-export default MaxArrayLengthError;

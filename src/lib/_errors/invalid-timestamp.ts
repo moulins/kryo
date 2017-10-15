@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace InvalidTimestampError {
   export type Name = "InvalidTimestamp";
@@ -7,7 +7,7 @@ export namespace InvalidTimestampError {
     date: Date;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({date}: Data): string {
     return `Invalid timestamp for the date: ${JSON.stringify(date)}`;
   }
@@ -17,5 +17,3 @@ export namespace InvalidTimestampError {
 }
 
 export type InvalidTimestampError = InvalidTimestampError.Type;
-
-export default InvalidTimestampError;

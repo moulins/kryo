@@ -1,9 +1,9 @@
-import {assert} from "chai";
-import {CaseStyle} from "../../lib/_helpers/rename";
-import {DocumentType} from "../../lib/document";
-import {IntegerType} from "../../lib/integer";
-import {TryUnionType} from "../../lib/try-union";
-import {runTests, TypedValue} from "../helpers/test";
+import { assert } from "chai";
+import { CaseStyle } from "../../lib/_helpers/rename";
+import { DocumentType } from "../../lib/document";
+import { IntegerType } from "../../lib/integer";
+import { TryUnionType } from "../../lib/try-union";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("TryUnion", function () {
   describe("TryUnion<Shape>", function () {

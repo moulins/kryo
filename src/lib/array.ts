@@ -1,11 +1,11 @@
-import {Incident} from "incident";
-import {InvalidArrayItemError} from "./_errors/invalid-array-item";
-import {MaxArrayLengthError} from "./_errors/max-array-length";
-import {NotImplementedError} from "./_errors/not-implemented";
-import {UnknownFormatError} from "./_errors/unknown-format";
-import {WrongTypeError} from "./_errors/wrong-type";
-import {lazyProperties} from "./_helpers/lazy-properties";
-import {Lazy, SerializableType, VersionedType} from "./_interfaces";
+import { Incident } from "incident";
+import { InvalidArrayItemError } from "./_errors/invalid-array-item";
+import { MaxArrayLengthError } from "./_errors/max-array-length";
+import { NotImplementedError } from "./_errors/not-implemented";
+import { UnknownFormatError } from "./_errors/unknown-format";
+import { WrongTypeError } from "./_errors/wrong-type";
+import { lazyProperties } from "./_helpers/lazy-properties";
+import { Lazy, SerializableType, VersionedType } from "./_interfaces";
 
 export type Name = "array";
 export const name: Name = "array";

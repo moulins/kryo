@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace MaxCodepointsError {
   export type Name = "MaxCodepoints";
@@ -9,7 +9,7 @@ export namespace MaxCodepointsError {
     max: number;
   }
   export type Cause = undefined;
-  export type Type = Incident<Name, Data, Cause>;
+  export type Type = Incident<Data, Name, Cause>;
   export function format({count, max}: Data): string {
     return `Expected codepoints count (${count}) to be less than or equal to ${max}`;
   }
@@ -19,5 +19,3 @@ export namespace MaxCodepointsError {
 }
 
 export type MaxCodepointsError = MaxCodepointsError.Type;
-
-export default MaxCodepointsError;

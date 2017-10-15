@@ -22,22 +22,22 @@ export {UnionType} from "./union";
 import * as array from "./array";
 import * as boolean from "./boolean";
 import * as buffer from "./buffer";
-import * as codepointString  from "./codepoint-string";
-import * as date  from "./date";
-import * as document  from "./document";
-import * as float64  from "./float64";
+import * as codepointString from "./codepoint-string";
+import * as date from "./date";
+import * as document from "./document";
+import * as float64 from "./float64";
 // TODO(demurgos): Rename to `integer` (`integer` is the new name, it covers up to 53 bits).
-import * as int32  from "./integer";
-import * as json  from "./json";
-import * as literal  from "./literal";
-import * as map  from "./map";
-import * as _null  from "./null";
-import * as simpleEnum  from "./simple-enum";
-import * as taggedUnion  from "./tagged-union";
-import * as tryUnion  from "./try-union";
-import * as typedUnion  from "./typed-union";
-import * as ucs2String  from "./ucs2-string";
-import * as union  from "./union";
+import * as int32 from "./integer";
+import * as json from "./json";
+import * as literal from "./literal";
+import * as map from "./map";
+import * as _null from "./null";
+import * as simpleEnum from "./simple-enum";
+import * as taggedUnion from "./tagged-union";
+import * as tryUnion from "./try-union";
+import * as typedUnion from "./typed-union";
+import * as ucs2String from "./ucs2-string";
+import * as union from "./union";
 export {
   array,
   boolean,

@@ -1,7 +1,7 @@
-import {LiteralType} from "../../lib/literal";
-import {SimpleEnumType} from "../../lib/simple-enum";
-import {Ucs2StringType} from "../../lib/ucs2-string";
-import {runTests, TypedValue} from "../helpers/test";
+import { LiteralType } from "../../lib/literal";
+import { SimpleEnumType } from "../../lib/simple-enum";
+import { Ucs2StringType } from "../../lib/ucs2-string";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("Literal", function () {
   describe("Literal<\"foo\">", function () {

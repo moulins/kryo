@@ -1,5 +1,5 @@
-import {BooleanType} from "../../lib/boolean";
-import {runTests, TypedValue} from "../helpers/test";
+import { BooleanType } from "../../lib/boolean";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("BooleanType", function () {
   const type: BooleanType = new BooleanType();
@@ -8,7 +8,9 @@ describe("BooleanType", function () {
     {name: "true", value: true, valid: true},
     {name: "false", value: false, valid: true},
 
+    /* tslint:disable-next-line:no-construct */
     {name: "new Boolean(true)", value: new Boolean(true), valid: false},
+    /* tslint:disable-next-line:no-construct */
     {name: "new Boolean(false)", value: new Boolean(false), valid: false},
     {name: "0", value: 0, valid: false},
     {name: "1", value: 1, valid: false},

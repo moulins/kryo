@@ -1,5 +1,5 @@
-import {BufferType} from "../../lib/buffer";
-import {runTests, TypedValue} from "../helpers/test";
+import { BufferType } from "../../lib/buffer";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("BufferType", function () {
   const shortBuffer: BufferType = new BufferType({

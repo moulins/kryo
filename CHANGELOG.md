@@ -1,3 +1,7 @@
+# Next
+
+- **[Fix]** Update dependencies
+
 # 0.5.0-alpha.14 (2017-08-17)
 
 - **[Fix]** Fix published package.

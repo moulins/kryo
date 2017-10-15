@@ -1,8 +1,8 @@
-import {CaseStyle} from "../../lib/_helpers/rename";
-import {DateType} from "../../lib/date";
-import {DocumentType} from "../../lib/document";
-import {IntegerType} from "../../lib/integer";
-import {runTests, TypedValue} from "../helpers/test";
+import { CaseStyle } from "../../lib/_helpers/rename";
+import { DateType } from "../../lib/date";
+import { DocumentType } from "../../lib/document";
+import { IntegerType } from "../../lib/integer";
+import { runTests, TypedValue } from "../helpers/test";
 
 describe("Document", function () {
   const documentType: DocumentType<any> = new DocumentType({

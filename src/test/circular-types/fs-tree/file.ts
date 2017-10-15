@@ -1,9 +1,9 @@
-import {CaseStyle} from "../../../lib/_helpers/rename";
-import {DocumentType} from "../../../lib/document";
-import {IntegerType} from "../../../lib/integer";
-import {LiteralType} from "../../../lib/literal";
-import {$FsNodeBase, FsNodeBase} from "./fs-node-base";
-import {$FsNodeType, FsNodeType} from "./fs-node-type";
+import { CaseStyle } from "../../../lib/_helpers/rename";
+import { DocumentType } from "../../../lib/document";
+import { IntegerType } from "../../../lib/integer";
+import { LiteralType } from "../../../lib/literal";
+import { $FsNodeBase, FsNodeBase } from "./fs-node-base";
+import { $FsNodeType, FsNodeType } from "./fs-node-type";
 
 export interface File extends FsNodeBase {
   type: FsNodeType.File;
