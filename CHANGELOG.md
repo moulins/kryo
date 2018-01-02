@@ -1,6 +1,8 @@
 # Next
 
 - **[Fix]** Update dependencies
+- **[Internal]** Enable Greenkeeper
+- **[Internal]** Enable Codecov
 
 # 0.5.0-alpha.14 (2017-08-17)
 

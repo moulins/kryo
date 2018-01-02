@@ -1,8 +1,10 @@
 # Kryo
 
 [![npm](https://img.shields.io/npm/v/kryo.svg?maxAge=2592000)](https://www.npmjs.com/package/kryo)
-[![Build status](https://img.shields.io/travis/demurgos/kryo/master.svg?maxAge=2592000)](https://travis-ci.org/demurgos/kryo)
 [![GitHub repository](https://img.shields.io/badge/Github-demurgos%2Fkryo-blue.svg)](https://github.com/demurgos/kryo)
+[![Build status](https://img.shields.io/travis/demurgos/kryo/master.svg?maxAge=2592000)](https://travis-ci.org/demurgos/kryo)
+[![Codecov](https://codecov.io/gh/demurgos/kryo/branch/master/graph/badge.svg)](https://codecov.io/gh/demurgos/kryo)
+[![Greenkeeper badge](https://badges.greenkeeper.io/demurgos/kryo.svg)](https://greenkeeper.io/)
 
 [Documentation](https://demurgos.github.io/kryo/)
 
