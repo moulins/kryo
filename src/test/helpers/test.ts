@@ -1,7 +1,7 @@
 import { BSON } from "bson";
 import { assert } from "chai";
 import * as qs from "qs";
-import { SerializableType, Type } from "../../lib/_interfaces";
+import { SerializableType, Type } from "../../lib/types";
 
 export interface NamedValue {
   name?: string;

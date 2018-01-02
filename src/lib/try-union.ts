@@ -1,5 +1,5 @@
 import { NotImplementedError } from "./_errors/not-implemented";
-import { Lazy, VersionedType } from "./_interfaces";
+import { Lazy, VersionedType } from "./types";
 import * as union from "./union";
 
 export type Name = "try-union";

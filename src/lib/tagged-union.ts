@@ -1,9 +1,9 @@
 import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { Lazy, SerializableType } from "./_interfaces";
 import { DocumentType } from "./document";
 import { LiteralType } from "./literal";
 import { SimpleEnumType } from "./simple-enum";
+import { Lazy, SerializableType } from "./types";
 import * as union from "./union";
 
 export type Name = "tagged-union";

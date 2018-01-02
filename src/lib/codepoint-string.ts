@@ -9,7 +9,7 @@ import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { checkedUcs2Decode } from "./_helpers/checked-ucs2-decode";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./_interfaces";
+import { Lazy, SerializableType, VersionedType } from "./types";
 
 let unormNfc: ((str: string) => string) | undefined = undefined;
 try {

@@ -1,4 +1,4 @@
-export {Type, SerializableType, VersionedType} from "./_interfaces";
+export {Type, SerializableType, VersionedType} from "./types";
 
 export {ArrayType} from "./array";
 export {BooleanType} from "./boolean";

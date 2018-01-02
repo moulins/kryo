@@ -1,7 +1,7 @@
 import { InvalidTimestampError } from "./_errors/invalid-timestamp";
 import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
-import { SerializableType, VersionedType } from "./_interfaces";
+import { SerializableType, VersionedType } from "./types";
 
 export type Name = "date";
 export const name: Name = "date";

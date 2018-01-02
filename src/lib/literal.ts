@@ -2,7 +2,7 @@ import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
 import { UnknownFormatError } from "./_errors/unknown-format";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./_interfaces";
+import { Lazy, SerializableType, VersionedType } from "./types";
 
 export type Name = "literal";
 export const name: Name = "literal";
