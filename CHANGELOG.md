@@ -1,4 +1,4 @@
-# Next
+# 0.5.0 (2018-01-02)
 
 - **[Fix]** Update dependencies
 - **[Internal]** Enable Greenkeeper
