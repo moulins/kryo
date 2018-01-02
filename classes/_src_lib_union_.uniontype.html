@@ -1,0 +1,970 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>UnionType | Kryo</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Kryo</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/_src_lib_union_.html">&quot;src/lib/union&quot;</a>
+				</li>
+				<li>
+					<a href="_src_lib_union_.uniontype.html">UnionType</a>
+				</li>
+			</ul>
+			<h1>Class UnionType&lt;T&gt;</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">UnionType</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="_src_lib_tagged_union_.taggeduniontype.html" class="tsd-signature-type">TaggedUnionType</a>
+							</li>
+							<li>
+								<a href="_src_lib_try_union_.tryuniontype.html" class="tsd-signature-type">TryUnionType</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.json.html#input" class="tsd-signature-type">Input</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.json.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib__interfaces_.serializabletype.html" class="tsd-signature-type">SerializableType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"bson"</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.bson.html#input" class="tsd-signature-type">Input</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.bson.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib__interfaces_.serializabletype.html" class="tsd-signature-type">SerializableType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"qs"</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.qs.html#input" class="tsd-signature-type">Input</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.qs.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_src_lib_union_.uniontype.html#_options" class="tsd-kind-icon">_options</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#matcher" class="tsd-kind-icon">matcher</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#readmatcher" class="tsd-kind-icon">read<wbr>Matcher</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#readtrustedmatcher" class="tsd-kind-icon">read<wbr>Trusted<wbr>Matcher</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#trustedmatcher" class="tsd-kind-icon">trusted<wbr>Matcher</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#variants" class="tsd-kind-icon">variants</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_src_lib_union_.uniontype.html#_applyoptions" class="tsd-kind-icon">_apply<wbr>Options</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#clone" class="tsd-kind-icon">clone</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#diff" class="tsd-kind-icon">diff</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#equals" class="tsd-kind-icon">equals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#patch" class="tsd-kind-icon">patch</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#read" class="tsd-kind-icon">read</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#readtrusted" class="tsd-kind-icon">read<wbr>Trusted</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#readtrustedwithvariant" class="tsd-kind-icon">read<wbr>Trusted<wbr>With<wbr>Variant</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#readwithvariant" class="tsd-kind-icon">read<wbr>With<wbr>Variant</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#squash" class="tsd-kind-icon">squash</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#test" class="tsd-kind-icon">test</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#testwithvariant" class="tsd-kind-icon">test<wbr>With<wbr>Variant</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_union_.uniontype.html#write" class="tsd-kind-icon">write</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Union<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib__interfaces_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_union_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>, lazy<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_union_.uniontype.html" class="tsd-signature-type">UnionType</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L68">src/lib/union.ts:68</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../modules/_src_lib__interfaces_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_union_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> lazy: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_src_lib_union_.uniontype.html" class="tsd-signature-type">UnionType</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_options" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagOptional">Optional</span> _options</h3>
+					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib__interfaces_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_union_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L68">src/lib/union.ts:68</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="matcher" class="tsd-anchor"></a>
+					<h3>matcher</h3>
+					<div class="tsd-signature tsd-kind-icon">matcher<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_union_.html#matcher" class="tsd-signature-type">Matcher</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L63">src/lib/union.ts:63</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_union_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;name</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib__interfaces_.serializabletype.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L61">src/lib/union.ts:61</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="readmatcher" class="tsd-anchor"></a>
+					<h3>read<wbr>Matcher</h3>
+					<div class="tsd-signature tsd-kind-icon">read<wbr>Matcher<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_union_.html#readmatcher" class="tsd-signature-type">ReadMatcher</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L65">src/lib/union.ts:65</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="readtrustedmatcher" class="tsd-anchor"></a>
+					<h3>read<wbr>Trusted<wbr>Matcher</h3>
+					<div class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Matcher<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_union_.html#readtrustedmatcher" class="tsd-signature-type">ReadTrustedMatcher</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L66">src/lib/union.ts:66</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="trustedmatcher" class="tsd-anchor"></a>
+					<h3>trusted<wbr>Matcher</h3>
+					<div class="tsd-signature tsd-kind-icon">trusted<wbr>Matcher<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_union_.html#trustedmatcher" class="tsd-signature-type">TrustedMatcher</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L64">src/lib/union.ts:64</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="variants" class="tsd-anchor"></a>
+					<h3>variants</h3>
+					<div class="tsd-signature tsd-kind-icon">variants<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L62">src/lib/union.ts:62</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="_applyoptions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _apply<wbr>Options</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">_apply<wbr>Options<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L185">src/lib/union.ts:185</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="clone" class="tsd-anchor"></a>
+					<h3>clone</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib__interfaces_.serializabletype.html#clone">clone</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L165">src/lib/union.ts:165</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>val: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="diff" class="tsd-anchor"></a>
+					<h3>diff</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">diff<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, newVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib__interfaces_.versionedtype.html#diff">diff</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L169">src/lib/union.ts:169</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>oldVal: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5>newVal: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">undefined</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="equals" class="tsd-anchor"></a>
+					<h3>equals</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib__interfaces_.serializabletype.html#equals">equals</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L159">src/lib/union.ts:159</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>val1: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5>val2: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="patch" class="tsd-anchor"></a>
+					<h3>patch</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">patch<span class="tsd-signature-symbol">(</span>oldVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, diff<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L173">src/lib/union.ts:173</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>oldVal: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5>diff: <a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="read" class="tsd-anchor"></a>
+					<h3>read</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">read<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"bson"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"json"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"qs"</span>, input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L122">src/lib/union.ts:122</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"bson"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"json"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"qs"</span></h5>
+								</li>
+								<li>
+									<h5>input: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="readtrusted" class="tsd-anchor"></a>
+					<h3>read<wbr>Trusted</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"bson"</span>, val<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.bson.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json"</span>, val<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.json.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"qs"</span>, val<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.qs.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L115">src/lib/union.ts:115</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"bson"</span></h5>
+								</li>
+								<li>
+									<h5>val: <a href="../modules/_src_lib_union_.bson.html#output" class="tsd-signature-type">Output</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L116">src/lib/union.ts:116</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"json"</span></h5>
+								</li>
+								<li>
+									<h5>val: <a href="../modules/_src_lib_union_.json.html#output" class="tsd-signature-type">Output</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L117">src/lib/union.ts:117</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"qs"</span></h5>
+								</li>
+								<li>
+									<h5>val: <a href="../modules/_src_lib_union_.qs.html#output" class="tsd-signature-type">Output</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="readtrustedwithvariant" class="tsd-anchor"></a>
+					<h3>read<wbr>Trusted<wbr>With<wbr>Variant</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>With<wbr>Variant<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"bson"</span>, val<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.bson.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>With<wbr>Variant<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json"</span>, val<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.json.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>With<wbr>Variant<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"qs"</span>, val<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.qs.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L90">src/lib/union.ts:90</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"bson"</span></h5>
+								</li>
+								<li>
+									<h5>val: <a href="../modules/_src_lib_union_.bson.html#output" class="tsd-signature-type">Output</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L91">src/lib/union.ts:91</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"json"</span></h5>
+								</li>
+								<li>
+									<h5>val: <a href="../modules/_src_lib_union_.json.html#output" class="tsd-signature-type">Output</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L92">src/lib/union.ts:92</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"qs"</span></h5>
+								</li>
+								<li>
+									<h5>val: <a href="../modules/_src_lib_union_.qs.html#output" class="tsd-signature-type">Output</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="readwithvariant" class="tsd-anchor"></a>
+					<h3>read<wbr>With<wbr>Variant</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">read<wbr>With<wbr>Variant<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"bson"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"json"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"qs"</span>, input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L99">src/lib/union.ts:99</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"bson"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"json"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"qs"</span></h5>
+								</li>
+								<li>
+									<h5>input: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_src_lib__interfaces_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="reversediff" class="tsd-anchor"></a>
+					<h3>reverse<wbr>Diff</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">reverse<wbr>Diff<span class="tsd-signature-symbol">(</span>diff<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L177">src/lib/union.ts:177</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>diff: <a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">undefined</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="squash" class="tsd-anchor"></a>
+					<h3>squash</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">squash<span class="tsd-signature-symbol">(</span>diff1<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, diff2<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L181">src/lib/union.ts:181</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>diff1: <a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+								</li>
+								<li>
+									<h5>diff2: <a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.html#diff" class="tsd-signature-type">Diff</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">undefined</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="test" class="tsd-anchor"></a>
+					<h3>test</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">test<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib__interfaces_.serializabletype.html#test">test</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L150">src/lib/union.ts:150</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>val: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="testerror" class="tsd-anchor"></a>
+					<h3>test<wbr>Error</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">test<wbr>Error<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib__interfaces_.serializabletype.html#testerror">testError</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L134">src/lib/union.ts:134</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>val: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Error</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">undefined</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="testwithvariant" class="tsd-anchor"></a>
+					<h3>test<wbr>With<wbr>Variant</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">test<wbr>With<wbr>Variant<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.html#testwithvariantresult" class="tsd-signature-type">TestWithVariantResult</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L142">src/lib/union.ts:142</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>val: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.html#testwithvariantresult" class="tsd-signature-type">TestWithVariantResult</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tojson" class="tsd-anchor"></a>
+					<h3>toJSON</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.json.html#type" class="tsd-signature-type">Type</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.serializabletype.html">SerializableType</a>.<a href="../interfaces/_src_lib__interfaces_.serializabletype.html#tojson">toJSON</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L86">src/lib/union.ts:86</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.json.html#type" class="tsd-signature-type">Type</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="write" class="tsd-anchor"></a>
+					<h3>write</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">write<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"bson"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.bson.html#output" class="tsd-signature-type">Output</a></li>
+						<li class="tsd-signature tsd-kind-icon">write<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"json"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.json.html#output" class="tsd-signature-type">Output</a></li>
+						<li class="tsd-signature tsd-kind-icon">write<span class="tsd-signature-symbol">(</span>format<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"qs"</span>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_union_.qs.html#output" class="tsd-signature-type">Output</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L126">src/lib/union.ts:126</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"bson"</span></h5>
+								</li>
+								<li>
+									<h5>val: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.bson.html#output" class="tsd-signature-type">Output</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib__interfaces_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib__interfaces_.versionedtype.html#write">write</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L127">src/lib/union.ts:127</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"json"</span></h5>
+								</li>
+								<li>
+									<h5>val: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.json.html#output" class="tsd-signature-type">Output</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/98b9a51/src/lib/union.ts#L128">src/lib/union.ts:128</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>format: <span class="tsd-signature-type">"qs"</span></h5>
+								</li>
+								<li>
+									<h5>val: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_union_.qs.html#output" class="tsd-signature-type">Output</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/_src_lib_union_.html">"src/lib/union"</a>
+						<ul>
+							<li class=" tsd-kind-module tsd-parent-kind-external-module">
+								<a href="../modules/_src_lib_union_.bson.html">bson</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-external-module">
+								<a href="../modules/_src_lib_union_.json.html">json</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-external-module">
+								<a href="../modules/_src_lib_union_.qs.html">qs</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_src_lib_union_.uniontype.html" class="tsd-kind-icon">Union<wbr>Type</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_src_lib_union_.uniontype.html#_options" class="tsd-kind-icon">_options</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#matcher" class="tsd-kind-icon">matcher</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#readmatcher" class="tsd-kind-icon">read<wbr>Matcher</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#readtrustedmatcher" class="tsd-kind-icon">read<wbr>Trusted<wbr>Matcher</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#trustedmatcher" class="tsd-kind-icon">trusted<wbr>Matcher</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#variants" class="tsd-kind-icon">variants</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_src_lib_union_.uniontype.html#_applyoptions" class="tsd-kind-icon">_apply<wbr>Options</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#clone" class="tsd-kind-icon">clone</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#diff" class="tsd-kind-icon">diff</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#equals" class="tsd-kind-icon">equals</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#patch" class="tsd-kind-icon">patch</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#read" class="tsd-kind-icon">read</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#readtrusted" class="tsd-kind-icon">read<wbr>Trusted</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#readtrustedwithvariant" class="tsd-kind-icon">read<wbr>Trusted<wbr>With<wbr>Variant</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#readwithvariant" class="tsd-kind-icon">read<wbr>With<wbr>Variant</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#squash" class="tsd-kind-icon">squash</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#test" class="tsd-kind-icon">test</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#testwithvariant" class="tsd-kind-icon">test<wbr>With<wbr>Variant</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#tojson" class="tsd-kind-icon">toJSON</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_union_.uniontype.html#write" class="tsd-kind-icon">write</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/_src_lib_union_.options.html" class="tsd-kind-icon">Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#diff" class="tsd-kind-icon">Diff</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#matcher" class="tsd-kind-icon">Matcher</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#name" class="tsd-kind-icon">Name</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#readmatcher" class="tsd-kind-icon">Read<wbr>Matcher</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#readtrustedmatcher" class="tsd-kind-icon">Read<wbr>Trusted<wbr>Matcher</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#testwithvariantresult" class="tsd-kind-icon">Test<wbr>With<wbr>Variant<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#trustedmatcher" class="tsd-kind-icon">Trusted<wbr>Matcher</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/_src_lib_union_.html#name-1" class="tsd-kind-icon">name</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
