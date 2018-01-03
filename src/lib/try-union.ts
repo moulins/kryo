@@ -1,5 +1,6 @@
+import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { Lazy, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 import * as union from "./union";
 
 export type Name = "try-union";
@@ -52,9 +53,24 @@ function toUnionOptions<T>(options: Options<T, any, any, any>): union.Options<T,
   const readMatcher: union.ReadMatcher<T, any, any, any> = (format: "bson" | "json" | "qs", value: any) => {
     for (const variant of variants) {
       try {
-        variant.read(format as any, value);
+        switch (format) {
+          case "json":
+            variant.readJson(value);
+            break;
+          case "bson":
+            (<any> variant as BsonSerializer<any>).readBson(value);
+            break;
+          case "qs":
+            (<any> variant as QsSerializer<any>).readQs(value);
+            break;
+          default:
+            throw new Incident("UnexpectedSwitchVariant", {value: format});
+        }
         return variant;
       } catch (err) {
+        if (err.name === "UnexpectedSwitchVariant") {
+          throw err;
+        }
         // Ignore error and try next variant
       }
     }

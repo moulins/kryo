@@ -1,8 +1,7 @@
 import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "union";
 export const name: Name = "union";
@@ -52,12 +51,14 @@ export interface Options<T, Output, Input extends Output, Diff> {
 }
 
 /* tslint:disable-next-line:max-line-length */
-export type TestWithVariantResult<T> = [true, VersionedType<T, any, any, any>] | [false, VersionedType<T, any, any, any> | undefined];
+export type TestWithVariantResult<T> =
+  [true, VersionedType<T, any, any, any>]
+  | [false, VersionedType<T, any, any, any> | undefined];
 
 export class UnionType<T>
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly variants: VersionedType<T, any, any, Diff>[];
   readonly matcher: Matcher<T, any, any, Diff>;
@@ -87,54 +88,91 @@ export class UnionType<T>
     throw NotImplementedError.create("UnionType#toJSON");
   }
 
-  readTrustedWithVariant(format: "bson", val: bson.Output): [T, VersionedType<T, any, any, Diff>];
-  readTrustedWithVariant(format: "json", val: json.Output): [T, VersionedType<T, any, any, Diff>];
-  readTrustedWithVariant(format: "qs", val: qs.Output): [T, VersionedType<T, any, any, Diff>];
-  readTrustedWithVariant(format: "bson" | "json" | "qs", input: any): [T, VersionedType<T, any, any, Diff>] {
-    const variant: VersionedType<T, any, any, Diff> = this.readTrustedMatcher(format, input, this.variants);
-    // TODO(demurgos): Check if the format is supported instead of casting to `any`
-    return [variant.readTrusted(<any> format, input), variant];
+  readTrustedJsonWithVariant(input: json.Output): [T, VersionedType<T, any, any, Diff>] {
+    const variant: VersionedType<T, any, any, Diff> = this.readTrustedMatcher("json", input, this.variants);
+    return [variant.readTrustedJson(input), variant];
   }
 
-  readWithVariant(format: "bson" | "json" | "qs", input: any): [T, VersionedType<T, any, any, Diff>] {
-    switch (format) {
-      case "bson":
-      case "json":
-      case "qs":
-        // TODO(demurgos): Check if the format is supported instead of casting to `any`
-        const variant: VersionedType<T, any, any, any> | undefined = this.readMatcher(format, input, this.variants);
-        if (variant === undefined) {
-          throw Incident("UnknownUnionVariant", "Unknown union variant");
-        }
-        return [variant.read(<any> format, input), variant];
-      default:
-        throw UnknownFormatError.create(format);
+  readTrustedBsonWithVariant(input: bson.Output): [T, VersionedType<T, any, any, Diff>] {
+    const variant: VersionedType<T, any, any, Diff> = this.readTrustedMatcher("bson", input, this.variants);
+    // TODO(demurgos): Avoid casting
+    return [(<any> variant as BsonSerializer<T>).readTrustedBson(input), variant];
+  }
+
+  readTrustedQsWithVariant(input: qs.Output): [T, VersionedType<T, any, any, Diff>] {
+    const variant: VersionedType<T, any, any, Diff> = this.readTrustedMatcher("qs", input, this.variants);
+    // TODO(demurgos): Avoid casting
+    return [(<any> variant as QsSerializer<T>).readTrustedQs(input), variant];
+  }
+
+  readJsonWithVariant(input: any): [T, VersionedType<T, any, any, Diff>] {
+    const variant: VersionedType<T, any, any, any> | undefined = this.readMatcher("json", input, this.variants);
+    if (variant === undefined) {
+      throw Incident("UnknownUnionVariant", "Unknown union variant");
     }
+    return [variant.readJson(input), variant];
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
-    return this.readTrustedWithVariant(format as any, input)[0];
+  readBsonWithVariant(input: any): [T, VersionedType<T, any, any, Diff>] {
+    const variant: VersionedType<T, any, any, any> | undefined = this.readMatcher("bson", input, this.variants);
+    if (variant === undefined) {
+      throw Incident("UnknownUnionVariant", "Unknown union variant");
+    }
+    // TODO(demurgos): Avoid casting
+    return [(<any> variant as BsonSerializer<T>).readBson(input), variant];
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
-    return this.readWithVariant(format as any, input)[0];
+  readQsWithVariant(input: any): [T, VersionedType<T, any, any, Diff>] {
+    const variant: VersionedType<T, any, any, any> | undefined = this.readMatcher("qs", input, this.variants);
+    if (variant === undefined) {
+      throw Incident("UnknownUnionVariant", "Unknown union variant");
+    }
+    // TODO(demurgos): Avoid casting
+    return [(<any> variant as QsSerializer<T>).readQs(input), variant];
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
-    // TODO(demurgos): Check if the format is supported instead of casting to `any`
-    return this.trustedMatcher(val, this.variants).write(<any> format, val);
+  readTrustedJson(input: json.Output): T {
+    return this.readTrustedJsonWithVariant(input)[0];
+  }
+
+  readTrustedBson(input: bson.Output): T {
+    return this.readTrustedBsonWithVariant(input)[0];
+  }
+
+  readTrustedQs(input: qs.Output): T {
+    return this.readTrustedQsWithVariant(input)[0];
+  }
+
+  readJson(input: any): T {
+    return this.readJsonWithVariant(input)[0];
+  }
+
+  readBson(input: any): T {
+    return this.readBsonWithVariant(input)[0];
+  }
+
+  readQs(input: any): T {
+    return this.readQsWithVariant(input)[0];
+  }
+
+  writeJson(val: T): json.Output {
+    return this.trustedMatcher(val, this.variants).writeJson(val);
+  }
+
+  writeBson(val: T): bson.Output {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.trustedMatcher(val, this.variants) as BsonSerializer<T>).writeBson(val);
+  }
+
+  writeQs(val: T): qs.Output {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.trustedMatcher(val, this.variants) as QsSerializer<T>).writeQs(val);
   }
 
   testError(val: T): Error | undefined {
     const type: VersionedType<T, any, any, any> | undefined = this.matcher(val, this.variants);
     if (type === undefined) {
-      return Incident("UnknownUnionVariant", "Unknown union variant");
+      return new Incident("UnknownUnionVariant", "Unknown union variant");
     }
     return type.testError(val);
   }
@@ -155,7 +193,7 @@ export class UnionType<T>
     return type.test(val);
   }
 
-  // TODO: Always return true ?
+  // TODO: Always return true?
   equals(val1: T, val2: T): boolean {
     const type1: VersionedType<T, any, any, any> = this.trustedMatcher(val1, this.variants);
     const type2: VersionedType<T, any, any, any> = this.trustedMatcher(val2, this.variants);
@@ -227,4 +265,4 @@ export class UnionType<T>
   }
 }
 
-export {UnionType as Type};
+export { UnionType as Type };

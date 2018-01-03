@@ -1,7 +1,7 @@
 import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "typed-union";
 export const name: Name = "typed-union";
@@ -51,12 +51,12 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
     throw NotImplementedError.create("TypedUnionType#toJSON");
   }
 
-  readTrusted(format: "json", val: json.Output): T {
-    return this.itemType.read(format, val);
+  readTrustedJson(val: json.Output): T {
+    return this.itemType.readJson(val);
   }
 
-  read(format: "json", val: any): T {
-    const value: T = this.itemType.read(format, val);
+  readJson(val: any): T {
+    const value: T = this.itemType.readJson(val);
     for (const allowed of this.values) {
       if (this.itemType.equals(value, allowed)) {
         return value;
@@ -65,8 +65,8 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
     throw Incident("UnkownVariant", "Unknown variant");
   }
 
-  write(format: "json", val: T): json.Output {
-    return this.itemType.write(format, val);
+  writeJson(val: T): json.Output {
+    return this.itemType.writeJson(val);
   }
 
   testError(val: T): Error | undefined {

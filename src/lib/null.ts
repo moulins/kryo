@@ -1,6 +1,5 @@
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
-import { SerializableType, VersionedType } from "./types";
+import { BsonSerializer, QsSerializer, VersionedType } from "./types";
 
 export type Name = "null";
 export const name: Name = "null";
@@ -12,6 +11,7 @@ export namespace bson {
 export namespace json {
   export type Input = null;
   export type Output = null;
+
   export interface Type {
     name: Name;
   }
@@ -24,52 +24,57 @@ export type Diff = undefined;
 
 export class NullType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name};
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+  readTrustedJson(input: json.Output): T {
     return null;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-      case "json":
-        if (input !== null) {
-          throw WrongTypeError.create("null", input);
-        }
-        return null;
-      case "qs":
-        if (input !== "") {
-          throw WrongTypeError.create("\"\"", input);
-        }
-        return null;
-      default:
-        throw UnknownFormatError.create(format);
-    }
+  readTrustedBson(val: bson.Output): T {
+    return null;
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
-    switch (format) {
-      case "bson":
-      case "json":
-        return null;
-      case "qs":
-        return "";
-      default:
-        return undefined as never;
+  readTrustedQs(val: qs.Output): T {
+    return null;
+  }
+
+  readJson(input: any): T {
+    if (input !== null) {
+      throw WrongTypeError.create("null", input);
     }
+    return null;
+  }
+
+  readBson(input: any): T {
+    if (input !== null) {
+      throw WrongTypeError.create("null", input);
+    }
+    return null;
+  }
+
+  readQs(input: any): T {
+    if (input !== "") {
+      throw WrongTypeError.create("\"\"", input);
+    }
+    return null;
+  }
+
+  writeJson(val: T): json.Output {
+    return null;
+  }
+
+  writeBson(val: T): bson.Output {
+    return null;
+  }
+
+  writeQs(val: T): qs.Output {
+    return "";
   }
 
   testError(val: T): Error | undefined {
@@ -116,4 +121,4 @@ export class NullType
   }
 }
 
-export {NullType as Type};
+export { NullType as Type };

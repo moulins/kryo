@@ -4,10 +4,9 @@ import { MaxUcs2StringLengthError } from "./_errors/max-ucs2-string-length";
 import { MinUcs2StringLengthError } from "./_errors/min-ucs2-string-length";
 import { NotTrimmedError } from "./_errors/not-trimmed";
 import { PatternNotMatchedError } from "./_errors/pattern-not-matched";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";
@@ -19,6 +18,7 @@ export namespace bson {
 export namespace json {
   export type Input = string;
   export type Output = string;
+
   export interface Type {
     name: Name;
     allowUnicodeRegExp: boolean;
@@ -37,6 +37,7 @@ export namespace qs {
   export type Output = string;
 }
 export type Diff = [string, string];
+
 export interface Options {
   allowUnicodeRegExp?: boolean;
   pattern?: RegExp;
@@ -101,7 +102,7 @@ export interface Options {
  * ```
  *
  * The most important takeaway is that codepoints outside of the BMP are a property of the display, not of
- * the Javscript string.
+ * the Javascript string.
  * This is the cause of multiple issues.
  * - Surrogate halves are exposed as distinct characters: `"𝄞".length === 2`
  * - Unmatched surrogate halves are allowed: `"\ud834"`
@@ -115,8 +116,8 @@ export interface Options {
  */
 export class Ucs2StringType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly allowUnicodeRegExp: boolean;
   readonly pattern?: RegExp;
@@ -176,32 +177,51 @@ export class Ucs2StringType
     return jsonType;
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
+  readTrustedJson(input: json.Output): T {
     return input;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-      case "json":
-      case "qs":
-        const error: Error | undefined = this.testError(input);
-        if (error !== undefined) {
-          throw error;
-        }
-        return input;
-      default:
-        throw UnknownFormatError.create(format);
-    }
+  readTrustedBson(input: bson.Output): T {
+    return input;
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
+  readTrustedQs(input: qs.Output): T {
+    return input;
+  }
+
+  readJson(input: any): T {
+    const error: Error | undefined = this.testError(input);
+    if (error !== undefined) {
+      throw error;
+    }
+    return input;
+  }
+
+  readBson(input: any): T {
+    const error: Error | undefined = this.testError(input);
+    if (error !== undefined) {
+      throw error;
+    }
+    return input;
+  }
+
+  readQs(input: any): T {
+    const error: Error | undefined = this.testError(input);
+    if (error !== undefined) {
+      throw error;
+    }
+    return input;
+  }
+
+  writeJson(val: T): json.Output {
+    return val;
+  }
+
+  writeBson(val: T): bson.Output {
+    return val;
+  }
+
+  writeQs(val: T): qs.Output {
     return val;
   }
 
@@ -291,4 +311,4 @@ export class Ucs2StringType
   }
 }
 
-export {Ucs2StringType as Type};
+export { Ucs2StringType as Type };

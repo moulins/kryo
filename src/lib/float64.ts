@@ -1,8 +1,7 @@
 import { Incident } from "incident";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "float64";
 export const name: Name = "float64";
@@ -15,6 +14,7 @@ export namespace bson {
 export namespace json {
   export type Input = number | "NaN" | "+Infinity" | "-Infinity";
   export type Output = number | "NaN" | "+Infinity" | "-Infinity";
+
   export interface Type {
     name: Name;
     notNan: boolean;
@@ -26,6 +26,7 @@ export namespace qs {
   export type Output = string;
 }
 export type Diff = [number, number];
+
 export interface Options {
   notNan?: boolean;
   notInfinity?: boolean;
@@ -33,8 +34,8 @@ export interface Options {
 
 export class Float64Type
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
   readonly notInfinity: boolean; // TODO(demurgos): rename to allowInfinity
@@ -74,113 +75,99 @@ export class Float64Type
     };
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-        return input;
-      case "json":
-        if (typeof input === "number") {
-          return input;
-        }
-        switch (input) {
-          case "NaN":
-            return NaN;
-          case "+Infinity":
-            return Infinity;
-          case "-Infinity":
-            return -Infinity;
-          default:
-            return undefined as never;
-        }
-      case "qs":
-        switch (input) {
-          case "NaN":
-            return NaN;
-          case "+Infinity":
-            return Infinity;
-          case "-Infinity":
-            return -Infinity;
-          default:
-            return parseFloat(input);
-        }
+  readTrustedJson(input: json.Output): T {
+    switch (input) {
+      case "NaN":
+        return NaN;
+      case "+Infinity":
+        return Infinity;
+      case "-Infinity":
+        return -Infinity;
       default:
-        return undefined as never;
+        return input;
     }
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-        if (typeof input !== "number") {
-          throw WrongTypeError.create("number", input);
-        }
-        return input;
-      case "json":
-        if (typeof input === "number") {
-          return input;
-        }
-        switch (input) {
-          case "NaN":
-            if (this.notNan) {
-              throw Incident("Nan", "NaN is not allowed");
-            }
-            return NaN;
-          case "+Infinity":
-            if (this.notNan) {
-              throw Incident("Infinity", "+Infinity is not allowed");
-            }
-            return Infinity;
-          case "-Infinity":
-            if (this.notNan) {
-              throw Incident("Infinity", "-Infinity is not allowed");
-            }
-            return -Infinity;
-          default:
-            throw Incident("InvalidNumberInput", "Expected a number, or one of NaN, +Infinity, -Infinity");
-        }
-      case "qs":
-        if (typeof input !== "string") {
-          throw WrongTypeError.create("string", input);
-        }
-        switch (input) {
-          case "NaN":
-            if (this.notNan) {
-              throw Incident("Nan", "NaN is not allowed");
-            }
-            return NaN;
-          case "+Infinity":
-            if (this.notNan) {
-              throw Incident("Infinity", "+Infinity is not allowed");
-            }
-            return Infinity;
-          case "-Infinity":
-            if (this.notNan) {
-              throw Incident("Infinity", "-Infinity is not allowed");
-            }
-            return -Infinity;
-          default:
-            const val: number = parseFloat(input);
-            const error: Error | undefined = this.testError(val);
-            if (error !== undefined) {
-              throw error;
-            }
-            return val;
-        }
+  readTrustedBson(input: bson.Output): T {
+    return input;
+  }
+
+  readTrustedQs(input: qs.Output): T {
+    switch (input) {
+      case "NaN":
+        return NaN;
+      case "+Infinity":
+        return Infinity;
+      case "-Infinity":
+        return -Infinity;
       default:
-        throw UnknownFormatError.create(format);
+        return parseFloat(input);
     }
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
-    if (format === "bson") {
-      return val;
+  readJson(input: any): T {
+    if (typeof input === "number") {
+      return input;
     }
+    switch (input) {
+      case "NaN":
+        if (this.notNan) {
+          throw Incident("Nan", "NaN is not allowed");
+        }
+        return NaN;
+      case "+Infinity":
+        if (this.notNan) {
+          throw Incident("Infinity", "+Infinity is not allowed");
+        }
+        return Infinity;
+      case "-Infinity":
+        if (this.notNan) {
+          throw Incident("Infinity", "-Infinity is not allowed");
+        }
+        return -Infinity;
+      default:
+        throw Incident("InvalidNumberInput", "Expected a number, or one of NaN, +Infinity, -Infinity");
+    }
+  }
+
+  readBson(input: any): T {
+    if (typeof input !== "number") {
+      throw WrongTypeError.create("number", input);
+    }
+    return input;
+  }
+
+  readQs(input: any): T {
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
+    }
+    switch (input) {
+      case "NaN":
+        if (this.notNan) {
+          throw Incident("Nan", "NaN is not allowed");
+        }
+        return NaN;
+      case "+Infinity":
+        if (this.notNan) {
+          throw Incident("Infinity", "+Infinity is not allowed");
+        }
+        return Infinity;
+      case "-Infinity":
+        if (this.notNan) {
+          throw Incident("Infinity", "-Infinity is not allowed");
+        }
+        return -Infinity;
+      default:
+        const val: number = parseFloat(input);
+        const error: Error | undefined = this.testError(val);
+        if (error !== undefined) {
+          throw error;
+        }
+        return val;
+    }
+  }
+
+  writeJson(val: T): json.Output {
     if (isNaN(val)) {
       return "NaN";
     } else if (val === Infinity) {
@@ -188,7 +175,22 @@ export class Float64Type
     } else if (val === -Infinity) {
       return "-Infinity";
     }
-    return format === "json" ? val : val.toString(10);
+    return val;
+  }
+
+  writeBson(val: T): bson.Output {
+    return val;
+  }
+
+  writeQs(val: T): qs.Output {
+    if (isNaN(val)) {
+      return "NaN";
+    } else if (val === Infinity) {
+      return "+Infinity";
+    } else if (val === -Infinity) {
+      return "-Infinity";
+    }
+    return val.toString(10);
   }
 
   testError(val: T): Error | undefined {
@@ -260,4 +262,4 @@ export class Float64Type
   }
 }
 
-export {Float64Type as Type};
+export { Float64Type as Type };

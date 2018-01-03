@@ -1,11 +1,5 @@
-import { Incident } from "incident";
-import { InvalidArrayItemError } from "./_errors/invalid-array-item";
-import { MaxArrayLengthError } from "./_errors/max-array-length";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { UnknownFormatError } from "./_errors/unknown-format";
-import { WrongTypeError } from "./_errors/wrong-type";
-import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, QsSerializer, VersionedType } from "./types";
 
 export type Name = "json";
 export const name: Name = "json";
@@ -27,8 +21,8 @@ export type Diff = any;
 
 export class JsonType
   implements VersionedType<any, json.Input, json.Output, Diff>,
-    SerializableType<any, "bson", bson.Input, bson.Output>,
-    SerializableType<any, "qs", qs.Input, qs.Output> {
+    BsonSerializer<any, bson.Input, bson.Output>,
+    QsSerializer<any, qs.Input, qs.Output> {
   readonly name: Name = name;
 
   constructor() {
@@ -38,47 +32,40 @@ export class JsonType
     throw NotImplementedError.create("ArrayType#toJSON");
   }
 
-  readTrusted(format: "bson", val: bson.Output): any;
-  readTrusted(format: "json", val: json.Output): any;
-  readTrusted(format: "qs", val: qs.Output): any;
-  readTrusted(format: "bson" | "json" | "qs", input: any): any {
-    switch (format) {
-      case "bson":
-      case "json":
-        // TODO(demurgos): Check if the format is supported instead of casting to `any`
-        return input;
-      case "qs":
-        throw NotImplementedError.create("JsonType#readTrusted('qs', ...)");
-      default:
-        return undefined as never;
-    }
+  readTrustedJson(input: json.Output): any {
+    return input;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): any {
-    switch (format) {
-      case "bson":
-      case "json":
-        return JSON.parse(JSON.stringify(input));
-      case "qs":
-        throw NotImplementedError.create("JsonType#read('qs', ...)");
-      default:
-        throw UnknownFormatError.create(format);
-    }
+  readTrustedBson(input: bson.Output): any {
+    return input;
   }
 
-  write(format: "bson", val: any): bson.Output;
-  write(format: "json", val: any): json.Output;
-  write(format: "qs", val: any): qs.Output;
-  write(format: "bson" | "json" | "qs", val: any): any {
-    switch (format) {
-      case "bson":
-      case "json":
-        return JSON.parse(JSON.stringify(val));
-      case "qs":
-        throw NotImplementedError.create("JsonType#write('qs', ...)");
-      default:
-        return undefined as never;
-    }
+  readTrustedQs(input: qs.Output): any {
+    throw NotImplementedError.create("JsonType#readTrustedQs");
+  }
+
+  readJson(input: any): any {
+    return JSON.parse(JSON.stringify(input));
+  }
+
+  readBson(input: any): any {
+    return JSON.parse(JSON.stringify(input));
+  }
+
+  readQs(input: any): any {
+    throw NotImplementedError.create("JsonType#readQs");
+  }
+
+  writeJson(val: any): json.Output {
+    return JSON.parse(JSON.stringify(val));
+  }
+
+  writeBson(val: any): bson.Output {
+    return JSON.parse(JSON.stringify(val));
+  }
+
+  writeQs(val: any): qs.Output {
+    throw NotImplementedError.create("JsonType#writeQs");
   }
 
   testError(val: any): Error | undefined {
@@ -119,4 +106,4 @@ export class JsonType
   }
 }
 
-export {JsonType as Type};
+export { JsonType as Type };

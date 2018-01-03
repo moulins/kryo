@@ -1,6 +1,5 @@
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
-import { SerializableType, VersionedType } from "./types";
+import { BsonSerializer, QsSerializer, VersionedType } from "./types";
 
 export type Name = "boolean";
 export const name: Name = "boolean";
@@ -21,8 +20,8 @@ export type Diff = boolean;
 
 export class BooleanType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
 
   toJSON(): undefined {
@@ -30,52 +29,49 @@ export class BooleanType
     return undefined;
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-      case "json":
-        return input;
-      case "qs":
-        return input === "true";
-      default:
-        return undefined as never;
-    }
+  readTrustedJson(input: json.Output): T {
+    return input;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-      case "json":
-        if (typeof input !== "boolean") {
-          throw WrongTypeError.create("boolean", input);
-        }
-        return input;
-      case "qs":
-        if (!(input === "true" || input === "false")) {
-          throw WrongTypeError.create("\"true\" | \"false\"", input);
-        }
-        return input === "true";
-      default:
-        throw UnknownFormatError.create(format);
-    }
+  readTrustedBson(input: bson.Output): T {
+    return input;
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
-    switch (format) {
-      case "bson":
-      case "json":
-        return val;
-      case "qs":
-        return val ? "true" : "false";
-      default:
-        return undefined as never;
+  readTrustedQs(input: qs.Output): T {
+    return input === "true";
+  }
+
+  readJson(input: any): T {
+    if (typeof input !== "boolean") {
+      throw WrongTypeError.create("boolean", input);
     }
+    return input;
+  }
+
+  readBson(input: any): T {
+    if (typeof input !== "boolean") {
+      throw WrongTypeError.create("boolean", input);
+    }
+    return input;
+  }
+
+  readQs(input: any): T {
+    if (!(input === "true" || input === "false")) {
+      throw WrongTypeError.create("\"true\" | \"false\"", input);
+    }
+    return input === "true";
+  }
+
+  writeJson(val: T): json.Output {
+    return val;
+  }
+
+  writeBson(val: T): bson.Output {
+    return val;
+  }
+
+  writeQs(val: T): qs.Output {
+    return val ? "true" : "false";
   }
 
   testError(val: T): Error | undefined {
@@ -121,4 +117,4 @@ export class BooleanType
   }
 }
 
-export {BooleanType as Type};
+export { BooleanType as Type };

@@ -3,7 +3,7 @@ import { NotImplementedError } from "./_errors/not-implemented";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
 import { CaseStyle, rename } from "./_helpers/rename";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type SimpleEnum<EnumConstructor> = {
   [K in keyof EnumConstructor]: EnumConstructor[K];
@@ -62,8 +62,8 @@ export interface Options<E extends number> {
  */
 export class SimpleEnumType<E extends number>
   implements VersionedType<E, json.Input, json.Output, Diff>,
-    SerializableType<E, "bson", bson.Input, bson.Output>,
-    SerializableType<E, "qs", qs.Input, qs.Output> {
+    BsonSerializer<E, bson.Input, bson.Output>,
+    QsSerializer<E, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly enum: EnumConstructor<E>;
   private readonly rename?: CaseStyle;
@@ -96,14 +96,19 @@ export class SimpleEnumType<E extends number>
     throw NotImplementedError.create("SimpleEnumType#toJSON");
   }
 
-  readTrusted(format: "bson", val: bson.Output): E;
-  readTrusted(format: "json", val: json.Output): E;
-  readTrusted(format: "qs", val: qs.Output): E;
-  readTrusted(format: "bson" | "json" | "qs", input: any): E {
+  readTrustedJson(input: json.Output): E {
     return this.outputNameToValue[input] as E;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): E {
+  readTrustedBson(input: bson.Output): E {
+    return this.outputNameToValue[input] as E;
+  }
+
+  readTrustedQs(input: qs.Output): E {
+    return this.outputNameToValue[input] as E;
+  }
+
+  readJson(input: any): E {
     if (typeof input !== "string") {
       throw WrongTypeError.create("string", input);
     }
@@ -113,10 +118,35 @@ export class SimpleEnumType<E extends number>
     return this.outputNameToValue[input] as E;
   }
 
-  write(format: "bson", val: E): bson.Output;
-  write(format: "json", val: E): json.Output;
-  write(format: "qs", val: E): qs.Output;
-  write(format: "bson" | "json" | "qs", val: E): any {
+  readBson(input: any): E {
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
+    }
+    if (!this.outputNameToValue.hasOwnProperty(input)) {
+      throw Incident("Unknown enum variant name", input);
+    }
+    return this.outputNameToValue[input] as E;
+  }
+
+  readQs(input: any): E {
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
+    }
+    if (!this.outputNameToValue.hasOwnProperty(input)) {
+      throw Incident("Unknown enum variant name", input);
+    }
+    return this.outputNameToValue[input] as E;
+  }
+
+  writeJson(val: E): json.Output {
+    return this.valueToOutputName[val as number];
+  }
+
+  writeBson(val: E): bson.Output {
+    return this.valueToOutputName[val as number];
+  }
+
+  writeQs(val: E): qs.Output {
     return this.valueToOutputName[val as number];
   }
 

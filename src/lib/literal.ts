@@ -1,8 +1,7 @@
 import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "literal";
 export const name: Name = "literal";
@@ -28,8 +27,8 @@ export interface Options<T, Output, Input extends Output, Diff> {
 
 export class LiteralType<T>
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly type: VersionedType<T, any, any, Diff>;
   readonly value: T;
@@ -56,32 +55,46 @@ export class LiteralType<T>
     throw NotImplementedError.create("LiteralType#toJSON");
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
-    // TODO(demurgos): Check if the format is supported instead of casting to `any`
-    return this.type.readTrusted(<any> format, input);
+  readTrustedJson(input: json.Output): T {
+    return this.type.readTrustedJson(input);
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-      case "json":
-      case "qs":
-        // TODO(demurgos): Check if the format is supported instead of casting to `any`
-        return this.type.read(<any> format, input);
-      default:
-        throw UnknownFormatError.create(format);
-    }
+  readTrustedBson(input: bson.Output): T {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.type as BsonSerializer<T>).readTrustedBson(input);
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
-    // TODO(demurgos): Check if the format is supported instead of casting to `any`
-    return this.type.write(<any> format, val);
+  readTrustedQs(input: qs.Output): T {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.type as QsSerializer<T>).readTrustedQs(input);
+  }
+
+  readJson(input: any): T {
+    return this.type.readJson(input);
+  }
+
+  readBson(input: any): T {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.type as BsonSerializer<T>).readBson(input);
+  }
+
+  readQs(input: any): T {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.type as QsSerializer<T>).readQs(input);
+  }
+
+  writeJson(val: T): json.Output {
+    return this.type.writeJson(val);
+  }
+
+  writeBson(val: T): bson.Output {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.type as BsonSerializer<T>).writeBson(val);
+  }
+
+  writeQs(val: T): qs.Output {
+    // TODO(demurgos): Avoid casting
+    return (<any> this.type as QsSerializer<T>).writeQs(val);
   }
 
   testError(val: T): Error | undefined {
@@ -137,4 +150,4 @@ export class LiteralType<T>
   }
 }
 
-export {LiteralType as Type};
+export { LiteralType as Type };

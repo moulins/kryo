@@ -14,14 +14,26 @@ export interface Type<T> {
   toJSON(): any;
 }
 
-export interface SerializableType<T, FormatName extends string, Input, Output extends Input> extends Type<T> {
-  readTrusted(format: FormatName, serialized: Output): T;
-  read(format: FormatName, serialized: Input): T;
-  write(format: FormatName, val: T): Output;
+export interface JsonSerializer<T, Input = any, Output extends Input = any> {
+  writeJson(val: T): Output;
+  readJson(serialized: Input): T;
+  readTrustedJson(serialized: Output): T;
+}
+
+export interface BsonSerializer<T, Input = any, Output extends Input = any> {
+  writeBson(val: T): Output;
+  readBson(serialized: Input): T;
+  readTrustedBson(serialized: Output): T;
+}
+
+export interface QsSerializer<T, Input = any, Output extends Input = any> {
+  writeQs(val: T): Output;
+  readQs(serialized: Input): T;
+  readTrustedQs(serialized: Output): T;
 }
 
 export interface VersionedType<T, Input, Output extends Input, Diff>
-  extends SerializableType<T, "json", Input, Output> {
+  extends Type<T>, JsonSerializer<T, Input, Output> {
   /**
    * Returns undefined if both values are equivalent, otherwise a diff representing the change from
    * oldVal to newVal.
@@ -36,7 +48,7 @@ export interface VersionedType<T, Input, Output extends Input, Diff>
   // readonly diffType: Type<Diff>;
 }
 
-export interface CollectionType <T, D, I> extends Type<T> {
+export interface CollectionType <T, I> extends Type<T> {
   iterateSync(value: T, visitor: (item: I) => any): void;
 }
 

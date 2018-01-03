@@ -49,14 +49,14 @@ describe("IntegerType", function () {
     runTests(type, items);
   });
 
-  describe("read(\"query\", val)", function () {
+  describe("readQs(val)", function () {
     const type: IntegerType = new IntegerType();
-    assert.strictEqual(type.read("qs", "0"), 0);
-    assert.strictEqual(type.read("qs", "1"), 1);
-    assert.strictEqual(type.read("qs", "-1"), -1);
-    assert.strictEqual(type.read("qs", "-1234"), -1234);
-    assert.strictEqual(type.read("qs", "2147483647"), 2147483647);
-    assert.strictEqual(type.read("qs", "-2147483648"), -2147483648);
+    assert.strictEqual(type.readQs("0"), 0);
+    assert.strictEqual(type.readQs("1"), 1);
+    assert.strictEqual(type.readQs("-1"), -1);
+    assert.strictEqual(type.readQs("-1234"), -1234);
+    assert.strictEqual(type.readQs("2147483647"), 2147483647);
+    assert.strictEqual(type.readQs("-2147483648"), -2147483648);
   });
 
   describe("Bound integer", function () {

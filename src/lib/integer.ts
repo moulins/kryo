@@ -1,9 +1,8 @@
 import { Incident } from "incident";
 import { InvalidIntegerError } from "./_errors/invalid-integer";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "int";
 export const name: Name = "int";
@@ -15,6 +14,7 @@ export namespace bson {
 export namespace json {
   export type Input = number;
   export type Output = number;
+
   export interface Type {
     name: Name;
     min: number;
@@ -56,8 +56,8 @@ export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 
 export class IntegerType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
 
   readonly name: Name = name;
   readonly min: number;
@@ -94,41 +94,24 @@ export class IntegerType
     return {name, min: this.min, max: this.max};
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-        return input;
-      case "json":
-        return input;
-      case "qs":
-        return parseInt(input, 10);
-      default:
-        return undefined as never;
-    }
+  readTrustedJson(input: json.Output): T {
+    return input;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
+  readTrustedBson(input: bson.Output): T {
+    return input;
+  }
+
+  readTrustedQs(input: qs.Output): T {
+    return parseInt(input, 10);
+  }
+
+  readJson(input: any): T {
     let val: number;
-    switch (format) {
-      case "bson":
-      case "json":
-        if (typeof input !== "number") {
-          throw WrongTypeError.create("number", input);
-        }
-        val = input;
-        break;
-      case "qs":
-        if (typeof input !== "string") {
-          throw WrongTypeError.create("string", input);
-        }
-        val = parseInt(input, 10);
-        break;
-      default:
-        throw UnknownFormatError.create(format);
+    if (typeof input !== "number") {
+      throw WrongTypeError.create("number", input);
     }
+    val = input;
     const err: Error | undefined = this.testError(val);
     if (err !== undefined) {
       throw err;
@@ -137,20 +120,44 @@ export class IntegerType
     return val;
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
-    switch (format) {
-      case "bson":
-        return val;
-      case "json":
-        return val;
-      case "qs":
-        return val.toString(10);
-      default:
-        return undefined as never;
+  readBson(input: any): T {
+    let val: number;
+    if (typeof input !== "number") {
+      throw WrongTypeError.create("number", input);
     }
+    val = input;
+    const err: Error | undefined = this.testError(val);
+    if (err !== undefined) {
+      throw err;
+    }
+
+    return val;
+  }
+
+  readQs(input: any): T {
+    let val: number;
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
+    }
+    val = parseInt(input, 10);
+    const err: Error | undefined = this.testError(val);
+    if (err !== undefined) {
+      throw err;
+    }
+
+    return val;
+  }
+
+  writeJson(val: T): json.Output {
+    return val;
+  }
+
+  writeBson(val: T): bson.Output {
+    return val;
+  }
+
+  writeQs(val: T): qs.Output {
+    return val.toString(10);
   }
 
   testError(val: T): Error | undefined {
@@ -214,4 +221,4 @@ export class IntegerType
   }
 }
 
-export {IntegerType as Type};
+export { IntegerType as Type };

@@ -2,10 +2,9 @@ import { Incident } from "incident";
 import { InvalidArrayItemError } from "./_errors/invalid-array-item";
 import { MaxArrayLengthError } from "./_errors/max-array-length";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "array";
 export const name: Name = "array";
@@ -32,8 +31,8 @@ export interface Options<T, Input, Output extends Input, Diff> {
 
 export class ArrayType<T>
   implements VersionedType<T[], json.Input, json.Output, Diff>,
-    SerializableType<T[], "bson", bson.Input, bson.Output>,
-    SerializableType<T[], "qs", qs.Input, qs.Output> {
+    BsonSerializer<T[], bson.Input, bson.Output>,
+    QsSerializer<T[], qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly itemType: VersionedType<T, any, any, any>;
   readonly maxLength: number;
@@ -60,50 +59,60 @@ export class ArrayType<T>
     throw NotImplementedError.create("ArrayType#toJSON");
   }
 
-  readTrusted(format: "bson", val: bson.Output): T[];
-  readTrusted(format: "json", val: json.Output): T[];
-  readTrusted(format: "qs", val: qs.Output): T[];
-  readTrusted(format: "bson" | "json" | "qs", input: any): T[] {
-    switch (format) {
-      case "bson":
-      case "json":
-        // TODO(demurgos): Check if the format is supported instead of casting to `any`
-        return input.map((item: any): T => this.itemType.readTrusted(<any> format, item));
-      case "qs":
-        if (Array.isArray(input)) {
-          // TODO(demurgos): Check if the format is supported instead of casting to `any`
-          return input.map((item: any): T => this.itemType.readTrusted(<any> format, item));
-        } else {
-          return [];
-        }
-      default:
-        return undefined as never;
+  readTrustedJson(input: json.Output): T[] {
+    return input.map((item: any): T => this.itemType.readTrustedJson(item));
+  }
+
+  readTrustedBson(input: bson.Output): T[] {
+    // TODO(demurgos): Avoid casting
+    return input.map((item: any): T => (<any> this.itemType as BsonSerializer<T>).readTrustedBson(item));
+  }
+
+  readTrustedQs(input: qs.Output): T[] {
+    if (Array.isArray(input)) {
+      // TODO(demurgos): Avoid casting
+      return input.map((item: any): T => (<any> this.itemType as QsSerializer<T>).readTrustedQs(item));
+    } else {
+      return [];
     }
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T[] {
+  readJson(input: any): T[] {
     let result: T[];
-    switch (format) {
-      case "bson":
-      case "json":
-        if (!Array.isArray(input)) {
-          throw WrongTypeError.create("array", input);
-        }
-        // TODO(demurgos): Check if the format is supported instead of casting to `any`
-        result = input.map((item: any): T => this.itemType.read(<any> format, item));
-        break;
-      case "qs":
-        if (Array.isArray(input)) {
-          // TODO(demurgos): Check if the format is supported instead of casting to `any`
-          result = input.map((item: any): T => this.itemType.read(<any> format, item));
-        } else if (input === undefined) {
-          result = [];
-        } else {
-          throw WrongTypeError.create("array | undefined", input);
-        }
-        break;
-      default:
-        throw UnknownFormatError.create(format);
+    if (!Array.isArray(input)) {
+      throw WrongTypeError.create("array", input);
+    }
+    result = input.map((item: any): T => this.itemType.readJson(item));
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  readBson(input: any): T[] {
+    let result: T[];
+    if (!Array.isArray(input)) {
+      throw WrongTypeError.create("array", input);
+    }
+    // TODO(demurgos): Avoid casting
+    result = input.map((item: any): T => (<any> this.itemType as BsonSerializer<T>).readBson(item));
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  readQs(input: any): T[] {
+    let result: T[];
+    if (Array.isArray(input)) {
+      // TODO(demurgos): Avoid casting
+      result = input.map((item: any): T => (<any> this.itemType as QsSerializer<T>).readQs(item));
+    } else if (input === undefined) {
+      result = [];
+    } else {
+      throw WrongTypeError.create("array | undefined", input);
     }
     const error: Error | undefined = this.testError(result);
     if (error !== undefined) {
@@ -112,25 +121,18 @@ export class ArrayType<T>
     return result;
   }
 
-  write(format: "bson", val: T[]): bson.Output;
-  write(format: "json", val: T[]): json.Output;
-  write(format: "qs", val: T[]): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T[]): any {
-    switch (format) {
-      case "bson":
-      case "json":
-        // TODO(demurgos): Check if the format is supported instead of casting to `any`
-        return val.map((item: T): any => this.itemType.write(<any> format, item));
-      case "qs":
-        if (val.length > 0) {
-          // TODO(demurgos): Check if the format is supported instead of casting to `any`
-          return val.map((item: T): any => this.itemType.write(<any> format, item));
-        } else {
-          return undefined;
-        }
-      default:
-        return undefined as never;
-    }
+  writeJson(val: T[]): json.Output {
+    return val.map((item: T): any => this.itemType.writeJson(item));
+  }
+
+  writeBson(val: T[]): bson.Output {
+    // TODO(demurgos): Avoid casting
+    return val.map((item: T): any => (<any> this.itemType as BsonSerializer<T>).writeBson(item));
+  }
+
+  writeQs(val: T[]): qs.Output {
+    // TODO(demurgos): Avoid casting
+    return val.map((item: T): any => (<any> this.itemType as QsSerializer<T>).writeQs(item));
   }
 
   testError(val: T[]): Error | undefined {
@@ -204,4 +206,4 @@ export class ArrayType<T>
   }
 }
 
-export {ArrayType as Type};
+export { ArrayType as Type };

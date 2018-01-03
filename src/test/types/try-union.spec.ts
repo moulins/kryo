@@ -112,12 +112,12 @@ describe("TryUnion", function () {
     runTests($Shape, items);
 
     it(".readTrustedWithVariant should return $Rectangle", () => {
-      const [val, variant] = $Shape.readTrustedWithVariant("json", {width: 10, height: 20});
+      const [_, variant] = $Shape.readTrustedJsonWithVariant({width: 10, height: 20});
       assert.strictEqual(variant, $Rectangle);
     });
 
     it(".readTrustedWithVariant should return $Circle", () => {
-      const [val, variant] = $Shape.readTrustedWithVariant("json", {radius: 15});
+      const [_, variant] = $Shape.readTrustedJsonWithVariant({radius: 15});
       assert.strictEqual(variant, $Circle);
     });
 

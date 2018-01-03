@@ -1,7 +1,6 @@
 import { InvalidTimestampError } from "./_errors/invalid-timestamp";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
-import { SerializableType, VersionedType } from "./types";
+import { BsonSerializer, QsSerializer, VersionedType } from "./types";
 
 export type Name = "date";
 export const name: Name = "date";
@@ -13,6 +12,7 @@ export namespace bson {
 export namespace json {
   export type Input = string | number;
   export type Output = string;
+
   export interface Type {
     name: Name;
   }
@@ -25,55 +25,34 @@ export type Diff = number;
 
 export class DateType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    SerializableType<T, "bson", bson.Input, bson.Output>,
-    SerializableType<T, "qs", qs.Input, qs.Output> {
+    BsonSerializer<T, bson.Input, bson.Output>,
+    QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name};
   }
 
-  readTrusted(format: "bson", val: bson.Output): T;
-  readTrusted(format: "json", val: json.Output): T;
-  readTrusted(format: "qs", val: qs.Output): T;
-  readTrusted(format: "bson" | "json" | "qs", input: any): T {
-    switch (format) {
-      case "bson":
-        return new Date(input.getTime());
-      case "json":
-      case "qs":
-        return new Date(input);
-      default:
-        return undefined as never;
-    }
+  readTrustedJson(input: json.Output): T {
+    return new Date(input);
   }
 
-  read(format: "bson" | "json" | "qs", input: any): T {
+  readTrustedBson(input: bson.Output): T {
+    return new Date(input.getTime());
+  }
+
+  readTrustedQs(input: qs.Output): T {
+    return new Date(input);
+  }
+
+  readJson(input: any): T {
     let result: Date;
-    switch (format) {
-      case "bson":
-        if (!(input instanceof Date)) {
-          throw WrongTypeError.create("Date", input);
-        }
-        result = new Date(input.getTime());
-        break;
-      case "json":
-        if (typeof input === "string") {
-          result = new Date(input);
-        } else if (typeof input === "number") {
-          result = new Date(input);
-        } else {
-          throw WrongTypeError.create("string | number", input);
-        }
-        break;
-      case "qs":
-        if (typeof input !== "string") {
-          throw WrongTypeError.create("string", input);
-        }
-        result = new Date(input);
-        break;
-      default:
-        throw UnknownFormatError.create(format);
+    if (typeof input === "string") {
+      result = new Date(input);
+    } else if (typeof input === "number") {
+      result = new Date(input);
+    } else {
+      throw WrongTypeError.create("string | number", input);
     }
     const error: Error | undefined = this.testError(result);
     if (error !== undefined) {
@@ -82,19 +61,42 @@ export class DateType
     return result;
   }
 
-  write(format: "bson", val: T): bson.Output;
-  write(format: "json", val: T): json.Output;
-  write(format: "qs", val: T): qs.Output;
-  write(format: "bson" | "json" | "qs", val: T): any {
-    switch (format) {
-      case "bson":
-        return new Date(val.getTime());
-      case "json":
-      case "qs":
-        return val.toISOString();
-      default:
-        return undefined as never;
+  readBson(input: any): T {
+    let result: Date;
+    if (!(input instanceof Date)) {
+      throw WrongTypeError.create("Date", input);
     }
+    result = new Date(input.getTime());
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  readQs(input: any): T {
+    let result: Date;
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
+    }
+    result = new Date(input);
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  writeJson(val: T): json.Output {
+    return val.toISOString();
+  }
+
+  writeBson(val: T): bson.Output {
+    return new Date(val.getTime());
+  }
+
+  writeQs(val: T): qs.Output {
+    return val.toISOString();
   }
 
   testError(val: T): Error | undefined {
@@ -146,4 +148,4 @@ export class DateType
   }
 }
 
-export {DateType as Type};
+export { DateType as Type };

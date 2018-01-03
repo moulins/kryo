@@ -1,12 +1,11 @@
-import {Binary as BinaryType } from "bson";
+import { Binary as BinaryType } from "bson";
 import { Incident } from "incident";
 import { MaxArrayLengthError } from "./_errors/max-array-length";
 import { MissingDependencyError } from "./_errors/missing-dependency";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "buffer";
 export const name: Name = "buffer";
@@ -46,8 +45,8 @@ try {
 
 export class BufferType
   implements VersionedType<Uint8Array, json.Input, json.Output, Diff>,
-    SerializableType<Uint8Array, "bson", bson.Input, bson.Output>,
-    SerializableType<Uint8Array, "qs", qs.Input, qs.Output> {
+    BsonSerializer<Uint8Array, bson.Input, bson.Output>,
+    QsSerializer<Uint8Array, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly maxLength: number;
 
@@ -73,52 +72,39 @@ export class BufferType
     throw NotImplementedError.create("BufferType#toJSON");
   }
 
-  readTrusted(format: "bson", val: bson.Output): Uint8Array;
-  readTrusted(format: "json", val: json.Output): Uint8Array;
-  readTrusted(format: "qs", val: qs.Output): Uint8Array;
-  readTrusted(format: "bson" | "json" | "qs", input: any): Uint8Array {
-    switch (format) {
-      case "bson":
-        return (<any> input as {value(asRaw: true): Buffer}).value(true);
-      case "json":
-      case "qs":
-        const len: number = input.length / 2;
-        const result: Uint8Array = new Uint8Array(len);
-        for (let i: number = 0; i < len; i++) {
-          result[i] = parseInt(input.substr(2 * i, 2), 16);
-        }
-        return result;
-      default:
-        return undefined as never;
+  readTrustedJson(input: json.Output): Uint8Array {
+    const len: number = input.length / 2;
+    const result: Uint8Array = new Uint8Array(len);
+    for (let i: number = 0; i < len; i++) {
+      result[i] = parseInt(input.substr(2 * i, 2), 16);
     }
+    return result;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): Uint8Array {
+  readTrustedBson(input: bson.Output): Uint8Array {
+    return (<any> input as {value(asRaw: true): Buffer}).value(true);
+  }
+
+  readTrustedQs(input: qs.Output): Uint8Array {
+    const len: number = input.length / 2;
+    const result: Uint8Array = new Uint8Array(len);
+    for (let i: number = 0; i < len; i++) {
+      result[i] = parseInt(input.substr(2 * i, 2), 16);
+    }
+    return result;
+  }
+
+  readJson(input: any): Uint8Array {
     let result: Uint8Array;
-    switch (format) {
-      case "bson":
-        if (isBinary(input)) {
-          // TODO: Fix BSON type definitions
-          result = (<any> input as {value(asRaw: true): Buffer}).value(true);
-        } else {
-          result = input;
-        }
-        break;
-      case "json":
-      case "qs":
-        if (typeof input !== "string") {
-          throw WrongTypeError.create("string", input);
-        } else if (!/^(?:[0-9a-f]{2})*$/.test(input)) {
-          throw WrongTypeError.create("lowerCaseHexEvenLengthString", input);
-        }
-        const len: number = input.length / 2;
-        result = new Uint8Array(len);
-        for (let i: number = 0; i < len; i++) {
-          result[i] = parseInt(input.substr(2 * i, 2), 16);
-        }
-        break;
-      default:
-        throw UnknownFormatError.create(format);
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
+    } else if (!/^(?:[0-9a-f]{2})*$/.test(input)) {
+      throw WrongTypeError.create("lowerCaseHexEvenLengthString", input);
+    }
+    const len: number = input.length / 2;
+    result = new Uint8Array(len);
+    for (let i: number = 0; i < len; i++) {
+      result[i] = parseInt(input.substr(2 * i, 2), 16);
     }
     const error: Error | undefined = this.testError(result);
     if (error !== undefined) {
@@ -127,27 +113,63 @@ export class BufferType
     return result;
   }
 
-  write(format: "bson", val: Uint8Array): bson.Output;
-  write(format: "json", val: Uint8Array): json.Output;
-  write(format: "qs", val: Uint8Array): qs.Output;
-  write(format: "bson" | "json" | "qs", val: Uint8Array): any {
-    switch (format) {
-      case "bson":
-        if (Binary === undefined) {
-          throw MissingDependencyError.create("bson", "Required to write buffers to BSON.");
-        }
-        return new Binary(Buffer.from(val as any));
-      case "json":
-      case "qs":
-        const result: string[] = new Array(val.length);
-        const len: number = val.length;
-        for (let i: number = 0; i < len; i++) {
-          result[i] = (val[i] < 16 ? "0" : "") + val[i].toString(16);
-        }
-        return result.join("");
-      default:
-        return undefined as never;
+  readBson(input: any): Uint8Array {
+    let result: Uint8Array;
+    if (isBinary(input)) {
+      // TODO: Fix BSON type definitions
+      result = (<any> input as {value(asRaw: true): Buffer}).value(true);
+    } else {
+      result = input;
     }
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  readQs(input: any): Uint8Array {
+    let result: Uint8Array;
+    if (typeof input !== "string") {
+      throw WrongTypeError.create("string", input);
+    } else if (!/^(?:[0-9a-f]{2})*$/.test(input)) {
+      throw WrongTypeError.create("lowerCaseHexEvenLengthString", input);
+    }
+    const len: number = input.length / 2;
+    result = new Uint8Array(len);
+    for (let i: number = 0; i < len; i++) {
+      result[i] = parseInt(input.substr(2 * i, 2), 16);
+    }
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  writeJson(val: Uint8Array): json.Output {
+    const result: string[] = new Array(val.length);
+    const len: number = val.length;
+    for (let i: number = 0; i < len; i++) {
+      result[i] = (val[i] < 16 ? "0" : "") + val[i].toString(16);
+    }
+    return result.join("");
+  }
+
+  writeBson(val: Uint8Array): bson.Output {
+    if (Binary === undefined) {
+      throw MissingDependencyError.create("bson", "Required to write buffers to BSON.");
+    }
+    return new Binary(Buffer.from(val as any));
+  }
+
+  writeQs(val: Uint8Array): qs.Output {
+    const result: string[] = new Array(val.length);
+    const len: number = val.length;
+    for (let i: number = 0; i < len; i++) {
+      result[i] = (val[i] < 16 ? "0" : "") + val[i].toString(16);
+    }
+    return result.join("");
   }
 
   testError(val: Uint8Array): Error | undefined {
@@ -214,4 +236,4 @@ export class BufferType
   }
 }
 
-export {BufferType as Type};
+export { BufferType as Type };

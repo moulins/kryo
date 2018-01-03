@@ -3,7 +3,7 @@ import { NotImplementedError } from "./_errors/not-implemented";
 import { DocumentType } from "./document";
 import { LiteralType } from "./literal";
 import { SimpleEnumType } from "./simple-enum";
-import { Lazy, SerializableType } from "./types";
+import { BsonSerializer, JsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 import * as union from "./union";
 
 export type Name = "tagged-union";
@@ -46,7 +46,7 @@ export interface Options<T extends {}, Output, Input extends Output, Diff> {
 
 function toUnionOptions<T extends {}>(options: Options<T, any, any, any>): union.Options<T, any, any, any> {
   const tagName: string = options.tag;
-  let tagBaseType: SerializableType<any, any, any, any> | undefined = undefined;
+  let tagBaseType: JsonSerializer<any, any, any> | undefined = undefined;
   const tagValuesMap: Map<number | string, DocumentType<T>> = new Map();
   const outValuesMap: {
     bson: Map<number | string, DocumentType<T>>;
@@ -89,7 +89,20 @@ function toUnionOptions<T extends {}>(options: Options<T, any, any, any>): union
     }
     tagValuesMap.set(value, variant);
     for (const format in outValuesMap) {
-      const value: string = tagBaseType.write(format, tagType.value);
+      let value: string;
+      switch (format) {
+        case "json":
+          value = tagBaseType.writeJson(tagType.value);
+          break;
+        case "bson":
+          value = (<any> tagBaseType as BsonSerializer<any>).writeBson(tagType.value);
+          break;
+        case "qs":
+          value = (<any> tagBaseType as QsSerializer<any>).writeQs(tagType.value);
+          break;
+        default:
+          throw new Incident("UnexpectedSwitchVariant", {value: format});
+      }
       if ((<any> outValuesMap)[format].has(value)) {
         throw new Incident("DuplicateOutTagValue", `The tag values for ${format} must be unique`);
       }

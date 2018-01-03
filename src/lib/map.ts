@@ -1,9 +1,8 @@
 import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { UnknownFormatError } from "./_errors/unknown-format";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, SerializableType, VersionedType } from "./types";
+import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "map";
 export const name: Name = "map";
@@ -11,6 +10,7 @@ export namespace bson {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
@@ -19,9 +19,11 @@ export namespace json {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
+
   // TODO(demurgos): Export arrayType to JSON
   export type Type = undefined;
 }
@@ -29,6 +31,7 @@ export namespace qs {
   export interface Input {
     [key: string]: any;
   }
+
   export interface Output {
     [key: string]: any;
   }
@@ -44,8 +47,8 @@ export interface Options<K, V> {
 
 export class MapType<K, V>
   implements VersionedType<Map<K, V>, json.Input, json.Output, Diff>,
-    SerializableType<Map<K, V>, "bson", bson.Input, bson.Output>,
-    SerializableType<Map<K, V>, "qs", qs.Input, qs.Output> {
+    BsonSerializer<Map<K, V>, bson.Input, bson.Output>,
+    QsSerializer<Map<K, V>, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly keyType: VersionedType<K, any, any, any>;
   readonly valueType: VersionedType<V, any, any, any>;
@@ -74,51 +77,53 @@ export class MapType<K, V>
     throw NotImplementedError.create("MapType#toJSON");
   }
 
-  readTrusted(format: "bson", val: bson.Output): Map<K, V>;
-  readTrusted(format: "json", val: json.Output): Map<K, V>;
-  readTrusted(format: "qs", val: qs.Output): Map<K, V>;
-  readTrusted(format: "bson" | "json" | "qs", input: any): Map<K, V> {
-    switch (format) {
-      case "bson":
-      case "json":
-      case "qs":
-        const result: Map<K, V> = new Map();
-        for (const keyString in input) {
-          const key: K = this.keyType.readTrusted("json", JSON.parse(keyString));
-          // TODO(demurgos): Check if the format is supported instead of casting to `any`
-          const value: V = this.valueType.readTrusted(<any> format, input[keyString]);
-          result.set(key, value);
-        }
-        return result;
-      default:
-        return undefined as never;
+  readTrustedJson(input: json.Output): Map<K, V> {
+    const result: Map<K, V> = new Map();
+    for (const keyString in input) {
+      const key: K = this.keyType.readTrustedJson(JSON.parse(keyString));
+      const value: V = this.valueType.readTrustedJson(input[keyString]);
+      result.set(key, value);
     }
+    return result;
   }
 
-  read(format: "bson" | "json" | "qs", input: any): Map<K, V> {
+  readTrustedBson(input: bson.Output): Map<K, V> {
+    const result: Map<K, V> = new Map();
+    for (const keyString in input) {
+      const key: K = this.keyType.readTrustedJson(JSON.parse(keyString));
+      // TODO(demurgos): Avoid casting
+      const value: V = (<any> this.valueType as BsonSerializer<V>).readTrustedBson(input[keyString]);
+      result.set(key, value);
+    }
+    return result;
+  }
+
+  readTrustedQs(input: qs.Output): Map<K, V> {
+    const result: Map<K, V> = new Map();
+    for (const keyString in input) {
+      const key: K = this.keyType.readTrustedJson(JSON.parse(keyString));
+      // TODO(demurgos): Avoid casting
+      const value: V = (<any> this.valueType as QsSerializer<V>).readTrustedQs(input[keyString]);
+      result.set(key, value);
+    }
+    return result;
+  }
+
+  readJson(input: any): Map<K, V> {
     if (typeof input !== "object" || input === null) {
       throw WrongTypeError.create("object", input);
     }
     const result: Map<K, V> = new Map();
-    switch (format) {
-      case "bson":
-      case "json":
-      case "qs":
-        for (const keyString in input) {
-          let rawKey: any;
-          try {
-            rawKey = JSON.parse(keyString);
-          } catch (err) {
-            throw err;
-          }
-          const key: K = this.keyType.read("json", rawKey);
-          // TODO(demurgos): Check if the format is supported instead of casting to `any`
-          const value: V = this.valueType.read(<any> format, input[keyString]);
-          result.set(key, value);
-        }
-        break;
-      default:
-        throw UnknownFormatError.create(format);
+    for (const keyString in input) {
+      let rawKey: any;
+      try {
+        rawKey = JSON.parse(keyString);
+      } catch (err) {
+        throw err;
+      }
+      const key: K = this.keyType.readJson(rawKey);
+      const value: V = this.valueType.readJson(input[keyString]);
+      result.set(key, value);
     }
     const error: Error | undefined = this.testError(result);
     if (error !== undefined) {
@@ -127,26 +132,87 @@ export class MapType<K, V>
     return result;
   }
 
-  write(format: "bson", val: Map<K, V>): bson.Output;
-  write(format: "json", val: Map<K, V>): json.Output;
-  write(format: "qs", val: Map<K, V>): qs.Output;
-  write(format: "bson" | "json" | "qs", val: Map<K, V>): any {
-    switch (format) {
-      case "bson":
-      case "json":
-      case "qs":
-        const result: {[key: string]: any} = {};
-        for (const [key, value] of val) {
-          const rawKey: any = this.keyType.write("json", key);
-          const keyString: string = JSON.stringify(rawKey);
-          // TODO(demurgos): check for duplicate keys
-          // TODO(demurgos): Check if the format is supported instead of casting to `any`
-          result[keyString] = this.valueType.write(<any> format, value);
-        }
-        return result;
-      default:
-        return undefined as never;
+  readBson(input: any): Map<K, V> {
+    if (typeof input !== "object" || input === null) {
+      throw WrongTypeError.create("object", input);
     }
+    const result: Map<K, V> = new Map();
+    for (const keyString in input) {
+      let rawKey: any;
+      try {
+        rawKey = JSON.parse(keyString);
+      } catch (err) {
+        throw err;
+      }
+      const key: K = this.keyType.readJson(rawKey);
+      // TODO(demurgos): Avoid casting
+      const value: V = (<any> this.valueType as BsonSerializer<V>).readBson(input[keyString]);
+      result.set(key, value);
+    }
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  readQs(input: any): Map<K, V> {
+    if (typeof input !== "object" || input === null) {
+      throw WrongTypeError.create("object", input);
+    }
+    const result: Map<K, V> = new Map();
+    for (const keyString in input) {
+      let rawKey: any;
+      try {
+        rawKey = JSON.parse(keyString);
+      } catch (err) {
+        throw err;
+      }
+      const key: K = this.keyType.readJson(rawKey);
+      // TODO(demurgos): Avoid casting
+      const value: V = (<any> this.valueType as QsSerializer<V>).readQs(input[keyString]);
+      result.set(key, value);
+    }
+    const error: Error | undefined = this.testError(result);
+    if (error !== undefined) {
+      throw error;
+    }
+    return result;
+  }
+
+  writeJson(val: Map<K, V>): json.Output {
+    const result: {[key: string]: any} = {};
+    for (const [key, value] of val) {
+      const rawKey: any = this.keyType.writeJson(key);
+      const keyString: string = JSON.stringify(rawKey);
+      // TODO(demurgos): Check for duplicate keys
+      result[keyString] = this.valueType.writeJson(value);
+    }
+    return result;
+  }
+
+  writeBson(val: Map<K, V>): bson.Output {
+    const result: {[key: string]: any} = {};
+    for (const [key, value] of val) {
+      const rawKey: any = this.keyType.writeJson(key);
+      const keyString: string = JSON.stringify(rawKey);
+      // TODO(demurgos): Check for duplicate keys
+      // TODO(demurgos): Avoid casting
+      result[keyString] = (<any> this.valueType as BsonSerializer<V>).writeBson(value);
+    }
+    return result;
+  }
+
+  writeQs(val: Map<K, V>): qs.Output {
+    const result: {[key: string]: any} = {};
+    for (const [key, value] of val) {
+      const rawKey: any = this.keyType.writeJson(key);
+      const keyString: string = JSON.stringify(rawKey);
+      // TODO(demurgos): Check for duplicate keys
+      // TODO(demurgos): Avoid casting
+      result[keyString] = (<any> this.valueType as QsSerializer<V>).writeQs(value);
+    }
+    return result;
   }
 
   testError(val: Map<K, V>): Error | undefined {
@@ -176,8 +242,8 @@ export class MapType<K, V>
       return false;
     }
     // TODO(demurgos): This test is brittle (order-sensitive) and involves unnecessary serialization.
-    const val1Json: string = JSON.stringify(this.write("json", val1));
-    const val2Json: string = JSON.stringify(this.write("json", val2));
+    const val1Json: string = JSON.stringify(this.writeJson(val1));
+    const val2Json: string = JSON.stringify(this.writeJson(val2));
     return val1Json === val2Json;
   }
 
@@ -223,4 +289,4 @@ export class MapType<K, V>
   }
 }
 
-export {MapType as Type};
+export { MapType as Type };

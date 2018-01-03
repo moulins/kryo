@@ -1,3 +1,7 @@
+# Next
+
+- **[Breaking change]** Split serialization functions by format to prepare tree-shaking (#39)
+
 # 0.5.0 (2018-01-02)
 
 - **[Fix]** Update dependencies
