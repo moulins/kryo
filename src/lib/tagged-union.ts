@@ -8,15 +8,6 @@ import * as union from "./union";
 
 export type Name = "tagged-union";
 export const name: Name = "tagged-union";
-export namespace bson {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
-  }
-}
 export namespace json {
   export interface Input {
     [key: string]: any;
@@ -27,15 +18,6 @@ export namespace json {
   }
 
   export type Type = undefined;
-}
-export namespace qs {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
-  }
 }
 export type Diff = any;
 

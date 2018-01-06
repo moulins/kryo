@@ -7,12 +7,15 @@ export function register(serializer: Serializer): void {
     return val.map((item: T): any => serializer.write(type.itemType, item));
   }
 
-  function read<T>(type: ArrayType<T>, input: any[]): T[] {
+  function read<T>(type: ArrayType<T>, input: any[] | undefined): T[] {
     let result: T[];
-    if (!Array.isArray(input)) {
-      throw WrongTypeError.create("array", input);
+    if (Array.isArray(input)) {
+      result = input.map((item: any): T => serializer.read(type.itemType, item));
+    } else if (input === undefined) {
+      result = [];
+    } else {
+      throw WrongTypeError.create("array | undefined", input);
     }
-    result = input.map((item: any): T => serializer.read(type.itemType, item));
     const error: Error | undefined = type.testError(result);
     if (error !== undefined) {
       throw error;
@@ -20,8 +23,13 @@ export function register(serializer: Serializer): void {
     return result;
   }
 
-  function readTrusted<T>(type: ArrayType<T>, input: any[]): T[] {
-    return input.map((item: any): T => serializer.readTrusted(type.itemType, item));
+  function readTrusted<T>(type: ArrayType<T>, input: any[] | undefined): T[] {
+    if (Array.isArray(input)) {
+      // TODO(demurgos): Avoid casting
+      return input.map((item: any): T => serializer.readTrusted(type.itemType, item));
+    } else {
+      return [];
+    }
   }
 
   serializer.register({

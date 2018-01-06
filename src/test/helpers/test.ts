@@ -2,7 +2,8 @@ import { BSON } from "bson";
 import { assert } from "chai";
 import * as qs from "qs";
 import { createBsonSerializer } from "../../lib/bson";
-import { JsonSerializer, QsSerializer, Serializer, Type } from "../../lib/types";
+import { createQsSerializer } from "../../lib/qs";
+import { JsonSerializer, Serializer, Type } from "../../lib/types";
 
 export interface NamedValue {
   name?: string;
@@ -130,56 +131,53 @@ export function testJsonSerialization<T, Input, Output extends Input>(
   });
 }
 
-export function testQsSerialization<T, Input, Output extends Input>(
-  type: Type<T> & QsSerializer<T, Input, Output>,
-  typedValue: ValidTypedValue,
-): void {
+export function testQsSerialization<T>(serializer: Serializer, type: Type<T>, typedValue: ValidTypedValue): void {
   let actualSerialized: string;
 
   if (typedValue.output !== undefined && "qs" in typedValue.output) {
     if (typedValue.output["qs"] === "ignore") {
       return;
     }
-    const output: Output = typedValue.output["qs"];
+    const output: any = typedValue.output["qs"];
     const expectedSerialized: string = qs.stringify({wrapper: output});
     it(`\`.writeQs(val)\` should return the wrapped value \`${expectedSerialized}\``, function () {
-      const exported: Output = type.writeQs(typedValue.value);
+      const exported: any = serializer.write(type, typedValue.value);
       actualSerialized = qs.stringify({wrapper: exported});
       assert.deepEqual(exported, output);
     });
   } else {
     it("`t.writeQs(val)` should not throw", function () {
-      const exported: Output = type.writeQs(typedValue.value);
+      const exported: any = serializer.write(type, typedValue.value);
       actualSerialized = qs.stringify({wrapper: exported});
     });
   }
 
   it("`t.readTrustedQs(t.writeQs(val))` should be valid and equal to `val`", function () {
-    const deserialized: Output = qs.parse(actualSerialized).wrapper;
-    const imported: T = type.readTrustedQs(deserialized);
+    const deserialized: any = qs.parse(actualSerialized).wrapper;
+    const imported: T = serializer.readTrusted(type, deserialized);
     assert.isTrue(type.test(imported));
     assert.isTrue(type.equals(imported, typedValue.value));
   });
 
   it("`t.readQs(t.writeQs(val))` should be valid and equal to `val`", function () {
-    const deserialized: Output = qs.parse(actualSerialized).wrapper;
-    const imported: T = type.readQs(deserialized);
+    const deserialized: any = qs.parse(actualSerialized).wrapper;
+    const imported: T = serializer.read(type, deserialized);
     assert.isTrue(type.test(imported));
     assert.isTrue(type.equals(imported, typedValue.value));
   });
 }
 
 export function testSerialization<T>(
-  type: Type<T> & JsonSerializer<T> & QsSerializer<T>,
+  type: Type<T> & JsonSerializer<T>,
   typedValue: ValidTypedValue,
 ): void {
   testBsonSerialization(createBsonSerializer(), type, typedValue);
   testJsonSerialization(type, typedValue);
-  testQsSerialization(type, typedValue);
+  testQsSerialization(createQsSerializer(), type, typedValue);
 }
 
 export function testValueSync(
-  type: Type<any> & JsonSerializer<any> & QsSerializer<any>,
+  type: Type<any> & JsonSerializer<any>,
   item: TypedValue,
 ): void {
   if (item.valid) {
@@ -191,7 +189,7 @@ export function testValueSync(
 }
 
 export function runTests(
-  type: Type<any> & JsonSerializer<any> & QsSerializer<any>,
+  type: Type<any> & JsonSerializer<any>,
   items: TypedValue[],
 ): void {
   for (const item of items) {

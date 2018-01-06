@@ -2,8 +2,7 @@ import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
 import { lazyProperties } from "./_helpers/lazy-properties";
 import { JSON_SERIALIZER } from "./json/index";
-import { QS_SERIALIZER } from "./qs/index";
-import { JsonSerializer, Lazy, QsSerializer, Serializer, Type, VersionedType } from "./types";
+import { JsonSerializer, Lazy, Serializer, Type, VersionedType } from "./types";
 
 export type Name = "union";
 export const name: Name = "union";
@@ -11,10 +10,6 @@ export namespace json {
   export type Input = any;
   export type Output = any;
   export type Type = undefined;
-}
-export namespace qs {
-  export type Input = any;
-  export type Output = any;
 }
 export type Diff = any;
 
@@ -36,9 +31,7 @@ export type TestWithVariantResult<T> =
   [true, VersionedType<T, any, any, any>]
   | [false, VersionedType<T, any, any, any> | undefined];
 
-export class UnionType<T>
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class UnionType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
   readonly variants: VersionedType<T, any, any, Diff>[];
   readonly matcher: Matcher<T>;
@@ -74,12 +67,6 @@ export class UnionType<T>
     return [(<any> variant as JsonSerializer<T>).readTrustedJson(input), variant];
   }
 
-  readTrustedQsWithVariant(input: qs.Output): [T, Type<T>] {
-    const variant: Type<T> = this.readTrustedMatcher(input, QS_SERIALIZER);
-    // TODO(demurgos): Avoid casting
-    return [(<any> variant as QsSerializer<T>).readTrustedQs(input), variant];
-  }
-
   readJsonWithVariant(input: any): [T, Type<T>] {
     const variant: Type<T> | undefined = this.readMatcher(input, JSON_SERIALIZER);
     if (variant === undefined) {
@@ -89,39 +76,17 @@ export class UnionType<T>
     return [(<any> variant as JsonSerializer<T>).readJson(input), variant];
   }
 
-  readQsWithVariant(input: any): [T, Type<T>] {
-    const variant: Type<T> | undefined = this.readMatcher(input, QS_SERIALIZER);
-    if (variant === undefined) {
-      throw new Incident("UnknownUnionVariant", "Unknown union variant");
-    }
-    // TODO(demurgos): Avoid casting
-    return [(<any> variant as QsSerializer<T>).readQs(input), variant];
-  }
-
   readTrustedJson(input: json.Output): T {
     return this.readTrustedJsonWithVariant(input)[0];
-  }
-
-  readTrustedQs(input: qs.Output): T {
-    return this.readTrustedQsWithVariant(input)[0];
   }
 
   readJson(input: any): T {
     return this.readJsonWithVariant(input)[0];
   }
 
-  readQs(input: any): T {
-    return this.readQsWithVariant(input)[0];
-  }
-
   writeJson(val: T): json.Output {
     // TODO(demurgos): Avoid casting
     return (<any> this.trustedMatcher(val) as JsonSerializer<T>).writeJson(val);
-  }
-
-  writeQs(val: T): qs.Output {
-    // TODO(demurgos): Avoid casting
-    return (<any> this.trustedMatcher(val) as QsSerializer<T>).writeQs(val);
   }
 
   testError(val: T): Error | undefined {

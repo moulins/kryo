@@ -1,4 +1,4 @@
-export { Type, JsonSerializer, QsSerializer, VersionedType } from "./types";
+export { Type, JsonSerializer, VersionedType } from "./types";
 
 export { ArrayType } from "./array";
 export { BooleanType } from "./boolean";

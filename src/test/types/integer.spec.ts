@@ -1,6 +1,8 @@
 import { assert } from "chai";
 import { $Sint8 } from "../../lib/_builtins/integer";
 import { IntegerType } from "../../lib/integer";
+import { createQsSerializer } from "../../lib/qs";
+import { Serializer } from "../../lib/types";
 import { runTests, TypedValue } from "../helpers/test";
 
 describe("IntegerType", function () {
@@ -50,13 +52,14 @@ describe("IntegerType", function () {
   });
 
   describe("readQs(val)", function () {
+    const qsSerializer: Serializer = createQsSerializer();
     const type: IntegerType = new IntegerType();
-    assert.strictEqual(type.readQs("0"), 0);
-    assert.strictEqual(type.readQs("1"), 1);
-    assert.strictEqual(type.readQs("-1"), -1);
-    assert.strictEqual(type.readQs("-1234"), -1234);
-    assert.strictEqual(type.readQs("2147483647"), 2147483647);
-    assert.strictEqual(type.readQs("-2147483648"), -2147483648);
+    assert.strictEqual(qsSerializer.read(type, "0"), 0);
+    assert.strictEqual(qsSerializer.read(type, "1"), 1);
+    assert.strictEqual(qsSerializer.read(type, "-1"), -1);
+    assert.strictEqual(qsSerializer.read(type, "-1234"), -1234);
+    assert.strictEqual(qsSerializer.read(type, "2147483647"), 2147483647);
+    assert.strictEqual(qsSerializer.read(type, "-2147483648"), -2147483648);
   });
 
   describe("Bound integer", function () {

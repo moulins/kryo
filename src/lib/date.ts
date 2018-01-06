@@ -1,6 +1,6 @@
 import { InvalidTimestampError } from "./_errors/invalid-timestamp";
 import { WrongTypeError } from "./_errors/wrong-type";
-import { QsSerializer, VersionedType } from "./types";
+import { VersionedType } from "./types";
 
 export type Name = "date";
 export const name: Name = "date";
@@ -13,15 +13,9 @@ export namespace json {
     name: Name;
   }
 }
-export namespace qs {
-  export type Input = string;
-  export type Output = string;
-}
 export type Diff = number;
 
-export class DateType
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class DateType implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
@@ -29,10 +23,6 @@ export class DateType
   }
 
   readTrustedJson(input: json.Output): T {
-    return new Date(input);
-  }
-
-  readTrustedQs(input: qs.Output): T {
     return new Date(input);
   }
 
@@ -52,24 +42,7 @@ export class DateType
     return result;
   }
 
-  readQs(input: any): T {
-    let result: Date;
-    if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
-    }
-    result = new Date(input);
-    const error: Error | undefined = this.testError(result);
-    if (error !== undefined) {
-      throw error;
-    }
-    return result;
-  }
-
   writeJson(val: T): json.Output {
-    return val.toISOString();
-  }
-
-  writeQs(val: T): qs.Output {
     return val.toISOString();
   }
 

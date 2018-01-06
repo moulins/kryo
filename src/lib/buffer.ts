@@ -3,7 +3,7 @@ import { MaxArrayLengthError } from "./_errors/max-array-length";
 import { NotImplementedError } from "./_errors/not-implemented";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, VersionedType } from "./types";
 
 export type Name = "buffer";
 export const name: Name = "buffer";
@@ -13,19 +13,13 @@ export namespace json {
   // TODO(demurgos): Export bufferType to JSON
   export type Type = undefined;
 }
-export namespace qs {
-  export type Input = string;
-  export type Output = string;
-}
 export type Diff = any;
 
 export interface Options {
   maxLength: number;
 }
 
-export class BufferType
-  implements VersionedType<Uint8Array, json.Input, json.Output, Diff>,
-    QsSerializer<Uint8Array, qs.Input, qs.Output> {
+export class BufferType implements VersionedType<Uint8Array, json.Input, json.Output, Diff> {
   readonly name: Name = name;
   readonly maxLength: number;
 
@@ -60,15 +54,6 @@ export class BufferType
     return result;
   }
 
-  readTrustedQs(input: qs.Output): Uint8Array {
-    const len: number = input.length / 2;
-    const result: Uint8Array = new Uint8Array(len);
-    for (let i: number = 0; i < len; i++) {
-      result[i] = parseInt(input.substr(2 * i, 2), 16);
-    }
-    return result;
-  }
-
   readJson(input: any): Uint8Array {
     let result: Uint8Array;
     if (typeof input !== "string") {
@@ -88,35 +73,7 @@ export class BufferType
     return result;
   }
 
-  readQs(input: any): Uint8Array {
-    let result: Uint8Array;
-    if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
-    } else if (!/^(?:[0-9a-f]{2})*$/.test(input)) {
-      throw WrongTypeError.create("lowerCaseHexEvenLengthString", input);
-    }
-    const len: number = input.length / 2;
-    result = new Uint8Array(len);
-    for (let i: number = 0; i < len; i++) {
-      result[i] = parseInt(input.substr(2 * i, 2), 16);
-    }
-    const error: Error | undefined = this.testError(result);
-    if (error !== undefined) {
-      throw error;
-    }
-    return result;
-  }
-
   writeJson(val: Uint8Array): json.Output {
-    const result: string[] = new Array(val.length);
-    const len: number = val.length;
-    for (let i: number = 0; i < len; i++) {
-      result[i] = (val[i] < 16 ? "0" : "") + val[i].toString(16);
-    }
-    return result.join("");
-  }
-
-  writeQs(val: Uint8Array): qs.Output {
     const result: string[] = new Array(val.length);
     const len: number = val.length;
     for (let i: number = 0; i < len; i++) {

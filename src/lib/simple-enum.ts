@@ -3,7 +3,7 @@ import { NotImplementedError } from "./_errors/not-implemented";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
 import { CaseStyle, rename } from "./_helpers/rename";
-import { Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, VersionedType } from "./types";
 
 export type SimpleEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumConstructor[K]};
 
@@ -31,10 +31,6 @@ export interface EnumConstructor<EnumValue extends number> {
 
 export type Name = "simple-enum";
 export const name: Name = "simple-enum";
-export namespace bson {
-  export type Input = string;
-  export type Output = string;
-}
 export namespace json {
   export type Input = string;
   export type Output = string;
@@ -43,10 +39,6 @@ export namespace json {
     name: Name;
     enum: EnumConstructor<number>;
   }
-}
-export namespace qs {
-  export type Input = string;
-  export type Output = string;
 }
 export type Diff = number;
 
@@ -58,9 +50,7 @@ export interface Options<E extends number> {
 /**
  * Supports enums from keys that are valid Javascript identifiers to unique integer values
  */
-export class SimpleEnumType<E extends number>
-  implements VersionedType<E, json.Input, json.Output, Diff>,
-    QsSerializer<E, qs.Input, qs.Output> {
+export class SimpleEnumType<E extends number> implements VersionedType<E, json.Input, json.Output, Diff> {
   readonly name: Name = name;
   readonly enum: EnumConstructor<E>;
   readonly rename?: CaseStyle;
@@ -97,10 +87,6 @@ export class SimpleEnumType<E extends number>
     return this.outputNameToValue[input] as E;
   }
 
-  readTrustedQs(input: qs.Output): E {
-    return this.outputNameToValue[input] as E;
-  }
-
   readJson(input: any): E {
     if (typeof input !== "string") {
       throw WrongTypeError.create("string", input);
@@ -111,21 +97,7 @@ export class SimpleEnumType<E extends number>
     return this.outputNameToValue[input] as E;
   }
 
-  readQs(input: any): E {
-    if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
-    }
-    if (!this.outputNameToValue.hasOwnProperty(input)) {
-      throw Incident("Unknown enum variant name", input);
-    }
-    return this.outputNameToValue[input] as E;
-  }
-
   writeJson(val: E): json.Output {
-    return this.valueToOutputName[val as number];
-  }
-
-  writeQs(val: E): qs.Output {
     return this.valueToOutputName[val as number];
   }
 

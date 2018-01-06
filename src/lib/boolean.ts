@@ -1,5 +1,5 @@
 import { WrongTypeError } from "./_errors/wrong-type";
-import { QsSerializer, VersionedType } from "./types";
+import { VersionedType } from "./types";
 
 export type Name = "boolean";
 export const name: Name = "boolean";
@@ -8,15 +8,9 @@ export namespace json {
   export type Input = boolean;
   export type Output = boolean;
 }
-export namespace qs {
-  export type Input = "true" | "false";
-  export type Output = "true" | "false";
-}
 export type Diff = boolean;
 
-export class BooleanType
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class BooleanType implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
   toJSON(): undefined {
@@ -28,10 +22,6 @@ export class BooleanType
     return input;
   }
 
-  readTrustedQs(input: qs.Output): T {
-    return input === "true";
-  }
-
   readJson(input: any): T {
     if (typeof input !== "boolean") {
       throw WrongTypeError.create("boolean", input);
@@ -39,19 +29,8 @@ export class BooleanType
     return input;
   }
 
-  readQs(input: any): T {
-    if (!(input === "true" || input === "false")) {
-      throw WrongTypeError.create("\"true\" | \"false\"", input);
-    }
-    return input === "true";
-  }
-
   writeJson(val: T): json.Output {
     return val;
-  }
-
-  writeQs(val: T): qs.Output {
-    return val ? "true" : "false";
   }
 
   testError(val: T): Error | undefined {

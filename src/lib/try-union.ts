@@ -4,15 +4,6 @@ import * as union from "./union";
 
 export type Name = "try-union";
 export const name: Name = "try-union";
-export namespace bson {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
-  }
-}
 export namespace json {
   export interface Input {
     [key: string]: any;
@@ -23,15 +14,6 @@ export namespace json {
   }
 
   export type Type = undefined;
-}
-export namespace qs {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
-  }
 }
 export type Diff = any;
 
@@ -60,28 +42,6 @@ function toUnionOptions<T>(options: Options<T, any, any, any>): union.Options<T,
     }
     return undefined;
   };
-  // const jsonMatcher: union.ReadMatcher<T, any, any, any> = (value: any, serializer: Serializer) => {
-  //   for (const variant of variants) {
-  //     try {
-  //       variant.readJson(value);
-  //       return variant;
-  //     } catch (err) {
-  //       // Ignore error and try next variant
-  //     }
-  //   }
-  //   return undefined;
-  // };
-  // const qsMatcher: union.ReadMatcher<T, any, any, any> = (value: any, serializer: Serializer) => {
-  //   for (const variant of variants) {
-  //     try {
-  //       (<any> variant as QsSerializer<any>).readQs(value);
-  //       return variant;
-  //     } catch (err) {
-  //       // Ignore error and try next variant
-  //     }
-  //   }
-  //   return undefined;
-  // };
   return {variants: options.variants, matcher, readMatcher};
 }
 

@@ -8,7 +8,7 @@ import { WrongTypeError } from "./_errors/wrong-type";
 import { diffSets, DiffSetsResult } from "./_helpers/diff-sets";
 import { lazyProperties } from "./_helpers/lazy-properties";
 import { CaseStyle, rename } from "./_helpers/rename";
-import { Lazy, QsSerializer, Type as KryoType, VersionedType } from "./types";
+import { Lazy, Type as KryoType, VersionedType } from "./types";
 
 export type Name = "document";
 export const name: Name = "document";
@@ -25,15 +25,6 @@ export namespace json {
     name: Name;
     notNan: boolean;
     notInfinity: boolean;
-  }
-}
-export namespace qs {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
   }
 }
 
@@ -73,9 +64,7 @@ export interface PropertyDescriptor<TypeKind extends KryoType<any>> {
   type: TypeKind;
 }
 
-export class DocumentType<T extends {}>
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class DocumentType<T extends {}> implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
   readonly ignoreExtraKeys: boolean;
   readonly properties: {
@@ -132,18 +121,6 @@ export class DocumentType<T extends {}>
     return result as T;
   }
 
-  readTrustedQs(input: qs.Output): T {
-    const outKeysDiff: DiffSetsResult<string> = diffSets(this.outKeys.keys(), Object.keys(input));
-    // TODO(demurgos): use Partial<T> once typedoc supports it
-    const result: any = {};
-    for (const outKey of outKeysDiff.commonKeys) {
-      const key: string = this.outKeys.get(outKey)!;
-      // TODO(demurgos): Avoid casting
-      result[key] = (<any> this.properties[key].type as QsSerializer<any>).readQs(input[outKey]);
-    }
-    return result as T;
-  }
-
   readJson(input: any): T {
     const outKeysDiff: DiffSetsResult<string> = diffSets(this.outKeys.keys(), Object.keys(input));
     const missingRequiredKeys: string[] = [...outKeysDiff.missingKeys].filter((outKey: string): boolean => {
@@ -165,27 +142,6 @@ export class DocumentType<T extends {}>
     return result as T;
   }
 
-  readQs(input: any): T {
-    const outKeysDiff: DiffSetsResult<string> = diffSets(this.outKeys.keys(), Object.keys(input));
-    const missingRequiredKeys: string[] = [...outKeysDiff.missingKeys].filter((outKey: string): boolean => {
-      return !this.properties[this.outKeys.get(outKey)!].optional;
-    });
-    if (missingRequiredKeys.length > 0) {
-      throw MissingKeysError.create(missingRequiredKeys);
-    } else if (outKeysDiff.extraKeys.size > 0 && !this.ignoreExtraKeys) {
-      throw ExtraKeysError.create([...outKeysDiff.extraKeys]);
-    }
-
-    // TODO(demurgos): use Partial<T> once typedoc supports it
-    const result: any = {};
-    for (const outKey of outKeysDiff.commonKeys) {
-      const key: string = this.outKeys.get(outKey)!;
-      // TODO(demurgos): Avoid casting
-      result[key] = (<any> this.properties[key].type as QsSerializer<any>).readQs(input[outKey]);
-    }
-    return result as T;
-  }
-
   writeJson(val: T): json.Output {
     const keysDiff: DiffSetsResult<string> = diffSets(this.keys.keys(), Object.keys(val));
     const result: {[key: string]: any} = {};
@@ -195,20 +151,6 @@ export class DocumentType<T extends {}>
       }
       const outKey: string = this.keys.get(key)!;
       result[outKey] = this.properties[key].type.writeJson((<any> val)[key]);
-    }
-    return result;
-  }
-
-  writeQs(val: T): qs.Output {
-    const keysDiff: DiffSetsResult<string> = diffSets(this.keys.keys(), Object.keys(val));
-    const result: {[key: string]: any} = {};
-    for (const key of keysDiff.commonKeys) {
-      if ((<any> val)[key] === undefined && this.properties[key].optional) {
-        continue;
-      }
-      const outKey: string = this.keys.get(key)!;
-      // TODO(demurgos): Avoid casting
-      result[outKey] = (<any> this.properties[key].type as QsSerializer<any>).writeQs((<any> val)[key]);
     }
     return result;
   }

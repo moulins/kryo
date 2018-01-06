@@ -1,5 +1,5 @@
 import { WrongTypeError } from "./_errors/wrong-type";
-import { QsSerializer, VersionedType } from "./types";
+import { VersionedType } from "./types";
 
 export type Name = "null";
 export const name: Name = "null";
@@ -12,15 +12,9 @@ export namespace json {
     name: Name;
   }
 }
-export namespace qs {
-  export type Input = "";
-  export type Output = "";
-}
 export type Diff = undefined;
 
-export class NullType
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class NullType implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
@@ -31,10 +25,6 @@ export class NullType
     return null;
   }
 
-  readTrustedQs(val: qs.Output): T {
-    return null;
-  }
-
   readJson(input: any): T {
     if (input !== null) {
       throw WrongTypeError.create("null", input);
@@ -42,19 +32,8 @@ export class NullType
     return null;
   }
 
-  readQs(input: any): T {
-    if (input !== "") {
-      throw WrongTypeError.create("\"\"", input);
-    }
-    return null;
-  }
-
   writeJson(val: T): json.Output {
     return null;
-  }
-
-  writeQs(val: T): qs.Output {
-    return "";
   }
 
   testError(val: T): Error | undefined {

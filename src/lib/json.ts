@@ -1,23 +1,17 @@
 import { NotImplementedError } from "./_errors/not-implemented";
-import { QsSerializer, VersionedType } from "./types";
+import { VersionedType } from "./types";
 
 export type Name = "json";
 export const name: Name = "json";
 export namespace json {
   export type Input = any;
   export type Output = any;
-  // TODO(demurgos): Export arrayType to JSON
+  // TODO(demurgos): Export options to JSON
   export type Type = undefined;
-}
-export namespace qs {
-  export type Input = any;
-  export type Output = any;
 }
 export type Diff = any;
 
-export class JsonType
-  implements VersionedType<any, json.Input, json.Output, Diff>,
-    QsSerializer<any, qs.Input, qs.Output> {
+export class JsonType implements VersionedType<any, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
   constructor() {
@@ -31,24 +25,12 @@ export class JsonType
     return input;
   }
 
-  readTrustedQs(input: qs.Output): any {
-    throw NotImplementedError.create("JsonType#readTrustedQs");
-  }
-
   readJson(input: any): any {
     return JSON.parse(JSON.stringify(input));
   }
 
-  readQs(input: any): any {
-    throw NotImplementedError.create("JsonType#readQs");
-  }
-
   writeJson(val: any): json.Output {
     return JSON.parse(JSON.stringify(val));
-  }
-
-  writeQs(val: any): qs.Output {
-    throw NotImplementedError.create("JsonType#writeQs");
   }
 
   testError(val: any): Error | undefined {

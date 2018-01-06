@@ -1,7 +1,7 @@
 import { Incident } from "incident";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, VersionedType } from "./types";
 
 export type Name = "float64";
 export const name: Name = "float64";
@@ -16,10 +16,6 @@ export namespace json {
     notInfinity: boolean;
   }
 }
-export namespace qs {
-  export type Input = string;
-  export type Output = string;
-}
 export type Diff = [number, number];
 
 export interface Options {
@@ -27,9 +23,7 @@ export interface Options {
   notInfinity?: boolean;
 }
 
-export class Float64Type
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class Float64Type implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
   readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
   readonly notInfinity: boolean; // TODO(demurgos): rename to allowInfinity
@@ -82,19 +76,6 @@ export class Float64Type
     }
   }
 
-  readTrustedQs(input: qs.Output): T {
-    switch (input) {
-      case "NaN":
-        return NaN;
-      case "+Infinity":
-        return Infinity;
-      case "-Infinity":
-        return -Infinity;
-      default:
-        return parseFloat(input);
-    }
-  }
-
   readJson(input: any): T {
     if (typeof input === "number") {
       return input;
@@ -120,36 +101,6 @@ export class Float64Type
     }
   }
 
-  readQs(input: any): T {
-    if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
-    }
-    switch (input) {
-      case "NaN":
-        if (this.notNan) {
-          throw Incident("Nan", "NaN is not allowed");
-        }
-        return NaN;
-      case "+Infinity":
-        if (this.notNan) {
-          throw Incident("Infinity", "+Infinity is not allowed");
-        }
-        return Infinity;
-      case "-Infinity":
-        if (this.notNan) {
-          throw Incident("Infinity", "-Infinity is not allowed");
-        }
-        return -Infinity;
-      default:
-        const val: number = parseFloat(input);
-        const error: Error | undefined = this.testError(val);
-        if (error !== undefined) {
-          throw error;
-        }
-        return val;
-    }
-  }
-
   writeJson(val: T): json.Output {
     if (isNaN(val)) {
       return "NaN";
@@ -159,17 +110,6 @@ export class Float64Type
       return "-Infinity";
     }
     return val;
-  }
-
-  writeQs(val: T): qs.Output {
-    if (isNaN(val)) {
-      return "NaN";
-    } else if (val === Infinity) {
-      return "+Infinity";
-    } else if (val === -Infinity) {
-      return "-Infinity";
-    }
-    return val.toString(10);
   }
 
   testError(val: T): Error | undefined {

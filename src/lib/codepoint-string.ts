@@ -8,7 +8,7 @@ import { PatternNotMatchedError } from "./_errors/pattern-not-matched";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { checkedUcs2Decode } from "./_helpers/checked-ucs2-decode";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, VersionedType } from "./types";
 
 let unormNfc: ((str: string) => string) | undefined = undefined;
 try {
@@ -43,10 +43,6 @@ export namespace json {
     minCodepoints?: number;
     maxCodepoints: number;
   }
-}
-export namespace qs {
-  export type Input = string;
-  export type Output = string;
 }
 export type Diff = [string, string];
 
@@ -88,9 +84,7 @@ export interface Options {
   maxCodepoints: number;
 }
 
-export class CodepointStringType
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class CodepointStringType implements VersionedType<T, json.Input, json.Output, Diff> {
 
   readonly name: Name = name;
   readonly normalization: Normalization;
@@ -158,10 +152,6 @@ export class CodepointStringType
     return input;
   }
 
-  readTrustedQs(input: qs.Output): T {
-    return input;
-  }
-
   readJson(input: any): T {
     const error: Error | undefined = this.testError(input);
     if (error !== undefined) {
@@ -170,19 +160,7 @@ export class CodepointStringType
     return input;
   }
 
-  readQs(input: any): T {
-    const error: Error | undefined = this.testError(input);
-    if (error !== undefined) {
-      throw error;
-    }
-    return input;
-  }
-
   writeJson(val: T): json.Output {
-    return val;
-  }
-
-  writeQs(val: T): qs.Output {
     return val;
   }
 

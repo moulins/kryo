@@ -2,7 +2,7 @@ import { Incident } from "incident";
 import { InvalidIntegerError } from "./_errors/invalid-integer";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, VersionedType } from "./types";
 
 export type Name = "integer";
 export const name: Name = "integer";
@@ -16,10 +16,6 @@ export namespace json {
     min: number;
     max: number;
   }
-}
-export namespace qs {
-  export type Input = string;
-  export type Output = string;
 }
 export type Diff = number;
 
@@ -50,9 +46,7 @@ export const DEFAULT_MIN: number = Number.MIN_SAFE_INTEGER - 1;
  */
 export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 
-export class IntegerType
-  implements VersionedType<T, json.Input, json.Output, Diff>,
-    QsSerializer<T, qs.Input, qs.Output> {
+export class IntegerType implements VersionedType<T, json.Input, json.Output, Diff> {
 
   readonly name: Name = name;
   readonly min: number;
@@ -93,10 +87,6 @@ export class IntegerType
     return input;
   }
 
-  readTrustedQs(input: qs.Output): T {
-    return parseInt(input, 10);
-  }
-
   readJson(input: any): T {
     let val: number;
     if (typeof input !== "number") {
@@ -111,26 +101,8 @@ export class IntegerType
     return val;
   }
 
-  readQs(input: any): T {
-    let val: number;
-    if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
-    }
-    val = parseInt(input, 10);
-    const err: Error | undefined = this.testError(val);
-    if (err !== undefined) {
-      throw err;
-    }
-
-    return val;
-  }
-
   writeJson(val: T): json.Output {
     return val;
-  }
-
-  writeQs(val: T): qs.Output {
-    return val.toString(10);
   }
 
   testError(val: T): Error | undefined {

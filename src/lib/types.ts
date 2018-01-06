@@ -54,16 +54,6 @@ export interface TypeSerializer<T, Input = any, Output extends Input = Input> {
   readTrusted(type: Type<any>, serialized: Output): T;
 }
 
-export interface QsSerializer<T, Input = any, Output extends Input = Input> {
-  name: TypeName<any>;
-
-  writeQs(val: T): Output;
-
-  readQs(serialized: Input): T;
-
-  readTrustedQs(serialized: Output): T;
-}
-
 export interface VersionedType<T, Input, Output extends Input, Diff>
   extends Type<T>, JsonSerializer<T, Input, Output> {
   /**

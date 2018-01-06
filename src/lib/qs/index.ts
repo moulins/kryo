@@ -1,22 +1,36 @@
-import { Incident } from "incident";
-import { QsSerializer, Serializer, Type, TypeSerializer } from "../types";
+import { Serializer } from "../serializer";
+import { register as registerArray } from "./array";
+import { register as registerBoolean } from "./boolean";
+import { register as registerBuffer } from "./buffer";
+import { register as registerCodepointString } from "./codepoint-string";
+import { register as registerDate } from "./date";
+import { register as registerDocument } from "./document";
+import { register as registerFloat64 } from "./float64";
+import { register as registerInteger } from "./integer";
+import { register as registerJson } from "./json";
+import { register as registerLiteral } from "./literal";
+import { register as registerMap } from "./map";
+import { register as registerNull } from "./null";
+import { register as registerSimpleEnum } from "./simple-enum";
+import { register as registerUcs2String } from "./ucs2-string";
+import { register as registerUnion } from "./union";
 
-export const QS_SERIALIZER: Serializer = {
-  format: "qs",
-
-  register(serializer: TypeSerializer<any>): never {
-    throw new Incident("NotImplemented", "QS_SERIALIZER.register");
-  },
-
-  write<T>(type: Type<T>, value: T): any {
-    return (<any> type as QsSerializer<T>).writeQs(value);
-  },
-
-  read<T>(type: Type<T>, input: any): T {
-    return (<any> type as QsSerializer<T>).readQs(input);
-  },
-
-  readTrusted<T>(type: Type<T>, input: any): T {
-    return (<any> type as QsSerializer<T>).readTrustedQs(input);
-  },
-};
+export function createQsSerializer(): Serializer {
+  const serializer: Serializer = new Serializer("qs");
+  registerArray(serializer);
+  registerBoolean(serializer);
+  registerBuffer(serializer);
+  registerCodepointString(serializer);
+  registerDate(serializer);
+  registerDocument(serializer);
+  registerFloat64(serializer);
+  registerInteger(serializer);
+  registerJson(serializer);
+  registerLiteral(serializer);
+  registerMap(serializer);
+  registerNull(serializer);
+  registerSimpleEnum(serializer);
+  registerUcs2String(serializer);
+  registerUnion(serializer);
+  return serializer;
+}
