@@ -1,7 +1,7 @@
 import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "literal";
 export const name: Name = "literal";
@@ -27,7 +27,6 @@ export interface Options<T, Output, Input extends Output, Diff> {
 
 export class LiteralType<T>
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    BsonSerializer<T, bson.Input, bson.Output>,
     QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly type: VersionedType<T, any, any, Diff>;
@@ -59,11 +58,6 @@ export class LiteralType<T>
     return this.type.readTrustedJson(input);
   }
 
-  readTrustedBson(input: bson.Output): T {
-    // TODO(demurgos): Avoid casting
-    return (<any> this.type as BsonSerializer<T>).readTrustedBson(input);
-  }
-
   readTrustedQs(input: qs.Output): T {
     // TODO(demurgos): Avoid casting
     return (<any> this.type as QsSerializer<T>).readTrustedQs(input);
@@ -73,11 +67,6 @@ export class LiteralType<T>
     return this.type.readJson(input);
   }
 
-  readBson(input: any): T {
-    // TODO(demurgos): Avoid casting
-    return (<any> this.type as BsonSerializer<T>).readBson(input);
-  }
-
   readQs(input: any): T {
     // TODO(demurgos): Avoid casting
     return (<any> this.type as QsSerializer<T>).readQs(input);
@@ -85,11 +74,6 @@ export class LiteralType<T>
 
   writeJson(val: T): json.Output {
     return this.type.writeJson(val);
-  }
-
-  writeBson(val: T): bson.Output {
-    // TODO(demurgos): Avoid casting
-    return (<any> this.type as BsonSerializer<T>).writeBson(val);
   }
 
   writeQs(val: T): qs.Output {

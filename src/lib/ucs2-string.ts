@@ -6,15 +6,11 @@ import { NotTrimmedError } from "./_errors/not-trimmed";
 import { PatternNotMatchedError } from "./_errors/pattern-not-matched";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";
 export type T = string;
-export namespace bson {
-  export type Input = string;
-  export type Output = string;
-}
 export namespace json {
   export type Input = string;
   export type Output = string;
@@ -116,7 +112,6 @@ export interface Options {
  */
 export class Ucs2StringType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    BsonSerializer<T, bson.Input, bson.Output>,
     QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly allowUnicodeRegExp: boolean;
@@ -181,23 +176,11 @@ export class Ucs2StringType
     return input;
   }
 
-  readTrustedBson(input: bson.Output): T {
-    return input;
-  }
-
   readTrustedQs(input: qs.Output): T {
     return input;
   }
 
   readJson(input: any): T {
-    const error: Error | undefined = this.testError(input);
-    if (error !== undefined) {
-      throw error;
-    }
-    return input;
-  }
-
-  readBson(input: any): T {
     const error: Error | undefined = this.testError(input);
     if (error !== undefined) {
       throw error;
@@ -214,10 +197,6 @@ export class Ucs2StringType
   }
 
   writeJson(val: T): json.Output {
-    return val;
-  }
-
-  writeBson(val: T): bson.Output {
     return val;
   }
 

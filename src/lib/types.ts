@@ -3,32 +3,64 @@
  * You can retrieve it with `const val = typeof lazy === "function" ? lazy() : lazy;`.
  * This library guarantees that it will be only called once but you should still ensure that it is idempotent.
  */
+
 export type Lazy<T> = T | (() => T);
 
+export type TypeName<T = any> = string;
+
 export interface Type<T> {
-  name: string;
+  name: TypeName<any>;
+
   testError(val: T): Error | undefined;
+
   test(val: T): boolean;
+
   equals(val1: T, val2: T): boolean;
+
   clone(val: T): T;
+
   toJSON(): any;
 }
 
-export interface JsonSerializer<T, Input = any, Output extends Input = any> {
+export interface JsonSerializer<T, Input = any, Output extends Input = Input> {
+  name: TypeName<any>;
+
   writeJson(val: T): Output;
+
   readJson(serialized: Input): T;
+
   readTrustedJson(serialized: Output): T;
 }
 
-export interface BsonSerializer<T, Input = any, Output extends Input = any> {
-  writeBson(val: T): Output;
-  readBson(serialized: Input): T;
-  readTrustedBson(serialized: Output): T;
+export interface Serializer {
+  readonly format: string;
+
+  register(serializer: TypeSerializer<any>): void;
+
+  write<T>(type: Type<T>, value: T): any;
+
+  read<T>(type: Type<T>, input: any): T;
+
+  readTrusted<T>(type: Type<T>, input: any): T;
 }
 
-export interface QsSerializer<T, Input = any, Output extends Input = any> {
+export interface TypeSerializer<T, Input = any, Output extends Input = Input> {
+  typeName: TypeName<any>;
+
+  write(type: Type<any>, val: T): Output;
+
+  read(type: Type<any>, serialized: Input): T;
+
+  readTrusted(type: Type<any>, serialized: Output): T;
+}
+
+export interface QsSerializer<T, Input = any, Output extends Input = Input> {
+  name: TypeName<any>;
+
   writeQs(val: T): Output;
+
   readQs(serialized: Input): T;
+
   readTrustedQs(serialized: Output): T;
 }
 
@@ -42,13 +74,17 @@ export interface VersionedType<T, Input, Output extends Input, Diff>
    * @param newVal The new value
    */
   diff(oldVal: T, newVal: T): Diff | undefined;
+
   patch(oldVal: T, diff: Diff | undefined): T;
+
   reverseDiff(diff: Diff | undefined): Diff | undefined;
+
   squash(oldDiff: Diff | undefined, newDiff: Diff | undefined): Diff | undefined;
+
   // readonly diffType: Type<Diff>;
 }
 
-export interface CollectionType <T, I> extends Type<T> {
+export interface CollectionType<T, I> extends Type<T> {
   iterateSync(value: T, visitor: (item: I) => any): void;
 }
 

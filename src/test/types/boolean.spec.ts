@@ -8,16 +8,16 @@ describe("BooleanType", function () {
     {name: "true", value: true, valid: true},
     {name: "false", value: false, valid: true},
 
-    /* tslint:disable-next-line:no-construct */
+    // tslint:disable-next-line:no-construct
     {name: "new Boolean(true)", value: new Boolean(true), valid: false},
-    /* tslint:disable-next-line:no-construct */
+    // tslint:disable-next-line:no-construct
     {name: "new Boolean(false)", value: new Boolean(false), valid: false},
     {name: "0", value: 0, valid: false},
     {name: "1", value: 1, valid: false},
-    {name: '""', value: "", valid: false},
-    {name: '"0"', value: "0", valid: false},
-    {name: '"true"', value: "true", valid: false},
-    {name: '"false"', value: "false", valid: false},
+    {name: "\"\"", value: "", valid: false},
+    {name: "\"0\"", value: "0", valid: false},
+    {name: "\"true\"", value: "true", valid: false},
+    {name: "\"false\"", value: "false", valid: false},
     {name: "Infinity", value: Infinity, valid: false},
     {name: "-Infinity", value: -Infinity, valid: false},
     {name: "NaN", value: NaN, valid: false},

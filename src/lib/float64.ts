@@ -1,16 +1,11 @@
 import { Incident } from "incident";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "float64";
 export const name: Name = "float64";
 export type T = number;
-export namespace bson {
-  // TODO(demurgos): Check if BSON support NaN and Infinity (add some tests)
-  export type Input = number;
-  export type Output = number;
-}
 export namespace json {
   export type Input = number | "NaN" | "+Infinity" | "-Infinity";
   export type Output = number | "NaN" | "+Infinity" | "-Infinity";
@@ -34,7 +29,6 @@ export interface Options {
 
 export class Float64Type
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    BsonSerializer<T, bson.Input, bson.Output>,
     QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
@@ -88,10 +82,6 @@ export class Float64Type
     }
   }
 
-  readTrustedBson(input: bson.Output): T {
-    return input;
-  }
-
   readTrustedQs(input: qs.Output): T {
     switch (input) {
       case "NaN":
@@ -128,13 +118,6 @@ export class Float64Type
       default:
         throw Incident("InvalidNumberInput", "Expected a number, or one of NaN, +Infinity, -Infinity");
     }
-  }
-
-  readBson(input: any): T {
-    if (typeof input !== "number") {
-      throw WrongTypeError.create("number", input);
-    }
-    return input;
   }
 
   readQs(input: any): T {
@@ -175,10 +158,6 @@ export class Float64Type
     } else if (val === -Infinity) {
       return "-Infinity";
     }
-    return val;
-  }
-
-  writeBson(val: T): bson.Output {
     return val;
   }
 

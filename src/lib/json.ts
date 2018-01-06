@@ -1,12 +1,8 @@
 import { NotImplementedError } from "./_errors/not-implemented";
-import { BsonSerializer, QsSerializer, VersionedType } from "./types";
+import { QsSerializer, VersionedType } from "./types";
 
 export type Name = "json";
 export const name: Name = "json";
-export namespace bson {
-  export type Input = any;
-  export type Output = any;
-}
 export namespace json {
   export type Input = any;
   export type Output = any;
@@ -21,7 +17,6 @@ export type Diff = any;
 
 export class JsonType
   implements VersionedType<any, json.Input, json.Output, Diff>,
-    BsonSerializer<any, bson.Input, bson.Output>,
     QsSerializer<any, qs.Input, qs.Output> {
   readonly name: Name = name;
 
@@ -36,10 +31,6 @@ export class JsonType
     return input;
   }
 
-  readTrustedBson(input: bson.Output): any {
-    return input;
-  }
-
   readTrustedQs(input: qs.Output): any {
     throw NotImplementedError.create("JsonType#readTrustedQs");
   }
@@ -48,19 +39,11 @@ export class JsonType
     return JSON.parse(JSON.stringify(input));
   }
 
-  readBson(input: any): any {
-    return JSON.parse(JSON.stringify(input));
-  }
-
   readQs(input: any): any {
     throw NotImplementedError.create("JsonType#readQs");
   }
 
   writeJson(val: any): json.Output {
-    return JSON.parse(JSON.stringify(val));
-  }
-
-  writeBson(val: any): bson.Output {
     return JSON.parse(JSON.stringify(val));
   }
 

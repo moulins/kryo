@@ -3,6 +3,7 @@ import { DocumentType } from "../../lib/document";
 import { IntegerType } from "../../lib/integer";
 import { LiteralType } from "../../lib/literal";
 import { SimpleEnumType } from "../../lib/simple-enum";
+import { Serializer } from "../../lib/types";
 import { UnionType } from "../../lib/union";
 import { runTests, TypedValue } from "../helpers/test";
 
@@ -59,11 +60,11 @@ describe("Union", function () {
     type Shape = Rectangle | Circle;
     const shapeType: UnionType<Shape> = new UnionType<Shape>({
       variants: [rectangleType, circleType],
-      readMatcher: (format: string, val: any) => {
-        if (typeof val !== "object" || val === null) {
+      readMatcher: (input: any, serializer: Serializer) => {
+        if (typeof input !== "object" || input === null) {
           return undefined;
         }
-        switch (val.type) {
+        switch (input.type) {
           case "circle":
             return circleType;
           case "rectangle":

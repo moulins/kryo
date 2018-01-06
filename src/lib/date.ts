@@ -1,14 +1,10 @@
 import { InvalidTimestampError } from "./_errors/invalid-timestamp";
 import { WrongTypeError } from "./_errors/wrong-type";
-import { BsonSerializer, QsSerializer, VersionedType } from "./types";
+import { QsSerializer, VersionedType } from "./types";
 
 export type Name = "date";
 export const name: Name = "date";
 export type T = Date;
-export namespace bson {
-  export type Input = Date;
-  export type Output = Date;
-}
 export namespace json {
   export type Input = string | number;
   export type Output = string;
@@ -25,7 +21,6 @@ export type Diff = number;
 
 export class DateType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    BsonSerializer<T, bson.Input, bson.Output>,
     QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
 
@@ -35,10 +30,6 @@ export class DateType
 
   readTrustedJson(input: json.Output): T {
     return new Date(input);
-  }
-
-  readTrustedBson(input: bson.Output): T {
-    return new Date(input.getTime());
   }
 
   readTrustedQs(input: qs.Output): T {
@@ -61,19 +52,6 @@ export class DateType
     return result;
   }
 
-  readBson(input: any): T {
-    let result: Date;
-    if (!(input instanceof Date)) {
-      throw WrongTypeError.create("Date", input);
-    }
-    result = new Date(input.getTime());
-    const error: Error | undefined = this.testError(result);
-    if (error !== undefined) {
-      throw error;
-    }
-    return result;
-  }
-
   readQs(input: any): T {
     let result: Date;
     if (typeof input !== "string") {
@@ -89,10 +67,6 @@ export class DateType
 
   writeJson(val: T): json.Output {
     return val.toISOString();
-  }
-
-  writeBson(val: T): bson.Output {
-    return new Date(val.getTime());
   }
 
   writeQs(val: T): qs.Output {

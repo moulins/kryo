@@ -2,15 +2,11 @@ import { Incident } from "incident";
 import { InvalidIntegerError } from "./_errors/invalid-integer";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, QsSerializer, VersionedType } from "./types";
 
-export type Name = "int";
-export const name: Name = "int";
+export type Name = "integer";
+export const name: Name = "integer";
 export type T = number;
-export namespace bson {
-  export type Input = number;
-  export type Output = number;
-}
 export namespace json {
   export type Input = number;
   export type Output = number;
@@ -56,7 +52,6 @@ export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 
 export class IntegerType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    BsonSerializer<T, bson.Input, bson.Output>,
     QsSerializer<T, qs.Input, qs.Output> {
 
   readonly name: Name = name;
@@ -98,29 +93,11 @@ export class IntegerType
     return input;
   }
 
-  readTrustedBson(input: bson.Output): T {
-    return input;
-  }
-
   readTrustedQs(input: qs.Output): T {
     return parseInt(input, 10);
   }
 
   readJson(input: any): T {
-    let val: number;
-    if (typeof input !== "number") {
-      throw WrongTypeError.create("number", input);
-    }
-    val = input;
-    const err: Error | undefined = this.testError(val);
-    if (err !== undefined) {
-      throw err;
-    }
-
-    return val;
-  }
-
-  readBson(input: any): T {
     let val: number;
     if (typeof input !== "number") {
       throw WrongTypeError.create("number", input);
@@ -149,10 +126,6 @@ export class IntegerType
   }
 
   writeJson(val: T): json.Output {
-    return val;
-  }
-
-  writeBson(val: T): bson.Output {
     return val;
   }
 

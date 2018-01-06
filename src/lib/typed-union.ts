@@ -1,13 +1,14 @@
 import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, VersionedType } from "./types";
 
 export type Name = "typed-union";
 export const name: Name = "typed-union";
 export namespace json {
   export type Input = any;
   export type Output = any;
+
   export interface Type {
     name: Name;
   }
@@ -124,4 +125,4 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
   }
 }
 
-export {TypedUnionType as Type};
+export { TypedUnionType as Type };

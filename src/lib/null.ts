@@ -1,13 +1,9 @@
 import { WrongTypeError } from "./_errors/wrong-type";
-import { BsonSerializer, QsSerializer, VersionedType } from "./types";
+import { QsSerializer, VersionedType } from "./types";
 
 export type Name = "null";
 export const name: Name = "null";
 export type T = null;
-export namespace bson {
-  export type Input = null;
-  export type Output = null;
-}
 export namespace json {
   export type Input = null;
   export type Output = null;
@@ -24,7 +20,6 @@ export type Diff = undefined;
 
 export class NullType
   implements VersionedType<T, json.Input, json.Output, Diff>,
-    BsonSerializer<T, bson.Input, bson.Output>,
     QsSerializer<T, qs.Input, qs.Output> {
   readonly name: Name = name;
 
@@ -33,10 +28,6 @@ export class NullType
   }
 
   readTrustedJson(input: json.Output): T {
-    return null;
-  }
-
-  readTrustedBson(val: bson.Output): T {
     return null;
   }
 
@@ -51,13 +42,6 @@ export class NullType
     return null;
   }
 
-  readBson(input: any): T {
-    if (input !== null) {
-      throw WrongTypeError.create("null", input);
-    }
-    return null;
-  }
-
   readQs(input: any): T {
     if (input !== "") {
       throw WrongTypeError.create("\"\"", input);
@@ -66,10 +50,6 @@ export class NullType
   }
 
   writeJson(val: T): json.Output {
-    return null;
-  }
-
-  writeBson(val: T): bson.Output {
     return null;
   }
 

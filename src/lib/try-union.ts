@@ -1,6 +1,5 @@
-import { Incident } from "incident";
 import { NotImplementedError } from "./_errors/not-implemented";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, Serializer, VersionedType } from "./types";
 import * as union from "./union";
 
 export type Name = "try-union";
@@ -42,7 +41,7 @@ export interface Options<T, Output, Input extends Output, Diff> {
 
 function toUnionOptions<T>(options: Options<T, any, any, any>): union.Options<T, any, any, any> {
   const variants: VersionedType<T, any, any, Diff>[] = options.variants;
-  const matcher: union.Matcher<T, any, any, any> = (value: any) => {
+  const matcher: union.Matcher<T> = (value: any) => {
     for (const variant of variants) {
       if (variant.test(value)) {
         return variant;
@@ -50,32 +49,39 @@ function toUnionOptions<T>(options: Options<T, any, any, any>): union.Options<T,
     }
     return undefined;
   };
-  const readMatcher: union.ReadMatcher<T, any, any, any> = (format: "bson" | "json" | "qs", value: any) => {
+  const readMatcher: union.ReadMatcher<T> = (input: any, serializer: Serializer) => {
     for (const variant of variants) {
       try {
-        switch (format) {
-          case "json":
-            variant.readJson(value);
-            break;
-          case "bson":
-            (<any> variant as BsonSerializer<any>).readBson(value);
-            break;
-          case "qs":
-            (<any> variant as QsSerializer<any>).readQs(value);
-            break;
-          default:
-            throw new Incident("UnexpectedSwitchVariant", {value: format});
-        }
+        serializer.read(variant, input);
         return variant;
       } catch (err) {
-        if (err.name === "UnexpectedSwitchVariant") {
-          throw err;
-        }
         // Ignore error and try next variant
       }
     }
     return undefined;
   };
+  // const jsonMatcher: union.ReadMatcher<T, any, any, any> = (value: any, serializer: Serializer) => {
+  //   for (const variant of variants) {
+  //     try {
+  //       variant.readJson(value);
+  //       return variant;
+  //     } catch (err) {
+  //       // Ignore error and try next variant
+  //     }
+  //   }
+  //   return undefined;
+  // };
+  // const qsMatcher: union.ReadMatcher<T, any, any, any> = (value: any, serializer: Serializer) => {
+  //   for (const variant of variants) {
+  //     try {
+  //       (<any> variant as QsSerializer<any>).readQs(value);
+  //       return variant;
+  //     } catch (err) {
+  //       // Ignore error and try next variant
+  //     }
+  //   }
+  //   return undefined;
+  // };
   return {variants: options.variants, matcher, readMatcher};
 }
 
@@ -107,4 +113,4 @@ export class TryUnionType<T extends {}> extends union.UnionType<T> {
   }
 }
 
-export {TryUnionType as Type};
+export { TryUnionType as Type };

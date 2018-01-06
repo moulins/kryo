@@ -4,14 +4,10 @@ import { MaxArrayLengthError } from "./_errors/max-array-length";
 import { NotImplementedError } from "./_errors/not-implemented";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, QsSerializer, VersionedType } from "./types";
 
 export type Name = "array";
 export const name: Name = "array";
-export namespace bson {
-  export type Input = any[];
-  export type Output = any[];
-}
 export namespace json {
   export type Input = any[];
   export type Output = any[];
@@ -31,7 +27,6 @@ export interface Options<T, Input, Output extends Input, Diff> {
 
 export class ArrayType<T>
   implements VersionedType<T[], json.Input, json.Output, Diff>,
-    BsonSerializer<T[], bson.Input, bson.Output>,
     QsSerializer<T[], qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly itemType: VersionedType<T, any, any, any>;
@@ -63,11 +58,6 @@ export class ArrayType<T>
     return input.map((item: any): T => this.itemType.readTrustedJson(item));
   }
 
-  readTrustedBson(input: bson.Output): T[] {
-    // TODO(demurgos): Avoid casting
-    return input.map((item: any): T => (<any> this.itemType as BsonSerializer<T>).readTrustedBson(item));
-  }
-
   readTrustedQs(input: qs.Output): T[] {
     if (Array.isArray(input)) {
       // TODO(demurgos): Avoid casting
@@ -83,20 +73,6 @@ export class ArrayType<T>
       throw WrongTypeError.create("array", input);
     }
     result = input.map((item: any): T => this.itemType.readJson(item));
-    const error: Error | undefined = this.testError(result);
-    if (error !== undefined) {
-      throw error;
-    }
-    return result;
-  }
-
-  readBson(input: any): T[] {
-    let result: T[];
-    if (!Array.isArray(input)) {
-      throw WrongTypeError.create("array", input);
-    }
-    // TODO(demurgos): Avoid casting
-    result = input.map((item: any): T => (<any> this.itemType as BsonSerializer<T>).readBson(item));
     const error: Error | undefined = this.testError(result);
     if (error !== undefined) {
       throw error;
@@ -123,11 +99,6 @@ export class ArrayType<T>
 
   writeJson(val: T[]): json.Output {
     return val.map((item: T): any => this.itemType.writeJson(item));
-  }
-
-  writeBson(val: T[]): bson.Output {
-    // TODO(demurgos): Avoid casting
-    return val.map((item: T): any => (<any> this.itemType as BsonSerializer<T>).writeBson(item));
   }
 
   writeQs(val: T[]): qs.Output {

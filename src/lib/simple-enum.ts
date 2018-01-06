@@ -3,11 +3,9 @@ import { NotImplementedError } from "./_errors/not-implemented";
 import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
 import { CaseStyle, rename } from "./_helpers/rename";
-import { BsonSerializer, Lazy, QsSerializer, VersionedType } from "./types";
+import { Lazy, QsSerializer, VersionedType } from "./types";
 
-export type SimpleEnum<EnumConstructor> = {
-  [K in keyof EnumConstructor]: EnumConstructor[K];
-  };
+export type SimpleEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumConstructor[K]};
 
 interface ReversedEnum<EC> {
   [index: number]: (keyof EC) | undefined;
@@ -15,11 +13,11 @@ interface ReversedEnum<EC> {
 
 type DoubleEnum<EC> = SimpleEnum<EC> & ReversedEnum<EC>;
 
-interface AnySimpleEnum {
+export interface AnySimpleEnum {
   [name: string]: number;
 }
 
-interface AnyReversedEnum {
+export interface AnyReversedEnum {
   [value: number]: string;
 }
 
@@ -62,13 +60,12 @@ export interface Options<E extends number> {
  */
 export class SimpleEnumType<E extends number>
   implements VersionedType<E, json.Input, json.Output, Diff>,
-    BsonSerializer<E, bson.Input, bson.Output>,
     QsSerializer<E, qs.Input, qs.Output> {
   readonly name: Name = name;
   readonly enum: EnumConstructor<E>;
-  private readonly rename?: CaseStyle;
-  private readonly outputNameToValue: AnySimpleEnum;
-  private readonly valueToOutputName: AnyReversedEnum;
+  readonly rename?: CaseStyle;
+  readonly outputNameToValue: AnySimpleEnum;
+  readonly valueToOutputName: AnyReversedEnum;
 
   private _options: Lazy<Options<E>>;
 
@@ -100,25 +97,11 @@ export class SimpleEnumType<E extends number>
     return this.outputNameToValue[input] as E;
   }
 
-  readTrustedBson(input: bson.Output): E {
-    return this.outputNameToValue[input] as E;
-  }
-
   readTrustedQs(input: qs.Output): E {
     return this.outputNameToValue[input] as E;
   }
 
   readJson(input: any): E {
-    if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
-    }
-    if (!this.outputNameToValue.hasOwnProperty(input)) {
-      throw Incident("Unknown enum variant name", input);
-    }
-    return this.outputNameToValue[input] as E;
-  }
-
-  readBson(input: any): E {
     if (typeof input !== "string") {
       throw WrongTypeError.create("string", input);
     }
@@ -139,10 +122,6 @@ export class SimpleEnumType<E extends number>
   }
 
   writeJson(val: E): json.Output {
-    return this.valueToOutputName[val as number];
-  }
-
-  writeBson(val: E): bson.Output {
     return this.valueToOutputName[val as number];
   }
 
