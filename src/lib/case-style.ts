@@ -62,7 +62,7 @@ export function join(caseStyle: CaseStyle, parts: string[]): string {
 }
 
 export function rename(identifier: string, to: CaseStyle): string;
-/* tslint:disable-next-line:unified-signatures */
+// tslint:disable-next-line:unified-signatures
 export function rename(identifier: string, from: CaseStyle, to: CaseStyle): string;
 export function rename(identifier: string, from: CaseStyle, to?: CaseStyle): string {
   if (to === undefined) {

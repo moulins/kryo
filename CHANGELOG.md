@@ -8,6 +8,7 @@
 - **[Internal]** Remove `Type` aliases from each type module:
   `import { Type } from "kryo/types/integer"` was an alias of
   `import { IntegerType } from "kryo/types/integer"`
+- **[Internal]** Rename `_helpers/rename` to `case-style`
 
 # 0.5.0 (2018-01-02)
 

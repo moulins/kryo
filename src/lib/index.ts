@@ -65,4 +65,4 @@ export {
 
 export { errors };
 
-export { CaseStyle } from "./_helpers/rename";
+export { CaseStyle } from "./case-style";

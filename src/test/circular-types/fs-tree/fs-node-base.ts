@@ -1,4 +1,4 @@
-import { CaseStyle } from "../../../lib/_helpers/rename";
+import { CaseStyle } from "../../../lib/case-style";
 import { DocumentType } from "../../../lib/types/document";
 import { Ucs2StringType } from "../../../lib/types/ucs2-string";
 import { $FsNodeType, FsNodeType } from "./fs-node-type";

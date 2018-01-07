@@ -1,4 +1,4 @@
-import { CaseStyle } from "../../lib/_helpers/rename";
+import { CaseStyle } from "../../lib/case-style";
 import { SimpleEnumType } from "../../lib/types/simple-enum";
 import { runTests, TypedValue } from "../helpers/test";
 

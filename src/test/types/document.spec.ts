@@ -1,4 +1,4 @@
-import { CaseStyle } from "../../lib/_helpers/rename";
+import { CaseStyle } from "../../lib/case-style";
 import { DateType } from "../../lib/types/date";
 import { DocumentType } from "../../lib/types/document";
 import { IntegerType } from "../../lib/types/integer";

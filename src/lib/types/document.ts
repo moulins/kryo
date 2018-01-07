@@ -1,7 +1,7 @@
 import { Incident } from "incident";
 import { diffSets, DiffSetsResult } from "../_helpers/diff-sets";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { CaseStyle, rename } from "../_helpers/rename";
+import { CaseStyle, rename } from "../case-style";
 import { ExtraKeysError } from "../errors/extra-keys";
 import { InvalidPropertyError } from "../errors/invalid-property";
 import { MissingKeysError } from "../errors/missing-keys";

@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { CaseStyle, rename } from "../_helpers/rename";
+import { CaseStyle, rename } from "../case-style";
 import { NotImplementedError } from "../errors/not-implemented";
 import { WrongTypeError } from "../errors/wrong-type";
 import { Lazy, VersionedType } from "../types";
