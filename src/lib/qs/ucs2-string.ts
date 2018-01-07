@@ -1,5 +1,4 @@
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { Serializer, TypeSerializer } from "../types";
 import { name as typeName, Ucs2StringType } from "../types/ucs2-string";
 
 function write(type: Ucs2StringType, value: string): string {

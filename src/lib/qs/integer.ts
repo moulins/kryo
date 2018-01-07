@@ -1,6 +1,5 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { Serializer, TypeSerializer } from "../types";
 import { IntegerType, name as typeName } from "../types/integer";
 
 function write(type: IntegerType, value: number): string {

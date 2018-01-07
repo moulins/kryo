@@ -1,5 +1,5 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
+import { Serializer } from "../types";
 import { TypeSerializer } from "../types";
 import { name as typeName, NullType } from "../types/null";
 

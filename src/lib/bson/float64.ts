@@ -1,6 +1,5 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { Serializer, TypeSerializer } from "../types";
 import { Float64Type, name as typeName } from "../types/float64";
 
 // TODO(demurgos): Check if BSON support NaN and Infinity (add some tests)

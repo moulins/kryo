@@ -1,5 +1,5 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
+import { Serializer } from "../types";
 import { MapType, name as typeName } from "../types/map";
 
 export function register(serializer: Serializer): void {

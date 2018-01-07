@@ -1,4 +1,4 @@
-import { Serializer } from "../serializer";
+import { BaseSerializer } from "../base-serializer";
 import { register as registerArray } from "./array";
 import { register as registerBoolean } from "./boolean";
 import { register as registerBuffer } from "./buffer";
@@ -16,8 +16,8 @@ import { register as registerSimpleEnum } from "./simple-enum";
 import { register as registerUcs2String } from "./ucs2-string";
 import { register as registerUnion } from "./union";
 
-export function createQsSerializer(): Serializer {
-  const serializer: Serializer = new Serializer("qs");
+export function createQsSerializer(): BaseSerializer {
+  const serializer: BaseSerializer = new BaseSerializer("qs");
   registerArray(serializer);
   registerBoolean(serializer);
   registerBuffer(serializer);

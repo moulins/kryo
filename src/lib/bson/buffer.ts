@@ -1,7 +1,6 @@
 import { Binary as BinaryType } from "bson";
-import { createMissingDependencyError, MissingDependencyError } from "../errors/missing-dependency";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { createMissingDependencyError } from "../errors/missing-dependency";
+import { Serializer, TypeSerializer } from "../types";
 import { BufferType, name as typeName } from "../types/buffer";
 
 // TODO: Fix BSON type definitions

@@ -1,6 +1,5 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { Serializer, TypeSerializer } from "../types";
 import { BooleanType, name as typeName } from "../types/boolean";
 
 function write(type: BooleanType, value: boolean): boolean {

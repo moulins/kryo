@@ -1,6 +1,5 @@
-import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { createNotImplementedError } from "../errors/not-implemented";
+import { Serializer, TypeSerializer } from "../types";
 import { JsonType, name as typeName } from "../types/json";
 
 function write(type: JsonType, value: any): any {

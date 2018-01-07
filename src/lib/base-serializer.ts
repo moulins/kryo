@@ -1,7 +1,7 @@
 import { Incident } from "incident";
-import { Type, TypeName, TypeSerializer } from "./types";
+import { Serializer, Type, TypeName, TypeSerializer } from "./types";
 
-export class Serializer {
+export class BaseSerializer implements Serializer {
   readonly format: string;
   private readonly types: Map<TypeName, TypeSerializer<any>>;
 

@@ -1,6 +1,5 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { Serializer, TypeSerializer } from "../types";
 import { BufferType, name as typeName } from "../types/buffer";
 
 function write(type: BufferType, val: Uint8Array): string {

@@ -1,4 +1,4 @@
-import { Serializer } from "../serializer";
+import { Serializer } from "../types";
 import { LiteralType, name as typeName } from "../types/literal";
 
 export function register(serializer: Serializer): void {

@@ -1,7 +1,6 @@
 import { Incident } from "incident";
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { Serializer, TypeSerializer } from "../types";
 import { name as typeName, SimpleEnumType } from "../types/simple-enum";
 
 function write<E extends number>(type: SimpleEnumType<E>, value: E): string {

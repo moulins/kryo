@@ -1,7 +1,7 @@
 import { diffSets, DiffSetsResult } from "../_helpers/diff-sets";
-import { createExtraKeysError, ExtraKeysError } from "../errors/extra-keys";
-import { createMissingKeysError, MissingKeysError } from "../errors/missing-keys";
-import { Serializer } from "../serializer";
+import { createExtraKeysError } from "../errors/extra-keys";
+import { createMissingKeysError } from "../errors/missing-keys";
+import { Serializer } from "../types";
 import { DocumentType, name as typeName } from "../types/document";
 
 export function register(serializer: Serializer): void {

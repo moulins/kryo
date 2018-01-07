@@ -1,9 +1,12 @@
 /**
+ * This module defines most of the Typescript interfaces and type aliases used by Kryo.
+ */
+
+/**
  * Represents a lazy value of type `T`.
  * You can retrieve it with `const val = typeof lazy === "function" ? lazy() : lazy;`.
  * This library guarantees that it will be only called once but you should still ensure that it is idempotent.
  */
-
 export type Lazy<T> = T | (() => T);
 
 export type TypeName<T = any> = string;

@@ -1,6 +1,5 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Serializer } from "../serializer";
-import { TypeSerializer } from "../types";
+import { Serializer, TypeSerializer } from "../types";
 import { DateType, name as typeName } from "../types/date";
 
 function write(type: DateType, value: Date): string {
