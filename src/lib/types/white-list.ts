@@ -3,8 +3,8 @@ import { lazyProperties } from "../_helpers/lazy-properties";
 import { NotImplementedError } from "../errors/not-implemented";
 import { Lazy, VersionedType } from "../types";
 
-export type Name = "typed-union";
-export const name: Name = "typed-union";
+export type Name = "white-list";
+export const name: Name = "white-list";
 export namespace json {
   export type Input = any;
   export type Output = any;
@@ -20,8 +20,7 @@ export interface Options<T> {
   values: T[];
 }
 
-// TODO: Rename to whiteList
-export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
+export class WhiteListType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
   readonly itemType: VersionedType<any, any, any, any>;
   readonly values: T[];
@@ -44,8 +43,8 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
     }
   }
 
-  static fromJSON(options: json.Type): TypedUnionType<any> {
-    throw NotImplementedError.create("TypedUnionType.fromJSON");
+  static fromJSON(options: json.Type): WhiteListType<any> {
+    throw NotImplementedError.create("WhiteListType.fromJSON");
   }
 
   toJSON(): json.Type {
@@ -125,4 +124,4 @@ export class TypedUnionType<T> implements VersionedType<T, json.Input, json.Outp
   }
 }
 
-export { TypedUnionType as Type };
+export { WhiteListType as Type };

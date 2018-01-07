@@ -15,7 +15,7 @@ export { NullType } from "./types/null";
 export { SimpleEnumType } from "./types/simple-enum";
 export { TaggedUnionType } from "./types/tagged-union";
 export { TryUnionType } from "./types/try-union";
-export { TypedUnionType } from "./types/typed-union";
+export { WhiteListType } from "./types/white-list";
 export { Ucs2StringType } from "./types/ucs2-string";
 export { UnionType } from "./types/union";
 
@@ -36,9 +36,9 @@ import * as _null from "./types/null";
 import * as simpleEnum from "./types/simple-enum";
 import * as taggedUnion from "./types/tagged-union";
 import * as tryUnion from "./types/try-union";
-import * as typedUnion from "./types/typed-union";
 import * as ucs2String from "./types/ucs2-string";
 import * as union from "./types/union";
+import * as whiteList from "./types/white-list";
 
 export {
   array,
@@ -56,7 +56,7 @@ export {
   simpleEnum,
   taggedUnion,
   tryUnion,
-  typedUnion,
+  whiteList,
   ucs2String,
   union,
 };
