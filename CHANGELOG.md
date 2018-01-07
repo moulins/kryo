@@ -2,7 +2,9 @@
 
 - **[Breaking change]** Rename `int32` export to `integer`
 - **[Breaking change]** Rename `typed-enum` to `white-list`
-- **[Breaking change]** Split serialization functions by format to prepare tree-shaking (#39)
+- **[Breaking change]** Move serialization functions out of types, use first-class serializer
+  objects to serialize values.
+- **[Feature]** Add `CustomType` to facilitate serialization of non-Kryo types
 
 # 0.5.0 (2018-01-02)
 

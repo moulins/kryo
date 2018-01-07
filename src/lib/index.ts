@@ -4,6 +4,7 @@ export { ArrayType } from "./types/array";
 export { BooleanType } from "./types/boolean";
 export { BufferType } from "./types/buffer";
 export { CodepointStringType } from "./types/codepoint-string";
+export { CustomType } from "./types/custom";
 export { DateType } from "./types/date";
 export { DocumentType } from "./types/document";
 export { Float64Type } from "./types/float64";
@@ -24,6 +25,7 @@ import * as array from "./types/array";
 import * as boolean from "./types/boolean";
 import * as buffer from "./types/buffer";
 import * as codepointString from "./types/codepoint-string";
+import * as custom from "./types/custom";
 import * as date from "./types/date";
 import * as document from "./types/document";
 import * as float64 from "./types/float64";
@@ -44,6 +46,7 @@ export {
   boolean,
   buffer,
   codepointString,
+  custom,
   date,
   document,
   float64,

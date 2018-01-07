@@ -29,7 +29,7 @@ export class Serializer {
   private getTypeSerializer(name: TypeName): TypeSerializer<any> {
     const result: TypeSerializer<any> | undefined = this.types.get(name);
     if (result === undefined) {
-      throw new Incident("UnknownType", {name, types: new Map(...this.types.entries())});
+      throw new Incident("UnknownType", {name, types: new Map([...this.types.entries()])});
     }
     return result;
   }

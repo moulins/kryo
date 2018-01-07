@@ -3,6 +3,7 @@ import { register as registerArray } from "./array";
 import { register as registerBoolean } from "./boolean";
 import { register as registerBuffer } from "./buffer";
 import { register as registerCodepointString } from "./codepoint-string";
+import { register as registerCustom } from "./custom";
 import { register as registerDate } from "./date";
 import { register as registerDocument } from "./document";
 import { register as registerFloat64 } from "./float64";
@@ -21,6 +22,7 @@ export function createBsonSerializer(): Serializer {
   registerBoolean(serializer);
   registerBuffer(serializer);
   registerCodepointString(serializer);
+  registerCustom(serializer);
   registerDate(serializer);
   registerDocument(serializer);
   registerFloat64(serializer);
