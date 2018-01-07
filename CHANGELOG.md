@@ -1,5 +1,6 @@
 # Next
 
+- **[Breaking change]** Rename `int32` export to `integer`
 - **[Breaking change]** Rename `typed-enum` to `white-list`
 - **[Breaking change]** Split serialization functions by format to prepare tree-shaking (#39)
 

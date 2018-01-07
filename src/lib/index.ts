@@ -27,8 +27,7 @@ import * as codepointString from "./types/codepoint-string";
 import * as date from "./types/date";
 import * as document from "./types/document";
 import * as float64 from "./types/float64";
-// TODO(demurgos): Rename to `integer` (`integer` is the new name, it covers up to 53 bits).
-import * as int32 from "./types/integer";
+import * as integer from "./types/integer";
 import * as json from "./types/json";
 import * as literal from "./types/literal";
 import * as map from "./types/map";
@@ -48,7 +47,7 @@ export {
   date,
   document,
   float64,
-  int32,
+  integer,
   literal,
   json,
   map,
