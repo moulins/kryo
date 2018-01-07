@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "white-list";
@@ -44,11 +44,11 @@ export class WhiteListType<T> implements VersionedType<T, json.Input, json.Outpu
   }
 
   static fromJSON(options: json.Type): WhiteListType<any> {
-    throw NotImplementedError.create("WhiteListType.fromJSON");
+    throw createNotImplementedError("WhiteListType.fromJSON");
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("TypedUnionType#toJSON");
+    throw createNotImplementedError("TypedUnionType#toJSON");
   }
 
   readTrustedJson(val: json.Output): T {

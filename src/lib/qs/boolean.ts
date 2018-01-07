@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { BooleanType, name as typeName } from "../types/boolean";
@@ -9,7 +9,7 @@ function write(type: BooleanType, value: boolean): "true" | "false" {
 
 function read(type: BooleanType, input: "true" | "false"): boolean {
   if (!(input === "true" || input === "false")) {
-    throw WrongTypeError.create("\"true\" | \"false\"", input);
+    throw createInvalidTypeError("\"true\" | \"false\"", input);
   }
   return input === "true";
 }

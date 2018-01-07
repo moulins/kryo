@@ -1,13 +1,13 @@
 import { Incident } from "incident";
 import { checkedUcs2Decode } from "../_helpers/checked-ucs2-decode";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { LowerCaseError } from "../errors/lower-case";
-import { MaxCodepointsError } from "../errors/max-codepoints";
-import { MinCodepointsError } from "../errors/min-codepoints";
-import { MissingDependencyError } from "../errors/missing-dependency";
-import { NotTrimmedError } from "../errors/not-trimmed";
-import { PatternNotMatchedError } from "../errors/pattern-not-matched";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createLowerCaseError } from "../errors/lower-case";
+import { createMaxCodepointsError } from "../errors/max-codepoints";
+import { createMinCodepointsError } from "../errors/min-codepoints";
+import { createMissingDependencyError } from "../errors/missing-dependency";
+import { createNotTrimmedError } from "../errors/not-trimmed";
+import { createPatternNotMatchedError } from "../errors/pattern-not-matched";
 import { Lazy, VersionedType } from "../types";
 
 let unormNfc: ((str: string) => string) | undefined = undefined;
@@ -165,13 +165,13 @@ export class CodepointStringType implements VersionedType<string, json.Input, js
 
   testError(val: string): Error | undefined {
     if (!(typeof val === "string")) {
-      return WrongTypeError.create("string", val);
+      return createInvalidTypeError("string", val);
     }
 
     switch (this.normalization) {
       case Normalization.Nfc:
         if (unormNfc === undefined) {
-          throw MissingDependencyError.create("unorm", "Required to normalize unicode strings to NFC.");
+          throw createMissingDependencyError("unorm", "Required to normalize unicode strings to NFC.");
         }
         if (val !== unormNfc(val)) {
           return Incident("UnicodeNormalization", "Not NFC-Normalized");
@@ -186,11 +186,11 @@ export class CodepointStringType implements VersionedType<string, json.Input, js
     }
 
     if (this.lowerCase && val !== val.toLowerCase()) {
-      return LowerCaseError.create(val);
+      return createLowerCaseError(val);
     }
 
     if (this.trimmed && val !== val.trim()) {
-      return NotTrimmedError.create(val);
+      return createNotTrimmedError(val);
     }
 
     let codepointCount: number;
@@ -202,11 +202,11 @@ export class CodepointStringType implements VersionedType<string, json.Input, js
 
     const minCodepoints: number | undefined = this.minCodepoints;
     if (typeof minCodepoints === "number" && codepointCount < minCodepoints) {
-      return MinCodepointsError.create(val, codepointCount, minCodepoints);
+      return createMinCodepointsError(val, codepointCount, minCodepoints);
     }
 
     if (codepointCount > this.maxCodepoints) {
-      return MaxCodepointsError.create(val, codepointCount, this.maxCodepoints);
+      return createMaxCodepointsError(val, codepointCount, this.maxCodepoints);
     }
 
     if (this.pattern instanceof RegExp) {
@@ -218,7 +218,7 @@ export class CodepointStringType implements VersionedType<string, json.Input, js
       }
 
       if (!this.pattern.test(val)) {
-        return PatternNotMatchedError.create(this.pattern, val);
+        return createPatternNotMatchedError(this.pattern, val);
       }
     }
 

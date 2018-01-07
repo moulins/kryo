@@ -1,11 +1,11 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { LowerCaseError } from "../errors/lower-case";
-import { MaxUcs2StringLengthError } from "../errors/max-ucs2-string-length";
-import { MinUcs2StringLengthError } from "../errors/min-ucs2-string-length";
-import { NotTrimmedError } from "../errors/not-trimmed";
-import { PatternNotMatchedError } from "../errors/pattern-not-matched";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createLowerCaseError } from "../errors/lower-case";
+import { createMaxUcs2StringLengthError } from "../errors/max-ucs2-string-length";
+import { createMinUcs2StringLengthError } from "../errors/min-ucs2-string-length";
+import { createNotTrimmedError } from "../errors/not-trimmed";
+import { createPatternNotMatchedError } from "../errors/pattern-not-matched";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "ucs2-string";
@@ -183,21 +183,21 @@ export class Ucs2StringType implements VersionedType<string, json.Input, json.Ou
 
   testError(val: string): Error | undefined {
     if (typeof val !== "string") {
-      return WrongTypeError.create("string", val);
+      return createInvalidTypeError("string", val);
     }
     if (this.lowerCase && val.toLowerCase() !== val) {
-      return LowerCaseError.create(val);
+      return createLowerCaseError(val);
     }
     if (this.trimmed && val.trim() !== val) {
-      return NotTrimmedError.create(val);
+      return createNotTrimmedError(val);
     }
     const strLen: number = val.length;
     const minLength: number | undefined = this.minLength;
     if (minLength !== undefined && strLen < minLength) {
-      return MinUcs2StringLengthError.create(val, minLength);
+      return createMinUcs2StringLengthError(val, minLength);
     }
     if (strLen > this.maxLength) {
-      return MaxUcs2StringLengthError.create(val, this.maxLength);
+      return createMaxUcs2StringLengthError(val, this.maxLength);
     }
 
     if (this.pattern instanceof RegExp) {
@@ -209,7 +209,7 @@ export class Ucs2StringType implements VersionedType<string, json.Input, json.Ou
       }
 
       if (!this.pattern.test(val)) {
-        return PatternNotMatchedError.create(this.pattern, val);
+        return createPatternNotMatchedError(this.pattern, val);
       }
     }
 

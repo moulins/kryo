@@ -1,7 +1,7 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { InvalidIntegerError } from "../errors/invalid-integer";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidIntegerError } from "../errors/invalid-integer";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "integer";
@@ -89,7 +89,7 @@ export class IntegerType implements VersionedType<number, json.Input, json.Outpu
   readJson(input: any): number {
     let val: number;
     if (typeof input !== "number") {
-      throw WrongTypeError.create("number", input);
+      throw createInvalidTypeError("number", input);
     }
     val = input;
     const err: Error | undefined = this.testError(val);
@@ -106,10 +106,10 @@ export class IntegerType implements VersionedType<number, json.Input, json.Outpu
 
   testError(val: number): Error | undefined {
     if (typeof val !== "number") {
-      return WrongTypeError.create("number", val);
+      return createInvalidTypeError("number", val);
     }
     if (Math.round(val) !== val) {
-      return InvalidIntegerError.create(val);
+      return createInvalidIntegerError(val);
     }
     if (val < this.min || val > this.max) {
       return new Incident("Range", {value: val, min: this.min, max: this.max}, "Integer not in range");

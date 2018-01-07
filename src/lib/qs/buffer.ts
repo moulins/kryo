@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { BufferType, name as typeName } from "../types/buffer";
@@ -15,9 +15,9 @@ function write(type: BufferType, val: Uint8Array): string {
 function read(type: BufferType, input: string): Uint8Array {
   let result: Uint8Array;
   if (typeof input !== "string") {
-    throw WrongTypeError.create("string", input);
+    throw createInvalidTypeError("string", input);
   } else if (!/^(?:[0-9a-f]{2})*$/.test(input)) {
-    throw WrongTypeError.create("lowerCaseHexEvenLengthString", input);
+    throw createInvalidTypeError("lowerCaseHexEvenLengthString", input);
   }
   const len: number = input.length / 2;
   result = new Uint8Array(len);

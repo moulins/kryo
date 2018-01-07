@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { Float64Type, name as typeName } from "../types/float64";
@@ -17,7 +17,7 @@ function write(type: Float64Type, value: number): string {
 
 function read(type: Float64Type, input: string): number {
   if (typeof input !== "string") {
-    throw WrongTypeError.create("string", input);
+    throw createInvalidTypeError("string", input);
   }
   switch (input) {
     case "NaN":

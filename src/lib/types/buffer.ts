@@ -1,8 +1,8 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { MaxArrayLengthError } from "../errors/max-array-length";
-import { NotImplementedError } from "../errors/not-implemented";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createMaxArrayLengthError } from "../errors/max-array-length";
+import { createNotImplementedError } from "../errors/not-implemented";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "buffer";
@@ -42,7 +42,7 @@ export class BufferType implements VersionedType<Uint8Array, json.Input, json.Ou
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("BufferType#toJSON");
+    throw createNotImplementedError("BufferType#toJSON");
   }
 
   readTrustedJson(input: json.Output): Uint8Array {
@@ -57,9 +57,9 @@ export class BufferType implements VersionedType<Uint8Array, json.Input, json.Ou
   readJson(input: any): Uint8Array {
     let result: Uint8Array;
     if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
+      throw createInvalidTypeError("string", input);
     } else if (!/^(?:[0-9a-f]{2})*$/.test(input)) {
-      throw WrongTypeError.create("lowerCaseHexEvenLengthString", input);
+      throw createInvalidTypeError("lowerCaseHexEvenLengthString", input);
     }
     const len: number = input.length / 2;
     result = new Uint8Array(len);
@@ -84,10 +84,10 @@ export class BufferType implements VersionedType<Uint8Array, json.Input, json.Ou
 
   testError(val: Uint8Array): Error | undefined {
     if (!(val instanceof Uint8Array)) {
-      return WrongTypeError.create("Uint8Array", val);
+      return createInvalidTypeError("Uint8Array", val);
     }
     if (this.maxLength !== undefined && val.length > this.maxLength) {
-      return MaxArrayLengthError.create(val, this.maxLength);
+      return createMaxArrayLengthError(val, this.maxLength);
     }
     return undefined;
   }
@@ -118,19 +118,19 @@ export class BufferType implements VersionedType<Uint8Array, json.Input, json.Ou
    * @returns `true` if there is a difference, `undefined` otherwise
    */
   diff(oldVal: Uint8Array, newVal: Uint8Array): Diff | undefined {
-    throw NotImplementedError.create("BufferType#diff");
+    throw createNotImplementedError("BufferType#diff");
   }
 
   patch(oldVal: Uint8Array, diff: Diff | undefined): Uint8Array {
-    throw NotImplementedError.create("BufferType#patch");
+    throw createNotImplementedError("BufferType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("BufferType#reverseDiff");
+    throw createNotImplementedError("BufferType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("BufferType#squash");
+    throw createNotImplementedError("BufferType#squash");
   }
 
   private _applyOptions(): void {

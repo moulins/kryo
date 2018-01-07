@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "float64";
@@ -113,7 +113,7 @@ export class Float64Type implements VersionedType<number, json.Input, json.Outpu
 
   testError(val: number): Error | undefined {
     if (typeof val !== "number") {
-      return WrongTypeError.create("number", val);
+      return createInvalidTypeError("number", val);
     }
     if (isNaN(val) && this.notNan) {
       return Incident("");

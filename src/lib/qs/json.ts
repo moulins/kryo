@@ -1,18 +1,18 @@
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { JsonType, name as typeName } from "../types/json";
 
 function write(type: JsonType, value: any): any {
-  throw NotImplementedError.create("qs/json/write");
+  throw createNotImplementedError("qs/json/write");
 }
 
 function read(type: JsonType, input: any): any {
-  throw NotImplementedError.create("qs/json/read");
+  throw createNotImplementedError("qs/json/read");
 }
 
 function readTrusted(type: JsonType, input: any): any {
-  throw NotImplementedError.create("qs/json/readTrusted");
+  throw createNotImplementedError("qs/json/readTrusted");
 }
 
 export const SERIALIZER: TypeSerializer<any> = {

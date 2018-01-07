@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import { WrongTypeError } from "../../lib/errors";
+import { createInvalidTypeError } from "../../lib/errors/invalid-type";
 import { Serializer } from "../../lib/types";
 import { CustomType } from "../../lib/types/custom";
 import { runTests, TypedValue } from "../helpers/test";
@@ -53,7 +53,7 @@ describe("Custom", function () {
     },
     testError(value: Complex): Error | undefined {
       if (!(value instanceof Complex)) {
-        return WrongTypeError.create("Complex", value);
+        return createInvalidTypeError("Complex", value);
       }
       return undefined;
     },

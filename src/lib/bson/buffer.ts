@@ -1,5 +1,5 @@
 import { Binary as BinaryType } from "bson";
-import { MissingDependencyError } from "../errors/missing-dependency";
+import { createMissingDependencyError, MissingDependencyError } from "../errors/missing-dependency";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { BufferType, name as typeName } from "../types/buffer";
@@ -18,7 +18,7 @@ function getBinary(): BinaryConstructor {
       // tslint:disable-next-line:no-var-requires no-require-imports
       Binary = require("bson").Binary;
     } catch (err) {
-      throw MissingDependencyError.create("bson", "Required to write buffers to BSON.");
+      throw createMissingDependencyError("bson", "Required to write buffers to BSON.");
     }
   }
   return Binary!;

@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "literal";
@@ -45,7 +45,7 @@ export class LiteralType<T> implements VersionedType<T, json.Input, json.Output,
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("LiteralType#toJSON");
+    throw createNotImplementedError("LiteralType#toJSON");
   }
 
   readTrustedJson(input: json.Output): T {
@@ -84,19 +84,19 @@ export class LiteralType<T> implements VersionedType<T, json.Input, json.Output,
   }
 
   diff(oldVal: T, newVal: T): Diff | undefined {
-    throw NotImplementedError.create("LiteralType#diff");
+    throw createNotImplementedError("LiteralType#diff");
   }
 
   patch(oldVal: T, diff: Diff | undefined): T {
-    throw NotImplementedError.create("LiteralType#patch");
+    throw createNotImplementedError("LiteralType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("LiteralType#reverseDiff");
+    throw createNotImplementedError("LiteralType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("LiteralType#squash");
+    throw createNotImplementedError("LiteralType#squash");
   }
 
   private _applyOptions(): void {

@@ -1,19 +1,19 @@
 import { Incident } from "incident";
 
-export namespace ExtraKeysError {
-  export type Name = "ExtraKeys";
-  export const name: Name = "ExtraKeys";
-  export interface Data {
-    keys: string[];
-  }
-  export type Cause = undefined;
-  export type Type = Incident<Data, Name, Cause>;
-  export function format({keys}: Data): string {
-    return `Unexpected extra keys: ${JSON.stringify(keys)}`;
-  }
-  export function create(keys: string[]): Type {
-    return Incident(name, {keys}, format);
-  }
+export type Name = "ExtraKeys";
+export const name: Name = "ExtraKeys";
+
+export interface Data {
+  keys: string[];
 }
 
-export type ExtraKeysError = ExtraKeysError.Type;
+export type Cause = undefined;
+export type ExtraKeysError = Incident<Data, Name, Cause>;
+
+export function format({keys}: Data): string {
+  return `Unexpected extra keys: ${JSON.stringify(keys)}`;
+}
+
+export function createExtraKeysError(keys: string[]): ExtraKeysError {
+  return Incident(name, {keys}, format);
+}

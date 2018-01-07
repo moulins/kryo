@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError } from "../errors/not-implemented";
 import { JsonSerializer, Lazy, Serializer, Type } from "../types";
 import { DocumentType } from "./document";
 import { LiteralType } from "./literal";
@@ -148,22 +148,22 @@ export class TaggedUnionType<T extends {}> extends union.UnionType<T> {
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("TaggedUnionType#toJSON");
+    throw createNotImplementedError("TaggedUnionType#toJSON");
   }
 
   diff(oldVal: T, newVal: T): Diff | undefined {
-    throw NotImplementedError.create("TaggedUnionType#diff");
+    throw createNotImplementedError("TaggedUnionType#diff");
   }
 
   patch(oldVal: T, diff: Diff | undefined): T {
-    throw NotImplementedError.create("TaggedUnionType#patch");
+    throw createNotImplementedError("TaggedUnionType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("TaggedUnionType#reverseDiff");
+    throw createNotImplementedError("TaggedUnionType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("TaggedUnionType#squash");
+    throw createNotImplementedError("TaggedUnionType#squash");
   }
 }

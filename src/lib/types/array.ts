@@ -1,9 +1,9 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { InvalidArrayItemError } from "../errors/invalid-array-item";
-import { MaxArrayLengthError } from "../errors/max-array-length";
-import { NotImplementedError } from "../errors/not-implemented";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidArrayItemError } from "../errors/invalid-array-item";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createMaxArrayLengthError } from "../errors/max-array-length";
+import { createNotImplementedError } from "../errors/not-implemented";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "array";
@@ -45,7 +45,7 @@ export class ArrayType<T> implements VersionedType<T[], json.Input, json.Output,
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("ArrayType#toJSON");
+    throw createNotImplementedError("ArrayType#toJSON");
   }
 
   readTrustedJson(input: json.Output): T[] {
@@ -55,7 +55,7 @@ export class ArrayType<T> implements VersionedType<T[], json.Input, json.Output,
   readJson(input: any): T[] {
     let result: T[];
     if (!Array.isArray(input)) {
-      throw WrongTypeError.create("array", input);
+      throw createInvalidTypeError("array", input);
     }
     result = input.map((item: any): T => this.itemType.readJson(item));
     const error: Error | undefined = this.testError(result);
@@ -71,15 +71,15 @@ export class ArrayType<T> implements VersionedType<T[], json.Input, json.Output,
 
   testError(val: T[]): Error | undefined {
     if (!Array.isArray(val)) {
-      return WrongTypeError.create("array", val);
+      return createInvalidTypeError("array", val);
     }
     if (this.maxLength !== undefined && val.length > this.maxLength) {
-      return MaxArrayLengthError.create(val, this.maxLength);
+      return createMaxArrayLengthError(val, this.maxLength);
     }
     for (let i: number = 0; i < val.length; i++) {
       const error: Error | undefined = this.itemType.testError(val[i]);
       if (error !== undefined) {
-        return InvalidArrayItemError.create(i, val[i]);
+        return createInvalidArrayItemError(i, val[i]);
       }
     }
     return undefined;
@@ -111,19 +111,19 @@ export class ArrayType<T> implements VersionedType<T[], json.Input, json.Output,
    * @returns `true` if there is a difference, `undefined` otherwise
    */
   diff(oldVal: T[], newVal: T[]): Diff | undefined {
-    throw NotImplementedError.create("ArrayType#diff");
+    throw createNotImplementedError("ArrayType#diff");
   }
 
   patch(oldVal: T[], diff: Diff | undefined): T[] {
-    throw NotImplementedError.create("ArrayType#patch");
+    throw createNotImplementedError("ArrayType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("ArrayType#reverseDiff");
+    throw createNotImplementedError("ArrayType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("ArrayType#squash");
+    throw createNotImplementedError("ArrayType#squash");
   }
 
   private _applyOptions(): void {

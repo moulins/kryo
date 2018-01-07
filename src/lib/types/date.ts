@@ -1,5 +1,5 @@
-import { InvalidTimestampError } from "../errors/invalid-timestamp";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTimestampError } from "../errors/invalid-timestamp";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { VersionedType } from "../types";
 
 export type Name = "date";
@@ -32,7 +32,7 @@ export class DateType implements VersionedType<Date, json.Input, json.Output, Di
     } else if (typeof input === "number") {
       result = new Date(input);
     } else {
-      throw WrongTypeError.create("string | number", input);
+      throw createInvalidTypeError("string | number", input);
     }
     const error: Error | undefined = this.testError(result);
     if (error !== undefined) {
@@ -47,11 +47,11 @@ export class DateType implements VersionedType<Date, json.Input, json.Output, Di
 
   testError(val: Date): Error | undefined {
     if (!(val instanceof Date)) {
-      return WrongTypeError.create("Date", val);
+      return createInvalidTypeError("Date", val);
     }
     const time: number = val.getTime();
     if (isNaN(time) || time > Number.MAX_SAFE_INTEGER || time < Number.MIN_SAFE_INTEGER) {
-      return InvalidTimestampError.create(val);
+      return createInvalidTimestampError(val);
     }
 
     return undefined;

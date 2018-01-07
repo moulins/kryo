@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError } from "../errors/not-implemented";
 import { JSON_SERIALIZER } from "../json/index";
 import { Lazy, Serializer, Type } from "../types";
 
@@ -48,7 +48,7 @@ export class CustomType<T> implements Type<T> {
   }
 
   toJSON(): never {
-    throw NotImplementedError.create("CustomType#toJSON");
+    throw createNotImplementedError("CustomType#toJSON");
   }
 
   readTrustedJson(input: any): T {

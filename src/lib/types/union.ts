@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
 import { JSON_SERIALIZER } from "../json/index";
 import { JsonSerializer, Lazy, Serializer, Type, VersionedType } from "../types";
 
@@ -58,7 +58,7 @@ export class UnionType<T> implements VersionedType<T, json.Input, json.Output, D
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("UnionType#toJSON");
+    throw createNotImplementedError("UnionType#toJSON");
   }
 
   readTrustedJsonWithVariant(input: json.Output): [T, Type<T>] {
@@ -125,19 +125,19 @@ export class UnionType<T> implements VersionedType<T, json.Input, json.Output, D
   }
 
   diff(oldVal: T, newVal: T): Diff | undefined {
-    throw NotImplementedError.create("UnionType#diff");
+    throw createNotImplementedError("UnionType#diff");
   }
 
   patch(oldVal: T, diff: Diff | undefined): T {
-    throw NotImplementedError.create("UnionType#patch");
+    throw createNotImplementedError("UnionType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("UnionType#reverseDiff");
+    throw createNotImplementedError("UnionType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("UnionType#squash");
+    throw createNotImplementedError("UnionType#squash");
   }
 
   private _applyOptions(): void {

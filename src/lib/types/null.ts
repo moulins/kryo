@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { VersionedType } from "../types";
 
 export type Name = "null";
@@ -26,7 +26,7 @@ export class NullType implements VersionedType<null, json.Input, json.Output, Di
 
   readJson(input: any): null {
     if (input !== null) {
-      throw WrongTypeError.create("null", input);
+      throw createInvalidTypeError("null", input);
     }
     return null;
   }
@@ -37,7 +37,7 @@ export class NullType implements VersionedType<null, json.Input, json.Output, Di
 
   testError(val: null): Error | undefined {
     if (val !== "null") {
-      return WrongTypeError.create("null", val);
+      return createInvalidTypeError("null", val);
     }
     return undefined;
   }

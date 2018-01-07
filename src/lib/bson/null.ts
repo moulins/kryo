@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { name as typeName, NullType } from "../types/null";
@@ -9,7 +9,7 @@ function write(type: NullType, value: null): null {
 
 function read(type: NullType, input: null): null {
   if (input !== null) {
-    throw WrongTypeError.create("null", input);
+    throw createInvalidTypeError("null", input);
   }
   return null;
 }

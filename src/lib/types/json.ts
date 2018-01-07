@@ -1,4 +1,4 @@
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
 import { VersionedType } from "../types";
 
 export type Name = "json";
@@ -18,7 +18,7 @@ export class JsonType implements VersionedType<any, json.Input, json.Output, Dif
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("ArrayType#toJSON");
+    throw createNotImplementedError("ArrayType#toJSON");
   }
 
   readTrustedJson(input: json.Output): any {
@@ -55,18 +55,18 @@ export class JsonType implements VersionedType<any, json.Input, json.Output, Dif
   }
 
   diff(oldVal: any, newVal: any): Diff | undefined {
-    throw NotImplementedError.create("JsonType#diff");
+    throw createNotImplementedError("JsonType#diff");
   }
 
   patch(oldVal: any, diff: Diff | undefined): any {
-    throw NotImplementedError.create("JsonType#patch");
+    throw createNotImplementedError("JsonType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("JsonType#reverseDiff");
+    throw createNotImplementedError("JsonType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("JsonType#squash");
+    throw createNotImplementedError("JsonType#squash");
   }
 }

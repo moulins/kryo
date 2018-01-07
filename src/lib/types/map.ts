@@ -1,7 +1,7 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { NotImplementedError } from "../errors/not-implemented";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createNotImplementedError } from "../errors/not-implemented";
 import { Lazy, VersionedType } from "../types";
 
 export type Name = "map";
@@ -71,7 +71,7 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("MapType#toJSON");
+    throw createNotImplementedError("MapType#toJSON");
   }
 
   readTrustedJson(input: json.Output): Map<K, V> {
@@ -86,7 +86,7 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
 
   readJson(input: any): Map<K, V> {
     if (typeof input !== "object" || input === null) {
-      throw WrongTypeError.create("object", input);
+      throw createInvalidTypeError("object", input);
     }
     const result: Map<K, V> = new Map();
     for (const keyString in input) {
@@ -120,7 +120,7 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
 
   testError(val: Map<K, V>): Error | undefined {
     if (!(val instanceof Map)) {
-      return WrongTypeError.create("Map", val);
+      return createInvalidTypeError("Map", val);
     }
     for (const [key, value] of val) {
       // TODO: test keyType
@@ -161,19 +161,19 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
   }
 
   diff(oldVal: Map<K, V>, newVal: Map<K, V>): Diff | undefined {
-    throw NotImplementedError.create("MapType#diff");
+    throw createNotImplementedError("MapType#diff");
   }
 
   patch(oldVal: Map<K, V>, diff: Diff | undefined): Map<K, V> {
-    throw NotImplementedError.create("MapType#patch");
+    throw createNotImplementedError("MapType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("MapType#reverseDiff");
+    throw createNotImplementedError("MapType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("MapType#squash");
+    throw createNotImplementedError("MapType#squash");
   }
 
   private _applyOptions(): void {

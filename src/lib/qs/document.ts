@@ -1,6 +1,6 @@
 import { diffSets, DiffSetsResult } from "../_helpers/diff-sets";
-import { ExtraKeysError } from "../errors/extra-keys";
-import { MissingKeysError } from "../errors/missing-keys";
+import { createExtraKeysError, ExtraKeysError } from "../errors/extra-keys";
+import { createMissingKeysError, MissingKeysError } from "../errors/missing-keys";
 import { Serializer } from "../serializer";
 import { DocumentType, name as typeName } from "../types/document";
 
@@ -24,9 +24,9 @@ export function register(serializer: Serializer): void {
       return !type.properties[type.outKeys.get(outKey)!].optional;
     });
     if (missingRequiredKeys.length > 0) {
-      throw MissingKeysError.create(missingRequiredKeys);
+      throw createMissingKeysError(missingRequiredKeys);
     } else if (outKeysDiff.extraKeys.size > 0 && !type.ignoreExtraKeys) {
-      throw ExtraKeysError.create([...outKeysDiff.extraKeys]);
+      throw createExtraKeysError([...outKeysDiff.extraKeys]);
     }
 
     // TODO(demurgos): use Partial<T> once typedoc supports it

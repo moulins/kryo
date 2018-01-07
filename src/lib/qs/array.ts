@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { ArrayType, name as typeName } from "../types/array";
 
@@ -14,7 +14,7 @@ export function register(serializer: Serializer): void {
     } else if (input === undefined) {
       result = [];
     } else {
-      throw WrongTypeError.create("array | undefined", input);
+      throw createInvalidTypeError("array | undefined", input);
     }
     const error: Error | undefined = type.testError(result);
     if (error !== undefined) {

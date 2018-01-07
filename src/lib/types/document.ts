@@ -2,12 +2,12 @@ import { Incident } from "incident";
 import { diffSets, DiffSetsResult } from "../_helpers/diff-sets";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { CaseStyle, rename } from "../case-style";
-import { ExtraKeysError } from "../errors/extra-keys";
-import { InvalidPropertyError } from "../errors/invalid-property";
-import { MissingKeysError } from "../errors/missing-keys";
-import { NotImplementedError } from "../errors/not-implemented";
-import { NullPropertyError } from "../errors/null-property";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createExtraKeysError } from "../errors/extra-keys";
+import { createInvalidPropertyError } from "../errors/invalid-property";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createMissingKeysError } from "../errors/missing-keys";
+import { createNotImplementedError } from "../errors/not-implemented";
+import { createNullPropertyError } from "../errors/null-property";
 import { Lazy, Type as KryoType, VersionedType } from "../types";
 
 export type Name = "document";
@@ -103,11 +103,11 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
   }
 
   static fromJSON(options: json.Type): DocumentType<{}> {
-    throw NotImplementedError.create("DocumentType.fromJSON");
+    throw createNotImplementedError("DocumentType.fromJSON");
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("DocumentType#toJSON");
+    throw createNotImplementedError("DocumentType#toJSON");
   }
 
   readTrustedJson(input: json.Output): T {
@@ -127,9 +127,9 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
       return !this.properties[this.outKeys.get(outKey)!].optional;
     });
     if (missingRequiredKeys.length > 0) {
-      throw MissingKeysError.create(missingRequiredKeys);
+      throw createMissingKeysError(missingRequiredKeys);
     } else if (outKeysDiff.extraKeys.size > 0 && !this.ignoreExtraKeys) {
-      throw ExtraKeysError.create([...outKeysDiff.extraKeys]);
+      throw createExtraKeysError([...outKeysDiff.extraKeys]);
     }
 
     // TODO(demurgos): use Partial<T> once typedoc supports it
@@ -157,16 +157,16 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
 
   testError(val: T): Error | undefined {
     if (typeof val !== "object" || val === null) {
-      return WrongTypeError.create("object", val);
+      return createInvalidTypeError("object", val);
     }
     const keysDiff: DiffSetsResult<string> = diffSets(this.keys.keys(), Object.keys(val));
     const missingRequiredKeys: string[] = [...keysDiff.missingKeys].filter((key: string): boolean => {
       return !this.properties[key].optional;
     });
     if (missingRequiredKeys.length > 0) {
-      return MissingKeysError.create(missingRequiredKeys);
+      return createMissingKeysError(missingRequiredKeys);
     } else if (keysDiff.extraKeys.size > 0 && !this.ignoreExtraKeys) {
-      return ExtraKeysError.create([...keysDiff.extraKeys]);
+      return createExtraKeysError([...keysDiff.extraKeys]);
     }
 
     for (const key of keysDiff.commonKeys) {
@@ -176,12 +176,12 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
         if (descriptor.optional) {
           continue;
         } else {
-          return NullPropertyError.create(key);
+          return createNullPropertyError(key);
         }
       }
       const error: Error | undefined = descriptor.type.testError(member);
       if (error !== undefined) {
-        return InvalidPropertyError.create(key, member);
+        return createInvalidPropertyError(key, member);
       }
     }
     return undefined;
@@ -292,7 +292,7 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("DocumentType#squash");
+    throw createNotImplementedError("DocumentType#squash");
   }
 
   private _applyOptions(): void {

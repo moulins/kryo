@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { MapType, name as typeName } from "../types/map";
 
@@ -16,7 +16,7 @@ export function register(serializer: Serializer): void {
 
   function read<K, V>(type: MapType<K, V>, input: {[key: string]: any}): Map<K, V> {
     if (typeof input !== "object" || input === null) {
-      throw WrongTypeError.create("object", input);
+      throw createInvalidTypeError("object", input);
     }
     const result: Map<K, V> = new Map();
     for (const keyString in input) {

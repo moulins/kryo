@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { IntegerType, name as typeName } from "../types/integer";
@@ -10,7 +10,7 @@ function write(type: IntegerType, value: number): string {
 function read(type: IntegerType, input: string): number {
   let val: number;
   if (typeof input !== "string") {
-    throw WrongTypeError.create("string", input);
+    throw createInvalidTypeError("string", input);
   }
   val = parseInt(input, 10);
   const err: Error | undefined = type.testError(val);

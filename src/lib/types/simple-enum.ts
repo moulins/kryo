@@ -1,8 +1,8 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { CaseStyle, rename } from "../case-style";
-import { NotImplementedError } from "../errors/not-implemented";
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createNotImplementedError } from "../errors/not-implemented";
 import { Lazy, VersionedType } from "../types";
 
 export type SimpleEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumConstructor[K]};
@@ -76,11 +76,11 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
   }
 
   static fromJSON(): SimpleEnumType<any> {
-    throw NotImplementedError.create("SimpleEnumType.fromJSON");
+    throw createNotImplementedError("SimpleEnumType.fromJSON");
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("SimpleEnumType#toJSON");
+    throw createNotImplementedError("SimpleEnumType#toJSON");
   }
 
   readTrustedJson(input: json.Output): E {
@@ -89,7 +89,7 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
 
   readJson(input: any): E {
     if (typeof input !== "string") {
-      throw WrongTypeError.create("string", input);
+      throw createInvalidTypeError("string", input);
     }
     if (!this.outputNameToValue.hasOwnProperty(input)) {
       throw Incident("Unknown enum variant name", input);
@@ -103,11 +103,11 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
 
   testError(val: E): Error | undefined {
     if (typeof val !== "number") {
-      return WrongTypeError.create("number", val);
+      return createInvalidTypeError("number", val);
     }
     // TODO(demurgos): Remove <number> once typedoc supports it
     if (isNaN(val) || val === Infinity || val === -Infinity || (<number> val | 0) !== val) {
-      return WrongTypeError.create("int32", val);
+      return createInvalidTypeError("int32", val);
     }
     if (!this.enum.hasOwnProperty(val)) {
       return Incident("UnknownVariantError", {value: val}, "Unknown enum variant value");
@@ -166,7 +166,7 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
       }
       const value: number = (<{[name: string]: number}> options.enum)[key];
       if (typeof value !== "number") {
-        throw WrongTypeError.create("number", value);
+        throw createInvalidTypeError("number", value);
       }
       if (!baseEnum.hasOwnProperty(value) || !baseEnum.hasOwnProperty(value)) {
         throw new Incident("NotSimpleEnum", "Not owned key or value");

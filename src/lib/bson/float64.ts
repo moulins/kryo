@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 import { Float64Type, name as typeName } from "../types/float64";
@@ -11,7 +11,7 @@ function write(type: Float64Type, value: number): number {
 
 function read(type: Float64Type, input: number): number {
   if (typeof input !== "number") {
-    throw WrongTypeError.create("number", input);
+    throw createInvalidTypeError("number", input);
   }
   // TODO: NaN and Infinity checks
   return input;

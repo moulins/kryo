@@ -1,4 +1,4 @@
-import { NotImplementedError } from "../errors/not-implemented";
+import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
 import { Lazy, Serializer, VersionedType } from "../types";
 import * as union from "./union";
 
@@ -53,22 +53,22 @@ export class TryUnionType<T extends {}> extends union.UnionType<T> {
   }
 
   toJSON(): json.Type {
-    throw NotImplementedError.create("TryUnionType#toJSON");
+    throw createNotImplementedError("TryUnionType#toJSON");
   }
 
   diff(oldVal: T, newVal: T): Diff | undefined {
-    throw NotImplementedError.create("TryUnionType#diff");
+    throw createNotImplementedError("TryUnionType#diff");
   }
 
   patch(oldVal: T, diff: Diff | undefined): T {
-    throw NotImplementedError.create("TryUnionType#patch");
+    throw createNotImplementedError("TryUnionType#patch");
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("TryUnionType#reverseDiff");
+    throw createNotImplementedError("TryUnionType#reverseDiff");
   }
 
   squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw NotImplementedError.create("TryUnionType#squash");
+    throw createNotImplementedError("TryUnionType#squash");
   }
 }

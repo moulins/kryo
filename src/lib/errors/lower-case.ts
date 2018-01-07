@@ -1,19 +1,19 @@
 import { Incident } from "incident";
 
-export namespace LowerCaseError {
-  export type Name = "LowerCase";
-  export const name: Name = "LowerCase";
-  export interface Data {
-    string: string;
-  }
-  export type Cause = undefined;
-  export type Type = Incident<Data, Name, Cause>;
-  export function format({string}: Data): string {
-    return `Expected the following string to be lowercase: ${JSON.stringify(string)}`;
-  }
-  export function create(string: string): Type {
-    return Incident(name, {string}, format);
-  }
+export type Name = "LowerCase";
+export const name: Name = "LowerCase";
+
+export interface Data {
+  string: string;
 }
 
-export type LowerCaseError = LowerCaseError.Type;
+export type Cause = undefined;
+export type LowerCaseError = Incident<Data, Name, Cause>;
+
+export function format({string}: Data): string {
+  return `Expected the following string to be lowercase: ${JSON.stringify(string)}`;
+}
+
+export function createLowerCaseError(string: string): LowerCaseError {
+  return Incident(name, {string}, format);
+}

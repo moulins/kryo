@@ -4,11 +4,16 @@
 - **[Breaking change]** Rename `typed-enum` to `white-list`
 - **[Breaking change]** Move serialization functions out of types, use first-class serializer
   objects to serialize values.
+- **[Breaking change]** Rename `WrongType` error to `InvalidType` error
+- **[Breaking change]** Remove namespace for errors: define `Name`, `Data` and `Cause` as
+  module exports (`import { Data } from "kryo/errors/extra-keys"` instead of
+  `import { ExtraKeysError } from from "kryo/errors/extra-keys"; ExtraKeysError.Data`)
 - **[Feature]** Add `CustomType` to facilitate serialization of non-Kryo types
 - **[Internal]** Remove `Type` aliases from each type module:
   `import { Type } from "kryo/types/integer"` was an alias of
   `import { IntegerType } from "kryo/types/integer"`
 - **[Internal]** Rename `_helpers/rename` to `case-style`
+- **[Internal]** Remove `NotSyncType` error
 
 # 0.5.0 (2018-01-02)
 

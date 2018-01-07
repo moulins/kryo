@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { VersionedType } from "../types";
 
 export type Name = "boolean";
@@ -23,7 +23,7 @@ export class BooleanType implements VersionedType<boolean, json.Input, json.Outp
 
   readJson(input: any): boolean {
     if (typeof input !== "boolean") {
-      throw WrongTypeError.create("boolean", input);
+      throw createInvalidTypeError("boolean", input);
     }
     return input;
   }
@@ -34,7 +34,7 @@ export class BooleanType implements VersionedType<boolean, json.Input, json.Outp
 
   testError(val: boolean): Error | undefined {
     if (typeof val !== "boolean") {
-      return WrongTypeError.create("boolean", val);
+      return createInvalidTypeError("boolean", val);
     }
     return undefined;
   }

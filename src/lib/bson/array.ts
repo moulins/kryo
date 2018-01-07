@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../errors/wrong-type";
+import { createInvalidTypeError } from "../errors/invalid-type";
 import { Serializer } from "../serializer";
 import { ArrayType, name as typeName } from "../types/array";
 
@@ -10,7 +10,7 @@ export function register(serializer: Serializer): void {
   function read<T>(type: ArrayType<T>, input: any[]): T[] {
     let result: T[];
     if (!Array.isArray(input)) {
-      throw WrongTypeError.create("array", input);
+      throw createInvalidTypeError("array", input);
     }
     result = input.map((item: any): T => serializer.read(type.itemType, item));
     const error: Error | undefined = type.testError(result);

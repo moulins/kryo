@@ -1,20 +1,20 @@
 import { Incident } from "incident";
 
-export namespace InvalidIntegerError {
-  export type Name = "InvalidInteger";
-  export const name: Name = "InvalidInteger";
-  export interface Data {
-    value: any;
-    source?: any;
-  }
-  export type Cause = undefined;
-  export type Type = Incident<Data, Name, Cause>;
-  export function format({value, source}: Data): string {
-    return `Invalid integer: ${value}` + (source === undefined ? "" : `, from ${source}`);
-  }
-  export function create(value: number, source?: any): Type {
-    return Incident(name, {value, source}, format);
-  }
+export type Name = "InvalidInteger";
+export const name: Name = "InvalidInteger";
+
+export interface Data {
+  value: any;
+  source?: any;
 }
 
-export type InvalidIntegerError = InvalidIntegerError.Type;
+export type Cause = undefined;
+export type InvalidIntegerError = Incident<Data, Name, Cause>;
+
+export function format({value, source}: Data): string {
+  return `Invalid integer: ${value}` + (source === undefined ? "" : `, from ${source}`);
+}
+
+export function createInvalidIntegerError(value: number, source?: any): InvalidIntegerError {
+  return Incident(name, {value, source}, format);
+}
