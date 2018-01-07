@@ -1,4 +1,4 @@
-import { WrongTypeError } from "./_errors/wrong-type";
+import { WrongTypeError } from "./errors/wrong-type";
 import { VersionedType } from "./types";
 
 export type Name = "null";

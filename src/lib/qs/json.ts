@@ -1,4 +1,4 @@
-import { NotImplementedError } from "../_errors/not-implemented";
+import { NotImplementedError } from "../errors/not-implemented";
 import { JsonType, name as typeName } from "../json";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";

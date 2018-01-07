@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import { WrongTypeError } from "../_errors/wrong-type";
+import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
 import { name as typeName, SimpleEnumType } from "../simple-enum";
 import { TypeSerializer } from "../types";

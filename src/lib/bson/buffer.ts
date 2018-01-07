@@ -1,6 +1,6 @@
 import { Binary as BinaryType } from "bson";
-import { MissingDependencyError } from "../_errors/missing-dependency";
 import { BufferType, name as typeName } from "../buffer";
+import { MissingDependencyError } from "../errors/missing-dependency";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 

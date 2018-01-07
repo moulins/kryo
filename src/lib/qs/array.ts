@@ -1,5 +1,5 @@
-import { WrongTypeError } from "../_errors/wrong-type";
 import { ArrayType, name as typeName } from "../array";
+import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
 
 export function register(serializer: Serializer): void {

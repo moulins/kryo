@@ -1,4 +1,4 @@
-import { NotImplementedError } from "./_errors/not-implemented";
+import { NotImplementedError } from "./errors/not-implemented";
 import { VersionedType } from "./types";
 
 export type Name = "json";

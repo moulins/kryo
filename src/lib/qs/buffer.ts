@@ -1,5 +1,5 @@
-import { WrongTypeError } from "../_errors/wrong-type";
 import { BufferType, name as typeName } from "../buffer";
+import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
 

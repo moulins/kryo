@@ -1,4 +1,4 @@
-import { NotImplementedError } from "./_errors/not-implemented";
+import { NotImplementedError } from "./errors/not-implemented";
 import { Lazy, Serializer, VersionedType } from "./types";
 import * as union from "./union";
 

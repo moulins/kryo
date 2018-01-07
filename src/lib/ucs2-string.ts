@@ -1,11 +1,11 @@
 import { Incident } from "incident";
-import { LowerCaseError } from "./_errors/lower-case";
-import { MaxUcs2StringLengthError } from "./_errors/max-ucs2-string-length";
-import { MinUcs2StringLengthError } from "./_errors/min-ucs2-string-length";
-import { NotTrimmedError } from "./_errors/not-trimmed";
-import { PatternNotMatchedError } from "./_errors/pattern-not-matched";
-import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
+import { LowerCaseError } from "./errors/lower-case";
+import { MaxUcs2StringLengthError } from "./errors/max-ucs2-string-length";
+import { MinUcs2StringLengthError } from "./errors/min-ucs2-string-length";
+import { NotTrimmedError } from "./errors/not-trimmed";
+import { PatternNotMatchedError } from "./errors/pattern-not-matched";
+import { WrongTypeError } from "./errors/wrong-type";
 import { Lazy, VersionedType } from "./types";
 
 export type Name = "ucs2-string";

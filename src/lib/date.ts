@@ -1,5 +1,5 @@
-import { InvalidTimestampError } from "./_errors/invalid-timestamp";
-import { WrongTypeError } from "./_errors/wrong-type";
+import { InvalidTimestampError } from "./errors/invalid-timestamp";
+import { WrongTypeError } from "./errors/wrong-type";
 import { VersionedType } from "./types";
 
 export type Name = "date";

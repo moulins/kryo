@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../_errors/wrong-type";
+import { WrongTypeError } from "../errors/wrong-type";
 import { MapType, name as typeName } from "../map";
 import { Serializer } from "../serializer";
 

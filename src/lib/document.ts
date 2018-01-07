@@ -1,13 +1,13 @@
 import { Incident } from "incident";
-import { ExtraKeysError } from "./_errors/extra-keys";
-import { InvalidPropertyError } from "./_errors/invalid-property";
-import { MissingKeysError } from "./_errors/missing-keys";
-import { NotImplementedError } from "./_errors/not-implemented";
-import { NullPropertyError } from "./_errors/null-property";
-import { WrongTypeError } from "./_errors/wrong-type";
 import { diffSets, DiffSetsResult } from "./_helpers/diff-sets";
 import { lazyProperties } from "./_helpers/lazy-properties";
 import { CaseStyle, rename } from "./_helpers/rename";
+import { ExtraKeysError } from "./errors/extra-keys";
+import { InvalidPropertyError } from "./errors/invalid-property";
+import { MissingKeysError } from "./errors/missing-keys";
+import { NotImplementedError } from "./errors/not-implemented";
+import { NullPropertyError } from "./errors/null-property";
+import { WrongTypeError } from "./errors/wrong-type";
 import { Lazy, Type as KryoType, VersionedType } from "./types";
 
 export type Name = "document";

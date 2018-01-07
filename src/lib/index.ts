@@ -19,13 +19,13 @@ export { TypedUnionType } from "./typed-union";
 export { Ucs2StringType } from "./ucs2-string";
 export { UnionType } from "./union";
 
-import * as errors from "./_errors/index";
 import * as array from "./array";
 import * as boolean from "./boolean";
 import * as buffer from "./buffer";
 import * as codepointString from "./codepoint-string";
 import * as date from "./date";
 import * as document from "./document";
+import * as errors from "./errors/index";
 import * as float64 from "./float64";
 // TODO(demurgos): Rename to `integer` (`integer` is the new name, it covers up to 53 bits).
 import * as int32 from "./integer";

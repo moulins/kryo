@@ -1,6 +1,6 @@
 import { Incident } from "incident";
-import { NotImplementedError } from "./_errors/not-implemented";
 import { lazyProperties } from "./_helpers/lazy-properties";
+import { NotImplementedError } from "./errors/not-implemented";
 import { JSON_SERIALIZER } from "./json/index";
 import { JsonSerializer, Lazy, Serializer, Type, VersionedType } from "./types";
 

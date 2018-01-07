@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../_errors/wrong-type";
+import { WrongTypeError } from "../errors/wrong-type";
 import { IntegerType, name as typeName } from "../integer";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";

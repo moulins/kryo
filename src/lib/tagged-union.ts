@@ -1,6 +1,6 @@
 import { Incident } from "incident";
-import { NotImplementedError } from "./_errors/not-implemented";
 import { DocumentType } from "./document";
+import { NotImplementedError } from "./errors/not-implemented";
 import { LiteralType } from "./literal";
 import { SimpleEnumType } from "./simple-enum";
 import { JsonSerializer, Lazy, Serializer, Type } from "./types";

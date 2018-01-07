@@ -1,4 +1,4 @@
-import { WrongTypeError } from "../_errors/wrong-type";
+import { WrongTypeError } from "../errors/wrong-type";
 import { Float64Type, name as typeName } from "../float64";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";

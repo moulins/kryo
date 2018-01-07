@@ -1,7 +1,7 @@
 import { Incident } from "incident";
-import { NotImplementedError } from "./_errors/not-implemented";
-import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
+import { NotImplementedError } from "./errors/not-implemented";
+import { WrongTypeError } from "./errors/wrong-type";
 import { Lazy, VersionedType } from "./types";
 
 export type Name = "map";

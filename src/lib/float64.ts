@@ -1,6 +1,6 @@
 import { Incident } from "incident";
-import { WrongTypeError } from "./_errors/wrong-type";
 import { lazyProperties } from "./_helpers/lazy-properties";
+import { WrongTypeError } from "./errors/wrong-type";
 import { Lazy, VersionedType } from "./types";
 
 export type Name = "float64";
