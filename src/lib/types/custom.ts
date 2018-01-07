@@ -85,5 +85,3 @@ export class CustomType<T> implements Type<T> {
     Object.freeze(this);
   }
 }
-
-export { CustomType as Type };

@@ -25,7 +25,6 @@ export enum Normalization {
 
 export type Name = "codepoint-string";
 export const name: Name = "codepoint-string";
-export type T = string;
 export namespace json {
   export type Input = string;
   export type Output = string;
@@ -84,7 +83,7 @@ export interface Options {
   maxCodepoints: number;
 }
 
-export class CodepointStringType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class CodepointStringType implements VersionedType<string, json.Input, json.Output, Diff> {
 
   readonly name: Name = name;
   readonly normalization: Normalization;
@@ -148,11 +147,11 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
     return jsonType;
   }
 
-  readTrustedJson(input: json.Output): T {
+  readTrustedJson(input: json.Output): string {
     return input;
   }
 
-  readJson(input: any): T {
+  readJson(input: any): string {
     const error: Error | undefined = this.testError(input);
     if (error !== undefined) {
       throw error;
@@ -160,11 +159,11 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
     return input;
   }
 
-  writeJson(val: T): json.Output {
+  writeJson(val: string): json.Output {
     return val;
   }
 
-  testError(val: T): Error | undefined {
+  testError(val: string): Error | undefined {
     if (!(typeof val === "string")) {
       return WrongTypeError.create("string", val);
     }
@@ -226,23 +225,23 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
     return undefined;
   }
 
-  test(val: T): boolean {
+  test(val: string): boolean {
     return this.testError(val) === undefined;
   }
 
-  equals(val1: T, val2: T): boolean {
+  equals(val1: string, val2: string): boolean {
     return val1 === val2;
   }
 
-  clone(val: T): T {
+  clone(val: string): string {
     return val;
   }
 
-  diff(oldVal: T, newVal: T): Diff | undefined {
+  diff(oldVal: string, newVal: string): Diff | undefined {
     return oldVal === newVal ? undefined : [oldVal, newVal];
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
+  patch(oldVal: string, diff: Diff | undefined): string {
     return diff === undefined ? oldVal : diff[1];
   }
 
@@ -284,5 +283,3 @@ export class CodepointStringType implements VersionedType<T, json.Input, json.Ou
     Object.freeze(this);
   }
 }
-
-export { CodepointStringType as Type };

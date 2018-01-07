@@ -72,5 +72,3 @@ export class TryUnionType<T extends {}> extends union.UnionType<T> {
     throw NotImplementedError.create("TryUnionType#squash");
   }
 }
-
-export { TryUnionType as Type };

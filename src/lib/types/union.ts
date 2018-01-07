@@ -183,5 +183,3 @@ export class UnionType<T> implements VersionedType<T, json.Input, json.Output, D
     Object.freeze(this);
   }
 }
-
-export { UnionType as Type };

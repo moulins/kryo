@@ -3,14 +3,13 @@ import { VersionedType } from "../types";
 
 export type Name = "boolean";
 export const name: Name = "boolean";
-export type T = boolean;
 export namespace json {
   export type Input = boolean;
   export type Output = boolean;
 }
 export type Diff = boolean;
 
-export class BooleanType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class BooleanType implements VersionedType<boolean, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
   toJSON(): undefined {
@@ -18,37 +17,37 @@ export class BooleanType implements VersionedType<T, json.Input, json.Output, Di
     return undefined;
   }
 
-  readTrustedJson(input: json.Output): T {
+  readTrustedJson(input: json.Output): boolean {
     return input;
   }
 
-  readJson(input: any): T {
+  readJson(input: any): boolean {
     if (typeof input !== "boolean") {
       throw WrongTypeError.create("boolean", input);
     }
     return input;
   }
 
-  writeJson(val: T): json.Output {
+  writeJson(val: boolean): json.Output {
     return val;
   }
 
-  testError(val: T): Error | undefined {
+  testError(val: boolean): Error | undefined {
     if (typeof val !== "boolean") {
       return WrongTypeError.create("boolean", val);
     }
     return undefined;
   }
 
-  test(val: T): val is T {
+  test(val: boolean): val is boolean {
     return this.testError(val) === undefined;
   }
 
-  equals(val1: T, val2: T): boolean {
+  equals(val1: boolean, val2: boolean): boolean {
     return val1 === val2;
   }
 
-  clone(val: T): T {
+  clone(val: boolean): boolean {
     return val;
   }
 
@@ -57,12 +56,12 @@ export class BooleanType implements VersionedType<T, json.Input, json.Output, Di
    * @param newVal
    * @returns `true` if there is a difference, `undefined` otherwise
    */
-  diff(oldVal: T, newVal: T): Diff | undefined {
+  diff(oldVal: boolean, newVal: boolean): Diff | undefined {
     /* tslint:disable-next-line:strict-boolean-expressions */
     return (oldVal !== newVal) || undefined;
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
+  patch(oldVal: boolean, diff: Diff | undefined): boolean {
     return oldVal === (diff === undefined);
   }
 
@@ -75,5 +74,3 @@ export class BooleanType implements VersionedType<T, json.Input, json.Output, Di
     return (diff1 !== diff2) && undefined;
   }
 }
-
-export { BooleanType as Type };

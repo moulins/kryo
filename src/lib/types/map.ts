@@ -191,5 +191,3 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
     Object.freeze(this);
   }
 }
-
-export { MapType as Type };

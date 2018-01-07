@@ -167,5 +167,3 @@ export class TaggedUnionType<T extends {}> extends union.UnionType<T> {
     throw NotImplementedError.create("TaggedUnionType#squash");
   }
 }
-
-export { TaggedUnionType as Type };

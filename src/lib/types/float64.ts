@@ -5,7 +5,6 @@ import { Lazy, VersionedType } from "../types";
 
 export type Name = "float64";
 export const name: Name = "float64";
-export type T = number;
 export namespace json {
   export type Input = number | "NaN" | "+Infinity" | "-Infinity";
   export type Output = number | "NaN" | "+Infinity" | "-Infinity";
@@ -23,7 +22,7 @@ export interface Options {
   notInfinity?: boolean;
 }
 
-export class Float64Type implements VersionedType<T, json.Input, json.Output, Diff> {
+export class Float64Type implements VersionedType<number, json.Input, json.Output, Diff> {
   readonly name: Name = name;
   readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
   readonly notInfinity: boolean; // TODO(demurgos): rename to allowInfinity
@@ -63,7 +62,7 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     };
   }
 
-  readTrustedJson(input: json.Output): T {
+  readTrustedJson(input: json.Output): number {
     switch (input) {
       case "NaN":
         return NaN;
@@ -76,7 +75,7 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     }
   }
 
-  readJson(input: any): T {
+  readJson(input: any): number {
     if (typeof input === "number") {
       return input;
     }
@@ -101,7 +100,7 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     }
   }
 
-  writeJson(val: T): json.Output {
+  writeJson(val: number): json.Output {
     if (isNaN(val)) {
       return "NaN";
     } else if (val === Infinity) {
@@ -112,7 +111,7 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     return val;
   }
 
-  testError(val: T): Error | undefined {
+  testError(val: number): Error | undefined {
     if (typeof val !== "number") {
       return WrongTypeError.create("number", val);
     }
@@ -126,27 +125,27 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     return undefined;
   }
 
-  test(val: T): boolean {
+  test(val: number): boolean {
     return this.testError(val) === undefined;
   }
 
-  equals(val1: T, val2: T): boolean {
+  equals(val1: number, val2: number): boolean {
     if (isNaN(val1) || isNaN(val2)) {
       return isNaN(val1) && isNaN(val2);
     }
     return val1 === val2;
   }
 
-  clone(val: T): T {
+  clone(val: number): number {
     return val;
   }
 
-  diff(oldVal: T, newVal: T): Diff | undefined {
-    // We can't use an arithmetic difference due to possible precision loss
+  diff(oldVal: number, newVal: number): Diff | undefined {
+    // We can'number use an arithmetic difference due to possible precision loss
     return this.equals(oldVal, newVal) ? undefined : [oldVal, newVal];
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
+  patch(oldVal: number, diff: Diff | undefined): number {
     return diff === undefined ? oldVal : diff[1];
   }
 
@@ -180,5 +179,3 @@ export class Float64Type implements VersionedType<T, json.Input, json.Output, Di
     Object.freeze(this);
   }
 }
-
-export { Float64Type as Type };

@@ -123,5 +123,3 @@ export class WhiteListType<T> implements VersionedType<T, json.Input, json.Outpu
     Object.freeze(this);
   }
 }
-
-export { WhiteListType as Type };

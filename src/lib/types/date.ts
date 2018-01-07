@@ -4,7 +4,6 @@ import { VersionedType } from "../types";
 
 export type Name = "date";
 export const name: Name = "date";
-export type T = Date;
 export namespace json {
   export type Input = string | number;
   export type Output = string;
@@ -15,18 +14,18 @@ export namespace json {
 }
 export type Diff = number;
 
-export class DateType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class DateType implements VersionedType<Date, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name};
   }
 
-  readTrustedJson(input: json.Output): T {
+  readTrustedJson(input: json.Output): Date {
     return new Date(input);
   }
 
-  readJson(input: any): T {
+  readJson(input: any): Date {
     let result: Date;
     if (typeof input === "string") {
       result = new Date(input);
@@ -42,11 +41,11 @@ export class DateType implements VersionedType<T, json.Input, json.Output, Diff>
     return result;
   }
 
-  writeJson(val: T): json.Output {
+  writeJson(val: Date): json.Output {
     return val.toISOString();
   }
 
-  testError(val: T): Error | undefined {
+  testError(val: Date): Error | undefined {
     if (!(val instanceof Date)) {
       return WrongTypeError.create("Date", val);
     }
@@ -58,24 +57,24 @@ export class DateType implements VersionedType<T, json.Input, json.Output, Diff>
     return undefined;
   }
 
-  test(val: T): val is T {
+  test(val: Date): val is Date {
     return this.testError(val) === undefined;
   }
 
-  equals(val1: T, val2: T): boolean {
+  equals(val1: Date, val2: Date): boolean {
     return val1.getTime() === val2.getTime();
   }
 
-  clone(val: T): T {
+  clone(val: Date): Date {
     return new Date(val.getTime());
   }
 
-  diff(oldVal: T, newVal: T): Diff | undefined {
+  diff(oldVal: Date, newVal: Date): Diff | undefined {
     /* tslint:disable-next-line:strict-boolean-expressions */
     return newVal.getTime() - oldVal.getTime() || undefined;
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
+  patch(oldVal: Date, diff: Diff | undefined): Date {
     /* tslint:disable-next-line:strict-boolean-expressions */
     return new Date(oldVal.getTime() + (diff || 0));
   }
@@ -94,5 +93,3 @@ export class DateType implements VersionedType<T, json.Input, json.Output, Diff>
     return diff2 === -diff1 ? undefined : diff1 + diff2;
   }
 }
-
-export { DateType as Type };

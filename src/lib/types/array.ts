@@ -139,5 +139,3 @@ export class ArrayType<T> implements VersionedType<T[], json.Input, json.Output,
     Object.freeze(this);
   }
 }
-
-export { ArrayType as Type };

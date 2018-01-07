@@ -112,5 +112,3 @@ export class LiteralType<T> implements VersionedType<T, json.Input, json.Output,
     Object.freeze(this);
   }
 }
-
-export { LiteralType as Type };

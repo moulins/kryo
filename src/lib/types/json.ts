@@ -70,5 +70,3 @@ export class JsonType implements VersionedType<any, json.Input, json.Output, Dif
     throw NotImplementedError.create("JsonType#squash");
   }
 }
-
-export { JsonType as Type };

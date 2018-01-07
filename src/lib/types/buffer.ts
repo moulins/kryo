@@ -145,5 +145,3 @@ export class BufferType implements VersionedType<Uint8Array, json.Input, json.Ou
     Object.freeze(this);
   }
 }
-
-export { BufferType as Type };

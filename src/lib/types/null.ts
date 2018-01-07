@@ -3,7 +3,6 @@ import { VersionedType } from "../types";
 
 export type Name = "null";
 export const name: Name = "null";
-export type T = null;
 export namespace json {
   export type Input = null;
   export type Output = null;
@@ -14,44 +13,44 @@ export namespace json {
 }
 export type Diff = undefined;
 
-export class NullType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class NullType implements VersionedType<null, json.Input, json.Output, Diff> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name};
   }
 
-  readTrustedJson(input: json.Output): T {
+  readTrustedJson(input: json.Output): null {
     return null;
   }
 
-  readJson(input: any): T {
+  readJson(input: any): null {
     if (input !== null) {
       throw WrongTypeError.create("null", input);
     }
     return null;
   }
 
-  writeJson(val: T): json.Output {
+  writeJson(val: null): json.Output {
     return null;
   }
 
-  testError(val: T): Error | undefined {
+  testError(val: null): Error | undefined {
     if (val !== "null") {
       return WrongTypeError.create("null", val);
     }
     return undefined;
   }
 
-  test(val: T): val is T {
+  test(val: null): val is null {
     return val === null;
   }
 
-  equals(val1: T, val2: T): boolean {
+  equals(val1: null, val2: null): boolean {
     return val1 === val2;
   }
 
-  clone(val: T): T {
+  clone(val: null): null {
     return val;
   }
 
@@ -60,12 +59,12 @@ export class NullType implements VersionedType<T, json.Input, json.Output, Diff>
    * @param newVal
    * @returns `true` if there is a difference, `undefined` otherwise
    */
-  diff(oldVal: T, newVal: T): Diff | undefined {
+  diff(oldVal: null, newVal: null): Diff | undefined {
     /* tslint:disable-next-line:return-undefined */
     return undefined;
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
+  patch(oldVal: null, diff: Diff | undefined): null {
     return null;
   }
 
@@ -79,5 +78,3 @@ export class NullType implements VersionedType<T, json.Input, json.Output, Diff>
     return undefined;
   }
 }
-
-export { NullType as Type };

@@ -5,6 +5,9 @@
 - **[Breaking change]** Move serialization functions out of types, use first-class serializer
   objects to serialize values.
 - **[Feature]** Add `CustomType` to facilitate serialization of non-Kryo types
+- **[Internal]** Remove `Type` aliases from each type module:
+  `import { Type } from "kryo/types/integer"` was an alias of
+  `import { IntegerType } from "kryo/types/integer"`
 
 # 0.5.0 (2018-01-02)
 

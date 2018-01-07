@@ -322,5 +322,3 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
     Object.freeze(this);
   }
 }
-
-export { DocumentType as Type };

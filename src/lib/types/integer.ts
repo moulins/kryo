@@ -6,7 +6,6 @@ import { Lazy, VersionedType } from "../types";
 
 export type Name = "integer";
 export const name: Name = "integer";
-export type T = number;
 export namespace json {
   export type Input = number;
   export type Output = number;
@@ -46,7 +45,7 @@ export const DEFAULT_MIN: number = Number.MIN_SAFE_INTEGER - 1;
  */
 export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 
-export class IntegerType implements VersionedType<T, json.Input, json.Output, Diff> {
+export class IntegerType implements VersionedType<number, json.Input, json.Output, Diff> {
 
   readonly name: Name = name;
   readonly min: number;
@@ -83,11 +82,11 @@ export class IntegerType implements VersionedType<T, json.Input, json.Output, Di
     return {name, min: this.min, max: this.max};
   }
 
-  readTrustedJson(input: json.Output): T {
+  readTrustedJson(input: json.Output): number {
     return input;
   }
 
-  readJson(input: any): T {
+  readJson(input: any): number {
     let val: number;
     if (typeof input !== "number") {
       throw WrongTypeError.create("number", input);
@@ -101,11 +100,11 @@ export class IntegerType implements VersionedType<T, json.Input, json.Output, Di
     return val;
   }
 
-  writeJson(val: T): json.Output {
+  writeJson(val: number): json.Output {
     return val;
   }
 
-  testError(val: T): Error | undefined {
+  testError(val: number): Error | undefined {
     if (typeof val !== "number") {
       return WrongTypeError.create("number", val);
     }
@@ -118,24 +117,24 @@ export class IntegerType implements VersionedType<T, json.Input, json.Output, Di
     return undefined;
   }
 
-  test(val: T): boolean {
+  test(val: number): boolean {
     return typeof val === "number" && val >= this.min && val <= this.max && Math.round(val) === val;
   }
 
-  equals(val1: T, val2: T): boolean {
+  equals(val1: number, val2: number): boolean {
     return val1 === val2;
   }
 
-  clone(val: T): T {
+  clone(val: number): number {
     return val;
   }
 
-  diff(oldVal: T, newVal: T): Diff | undefined {
+  diff(oldVal: number, newVal: number): Diff | undefined {
     return newVal === oldVal ? undefined : newVal - oldVal;
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
-    return diff === undefined ? oldVal : oldVal + diff as T;
+  patch(oldVal: number, diff: Diff | undefined): number {
+    return diff === undefined ? oldVal : oldVal + diff as number;
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
@@ -165,5 +164,3 @@ export class IntegerType implements VersionedType<T, json.Input, json.Output, Di
     Object.freeze(this);
   }
 }
-
-export { IntegerType as Type };

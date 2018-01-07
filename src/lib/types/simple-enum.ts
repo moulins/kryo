@@ -188,5 +188,3 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
     Object.freeze(this);
   }
 }
-
-export { SimpleEnumType as Type };
