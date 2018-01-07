@@ -1,5 +1,5 @@
-import { NotImplementedError } from "./errors/not-implemented";
-import { VersionedType } from "./types";
+import { NotImplementedError } from "../errors/not-implemented";
+import { VersionedType } from "../types";
 
 export type Name = "json";
 export const name: Name = "json";

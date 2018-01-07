@@ -1,7 +1,7 @@
 import { NotImplementedError } from "../errors/not-implemented";
-import { JsonType, name as typeName } from "../json";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { JsonType, name as typeName } from "../types/json";
 
 function write(type: JsonType, value: any): any {
   throw NotImplementedError.create("qs/json/write");

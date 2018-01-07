@@ -1,8 +1,8 @@
 import { Incident } from "incident";
 import { WrongTypeError } from "../errors/wrong-type";
-import { Float64Type, name as typeName } from "../float64";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { Float64Type, name as typeName } from "../types/float64";
 
 function write(type: Float64Type, value: number): string {
   if (isNaN(value)) {

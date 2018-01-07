@@ -1,7 +1,7 @@
 import { WrongTypeError } from "../errors/wrong-type";
-import { name as typeName, NullType } from "../null";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { name as typeName, NullType } from "../types/null";
 
 function write(type: NullType, value: null): null {
   return null;

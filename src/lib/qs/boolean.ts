@@ -1,7 +1,7 @@
-import { BooleanType, name as typeName } from "../boolean";
 import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { BooleanType, name as typeName } from "../types/boolean";
 
 function write(type: BooleanType, value: boolean): "true" | "false" {
   return value ? "true" : "false";

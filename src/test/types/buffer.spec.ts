@@ -1,4 +1,4 @@
-import { BufferType } from "../../lib/buffer";
+import { BufferType } from "../../lib/types/buffer";
 import { runTests, TypedValue } from "../helpers/test";
 
 describe("BufferType", function () {

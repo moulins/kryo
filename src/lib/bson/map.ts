@@ -1,6 +1,6 @@
 import { WrongTypeError } from "../errors/wrong-type";
-import { MapType, name as typeName } from "../map";
 import { Serializer } from "../serializer";
+import { MapType, name as typeName } from "../types/map";
 
 export function register(serializer: Serializer): void {
   function write<K, V>(type: MapType<K, V>, val: Map<K, V>): {[key: string]: any} {

@@ -1,5 +1,5 @@
-import { WrongTypeError } from "./errors/wrong-type";
-import { VersionedType } from "./types";
+import { WrongTypeError } from "../errors/wrong-type";
+import { VersionedType } from "../types";
 
 export type Name = "boolean";
 export const name: Name = "boolean";

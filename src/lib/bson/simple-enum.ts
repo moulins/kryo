@@ -1,8 +1,8 @@
 import { Incident } from "incident";
 import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
-import { name as typeName, SimpleEnumType } from "../simple-enum";
 import { TypeSerializer } from "../types";
+import { name as typeName, SimpleEnumType } from "../types/simple-enum";
 
 function write<E extends number>(type: SimpleEnumType<E>, value: E): string {
   return type.valueToOutputName[value as number];

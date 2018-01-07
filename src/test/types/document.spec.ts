@@ -1,7 +1,7 @@
 import { CaseStyle } from "../../lib/_helpers/rename";
-import { DateType } from "../../lib/date";
-import { DocumentType } from "../../lib/document";
-import { IntegerType } from "../../lib/integer";
+import { DateType } from "../../lib/types/date";
+import { DocumentType } from "../../lib/types/document";
+import { IntegerType } from "../../lib/types/integer";
 import { runTests, TypedValue } from "../helpers/test";
 
 describe("Document", function () {

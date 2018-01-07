@@ -1,6 +1,6 @@
-import { ArrayType, name as typeName } from "../array";
 import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
+import { ArrayType, name as typeName } from "../types/array";
 
 export function register(serializer: Serializer): void {
   function write<T>(type: ArrayType<T>, val: T[]): any[] {

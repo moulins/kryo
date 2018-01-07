@@ -1,5 +1,5 @@
-import { LiteralType, name as typeName } from "../literal";
 import { Serializer } from "../serializer";
+import { LiteralType, name as typeName } from "../types/literal";
 
 export function register(serializer: Serializer): void {
   function write<T>(type: LiteralType<T>, value: T): any {

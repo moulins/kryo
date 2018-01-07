@@ -1,8 +1,8 @@
 import { Incident } from "incident";
-import { lazyProperties } from "./_helpers/lazy-properties";
-import { InvalidIntegerError } from "./errors/invalid-integer";
-import { WrongTypeError } from "./errors/wrong-type";
-import { Lazy, VersionedType } from "./types";
+import { lazyProperties } from "../_helpers/lazy-properties";
+import { InvalidIntegerError } from "../errors/invalid-integer";
+import { WrongTypeError } from "../errors/wrong-type";
+import { Lazy, VersionedType } from "../types";
 
 export type Name = "integer";
 export const name: Name = "integer";

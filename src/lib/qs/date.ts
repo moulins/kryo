@@ -1,7 +1,7 @@
-import { DateType, name as typeName } from "../date";
 import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { DateType, name as typeName } from "../types/date";
 
 function write(type: DateType, value: Date): string {
   return value.toISOString();

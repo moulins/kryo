@@ -1,8 +1,8 @@
 import { assert } from "chai";
 import { CaseStyle } from "../../lib/_helpers/rename";
-import { DocumentType } from "../../lib/document";
-import { IntegerType } from "../../lib/integer";
-import { TryUnionType } from "../../lib/try-union";
+import { DocumentType } from "../../lib/types/document";
+import { IntegerType } from "../../lib/types/integer";
+import { TryUnionType } from "../../lib/types/try-union";
 import { runTests, TypedValue } from "../helpers/test";
 
 describe("TryUnion", function () {

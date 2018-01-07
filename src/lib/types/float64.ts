@@ -1,7 +1,7 @@
 import { Incident } from "incident";
-import { lazyProperties } from "./_helpers/lazy-properties";
-import { WrongTypeError } from "./errors/wrong-type";
-import { Lazy, VersionedType } from "./types";
+import { lazyProperties } from "../_helpers/lazy-properties";
+import { WrongTypeError } from "../errors/wrong-type";
+import { Lazy, VersionedType } from "../types";
 
 export type Name = "float64";
 export const name: Name = "float64";

@@ -1,7 +1,7 @@
 import { Incident } from "incident";
-import { lazyProperties } from "./_helpers/lazy-properties";
-import { NotImplementedError } from "./errors/not-implemented";
-import { Lazy, VersionedType } from "./types";
+import { lazyProperties } from "../_helpers/lazy-properties";
+import { NotImplementedError } from "../errors/not-implemented";
+import { Lazy, VersionedType } from "../types";
 
 export type Name = "typed-union";
 export const name: Name = "typed-union";

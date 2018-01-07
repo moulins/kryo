@@ -1,8 +1,8 @@
 import { assert } from "chai";
 import { $Sint8 } from "../../lib/_builtins/integer";
-import { IntegerType } from "../../lib/integer";
 import { createQsSerializer } from "../../lib/qs";
 import { Serializer } from "../../lib/types";
+import { IntegerType } from "../../lib/types/integer";
 import { runTests, TypedValue } from "../helpers/test";
 
 describe("IntegerType", function () {

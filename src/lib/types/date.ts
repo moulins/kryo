@@ -1,6 +1,6 @@
-import { InvalidTimestampError } from "./errors/invalid-timestamp";
-import { WrongTypeError } from "./errors/wrong-type";
-import { VersionedType } from "./types";
+import { InvalidTimestampError } from "../errors/invalid-timestamp";
+import { WrongTypeError } from "../errors/wrong-type";
+import { VersionedType } from "../types";
 
 export type Name = "date";
 export const name: Name = "date";

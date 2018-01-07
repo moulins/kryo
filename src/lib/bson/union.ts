@@ -1,7 +1,7 @@
 import { Incident } from "incident";
 import { Serializer } from "../serializer";
 import { Type } from "../types";
-import { name as typeName, UnionType } from "../union";
+import { name as typeName, UnionType } from "../types/union";
 
 export function register(serializer: Serializer): void {
   function write<T>(type: UnionType<T>, val: T): any {

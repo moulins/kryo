@@ -1,6 +1,6 @@
-import { CodepointStringType, name as typeName } from "../codepoint-string";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { CodepointStringType, name as typeName } from "../types/codepoint-string";
 
 function write(type: CodepointStringType, value: string): string {
   return value;

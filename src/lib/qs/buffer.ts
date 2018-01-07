@@ -1,7 +1,7 @@
-import { BufferType, name as typeName } from "../buffer";
 import { WrongTypeError } from "../errors/wrong-type";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { BufferType, name as typeName } from "../types/buffer";
 
 function write(type: BufferType, val: Uint8Array): string {
   const result: string[] = new Array(val.length);

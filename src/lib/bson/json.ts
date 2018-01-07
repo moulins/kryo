@@ -1,7 +1,7 @@
 import { Incident } from "incident";
-import { JsonType, name as typeName } from "../json";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { JsonType, name as typeName } from "../types/json";
 
 function write(type: JsonType, value: any): any {
   return JSON.parse(JSON.stringify(value));

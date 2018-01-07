@@ -1,8 +1,8 @@
 import { diffSets, DiffSetsResult } from "../_helpers/diff-sets";
-import { DocumentType, name as typeName } from "../document";
 import { ExtraKeysError } from "../errors/extra-keys";
 import { MissingKeysError } from "../errors/missing-keys";
 import { Serializer } from "../serializer";
+import { DocumentType, name as typeName } from "../types/document";
 
 export function register(serializer: Serializer): void {
   function write<T extends {}>(type: DocumentType<T>, val: T): {[key: string]: any} {

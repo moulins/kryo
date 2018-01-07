@@ -1,10 +1,10 @@
 import { CaseStyle } from "../../lib/_helpers/rename";
-import { DocumentType } from "../../lib/document";
-import { IntegerType } from "../../lib/integer";
-import { LiteralType } from "../../lib/literal";
-import { SimpleEnumType } from "../../lib/simple-enum";
 import { Serializer } from "../../lib/types";
-import { UnionType } from "../../lib/union";
+import { DocumentType } from "../../lib/types/document";
+import { IntegerType } from "../../lib/types/integer";
+import { LiteralType } from "../../lib/types/literal";
+import { SimpleEnumType } from "../../lib/types/simple-enum";
+import { UnionType } from "../../lib/types/union";
 import { runTests, TypedValue } from "../helpers/test";
 
 describe("Union", function () {

@@ -1,7 +1,7 @@
 import { WrongTypeError } from "../errors/wrong-type";
-import { IntegerType, name as typeName } from "../integer";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { IntegerType, name as typeName } from "../types/integer";
 
 function write(type: IntegerType, value: number): number {
   return value;

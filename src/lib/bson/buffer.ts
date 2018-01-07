@@ -1,8 +1,8 @@
 import { Binary as BinaryType } from "bson";
-import { BufferType, name as typeName } from "../buffer";
 import { MissingDependencyError } from "../errors/missing-dependency";
 import { Serializer } from "../serializer";
 import { TypeSerializer } from "../types";
+import { BufferType, name as typeName } from "../types/buffer";
 
 // TODO: Fix BSON type definitions
 interface BinaryConstructor {

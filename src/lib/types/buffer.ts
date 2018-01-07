@@ -1,9 +1,9 @@
 import { Incident } from "incident";
-import { lazyProperties } from "./_helpers/lazy-properties";
-import { MaxArrayLengthError } from "./errors/max-array-length";
-import { NotImplementedError } from "./errors/not-implemented";
-import { WrongTypeError } from "./errors/wrong-type";
-import { Lazy, VersionedType } from "./types";
+import { lazyProperties } from "../_helpers/lazy-properties";
+import { MaxArrayLengthError } from "../errors/max-array-length";
+import { NotImplementedError } from "../errors/not-implemented";
+import { WrongTypeError } from "../errors/wrong-type";
+import { Lazy, VersionedType } from "../types";
 
 export type Name = "buffer";
 export const name: Name = "buffer";

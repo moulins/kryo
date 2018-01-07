@@ -1,4 +1,4 @@
-import { TaggedUnionType } from "../../../lib/tagged-union";
+import { TaggedUnionType } from "../../../lib/types/tagged-union";
 import { $Directory, Directory } from "./directory";
 import { $File, File } from "./file";
 
