@@ -1,8 +1,7 @@
 import * as buildTools from "turbo-gulp";
 
-import * as gulp from "gulp";
-import * as minimist from "minimist";
-import { ParsedArgs } from "minimist";
+import gulp from "gulp";
+import minimist, { ParsedArgs } from "minimist";
 
 interface Options {
   devDist?: string;
@@ -28,6 +27,7 @@ const lib: buildTools.LibTarget = {
   srcDir: "src/lib",
   scripts: ["**/*.ts"],
   mainModule: "index",
+  outModules: buildTools.OutModules.Both,
   dist: {
     packageJsonMap: (old: buildTools.PackageJson): buildTools.PackageJson => {
       const version: string = options.devDist !== undefined ? `${old.version}-build.${options.devDist}` : old.version;
@@ -58,6 +58,7 @@ const test: buildTools.MochaTarget = {
   project,
   name: "test",
   srcDir: "src",
+  outModules: buildTools.OutModules.Both,
   scripts: ["test/**/*.ts", "lib/**/*.ts"],
   customTypingsDir: "src/custom-typings",
   tscOptions: {

@@ -8,6 +8,7 @@
 - **[Breaking change]** Remove namespace for errors: define `Name`, `Data` and `Cause` as
   module exports (`import { Data } from "kryo/errors/extra-keys"` instead of
   `import { ExtraKeysError } from from "kryo/errors/extra-keys"; ExtraKeysError.Data`)
+- **[Feature]** Add support for ESM (publish `.mjs` files)
 - **[Feature]** Add `CustomType` to facilitate serialization of non-Kryo types
 - **[Internal]** Remove `Type` aliases from each type module:
   `import { Type } from "kryo/types/integer"` was an alias of

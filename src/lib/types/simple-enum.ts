@@ -52,10 +52,10 @@ export interface Options<E extends number> {
  */
 export class SimpleEnumType<E extends number> implements VersionedType<E, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly enum: EnumConstructor<E>;
+  readonly enum!: EnumConstructor<E>;
   readonly rename?: CaseStyle;
-  readonly outputNameToValue: AnySimpleEnum;
-  readonly valueToOutputName: AnyReversedEnum;
+  readonly outputNameToValue!: AnySimpleEnum;
+  readonly valueToOutputName!: AnyReversedEnum;
 
   private _options: Lazy<Options<E>>;
 

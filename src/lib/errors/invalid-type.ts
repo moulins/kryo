@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import * as objectInspect from "object-inspect";
+import objectInspect from "object-inspect";
 
 export type Name = "InvalidType";
 export const name: Name = "InvalidType";

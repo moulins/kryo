@@ -23,8 +23,8 @@ export interface Options<T, Input, Output extends Input, Diff> {
 
 export class ArrayType<T> implements VersionedType<T[], json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly itemType: VersionedType<T, any, any, any>;
-  readonly maxLength: number;
+  readonly itemType!: VersionedType<T, any, any, any>;
+  readonly maxLength!: number;
 
   private _options: Lazy<Options<T, any, any, any>>;
 

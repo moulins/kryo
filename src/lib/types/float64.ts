@@ -24,8 +24,8 @@ export interface Options {
 
 export class Float64Type implements VersionedType<number, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly notNan: boolean; // TODO(demurgos): rename to allowNaN
-  readonly notInfinity: boolean; // TODO(demurgos): rename to allowInfinity
+  readonly notNan!: boolean; // TODO(demurgos): rename to allowNaN
+  readonly notInfinity!: boolean; // TODO(demurgos): rename to allowInfinity
 
   private _options: Lazy<Options>;
 

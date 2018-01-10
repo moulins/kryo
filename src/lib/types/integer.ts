@@ -48,8 +48,8 @@ export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 export class IntegerType implements VersionedType<number, json.Input, json.Output, Diff> {
 
   readonly name: Name = name;
-  readonly min: number;
-  readonly max: number;
+  readonly min!: number;
+  readonly max!: number;
 
   private _options: Lazy<Options>;
 

@@ -107,12 +107,12 @@ export interface Options {
  */
 export class Ucs2StringType implements VersionedType<string, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly allowUnicodeRegExp: boolean;
+  readonly allowUnicodeRegExp!: boolean;
   readonly pattern?: RegExp;
-  readonly lowerCase: boolean;
-  readonly trimmed: boolean;
+  readonly lowerCase!: boolean;
+  readonly trimmed!: boolean;
   readonly minLength?: number;
-  readonly maxLength: number;
+  readonly maxLength!: number;
 
   private _options: Lazy<Options>;
 

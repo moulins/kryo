@@ -21,7 +21,7 @@ export interface Options {
 
 export class BufferType implements VersionedType<Uint8Array, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly maxLength: number;
+  readonly maxLength!: number;
 
   private _options: Lazy<Options>;
 

@@ -86,13 +86,13 @@ export interface Options {
 export class CodepointStringType implements VersionedType<string, json.Input, json.Output, Diff> {
 
   readonly name: Name = name;
-  readonly normalization: Normalization;
-  readonly enforceUnicodeRegExp: boolean;
+  readonly normalization!: Normalization;
+  readonly enforceUnicodeRegExp!: boolean;
   readonly pattern?: RegExp;
-  readonly lowerCase: boolean; // TODO(demurgos): Rename to enforceLowerCase
-  readonly trimmed: boolean; // TODO(demurgos): Rename to enforceTrimmed
+  readonly lowerCase!: boolean; // TODO(demurgos): Rename to enforceLowerCase
+  readonly trimmed!: boolean; // TODO(demurgos): Rename to enforceTrimmed
   readonly minCodepoints?: number;
-  readonly maxCodepoints: number;
+  readonly maxCodepoints!: number;
 
   private _options: Lazy<Options>;
 

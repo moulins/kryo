@@ -47,10 +47,10 @@ export interface Options<K, V> {
 
 export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly keyType: VersionedType<K, any, any, any>;
-  readonly valueType: VersionedType<V, any, any, any>;
-  readonly maxSize: number;
-  readonly assumeStringKey: boolean;
+  readonly keyType!: VersionedType<K, any, any, any>;
+  readonly valueType!: VersionedType<V, any, any, any>;
+  readonly maxSize!: number;
+  readonly assumeStringKey!: boolean;
 
   private _options: Lazy<Options<K, V>>;
 

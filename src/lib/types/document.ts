@@ -66,8 +66,8 @@ export interface PropertyDescriptor<TypeKind extends KryoType<any>> {
 
 export class DocumentType<T extends {}> implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly ignoreExtraKeys: boolean;
-  readonly properties: {
+  readonly ignoreExtraKeys!: boolean;
+  readonly properties!: {
     [key: string]: PropertyDescriptor<VersionedType<any, any, any, any>>;
   };
   readonly rename?: CaseStyle;
@@ -76,13 +76,13 @@ export class DocumentType<T extends {}> implements VersionedType<T, json.Input, 
    * Map from the document keys to the serialized names
    */
     // TODO: Restrict visibility (public -> private)
-  public readonly keys: Map<string, string>;
+  public readonly keys!: Map<string, string>;
 
   /**
    * Map from the serialized names to the document keys
    */
     // TODO: Restrict visibility (public -> private)
-  public readonly outKeys: Map<string, string>;
+  public readonly outKeys!: Map<string, string>;
 
   private _options: Lazy<Options<VersionedType<any, any, any, any>>>;
 

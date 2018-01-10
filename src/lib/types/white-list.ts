@@ -22,8 +22,8 @@ export interface Options<T> {
 
 export class WhiteListType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly itemType: VersionedType<any, any, any, any>;
-  readonly values: T[];
+  readonly itemType!: VersionedType<any, any, any, any>;
+  readonly values!: T[];
 
   private _options: Lazy<Options<T>>;
 

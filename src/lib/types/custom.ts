@@ -23,11 +23,11 @@ export interface Options<T> {
 
 export class CustomType<T> implements Type<T> {
   readonly name: Name = name;
-  readonly read: Read<T>;
-  readonly write: Write<T>;
-  readonly testError: TestError<T>;
-  readonly equals: Equals<T>;
-  readonly clone: Clone<T>;
+  readonly read!: Read<T>;
+  readonly write!: Write<T>;
+  readonly testError!: TestError<T>;
+  readonly equals!: Equals<T>;
+  readonly clone!: Clone<T>;
 
   private _options?: Lazy<Options<T>>;
 

@@ -23,8 +23,8 @@ export interface Options<T, Output, Input extends Output, Diff> {
 
 export class LiteralType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly type: VersionedType<T, any, any, Diff>;
-  readonly value: T;
+  readonly type!: VersionedType<T, any, any, Diff>;
+  readonly value!: T;
 
   private _options: Lazy<Options<T, any, any, any>>;
 

@@ -33,11 +33,11 @@ export type TestWithVariantResult<T> =
 
 export class UnionType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
   readonly name: Name = name;
-  readonly variants: VersionedType<T, any, any, Diff>[];
-  readonly matcher: Matcher<T>;
-  readonly trustedMatcher: TrustedMatcher<T>;
-  readonly readMatcher: ReadMatcher<T>;
-  readonly readTrustedMatcher: ReadTrustedMatcher<T>;
+  readonly variants!: VersionedType<T, any, any, Diff>[];
+  readonly matcher!: Matcher<T>;
+  readonly trustedMatcher!: TrustedMatcher<T>;
+  readonly readMatcher!: ReadMatcher<T>;
+  readonly readTrustedMatcher!: ReadTrustedMatcher<T>;
 
   private _options?: Lazy<Options<T, any, any, any>>;
 
@@ -100,7 +100,7 @@ export class UnionType<T> implements VersionedType<T, json.Input, json.Output, D
   testWithVariant(val: T): TestWithVariantResult<T> {
     const variant: Type<T> | undefined = this.matcher(val);
     if (variant === undefined) {
-      return [false, undefined];
+      return [false as false, undefined];
     }
     return [variant.test(val), variant] as TestWithVariantResult<T>;
   }
