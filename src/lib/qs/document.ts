@@ -4,7 +4,7 @@ import { DocumentType, name as typeName, PropertyDescriptor, renameKeys } from "
 
 export function register(serializer: Serializer): void {
   function write<T extends {}>(type: DocumentType<T>, val: T): any {
-    const result: any = Object.create(null);
+    const result: any = {}; // Object.create(null);
     for (const [key, outKey] of renameKeys(type.properties, type.rename)) {
       const descriptor: PropertyDescriptor<T[keyof T]> = type.properties[key];
       const value: T[keyof T] = val[key];
@@ -22,7 +22,7 @@ export function register(serializer: Serializer): void {
     const missing: Set<string> = new Set();
     const invalid: Map<keyof T, Error> = new Map();
 
-    const result: Partial<T> = Object.create(null);
+    const result: Partial<T> = {}; // Object.create(null);
 
     for (const [key, outKey] of renameKeys(type.properties, type.rename)) {
       if (extra !== undefined) {
@@ -52,7 +52,7 @@ export function register(serializer: Serializer): void {
   }
 
   function readTrusted<T extends {}>(type: DocumentType<T>, input: any): T {
-    const result: Partial<T> = Object.create(null);
+    const result: Partial<T> = {}; // Object.create(null);
     for (const [key, outKey] of renameKeys(type.properties, type.rename)) {
       const descriptor: PropertyDescriptor<any> = type.properties[key];
       const outValue: any = Reflect.get(input, outKey);

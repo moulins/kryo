@@ -105,7 +105,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
   }
 
   readTrustedJson(input: any): T {
-    const result: Partial<T> = Object.create(null);
+    const result: Partial<T> = {}; // Object.create(null);
     for (const [key, outKey] of this.keys) {
       const descriptor: PropertyDescriptor<any> = this.properties[key];
       const jsonValue: any = Reflect.get(input, outKey);
@@ -123,7 +123,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
     const missing: Set<string> = new Set();
     const invalid: Map<keyof T, Error> = new Map();
 
-    const result: Partial<T> = Object.create(null);
+    const result: Partial<T> = {}; // Object.create(null);
 
     for (const [key, outKey] of this.keys) {
       if (extra !== undefined) {
@@ -153,7 +153,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
   }
 
   writeJson(val: T): any {
-    const result: any = Object.create(null);
+    const result: any = {}; // Object.create(null);
     for (const [key, outKey] of this.keys) {
       const descriptor: PropertyDescriptor<T[keyof T]> = this.properties[key];
       const value: T[keyof T] = val[key];
@@ -244,7 +244,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
   }
 
   clone(val: T): T {
-    const result: Partial<T> = Object.create(null);
+    const result: Partial<T> = {}; // Object.create(null);
     for (const key in this.properties) {
       result[key] = val[key] === undefined ? undefined : this.properties[key].type.clone(val[key]);
     }
