@@ -1,4 +1,4 @@
-# Next
+# 0.6.1 (2018-01-30)
 
 - **[Fix]** Use `{}` instead of `Object.create(null)` when creating new objects in `DocumentType`.
   Quickfix for [chaijs/deep-eql#51](https://github.com/chaijs/deep-eql/issues/51).

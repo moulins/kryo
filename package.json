@@ -1,6 +1,6 @@
 {
   "name": "kryo",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Serialization for documents.",
   "main": "dist/lib/index",
   "types": "dist/lib/index.d.ts",
