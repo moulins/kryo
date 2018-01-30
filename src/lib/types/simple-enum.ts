@@ -4,7 +4,8 @@ import { CaseStyle, rename } from "../case-style";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { Lazy, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type SimpleEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumConstructor[K]};
 
@@ -51,7 +52,7 @@ export interface SimpleEnumTypeOptions<E extends number> {
 /**
  * Supports enums from keys that are valid Javascript identifiers to unique integer values
  */
-export class SimpleEnumType<E extends number> implements VersionedType<E, json.Input, json.Output, Diff> {
+export class SimpleEnumType<E extends number> implements VersionedType<E, Diff> {
   readonly name: Name = name;
   readonly enum: EnumConstructor<E>;
   readonly rename?: CaseStyle;
@@ -82,22 +83,21 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
     throw createNotImplementedError("SimpleEnumType#toJSON");
   }
 
-  readTrustedJson(input: json.Output): E {
-    return this.outputNameToValue[input] as E;
+  read<R>(reader: Reader<R>, raw: R): E {
+    return reader.readString(raw, readVisitor({
+      fromString: (input: string): E => {
+        if (!reader.trustInput) {
+          if (!this.outputNameToValue.hasOwnProperty(input)) {
+            throw Incident("Unknown enum variant name", input);
+          }
+        }
+        return this.outputNameToValue[input] as E;
+      },
+    }));
   }
 
-  readJson(input: any): E {
-    if (typeof input !== "string") {
-      throw createInvalidTypeError("string", input);
-    }
-    if (!this.outputNameToValue.hasOwnProperty(input)) {
-      throw Incident("Unknown enum variant name", input);
-    }
-    return this.outputNameToValue[input] as E;
-  }
-
-  writeJson(val: E): json.Output {
-    return this.valueToOutputName[val as number];
+  write<W>(writer: Writer<W>, value: E): W {
+    return writer.writeUcs2String(this.valueToOutputName[value as number]);
   }
 
   testError(val: E): Error | undefined {
@@ -184,6 +184,5 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, json.I
     }
 
     Object.assign(this, {enum: baseEnum, rename: renameAll, outputNameToValue, valueToOutputName});
-    Object.freeze(this);
   }
 }

@@ -1,9 +1,9 @@
-import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createInvalidFloat64Error } from "../errors/invalid-float64";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
-import { Lazy, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "float64";
 export const name: Name = "float64";
@@ -14,7 +14,6 @@ export namespace json {
     readonly allowInfinity: boolean;
   }
 }
-export type Diff = [number, number];
 
 /**
  * Options for the `Float64` meta-type.
@@ -39,7 +38,7 @@ export interface Float64TypeOptions {
 }
 
 // tslint:disable:max-line-length
-export class Float64Type implements VersionedType<number, number | "NaN" | "+Infinity" | "-Infinity", number | "NaN" | "+Infinity" | "-Infinity", Diff> {
+export class Float64Type implements IoType<number>, VersionedType<number, [number, number]> {
   readonly name: Name = name;
   readonly allowNaN: boolean;
   readonly allowInfinity: boolean;
@@ -71,54 +70,21 @@ export class Float64Type implements VersionedType<number, number | "NaN" | "+Inf
     };
   }
 
-  readTrustedJson(input: number | "NaN" | "+Infinity" | "-Infinity"): number {
-    switch (input) {
-      case "NaN":
-        return NaN;
-      case "+Infinity":
-        return Infinity;
-      case "-Infinity":
-        return -Infinity;
-      default:
+  read<R>(reader: Reader<R>, raw: R): number {
+    return reader.readFloat64(raw, readVisitor({
+      fromFloat64: (input: number): number => {
+        const error: Error | undefined = reader.trustInput ? undefined : this.testError(input);
+        if (error !== undefined) {
+          throw error;
+        }
         return input;
-    }
+      },
+    }));
   }
 
-  readJson(input: number | "NaN" | "+Infinity" | "-Infinity"): number {
-    switch (input) {
-      case "NaN":
-        if (!this.allowNaN) {
-          throw createInvalidFloat64Error(input);
-        }
-        return NaN;
-      case "+Infinity":
-        if (!this.allowInfinity) {
-          throw createInvalidFloat64Error(input);
-        }
-        return Infinity;
-      case "-Infinity":
-        if (!this.allowInfinity) {
-          throw createInvalidFloat64Error(input);
-        }
-        return -Infinity;
-      default:
-        if (typeof input === "number") {
-          return input;
-        } else {
-          throw createInvalidFloat64Error(input);
-        }
-    }
-  }
-
-  writeJson(val: number): number | "NaN" | "+Infinity" | "-Infinity" {
-    if (isNaN(val)) {
-      return "NaN";
-    } else if (val === Infinity) {
-      return "+Infinity";
-    } else if (val === -Infinity) {
-      return "-Infinity";
-    }
-    return val;
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: number): W {
+    return writer.writeFloat64(value);
   }
 
   testError(val: number): Error | undefined {
@@ -148,20 +114,20 @@ export class Float64Type implements VersionedType<number, number | "NaN" | "+Inf
     return val;
   }
 
-  diff(oldVal: number, newVal: number): Diff | undefined {
+  diff(oldVal: number, newVal: number): [number, number] | undefined {
     // We can't use an arithmetic difference due to possible precision loss
     return this.equals(oldVal, newVal) ? undefined : [oldVal, newVal];
   }
 
-  patch(oldVal: number, diff: Diff | undefined): number {
+  patch(oldVal: number, diff: [number, number] | undefined): number {
     return diff === undefined ? oldVal : diff[1];
   }
 
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
+  reverseDiff(diff: [number, number] | undefined): [number, number] | undefined {
     return diff === undefined ? undefined : [diff[1], diff[0]];
   }
 
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
+  squash(diff1: [number, number] | undefined, diff2: [number, number] | undefined): [number, number] | undefined {
     if (diff1 === undefined) {
       return diff2 === undefined ? undefined : [diff2[0], diff2[1]];
     } else if (diff2 === undefined) {
@@ -179,6 +145,5 @@ export class Float64Type implements VersionedType<number, number | "NaN" | "+Inf
     const allowInfinity: boolean = options.allowInfinity !== undefined ? options.allowInfinity : false;
 
     Object.assign(this, {allowNaN, allowInfinity});
-    Object.freeze(this);
   }
 }

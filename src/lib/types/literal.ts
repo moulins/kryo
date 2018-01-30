@@ -1,25 +1,40 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createLazyOptionsError } from "../errors/lazy-options";
-import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
-import { Lazy, VersionedType } from "../types";
+import { createNotImplementedError } from "../errors/not-implemented";
+import { IoType, Lazy, Readable, Reader, Type, Writable, Writer } from "../types";
 
 export type Name = "literal";
 export const name: Name = "literal";
-export namespace bson {
-  export type Input = any;
-  export type Output = any;
-}
 export namespace json {
-  export type Input = any;
-  export type Output = any;
   export type Type = undefined;
 }
 export type Diff = any;
 
-export interface LiteralTypeOptions<T, Output, Input extends Output, Diff> {
-  type: VersionedType<any, Output, Input, Diff>;
+/**
+ * T: Typescript type
+ * M: Kryo meta-type
+ */
+export interface LiteralTypeOptions<T, M extends Type<any> = Type<any>> {
+  type: M;
   value: T;
+}
+
+export interface LiteralTypeConstructor {
+  new<T>(options: Lazy<LiteralTypeOptions<T>>): LiteralType<T>;
+
+  new<T>(options: Lazy<LiteralTypeOptions<T, Readable<any> & Type<any>>>): LiteralType<T> & Readable<T>;
+
+  new<T>(options: Lazy<LiteralTypeOptions<T, Writable<any> & Type<any>>>): LiteralType<T> & Writable<T>;
+
+  new<T>(options: Lazy<LiteralTypeOptions<T, IoType<any>>>): LiteralIoType<T>;
+}
+
+export interface LiteralType<T, M extends Type<any> = Type<any>> extends Type<T>, LiteralTypeOptions<T, M> {
+}
+
+export interface LiteralIoType<T, M extends IoType<any> = IoType<any>> extends IoType<T>,
+  LiteralTypeOptions<T, M> {
 }
 
 /**
@@ -29,14 +44,15 @@ export interface LiteralTypeOptions<T, Output, Input extends Output, Diff> {
  *
  * @see https://github.com/Microsoft/TypeScript/issues/10195
  */
-export class LiteralType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
+// tslint:disable-next-line:variable-name
+export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = Type<T>> implements IoType<T> {
   readonly name: Name = name;
-  readonly type: VersionedType<T, any, any, Diff>;
+  readonly type: M;
   readonly value: T;
 
-  private _options: Lazy<LiteralTypeOptions<T, any, any, any>>;
+  private _options: Lazy<LiteralTypeOptions<T, M>>;
 
-  constructor(options: Lazy<LiteralTypeOptions<T, any, any, any>>) {
+  constructor(options: Lazy<LiteralTypeOptions<T, M>>) {
     // TODO: Remove once TS 2.7 is better supported by editors
     this.type = <any> undefined;
     this.value = <any> undefined;
@@ -53,16 +69,18 @@ export class LiteralType<T> implements VersionedType<T, json.Input, json.Output,
     throw createNotImplementedError("LiteralType#toJSON");
   }
 
-  readTrustedJson(input: json.Output): T {
-    return this.type.readTrustedJson(input);
+  read<R>(reader: Reader<R>, raw: R): T {
+    if (this.type.read === undefined) {
+      throw new Incident("NotReadable", {type: this});
+    }
+    return reader.trustInput ? this.clone(this.value) : this.type.read(reader, raw);
   }
 
-  readJson(input: any): T {
-    return this.type.readJson(input);
-  }
-
-  writeJson(val: T): json.Output {
-    return this.type.writeJson(val);
+  write<W>(writer: Writer<W>, value: T): W {
+    if (this.type.write === undefined) {
+      throw new Incident("NotWritable", {type: this});
+    }
+    return this.type.write(writer, value);
   }
 
   testError(val: T): Error | undefined {
@@ -88,34 +106,33 @@ export class LiteralType<T> implements VersionedType<T, json.Input, json.Output,
     return this.type.clone(val);
   }
 
-  diff(oldVal: T, newVal: T): Diff | undefined {
-    throw createNotImplementedError("LiteralType#diff");
+  diff(oldVal: T, newVal: T): undefined {
+    return;
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
-    throw createNotImplementedError("LiteralType#patch");
+  patch(oldVal: T, diff: undefined): T {
+    return this.type.clone(oldVal);
   }
 
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("LiteralType#reverseDiff");
+  reverseDiff(diff: Diff | undefined): undefined {
+    return;
   }
 
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("LiteralType#squash");
+  squash(diff1: undefined, diff2: undefined): undefined {
+    return;
   }
 
   private _applyOptions(): void {
     if (this._options === undefined) {
       throw createLazyOptionsError(this);
     }
-    const options: LiteralTypeOptions<T, any, any, any> = typeof this._options === "function"
+    const options: LiteralTypeOptions<T, M> = typeof this._options === "function"
       ? this._options()
       : this._options;
 
-    const type: VersionedType<T, any, any, Diff> = options.type;
+    const type: M = options.type;
     const value: T = options.value;
 
     Object.assign(this, {type, value});
-    Object.freeze(this);
   }
-}
+};

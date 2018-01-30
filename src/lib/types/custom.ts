@@ -1,15 +1,13 @@
-import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { JSON_SERIALIZER } from "../json/index";
-import { Lazy, Serializer, Type } from "../types";
+import { Lazy, Reader, Type, Writer } from "../types";
 
 export type Name = "custom";
 export const name: Name = "custom";
 
-export type Read<T> = (input: any, serializer: Serializer) => T;
-export type Write<T> = (value: T, serializer: Serializer) => any;
+export type Read<T> = <R>(reader: Reader<R>, raw: R) => T;
+export type Write<T> = <W>(writer: Writer<W>, value: T) => W;
 export type TestError<T> = (val: T) => Error | undefined;
 export type Equals<T> = (val1: T, val2: T) => boolean;
 export type Clone<T> = (val: T) => T;
@@ -52,18 +50,6 @@ export class CustomType<T> implements Type<T> {
     throw createNotImplementedError("CustomType#toJSON");
   }
 
-  readTrustedJson(input: any): T {
-    return this.read(input, JSON_SERIALIZER);
-  }
-
-  readJson(input: any): T {
-    return this.read(input, JSON_SERIALIZER);
-  }
-
-  writeJson(value: T): any {
-    return this.write(value, JSON_SERIALIZER);
-  }
-
   test(val: T): boolean {
     return this.testError(val) === undefined;
   }
@@ -83,6 +69,5 @@ export class CustomType<T> implements Type<T> {
         clone: options.clone,
       },
     );
-    Object.freeze(this);
   }
 }

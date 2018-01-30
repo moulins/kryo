@@ -1,72 +1,125 @@
-import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
-import { Lazy, Serializer, VersionedType } from "../types";
-import * as union from "./union";
+import { Incident } from "incident";
+import { lazyProperties } from "../_helpers/lazy-properties";
+import { createLazyOptionsError } from "../errors/lazy-options";
+import { createNotImplementedError } from "../errors/not-implemented";
+import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../types";
 
-export type Name = "try-union";
-export const name: Name = "try-union";
+export type Name = "union";
+export const name: Name = "union";
 export namespace json {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
-  }
-
   export type Type = undefined;
 }
 export type Diff = any;
 
-export interface TryUnionTypeOptions<T, Output, Input extends Output, Diff> {
-  variants: VersionedType<T, any, any, Diff>[];
+export interface TryUnionTypeOptions<T, M extends Type<T> = Type<T>> {
+  variants: M[];
 }
 
-function toUnionOptions<T>(options: TryUnionTypeOptions<T, any, any, any>): union.UnionTypeOptions<T, any, any, any> {
-  const variants: VersionedType<T, any, any, Diff>[] = options.variants;
-  const matcher: union.Matcher<T> = (value: any) => {
-    for (const variant of variants) {
+export type TestWithVariantResult<T> =
+  [true, VersionedType<T, any>]
+  | [false, VersionedType<T, any> | undefined];
+
+export class TryUnionType<T, M extends Type<T> = Type<T>> implements IoType<T>, TryUnionTypeOptions<T, M> {
+  readonly name: Name = name;
+  readonly variants: M[];
+
+  private _options?: Lazy<TryUnionTypeOptions<T, M>>;
+
+  constructor(options: Lazy<TryUnionTypeOptions<T, M>>) {
+    // TODO: Remove once TS 2.7 is better supported by editors
+    this.variants = <any> undefined;
+
+    this._options = options;
+    if (typeof options !== "function") {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["variants"],
+      );
+    }
+  }
+
+  toJSON(): json.Type {
+    throw createNotImplementedError("UnionType#toJSON");
+  }
+
+  match(value: T): M | undefined {
+    for (const variant of this.variants) {
       if (variant.test(value)) {
         return variant;
       }
     }
     return undefined;
-  };
-  const readMatcher: union.ReadMatcher<T> = (input: any, serializer: Serializer) => {
-    for (const variant of variants) {
+  }
+
+  matchTrusted(value: T): M {
+    return this.match(value)!;
+  }
+
+  write<W>(writer: Writer<W>, value: T): W {
+    const variant: M | undefined = this.match(value);
+    if (variant === undefined) {
+      throw new Incident("UnknownUnionVariant", "Unknown union variant");
+    }
+    if (variant.write === undefined) {
+      throw new Incident("NotWritable", {type: variant});
+    }
+    return variant.write(writer, value);
+  }
+
+  read<R>(reader: Reader<R>, raw: R): T {
+    return this.variantRead(reader, raw)[1];
+  }
+
+  variantRead<R>(reader: Reader<R>, raw: R): [M, T] {
+    for (const variant of this.variants) {
       try {
-        serializer.read(variant, input);
-        return variant;
+        return [variant, variant.read!(reader, raw)];
       } catch (err) {
-        // Ignore error and try next variant
+        // TODO: Do not swallow all errors
       }
     }
-    return undefined;
-  };
-  return {variants: options.variants, matcher, readMatcher};
-}
-
-export class TryUnionType<T extends {}> extends union.UnionType<T> {
-  constructor(options: Lazy<TryUnionTypeOptions<T, any, any, any>>) {
-    super(typeof options === "function" ? () => toUnionOptions(options()) : toUnionOptions(options));
+    throw new Incident("InputVariantNotFound", {union: this, raw});
   }
 
-  toJSON(): json.Type {
-    throw createNotImplementedError("TryUnionType#toJSON");
+  testError(value: T): Error | undefined {
+    const variant: M | undefined = this.match(value);
+    if (variant === undefined) {
+      return new Incident("UnknownUnionVariant", "Unknown union variant");
+    }
+    return variant.testError(value);
   }
 
-  diff(oldVal: T, newVal: T): Diff | undefined {
-    throw createNotImplementedError("TryUnionType#diff");
+  test(val: T): boolean {
+    const type: M | undefined = this.match(val);
+    if (type === undefined) {
+      return false;
+    }
+    return type.test(val);
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
-    throw createNotImplementedError("TryUnionType#patch");
+  // TODO: Always return true?
+  equals(val1: T, val2: T): boolean {
+    const type1: M = this.matchTrusted(val1);
+    const type2: M = this.matchTrusted(val2);
+    return type1 === type2 && type1.equals(val1, val2);
   }
 
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("TryUnionType#reverseDiff");
+  clone(val: T): T {
+    return this.matchTrusted(val).clone(val);
   }
 
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("TryUnionType#squash");
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw createLazyOptionsError(this);
+    }
+    const options: TryUnionTypeOptions<T, M> = typeof this._options === "function"
+      ? this._options()
+      : this._options;
+    delete this._options;
+    const variants: M[] = options.variants;
+    Object.assign(this, {variants});
   }
 }

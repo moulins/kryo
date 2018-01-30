@@ -3,7 +3,8 @@ import { lazyProperties } from "../_helpers/lazy-properties";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { Lazy, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "map";
 export const name: Name = "map";
@@ -22,16 +23,16 @@ export namespace json {
 export type Diff = any;
 
 export interface MapTypeOptions<K, V> {
-  keyType: VersionedType<K, any, any, any>;
-  valueType: VersionedType<V, any, any, any>;
+  keyType: VersionedType<K, any>;
+  valueType: VersionedType<V, any>;
   maxSize: number;
   assumeStringKey?: boolean;
 }
 
-export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.Output, Diff> {
+export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>, Diff> {
   readonly name: Name = name;
-  readonly keyType: VersionedType<K, any, any, any>;
-  readonly valueType: VersionedType<V, any, any, any>;
+  readonly keyType: VersionedType<K, any>;
+  readonly valueType: VersionedType<V, any>;
   readonly maxSize: number;
   readonly assumeStringKey: boolean;
 
@@ -56,48 +57,44 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
     throw createNotImplementedError("MapType#toJSON");
   }
 
-  readTrustedJson(input: json.Output): Map<K, V> {
-    const result: Map<K, V> = new Map();
-    for (const keyString in input) {
-      const key: K = this.keyType.readTrustedJson(JSON.parse(keyString));
-      const value: V = this.valueType.readTrustedJson(input[keyString]);
-      result.set(key, value);
-    }
-    return result;
+  // TODO: Dynamically add with prototype?
+  read<R>(reader: Reader<R>, raw: R): Map<K, V> {
+    return reader.readMap(raw, readVisitor({
+      fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): Map<K, V> => {
+        const result: Map<K, V> = new Map();
+        for (const [rawKey, rawValue] of input) {
+          const key: K = this.keyType.read!(keyReader, rawKey);
+          const value: V = this.valueType.read!(valueReader, rawValue);
+          result.set(key, value);
+        }
+        const error: Error | undefined = this.testError(result);
+        if (error !== undefined) {
+          throw error;
+        }
+        return result;
+      },
+    }));
   }
 
-  readJson(input: any): Map<K, V> {
-    if (typeof input !== "object" || input === null) {
-      throw createInvalidTypeError("object", input);
-    }
-    const result: Map<K, V> = new Map();
-    for (const keyString in input) {
-      let rawKey: any;
-      try {
-        rawKey = JSON.parse(keyString);
-      } catch (err) {
-        throw err;
-      }
-      const key: K = this.keyType.readJson(rawKey);
-      const value: V = this.valueType.readJson(input[keyString]);
-      result.set(key, value);
-    }
-    const error: Error | undefined = this.testError(result);
-    if (error !== undefined) {
-      throw error;
-    }
-    return result;
-  }
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: Map<K, V>): W {
+    const entries: [K, V][] = [...value];
 
-  writeJson(val: Map<K, V>): json.Output {
-    const result: {[key: string]: any} = {};
-    for (const [key, value] of val) {
-      const rawKey: any = this.keyType.writeJson(key);
-      const keyString: string = JSON.stringify(rawKey);
-      // TODO(demurgos): Check for duplicate keys
-      result[keyString] = this.valueType.writeJson(value);
-    }
-    return result;
+    return writer.writeMap(
+      entries.length,
+      <KW>(index: number, keyWriter: Writer<KW>): KW => {
+        if (this.keyType.write === undefined) {
+          throw new Incident("NotWritable", {type: this.keyType});
+        }
+        return this.keyType.write(keyWriter, entries[index][0]);
+      },
+      <VW>(index: number, valueWriter: Writer<VW>): VW => {
+        if (this.valueType.write === undefined) {
+          throw new Incident("NotWritable", {type: this.valueType});
+        }
+        return this.valueType.write(valueWriter, entries[index][1]);
+      },
+    );
   }
 
   testError(val: Map<K, V>): Error | undefined {
@@ -126,10 +123,19 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
     if (val2.size !== val1.size) {
       return false;
     }
-    // TODO(demurgos): This test is brittle (order-sensitive) and involves unnecessary serialization.
-    const val1Json: string = JSON.stringify(this.writeJson(val1));
-    const val2Json: string = JSON.stringify(this.writeJson(val2));
-    return val1Json === val2Json;
+    const unmatched: Map<K, V> = new Map(val1);
+    for (const [key2, value2] of val2) {
+      for (const [key1, value1] of unmatched) {
+        if (this.keyType.equals(key1, key2)) {
+          if (!this.valueType.equals(value1, value2)) {
+            return false;
+          }
+          unmatched.delete(key1);
+          break;
+        }
+      }
+    }
+    return true;
   }
 
   clone(val: Map<K, V>): Map<K, V> {
@@ -164,12 +170,11 @@ export class MapType<K, V> implements VersionedType<Map<K, V>, json.Input, json.
     }
     const options: MapTypeOptions<K, V> = typeof this._options === "function" ? this._options() : this._options;
 
-    const keyType: VersionedType<K, any, any, any> = options.keyType;
-    const valueType: VersionedType<V, any, any, any> = options.valueType;
+    const keyType: VersionedType<K, any> = options.keyType;
+    const valueType: VersionedType<V, any> = options.valueType;
     const maxSize: number = options.maxSize;
     const assumeStringKey: boolean = options.assumeStringKey || false;
 
     Object.assign(this, {keyType, valueType, maxSize, assumeStringKey});
-    Object.freeze(this);
   }
 }

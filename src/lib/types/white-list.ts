@@ -2,8 +2,7 @@ import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { JSON_SERIALIZER } from "../json";
-import { Lazy, VersionedType } from "../types";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "white-list";
 export const name: Name = "white-list";
@@ -18,13 +17,13 @@ export namespace json {
 export type Diff = [number, number];
 
 export interface WhiteListTypeOptions<T> {
-  itemType: VersionedType<any, any, any, any>;
+  itemType: VersionedType<any, any>;
   values: T[];
 }
 
-export class WhiteListType<T> implements VersionedType<T, json.Input, json.Output, Diff> {
+export class WhiteListType<T> implements IoType<T>, VersionedType<T, Diff> {
   readonly name: Name = name;
-  readonly itemType: VersionedType<any, any, any, any>;
+  readonly itemType: VersionedType<any, any>;
   readonly values: T[];
 
   private _options: Lazy<WhiteListTypeOptions<T>>;
@@ -50,22 +49,25 @@ export class WhiteListType<T> implements VersionedType<T, json.Input, json.Outpu
     throw createNotImplementedError("TypedUnionType#toJSON");
   }
 
-  readTrustedJson(val: json.Output): T {
-    return JSON_SERIALIZER.readTrusted(this.itemType, val);
-  }
-
-  readJson(val: any): T {
-    const value: T = JSON_SERIALIZER.read(this.itemType, val);
+  read<R>(reader: Reader<R>, raw: R): T {
+    if (this.itemType.read === undefined) {
+      throw new Incident("NotReadable", {type: this});
+    }
+    const result: T = this.itemType.read(reader, raw);
     for (const allowed of this.values) {
-      if (this.itemType.equals(value, allowed)) {
-        return value;
+      if (this.itemType.equals(result, allowed)) {
+        return result;
       }
     }
     throw Incident("UnkownVariant", "Unknown variant");
   }
 
-  writeJson(val: T): json.Output {
-    return JSON_SERIALIZER.write(this.itemType, val);
+  write<W>(writer: Writer<W>, value: T): W {
+    if (this.itemType.write !== undefined) {
+      return this.itemType.write(writer, value);
+    } else {
+      throw new Incident("NotWritable", {type: this});
+    }
   }
 
   testError(val: T): Error | undefined {
@@ -115,10 +117,9 @@ export class WhiteListType<T> implements VersionedType<T, json.Input, json.Outpu
     }
     const options: WhiteListTypeOptions<T> = typeof this._options === "function" ? this._options() : this._options;
 
-    const itemType: VersionedType<any, any, any, any> = options.itemType;
+    const itemType: VersionedType<any, any> = options.itemType;
     const values: T[] = options.values;
 
     Object.assign(this, {itemType, values});
-    Object.freeze(this);
   }
 }

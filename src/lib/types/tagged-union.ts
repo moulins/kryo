@@ -1,166 +1,231 @@
 import { Incident } from "incident";
+import { lazyProperties } from "../_helpers/lazy-properties";
+import { createInvalidTypeError } from "../errors/invalid-type";
+import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { JsonSerializer, Lazy, Serializer, Type } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 import { DocumentType } from "./document";
 import { LiteralType } from "./literal";
 import { SimpleEnumType } from "./simple-enum";
-import * as union from "./union";
 
-export type Name = "tagged-union";
-export const name: Name = "tagged-union";
+export type Name = "union";
+export const name: Name = "union";
 export namespace json {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
-  }
-
   export type Type = undefined;
 }
 export type Diff = any;
 
-export interface TaggedUnionTypeOptions<T extends {}> {
-  variants: DocumentType<T>[];
+export interface TaggedUnionTypeOptions<T extends {}, M extends DocumentType<T> = DocumentType<T>> {
+  variants: M[];
   tag: keyof T;
 }
 
-function getTagValuesWithBaseType<T extends {}>(
-  options: TaggedUnionTypeOptions<T>,
-): [Map<number | string, DocumentType<T>>, JsonSerializer<any, any, any>] {
-  const tagName: keyof T = options.tag;
-  let tagBaseType: JsonSerializer<any, any, any> | undefined = undefined;
-  const tagValuesMap: Map<number | string, DocumentType<T>> = new Map();
-  for (const variant of options.variants) {
-    if (variant === undefined) {
-      // tslint:disable-next-line:max-line-length
-      throw new Incident("UndefinedVariant", {variants: options.variants}, "The supplied TaggedUnion options contain undefined variants. If you have circular dependencies, try to use lazy options.");
-    }
+export type TestWithVariantResult<T> =
+  [true, VersionedType<T, any>]
+  | [false, VersionedType<T, any> | undefined];
 
-    if (!(tagName in variant.properties)) {
-      throw new Incident("TagNotFound", "Tag not found in variant of tagged union");
-    }
-    if (!(variant.properties[tagName].type instanceof LiteralType)) {
-      throw new Incident("NonLiteralTag", "Tag property must be a literal type");
-    }
-    const curTag: LiteralType<any> = variant.properties[tagName].type as LiteralType<any>;
-    if (tagBaseType === undefined) {
-      // TODO: Use type name instead of instanceof
-      if (curTag.type instanceof SimpleEnumType) {
-        tagBaseType = curTag.type;
-      } else {
-        throw new Incident("InvalidTagBaseType", "The base type of a tag property must be a simple enum");
-      }
-    } else if (curTag.type !== tagBaseType) {
-      throw new Incident("MixedTagBaseType", "All the variants of a tag property must have the same base type");
-    }
-    if (!(typeof curTag.value === "number" || typeof curTag.value === "string")) {
-      throw new Incident("InvalidTagValue", "The value of a tag property must be a number or string");
-    }
-    const value: number | string = curTag.value;
-    if (tagValuesMap.has(value)) {
-      throw new Incident("DuplicateTagValue", "The tag values must be unique");
-    }
-    tagValuesMap.set(value, variant);
-  }
-  if (tagBaseType === undefined) {
-    throw new Incident("NoVariants");
-  }
-  return [tagValuesMap, tagBaseType!];
-}
+export class TaggedUnionType<T extends {}, M extends DocumentType<T> = DocumentType<T>> implements IoType<T>,
+  TaggedUnionTypeOptions<T, M> {
+  readonly name: Name = name;
+  readonly variants: M[];
+  readonly tag: keyof T;
 
-/**
- * Create a map from the serialized label to the corresponding type variant
- *
- * @param tagName Name of the tag property
- * @param variants Type variants for this union, these should all be tagged document types
- * @param tagBaseType The underlying type of all the variants (must be a simple enum currently)
- * @param serializer The serializer to use to create the map
- * @return Map from the serialized label to the corresponding type variant.
- */
-function createOutValuesMap<T extends {}>(
-  tagName: keyof T,
-  variants: DocumentType<T>[],
-  tagBaseType: any,
-  serializer: Serializer,
-): Map<number | string, DocumentType<T>> {
-  const result: Map<number | string, DocumentType<T>> = new Map();
-  for (const variant of variants) {
-    const curTag: LiteralType<any> = variant.properties[tagName].type as LiteralType<any>;
-    const serialized: any = serializer.write(tagBaseType, (curTag as LiteralType<any>).value);
-    if (!(typeof serialized === "number" || typeof serialized === "string")) {
-      throw new Incident("InvalidSerializedValue", {serialized});
+  private _options?: Lazy<TaggedUnionTypeOptions<T, M>>;
+
+  private _outTag: string | undefined;
+
+  private _tagType: SimpleEnumType<any> | undefined;
+
+  private _valueToVariantMap: Map<any, M> | undefined;
+
+  constructor(options: Lazy<TaggedUnionTypeOptions<T, M>>) {
+    // TODO: Remove once TS 2.7 is better supported by editors
+    this.variants = <any> undefined;
+    this.tag = <any> undefined;
+
+    this._options = options;
+    if (typeof options !== "function") {
+      this._applyOptions();
+    } else {
+      lazyProperties(
+        this,
+        this._applyOptions,
+        ["variants", "tag"],
+      );
     }
-    if (result.has(serialized)) {
-      throw new Incident("DuplicateOutTagValue", "The serialized tag values must be unique");
-    }
-    result.set(serialized, variant);
-  }
-  return result;
-}
-
-function toUnionOptions<T extends {}>(options: TaggedUnionTypeOptions<T>): union.UnionTypeOptions<T, any, any, any> {
-  const tagName: keyof T = options.tag;
-  // tslint:disable-next-line:max-line-length
-  const [tagValuesMap, tagBaseType]: [Map<number | string, DocumentType<T>>, JsonSerializer<any, any, any>] = getTagValuesWithBaseType(options);
-  const outValuesMaps: WeakMap<Serializer, Map<number | string, DocumentType<T>>> = new WeakMap();
-
-  const matcher: union.Matcher<T> = (value: any) => {
-    if (typeof value !== "object" || value === null) {
-      return undefined;
-    }
-    return tagValuesMap.get(value[tagName]);
-  };
-
-  const trustedMatcher: union.TrustedMatcher<T> = (value: T) => {
-    return tagValuesMap.get((<any> value)[tagName])!;
-  };
-
-  const readMatcher: union.ReadMatcher<T> = (input: any, serializer: Serializer) => {
-    if (typeof input !== "object" || input === null) {
-      return undefined;
-    }
-    let outValuesMap: Map<number | string, DocumentType<T>> | undefined = outValuesMaps.get(serializer);
-    if (outValuesMap === undefined) {
-      outValuesMap = createOutValuesMap(tagName, options.variants, tagBaseType, serializer);
-    }
-    return outValuesMap.get(input[tagName]);
-  };
-
-  const readTrustedMatcher: union.ReadTrustedMatcher<T> = (input: any, serializer: Serializer): Type<T> => {
-    let outValuesMap: Map<number | string, DocumentType<T>> | undefined = outValuesMaps.get(serializer);
-    if (outValuesMap === undefined) {
-      outValuesMap = createOutValuesMap(tagName, options.variants, tagBaseType, serializer);
-    }
-    return outValuesMap.get(input[tagName])!;
-  };
-
-  return {variants: options.variants, matcher, trustedMatcher, readMatcher, readTrustedMatcher};
-}
-
-export class TaggedUnionType<T extends {}> extends union.UnionType<T> {
-  constructor(options: Lazy<TaggedUnionTypeOptions<T>>) {
-    super(typeof options === "function" ? () => toUnionOptions(options()) : toUnionOptions(options));
   }
 
   toJSON(): json.Type {
-    throw createNotImplementedError("TaggedUnionType#toJSON");
+    throw createNotImplementedError("UnionType#toJSON");
   }
 
-  diff(oldVal: T, newVal: T): Diff | undefined {
-    throw createNotImplementedError("TaggedUnionType#diff");
+  match(value: T): M | undefined {
+    const tag: keyof T = this.tag;
+    const tagValue: any = value[tag];
+    if (tagValue === undefined) {
+      return undefined;
+      // throw new Incident("MissingTag", {union: this, value});
+    }
+    const variant: M | undefined = this.getValueToVariantMap().get(tagValue); // tagToVariant
+    if (variant === undefined) {
+      return undefined;
+      // throw new Incident("VariantNotFound", {union: this, value});
+    }
+    return variant;
   }
 
-  patch(oldVal: T, diff: Diff | undefined): T {
-    throw createNotImplementedError("TaggedUnionType#patch");
+  matchTrusted(value: T): M {
+    return this.match(value)!;
   }
 
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("TaggedUnionType#reverseDiff");
+  write<W>(writer: Writer<W>, value: T): W {
+    const variant: M | undefined = this.match(value);
+    if (variant === undefined) {
+      throw new Incident("VariantNotFound", {union: this, value});
+    }
+    if (variant.write === undefined) {
+      throw new Incident("NotWritable", {type: variant});
+    }
+    return variant.write(writer, value);
   }
 
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("TaggedUnionType#squash");
+  read<R>(reader: Reader<R>, raw: R): T {
+    return this.variantRead(reader, raw)[1];
+  }
+
+  variantRead<R>(reader: Reader<R>, raw: R): [M, T] {
+    return reader.readDocument(raw, readVisitor({
+      fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): [M, T] => {
+        const outTag: string = this.getOutTag();
+        if (!input.has(outTag as any)) { // TODO: remove cast
+          throw new Incident("MissingOutTag");
+        }
+        const outTagRawValue: any = input.get(outTag as any); // TODO: remove cast
+        const tagValue: any = this.getTagType().read(valueReader, outTagRawValue);
+        const variant: M | undefined = this.getValueToVariantMap().get(tagValue); // tagToVariant
+        if (variant === undefined) {
+          throw new Incident("VariantNotFound", {union: this, tagValue});
+        }
+        return [variant, variant.read!(reader, raw)];
+      },
+    }));
+  }
+
+  testError(value: T): Error | undefined {
+    if (typeof value !== "object" || value === null) {
+      return createInvalidTypeError("object", value);
+    }
+    const variant: M | undefined = this.match(value);
+    if (variant === undefined) {
+      return new Incident("UnknownUnionVariant", "Unknown union variant");
+    }
+    return variant.testError(value);
+  }
+
+  // testWithVariant(val: T): TestWithVariantResult<T> {
+  //   const variant: M | undefined = this.match(val);
+  //   if (variant === undefined) {
+  //     return [false as false, undefined];
+  //   }
+  //   return [variant.test(val), variant] as TestWithVariantResult<T>;
+  // }
+
+  test(value: T): boolean {
+    if (typeof value !== "object" || value === null) {
+      return false;
+    }
+    const type: M | undefined = this.match(value);
+    if (type === undefined) {
+      return false;
+    }
+    return type.test(value);
+  }
+
+  // TODO: Always return true?
+  equals(val1: T, val2: T): boolean {
+    const type1: M = this.matchTrusted(val1);
+    const type2: M = this.matchTrusted(val2);
+    return type1 === type2 && type1.equals(val1, val2);
+  }
+
+  clone(val: T): T {
+    return this.matchTrusted(val).clone(val);
+  }
+
+  private _applyOptions(): void {
+    if (this._options === undefined) {
+      throw createLazyOptionsError(this);
+    }
+    const options: TaggedUnionTypeOptions<T, M> = typeof this._options === "function"
+      ? this._options()
+      : this._options;
+    delete this._options;
+    const variants: M[] = options.variants;
+    const tag: keyof T = options.tag;
+    Object.assign(this, {variants, tag});
+  }
+
+  /**
+   * Returns the serialized name of the tag property
+   */
+  private getOutTag(): string {
+    if (this._outTag === undefined) {
+      const tag: keyof T = this.tag;
+      let outTag: string | undefined = undefined;
+      for (const variant of this.variants) {
+        const cur: string = variant.getOutKey(tag);
+        if (outTag === undefined) {
+          outTag = cur;
+        } else if (cur !== outTag) {
+          throw new Incident("MixedOutTag", {tag, out: [cur, outTag]});
+        }
+      }
+      if (outTag === undefined) {
+        throw new Incident("AssertionFailed", "Expected outTag to be defined");
+      }
+      this._outTag = outTag;
+    }
+    return this._outTag;
+  }
+
+  private getTagType(): SimpleEnumType<any> {
+    if (this._tagType === undefined) {
+      const tag: keyof T = this.tag;
+      let tagType: SimpleEnumType<any> | undefined = undefined;
+      for (const variant of this.variants) {
+        const lit: LiteralType<any> = variant.properties[tag].type as any;
+        const cur: SimpleEnumType<any> = lit.type as any;
+        if (tagType === undefined) {
+          tagType = cur;
+        } else if (cur !== tagType) {
+          throw new Incident("MixedTagType", {tag, type: [cur, tagType]});
+        }
+      }
+      if (tagType === undefined) {
+        throw new Incident("AssertionFailed", "Expected tagType to be defined");
+      }
+      this._tagType = tagType;
+    }
+    return this._tagType;
+  }
+
+  private getValueToVariantMap(): Map<any, M> {
+    if (this._valueToVariantMap === undefined) {
+      const tag: keyof T = this.tag;
+      const valueToVariantMap: Map<any, M> = new Map();
+      for (const variant of this.variants) {
+        const lit: LiteralType<any> = variant.properties[tag].type as any;
+        if (valueToVariantMap.has(lit.value)) {
+          throw new Incident("DuplicateTagValue", {value: lit.value});
+        }
+        valueToVariantMap.set(lit.value, variant);
+      }
+      if (valueToVariantMap === undefined) {
+        throw new Incident("AssertionFailed", "Expected valueToVariantMap to be defined");
+      }
+      this._valueToVariantMap = valueToVariantMap;
+    }
+    return this._valueToVariantMap;
   }
 }

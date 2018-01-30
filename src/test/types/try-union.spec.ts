@@ -1,5 +1,6 @@
-import { assert } from "chai";
+import chai from "chai";
 import { CaseStyle } from "../../lib/case-style";
+import { JsonValueReader } from "../../lib/readers/json-value";
 import { DocumentType } from "../../lib/types/document";
 import { IntegerType } from "../../lib/types/integer";
 import { TryUnionType } from "../../lib/types/try-union";
@@ -91,16 +92,16 @@ describe("TryUnion", function () {
         },
         valid: false,
       },
-      {name: '"foo"', value: "bar", valid: false},
+      {name: "\"foo\"", value: "bar", valid: false},
       {name: "0", value: 0, valid: false},
       {name: "1", value: 1, valid: false},
-      {name: '""', value: "", valid: false},
-      {name: '"0"', value: "0", valid: false},
+      {name: "\"\"", value: "", valid: false},
+      {name: "\"0\"", value: "0", valid: false},
       {name: "true", value: true, valid: false},
       {name: "false", value: false, valid: false},
       {name: "Infinity", value: Infinity, valid: false},
       {name: "-Infinity", value: -Infinity, valid: false},
-      {name: 'new Date("1247-05-18T19:40:08.418Z")', value: new Date("1247-05-18T19:40:08.418Z"), valid: false},
+      {name: "new Date(\"1247-05-18T19:40:08.418Z\")", value: new Date("1247-05-18T19:40:08.418Z"), valid: false},
       {name: "NaN", value: NaN, valid: false},
       {name: "undefined", value: undefined, valid: false},
       {name: "null", value: null, valid: false},
@@ -111,32 +112,34 @@ describe("TryUnion", function () {
 
     runTests($Shape, items);
 
+    const jsonValueReader: JsonValueReader = new JsonValueReader();
+
     it(".readTrustedWithVariant should return $Rectangle", () => {
-      const [_, variant] = $Shape.readTrustedJsonWithVariant({width: 10, height: 20});
-      assert.strictEqual(variant, $Rectangle);
+      const [variant, _] = $Shape.variantRead(jsonValueReader, {width: 10, height: 20});
+      chai.assert.strictEqual(variant, $Rectangle);
     });
 
     it(".readTrustedWithVariant should return $Circle", () => {
-      const [_, variant] = $Shape.readTrustedJsonWithVariant({radius: 15});
-      assert.strictEqual(variant, $Circle);
+      const [variant, _] = $Shape.variantRead(jsonValueReader, {radius: 15});
+      chai.assert.strictEqual(variant, $Circle);
     });
 
-    it(".testWithVariant should return [true, $Rectangle]", () => {
-      const [test, variant] = $Shape.testWithVariant({width: 10, height: 20});
-      assert.strictEqual(test, true);
-      assert.strictEqual(variant, $Rectangle);
-    });
+    // it(".testWithVariant should return [true, $Rectangle]", () => {
+    //   const [test, variant] = $Shape.testWithVariant({width: 10, height: 20});
+    //   assert.strictEqual(test, true);
+    //   assert.strictEqual(variant, $Rectangle);
+    // });
+    //
+    // it(".testWithVariant should return [true, $Circle]", () => {
+    //   const [test, variant] = $Shape.testWithVariant({radius: 15});
+    //   assert.strictEqual(test, true);
+    //   assert.strictEqual(variant, $Circle);
+    // });
 
-    it(".testWithVariant should return [true, $Circle]", () => {
-      const [test, variant] = $Shape.testWithVariant({radius: 15});
-      assert.strictEqual(test, true);
-      assert.strictEqual(variant, $Circle);
-    });
-
-    it(".testWithVariant should return [false, undefined]", () => {
-      const [test, variant] = $Shape.testWithVariant({length: 25} as any);
-      assert.strictEqual(test, false);
-      assert.strictEqual(variant, undefined);
-    });
+    // it(".testWithVariant should return [false, undefined]", () => {
+    //   const [test, variant] = $Shape.testWithVariant({length: 25} as any);
+    //   assert.strictEqual(test, false);
+    //   assert.strictEqual(variant, undefined);
+    // });
   });
 });

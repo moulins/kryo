@@ -1,11 +1,13 @@
+import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createInvalidArrayItemsError } from "../errors/invalid-array-items";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { JSON_SERIALIZER } from "../json";
-import { Lazy, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Readable, Reader, Type, Writable, Writer } from "../types";
+import { LiteralTypeOptions } from "./literal";
 
 export type Name = "array";
 export const name: Name = "array";
@@ -15,8 +17,12 @@ export namespace json {
 }
 export type Diff = any;
 
-export interface ArrayTypeOptions<T> {
-  itemType: VersionedType<T, any, any, any>;
+/**
+ * T: Item type
+ * M: Meta-Type
+ */
+export interface ArrayTypeOptions<T, M extends Type<T> = Type<T>> {
+  itemType: M;
   maxLength: number;
 }
 
@@ -25,20 +31,30 @@ export interface ArrayTypeConstructor {
    * Create a new array type
    */
   new<T>(options: Lazy<ArrayTypeOptions<T>>): ArrayType<T>;
+
+  new<T>(options: Lazy<LiteralTypeOptions<T, Readable<T> & Type<T>>>): ArrayType<T> & Readable<T>;
+
+  new<T>(options: Lazy<LiteralTypeOptions<T, Writable<T> & Type<T>>>): ArrayType<T> & Writable<T>;
+
+  new<T>(options: Lazy<LiteralTypeOptions<T, IoType<T>>>): ArrayIoType<T>;
 }
 
-export interface ArrayType<T> extends VersionedType<T[], any, any, Diff>, ArrayTypeOptions<T> {
+export interface ArrayType<T, M extends Type<T> = Type<T>> extends Type<T[]>, ArrayTypeOptions<T, M> {
+}
+
+export interface ArrayIoType<T, M extends IoType<T> = IoType<T>> extends IoType<T[]>,
+  ArrayTypeOptions<T, M> {
 }
 
 // tslint:disable-next-line:variable-name
-export const ArrayType: ArrayTypeConstructor = class<T> {
+export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> = Type<T>> {
   readonly name: Name = name;
-  readonly itemType: VersionedType<T, any, any, any>;
+  readonly itemType: M;
   readonly maxLength: number;
 
-  private _options: Lazy<ArrayTypeOptions<T>>;
+  private _options: Lazy<ArrayTypeOptions<T, M>>;
 
-  constructor(options: Lazy<ArrayTypeOptions<T>>) {
+  constructor(options: Lazy<ArrayTypeOptions<T, M>>) {
     // TODO: Remove once TS 2.7 is better supported by editors
     this.itemType = <any> undefined;
     this.maxLength = <any> undefined;
@@ -55,41 +71,52 @@ export const ArrayType: ArrayTypeConstructor = class<T> {
     throw createNotImplementedError("ArrayType#toJSON");
   }
 
-  readTrustedJson(input: any[]): T[] {
-    return input.map((item: any): T => JSON_SERIALIZER.readTrusted(this.itemType, item));
+  // TODO: Dynamically add with prototype?
+  read<R>(reader: Reader<R>, raw: R): T[] {
+    const itemType: M = this.itemType;
+    const maxLength: number | undefined = this.maxLength;
+
+    return reader.readSeq(raw, readVisitor({
+      fromSeq(input: Iterable<any>, size?: number): T[] {
+        if (size === undefined) {
+          throw new Incident("UnknownArrayLength");
+        }
+        if (maxLength !== undefined && size > maxLength) {
+          throw createMaxArrayLengthError([...input], maxLength);
+        }
+        let invalid: undefined | Map<number, Error> = undefined;
+        const result: T[] = [];
+        let i: number = 0;
+        for (const rawItem of input) {
+          try {
+            const item: T = itemType.read!(reader, rawItem);
+            if (invalid === undefined) {
+              result.push(item);
+            }
+          } catch (err) {
+            if (invalid === undefined) {
+              invalid = new Map();
+            }
+            invalid.set(i, err);
+          }
+          i++;
+        }
+        if (invalid !== undefined) {
+          throw createInvalidArrayItemsError(invalid);
+        }
+        return result;
+      },
+    }));
   }
 
-  readJson(input: any): T[] {
-    if (!Array.isArray(input)) {
-      throw createInvalidTypeError("array", input);
-    }
-    if (this.maxLength !== undefined && input.length > this.maxLength) {
-      throw createMaxArrayLengthError(input, this.maxLength);
-    }
-    let invalid: undefined | Map<number, Error> = undefined;
-    const result: T[] = [];
-    const itemCount: number = input.length;
-    for (let i: number = 0; i < itemCount; i++) {
-      try {
-        const item: T = JSON_SERIALIZER.read(this.itemType, input[i]);
-        if (invalid === undefined) {
-          result.push(item);
-        }
-      } catch (err) {
-        if (invalid === undefined) {
-          invalid = new Map();
-        }
-        invalid.set(i, err);
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: T[]): W {
+    return writer.writeArray(value.length, <IW>(index: number, itemWriter: Writer<IW>): IW => {
+      if (this.itemType.write === undefined) {
+        throw new Incident("NotWritable", {type: this.itemType});
       }
-    }
-    if (invalid !== undefined) {
-      throw createInvalidArrayItemsError(invalid);
-    }
-    return result;
-  }
-
-  writeJson(val: T[]): any[] {
-    return val.map((item: T): any => JSON_SERIALIZER.write(this.itemType, item));
+      return this.itemType.write(itemWriter, value[index]);
+    });
   }
 
   testError(val: T[]): Error | undefined {
@@ -141,37 +168,15 @@ export const ArrayType: ArrayTypeConstructor = class<T> {
     return val.map((item: T): T => this.itemType.clone(item));
   }
 
-  /**
-   * @param oldVal
-   * @param newVal
-   * @returns `true` if there is a difference, `undefined` otherwise
-   */
-  diff(oldVal: T[], newVal: T[]): Diff | undefined {
-    throw createNotImplementedError("ArrayType#diff");
-  }
-
-  patch(oldVal: T[], diff: Diff | undefined): T[] {
-    throw createNotImplementedError("ArrayType#patch");
-  }
-
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("ArrayType#reverseDiff");
-  }
-
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    throw createNotImplementedError("ArrayType#squash");
-  }
-
   private _applyOptions(): void {
     if (this._options === undefined) {
       throw createLazyOptionsError(this);
     }
-    const options: ArrayTypeOptions<T> = typeof this._options === "function" ? this._options() : this._options;
+    const options: ArrayTypeOptions<T, M> = typeof this._options === "function" ? this._options() : this._options;
 
-    const itemType: VersionedType<T, any, any, any> = options.itemType;
+    const itemType: M = options.itemType;
     const maxLength: number = options.maxLength;
 
     Object.assign(this, {itemType, maxLength});
-    Object.freeze(this);
   }
 };

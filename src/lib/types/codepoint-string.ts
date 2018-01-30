@@ -9,7 +9,8 @@ import { createMinCodepointsError } from "../errors/min-codepoints";
 import { createMissingDependencyError } from "../errors/missing-dependency";
 import { createNotTrimmedError } from "../errors/not-trimmed";
 import { createPatternNotMatchedError } from "../errors/pattern-not-matched";
-import { Lazy, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 let unormNfc: ((str: string) => string) | undefined = undefined;
 try {
@@ -84,7 +85,7 @@ export interface CodepointStringOptions {
   maxCodepoints: number;
 }
 
-export class CodepointStringType implements VersionedType<string, json.Input, json.Output, Diff> {
+export class CodepointStringType implements IoType<string>, VersionedType<string, Diff> {
 
   readonly name: Name = name;
   readonly normalization: Normalization;
@@ -152,20 +153,22 @@ export class CodepointStringType implements VersionedType<string, json.Input, js
     return jsonType;
   }
 
-  readTrustedJson(input: json.Output): string {
-    return input;
+  // TODO: Dynamically add with prototype?
+  read<R>(reader: Reader<R>, raw: R): string {
+    return reader.readString(raw, readVisitor({
+      fromString: (input: string): string => {
+        const error: Error | undefined = this.testError(input);
+        if (error !== undefined) {
+          throw error;
+        }
+        return input;
+      },
+    }));
   }
 
-  readJson(input: any): string {
-    const error: Error | undefined = this.testError(input);
-    if (error !== undefined) {
-      throw error;
-    }
-    return input;
-  }
-
-  writeJson(val: string): json.Output {
-    return val;
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: string): W {
+    return writer.writeUcs2String(value);
   }
 
   testError(val: string): Error | undefined {
@@ -285,6 +288,5 @@ export class CodepointStringType implements VersionedType<string, json.Input, js
       this,
       {normalization, enforceUnicodeRegExp, pattern, lowerCase, trimmed, minCodepoints, maxCodepoints},
     );
-    Object.freeze(this);
   }
 }

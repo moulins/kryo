@@ -7,7 +7,8 @@ import { createMaxUcs2StringLengthError } from "../errors/max-ucs2-string-length
 import { createMinUcs2StringLengthError } from "../errors/min-ucs2-string-length";
 import { createNotTrimmedError } from "../errors/not-trimmed";
 import { createPatternNotMatchedError } from "../errors/pattern-not-matched";
-import { Lazy, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";
@@ -106,7 +107,7 @@ export interface Ucs2StringTypeOptions {
  * PS: This type does not deal with Unicdoe normalization either. Use CodepointString and CodepointArray if you need
  * it.
  */
-export class Ucs2StringType implements VersionedType<string, json.Input, json.Output, Diff> {
+export class Ucs2StringType implements IoType<string>, VersionedType<string, Diff> {
   readonly name: Name = name;
   readonly allowUnicodeRegExp: boolean;
   readonly pattern?: RegExp;
@@ -169,20 +170,22 @@ export class Ucs2StringType implements VersionedType<string, json.Input, json.Ou
     return jsonType;
   }
 
-  readTrustedJson(input: json.Output): string {
-    return input;
+  // TODO: Dynamically add with prototype?
+  read<R>(reader: Reader<R>, raw: R): string {
+    return reader.readString(raw, readVisitor({
+      fromString: (input: string): string => {
+        const error: Error | undefined = this.testError(input);
+        if (error !== undefined) {
+          throw error;
+        }
+        return input;
+      },
+    }));
   }
 
-  readJson(input: any): string {
-    const error: Error | undefined = this.testError(input);
-    if (error !== undefined) {
-      throw error;
-    }
-    return input;
-  }
-
-  writeJson(val: string): json.Output {
-    return val;
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: string): W {
+    return writer.writeUcs2String(value);
   }
 
   testError(val: string): Error | undefined {
@@ -267,6 +270,5 @@ export class Ucs2StringType implements VersionedType<string, json.Input, json.Ou
     const maxLength: number = options.maxLength;
 
     Object.assign(this, {allowUnicodeRegExp, pattern, lowerCase, trimmed, minLength, maxLength});
-    Object.freeze(this);
   }
 }

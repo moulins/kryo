@@ -1,6 +1,6 @@
 {
   "name": "kryo",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Serialization for documents.",
   "main": "dist/lib/index",
   "types": "dist/lib/index.d.ts",
@@ -51,12 +51,12 @@
     "pre-commit": "^1.2.2",
     "qs": "^6.5.1",
     "ts-node": "^4.1.0",
-    "turbo-gulp": "^0.16.1",
-    "typedoc": "^0.9.0",
+    "turbo-gulp": "0.16.1-build.406",
     "typescript": "^2.7.0-rc"
   },
   "nyc": {
     "include": [
+      "build/test/lib/**/*.js",
       "build/test/lib/**/*.mjs"
     ],
     "reporter": [

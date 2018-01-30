@@ -61,6 +61,10 @@ export function join(caseStyle: CaseStyle, parts: string[]): string {
   }
 }
 
+export function isCaseStyle(value: any): value is CaseStyle {
+  return CaseStyle[value] !== undefined;
+}
+
 export function rename(identifier: string, to: CaseStyle): string;
 // tslint:disable-next-line:unified-signatures
 export function rename(identifier: string, from: CaseStyle, to: CaseStyle): string;
@@ -70,4 +74,18 @@ export function rename(identifier: string, from: CaseStyle, to?: CaseStyle): str
     from = detectCaseStyle(identifier);
   }
   return join(to, split(from, identifier));
+}
+
+export function renameMap<K extends string>(keys: Iterable<K>, to?: CaseStyle): Map<string, K> {
+  const result: Map<string, K> = new Map();
+  const outKeys: Set<string> = new Set();
+  for (const key of keys) {
+    const renamed: string = to === undefined ? key : rename(key, to);
+    result.set(renamed, key);
+    if (outKeys.has(renamed)) {
+      throw new Incident("NonBijectiveKeyRename", "Some keys are the same after renaming");
+    }
+    outKeys.add(renamed);
+  }
+  return result;
 }

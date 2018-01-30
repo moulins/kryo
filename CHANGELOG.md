@@ -1,3 +1,8 @@
+# Next
+
+- **[Breaking change]** Remove `.readJson`, `.readTrustedJson`, `.writeJson` and serializers in
+  favor of `.read`, `.write` and `Writer`/`Reader` interfaces to better support various formats.
+
 # 0.6.1 (2018-01-30)
 
 - **[Fix]** Use `{}` instead of `Object.create(null)` when creating new objects in `DocumentType`.

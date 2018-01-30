@@ -1,5 +1,6 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Reader, VersionedType, Writable, Writer } from "../types";
 
 export type Name = "null";
 export const name: Name = "null";
@@ -11,32 +12,27 @@ export namespace json {
     name: Name;
   }
 }
-export type Diff = undefined;
 
-export class NullType implements VersionedType<null, json.Input, json.Output, Diff> {
+export class NullType implements IoType<null>, VersionedType<null, undefined> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name};
   }
 
-  readTrustedJson(input: json.Output): null {
-    return null;
+  read<R>(reader: Reader<R>, raw: R): null {
+    return reader.readNull(raw, readVisitor({
+      fromNull: () =>  null,
+    }));
   }
 
-  readJson(input: any): null {
-    if (input !== null) {
-      throw createInvalidTypeError("null", input);
-    }
-    return null;
-  }
-
-  writeJson(val: null): json.Output {
-    return null;
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: null): W {
+    return writer.writeNull();
   }
 
   testError(val: null): Error | undefined {
-    if (val !== "null") {
+    if (val !== null) {
       return createInvalidTypeError("null", val);
     }
     return undefined;
@@ -59,22 +55,19 @@ export class NullType implements VersionedType<null, json.Input, json.Output, Di
    * @param newVal
    * @returns `true` if there is a difference, `undefined` otherwise
    */
-  diff(oldVal: null, newVal: null): Diff | undefined {
-    /* tslint:disable-next-line:return-undefined */
-    return undefined;
+  diff(oldVal: null, newVal: null): undefined {
+    return;
   }
 
-  patch(oldVal: null, diff: Diff | undefined): null {
+  patch(oldVal: null, diff: undefined): null {
     return null;
   }
 
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
-    /* tslint:disable-next-line:return-undefined */
-    return undefined;
+  reverseDiff(diff: undefined): undefined {
+    return;
   }
 
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
-    /* tslint:disable-next-line:return-undefined */
-    return undefined;
+  squash(diff1: undefined, diff2: undefined): undefined {
+    return;
   }
 }

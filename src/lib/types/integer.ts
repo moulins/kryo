@@ -3,7 +3,8 @@ import { lazyProperties } from "../_helpers/lazy-properties";
 import { createInvalidIntegerError } from "../errors/invalid-integer";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
-import { Lazy, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Reader, VersionedType, Writable, Writer } from "../types";
 
 export type Name = "integer";
 export const name: Name = "integer";
@@ -46,7 +47,7 @@ export const DEFAULT_MIN: number = Number.MIN_SAFE_INTEGER - 1;
  */
 export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 
-export class IntegerType implements VersionedType<number, json.Input, json.Output, Diff> {
+export class IntegerType implements IoType<number>, VersionedType<number, Diff> {
 
   readonly name: Name = name;
   readonly min: number;
@@ -80,26 +81,21 @@ export class IntegerType implements VersionedType<number, json.Input, json.Outpu
     return {name, min: this.min, max: this.max};
   }
 
-  readTrustedJson(input: json.Output): number {
-    return input;
+  read<R>(reader: Reader<R>, raw: R): number {
+    return reader.readFloat64(raw, readVisitor({
+      fromFloat64: (input: number): number => {
+        const error: Error | undefined = reader.trustInput ? undefined : this.testError(input);
+        if (error !== undefined) {
+          throw error;
+        }
+        return input;
+      },
+    }));
   }
 
-  readJson(input: any): number {
-    let val: number;
-    if (typeof input !== "number") {
-      throw createInvalidTypeError("number", input);
-    }
-    val = input;
-    const err: Error | undefined = this.testError(val);
-    if (err !== undefined) {
-      throw err;
-    }
-
-    return val;
-  }
-
-  writeJson(val: number): json.Output {
-    return val;
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: number): W {
+    return writer.writeFloat64(value);
   }
 
   testError(val: number): Error | undefined {
@@ -159,6 +155,5 @@ export class IntegerType implements VersionedType<number, json.Input, json.Outpu
     const max: number = options.max !== undefined ? options.max : DEFAULT_MAX;
 
     Object.assign(this, {min, max});
-    Object.freeze(this);
   }
 }

@@ -81,7 +81,7 @@ describe("SimpleEnum", function () {
   runTests(type, items);
 });
 
-describe("SimpleEnum: rename", function () {
+describe("SimpleEnum: rename KebabCase", function () {
   enum Node {
     Expression,
     BinaryOperator,
@@ -155,3 +155,78 @@ describe("SimpleEnum: rename", function () {
 
   runTests(type, items);
 });
+
+// describe("SimpleEnum: rename custom", function () {
+//   enum Node {
+//     Expression,
+//     BinaryOperator,
+//     BlockStatement,
+//   }
+//
+//   const type: SimpleEnumType<Node> = new SimpleEnumType({enum: Node, rename: CaseStyle.KebabCase});
+//
+//   const items: TypedValue[] = [
+//     {
+//       name: "Node.Expression",
+//       value: Node.Expression,
+//       valid: true,
+//       output: {
+//         bson: "expression",
+//         json: "expression",
+//         qs: "expression",
+//       },
+//     },
+//     {
+//       name: "Node.BinaryOperator",
+//       value: Node.BinaryOperator,
+//       valid: true,
+//       output: {
+//         bson: "binary-operator",
+//         json: "binary-operator",
+//         qs: "binary-operator",
+//       },
+//     },
+//     {
+//       name: "Node.BlockStatement",
+//       value: Node.BlockStatement,
+//       valid: true,
+//       output: {
+//         bson: "block-statement",
+//         json: "block-statement",
+//         qs: "block-statement",
+//       },
+//     },
+//     {
+//       name: "0",
+//       value: 0,
+//       valid: true,
+//       output: {
+//         bson: "expression",
+//         json: "expression",
+//         qs: "expression",
+//       },
+//     },
+//     {
+//       name: "1",
+//       value: 1,
+//       valid: true,
+//       output: {
+//         bson: "binary-operator",
+//         json: "binary-operator",
+//         qs: "binary-operator",
+//       },
+//     },
+//     {
+//       name: "2",
+//       value: 2,
+//       valid: true,
+//       output: {
+//         bson: "block-statement",
+//         json: "block-statement",
+//         qs: "block-statement",
+//       },
+//     },
+//   ];
+//
+//   runTests(type, items);
+// });

@@ -1,12 +1,12 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { CaseStyle, rename } from "../case-style";
+import { CaseStyle, isCaseStyle, rename } from "../case-style";
 import { createInvalidDocumentError } from "../errors/invalid-document";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { JSON_SERIALIZER } from "../json";
-import { Lazy, Type as KryoType, VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Lazy, Readable, Reader, Type, VersionedType, Writable, Writer } from "../types";
 
 export type Name = "document";
 export const name: Name = "document";
@@ -31,7 +31,7 @@ export interface DocumentTypeOptions<T> {
   /**
    * A dictionary between a property name and its description.
    */
-  properties: {[P in keyof T]: PropertyDescriptor<KryoType<T[P]>>};
+  properties: {[P in keyof T]: PropertyDescriptor<Type<T[P]>>};
 
   /**
    * The keys of the serialized documents are renamed following the
@@ -40,7 +40,7 @@ export interface DocumentTypeOptions<T> {
   rename?: CaseStyle;
 }
 
-export interface PropertyDescriptor<MetaType extends KryoType<any>> {
+export interface PropertyDescriptor<M extends Type<any>> {
   /**
    * Allows this property to be missing (undefined values throw errors).
    */
@@ -49,7 +49,12 @@ export interface PropertyDescriptor<MetaType extends KryoType<any>> {
   /**
    * The type of this property.
    */
-  type: MetaType;
+  type: M;
+
+  /**
+   * The name used by the serialized data or a case style to apply to get this name.
+   */
+  rename?: string | CaseStyle;
 }
 
 export interface DocumentTypeConstructor {
@@ -64,21 +69,40 @@ export interface DocumentTypeConstructor {
   new<T>(options: Lazy<DocumentTypeOptions<T>>): DocumentType<T>;
 }
 
-export interface DocumentType<T> extends VersionedType<T, any, any, Diff<T>>, DocumentTypeOptions<T> {
+export interface DocumentType<T> extends Type<T>, VersionedType<T, Diff<T>>, DocumentTypeOptions<T> {
+  getOutKey(key: keyof T): string;
+}
+
+export interface DocumenDuplexType<T> extends IoType<T>, VersionedType<T, Diff<T>>, DocumentTypeOptions<T> {
+  getOutKey(key: keyof T): string;
+
+  read<R>(reader: Reader<R>, raw: R): T;
+
+  write<W>(writer: Writer<W>, value: T): W;
 }
 
 // We use an `any` cast because of the `properties` property.
 // tslint:disable-next-line:variable-name
-export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
+export const DocumentType: DocumentTypeConstructor = class<T extends {}> implements IoType<T> {
   readonly name: Name = name;
   readonly ignoreExtraKeys: boolean;
-  readonly properties: {[P in keyof T]: PropertyDescriptor<KryoType<T[P]>>};
+  readonly properties: {[P in keyof T]: PropertyDescriptor<Type<T[P]>>};
   readonly rename?: CaseStyle;
 
   /**
-   * Map from the document keys to the serialized names
+   * Map from serialized keys to the document keys
    */
-  private readonly keys: Map<keyof T, string>;
+  get outKeys(): Map<string, keyof T> {
+    if (this._outKeys === undefined) {
+      this._outKeys = new Map();
+      for (const key of Object.keys(this.properties) as (keyof T)[]) {
+        this._outKeys.set(this.getOutKey(key), key);
+      }
+    }
+    return this._outKeys;
+  }
+
+  private _outKeys: Map<string, keyof T> | undefined;
 
   private _options: Lazy<DocumentTypeOptions<T>>;
 
@@ -86,7 +110,6 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
     // TODO: Remove once TS 2.7 is better supported by editors
     this.ignoreExtraKeys = <any> undefined;
     this.properties = <any> undefined;
-    this.keys = <any> undefined;
 
     this._options = options;
     if (typeof options !== "function") {
@@ -104,66 +127,78 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
     throw createNotImplementedError("DocumentType#toJSON");
   }
 
-  readTrustedJson(input: any): T {
-    const result: Partial<T> = {}; // Object.create(null);
-    for (const [key, outKey] of this.keys) {
-      const descriptor: PropertyDescriptor<any> = this.properties[key];
-      const jsonValue: any = Reflect.get(input, outKey);
-      if (jsonValue === undefined) {
-        result[key] = undefined;
+  getOutKey(key: keyof T): string {
+    const descriptor: PropertyDescriptor<Type<any>> = this.properties[key];
+    if (descriptor.rename !== undefined) {
+      if (isCaseStyle(descriptor.rename)) {
+        return rename(key, descriptor.rename);
       } else {
-        result[key] = JSON_SERIALIZER.readTrusted(descriptor.type, jsonValue);
+        return descriptor.rename;
       }
     }
-    return result as T;
+    if (this.rename !== undefined) {
+      return rename(key, this.rename);
+    }
+    return key;
   }
 
-  readJson(input: any): T {
-    const extra: Set<string> | undefined = this.ignoreExtraKeys ? undefined : new Set(Object.keys(input));
-    const missing: Set<string> = new Set();
-    const invalid: Map<keyof T, Error> = new Map();
+  // TODO: Dynamically add with prototype?
+  read<R>(reader: Reader<R>, raw: R): T {
+    return reader.readDocument(raw, readVisitor({
+      fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T => {
+        const extra: Set<string> | undefined = this.ignoreExtraKeys ? undefined : new Set(Object.keys(input));
+        const missing: Set<string> = new Set();
+        const invalid: Map<keyof T, Error> = new Map();
 
-    const result: Partial<T> = {}; // Object.create(null);
+        const result: Partial<T> = {}; // Object.create(null);
 
-    for (const [key, outKey] of this.keys) {
-      if (extra !== undefined) {
-        extra.delete(outKey);
-      }
-      const descriptor: PropertyDescriptor<any> = this.properties[key];
-      const jsonValue: any = Reflect.get(input, outKey);
-      if (jsonValue === undefined) {
-        if (descriptor.optional) {
-          result[key] = undefined;
-        } else {
-          missing.add(key);
+        for (const [outKey, key] of this.outKeys) {
+          if (extra !== undefined) {
+            extra.delete(outKey);
+          }
+          const descriptor: PropertyDescriptor<any> = this.properties[key];
+          const rawValue: any = input.get(outKey as any); // TODO: Improve this...
+          if (rawValue === undefined) {
+            if (descriptor.optional) {
+              result[key] = undefined;
+            } else {
+              missing.add(key);
+            }
+            continue;
+          }
+          try {
+            result[key] = descriptor.type.read!(valueReader, rawValue);
+          } catch (err) {
+            invalid.set(key, err);
+          }
         }
-        continue;
-      }
-      try {
-        result[key] = JSON_SERIALIZER.read(descriptor.type, jsonValue);
-      } catch (err) {
-        invalid.set(key, err);
-      }
-    }
 
-    if (extra !== undefined && extra.size > 0 || missing.size > 0 || invalid.size > 0) {
-      throw createInvalidDocumentError({extra, missing, invalid});
-    }
-    return result as T;
+        if (extra !== undefined && extra.size > 0 || missing.size > 0 || invalid.size > 0) {
+          throw createInvalidDocumentError({extra, missing, invalid});
+        }
+        return result as T;
+      },
+    }));
   }
 
-  writeJson(val: T): any {
-    const result: any = {}; // Object.create(null);
-    for (const [key, outKey] of this.keys) {
-      const descriptor: PropertyDescriptor<T[keyof T]> = this.properties[key];
-      const value: T[keyof T] = val[key];
-      if (value === undefined) {
-        Reflect.set(result, outKey, undefined);
-      } else {
-        Reflect.set(result, outKey, JSON_SERIALIZER.write(descriptor.type, value));
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: T): W {
+    const outKeys: Map<string, keyof T> = new Map(this.outKeys);
+
+    for (const [outKey, jskey] of outKeys) {
+      if (value[jskey] === undefined) {
+        outKeys.delete(outKey);
       }
     }
-    return result as T;
+
+    return writer.writeDocument(outKeys.keys(), <FW>(outKey: string, fieldWriter: Writer<FW>): FW => {
+      const jsKey: keyof T = this.outKeys.get(outKey)!;
+      const descriptor: PropertyDescriptor<any> = this.properties[jsKey];
+      if (descriptor.type.write === undefined) {
+        throw new Incident("NotWritable", {type: descriptor.type});
+      }
+      return descriptor.type.write(fieldWriter, value[jsKey]);
+    });
   }
 
   testError(val: T): Error | undefined {
@@ -226,7 +261,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
 
   equals(val1: T, val2: T): boolean {
     for (const key in this.properties) {
-      const descriptor: PropertyDescriptor<KryoType<any>> = this.properties[key];
+      const descriptor: PropertyDescriptor<Type<any>> = this.properties[key];
       if (!descriptor.optional) {
         if (!descriptor.type.equals(val1[key], val2[key])) {
           return false;
@@ -256,7 +291,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
     const result: Diff<T> = {set: {}, unset: {}, update: {}};
     for (const key in this.properties) {
       // TODO: Remove cast
-      const descriptor: PropertyDescriptor<VersionedType<any, any, any, any>> = <any> this.properties[key];
+      const descriptor: PropertyDescriptor<VersionedType<any, any>> = <any> this.properties[key];
       const oldMember: any = (<any> oldVal)[key];
       const newMember: any = (<any> newVal)[key];
       if (oldMember !== undefined) {
@@ -329,12 +364,11 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> {
       this._options;
 
     const ignoreExtraKeys: boolean = options.ignoreExtraKeys || false;
-    const properties: {[P in keyof T]: PropertyDescriptor<KryoType<any>>} = options.properties;
+    const properties: {[P in keyof T]: PropertyDescriptor<Type<any>>} = options.properties;
     const renameAll: CaseStyle | undefined = options.rename;
     const keys: Map<keyof T, string> = renameKeys(properties, renameAll);
 
     Object.assign(this, {ignoreExtraKeys, properties, rename: renameAll, keys});
-    Object.freeze(this);
   }
 };
 

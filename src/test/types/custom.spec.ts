@@ -1,6 +1,7 @@
 import { Incident } from "incident";
 import { createInvalidTypeError } from "../../lib/errors/invalid-type";
-import { Serializer } from "../../lib/types";
+import { readVisitor } from "../../lib/readers/read-visitor";
+import { Reader, Writer } from "../../lib/types";
 import { CustomType } from "../../lib/types/custom";
 import { runTests, TypedValue } from "../helpers/test";
 
@@ -45,11 +46,18 @@ describe("Custom", function () {
   }
 
   const complexType: CustomType<Complex> = new CustomType({
-    read(input: any, serializer: Serializer): Complex {
-      return Complex.fromString(input);
+    read<R>(reader: Reader<R>, raw: R): Complex {
+      return reader.readString(raw, readVisitor({
+        fromString: (input: string): Complex => {
+          return Complex.fromString(input);
+        },
+        fromFloat64: (input: number): Complex => {
+          return new Complex(input, 0);
+        },
+      }));
     },
-    write(value: Complex, serializer: Serializer): string {
-      return value.toString();
+    write<W>(writer: Writer<W>, value: Complex): W {
+      return writer.writeUcs2String(value.toString());
     },
     testError(value: Complex): Error | undefined {
       if (!(value instanceof Complex)) {

@@ -1,5 +1,7 @@
-import { createNotImplementedError, NotImplementedError } from "../errors/not-implemented";
-import { VersionedType } from "../types";
+import { createNotImplementedError } from "../errors/not-implemented";
+import { JsonValue } from "../json-value";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "json";
 export const name: Name = "json";
@@ -11,7 +13,7 @@ export namespace json {
 }
 export type Diff = any;
 
-export class JsonType implements VersionedType<any, json.Input, json.Output, Diff> {
+export class JsonType implements IoType<JsonValue>, VersionedType<JsonValue, Diff> {
   readonly name: Name = name;
 
   constructor() {
@@ -21,44 +23,47 @@ export class JsonType implements VersionedType<any, json.Input, json.Output, Dif
     throw createNotImplementedError("ArrayType#toJSON");
   }
 
-  readTrustedJson(input: json.Output): any {
-    return input;
+  read<R>(reader: Reader<R>, raw: R): JsonValue {
+    return reader.readAny(raw, readVisitor<any>({
+      fromBoolean: input => input,
+      fromFloat64: input => input,
+      fromNull: () => null,
+      fromString: input => input,
+    }));
   }
 
-  readJson(input: any): any {
-    return JSON.parse(JSON.stringify(input));
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: JsonValue): W {
+    return writer.writeJson(value);
   }
 
-  writeJson(val: any): json.Output {
-    return JSON.parse(JSON.stringify(val));
-  }
-
-  testError(val: any): Error | undefined {
+  testError(value: JsonValue): Error | undefined {
     try {
-      JSON.parse(JSON.stringify(val));
+      JSON.parse(JSON.stringify(value));
       return undefined;
     } catch (err) {
       return err;
     }
   }
 
-  test(val: any): boolean {
-    return this.testError(val) === undefined;
+  test(value: JsonValue): boolean {
+    return this.testError(value) === undefined;
   }
 
-  equals(val1: any, val2: any): boolean {
+  equals(val1: JsonValue, val2: JsonValue): boolean {
+    // TODO: Use deep equality: the current implementation is order-dependent.
     return JSON.stringify(val1) === JSON.stringify(val2);
   }
 
-  clone(val: any): any {
+  clone(val: JsonValue): JsonValue {
     return JSON.parse(JSON.stringify(val));
   }
 
-  diff(oldVal: any, newVal: any): Diff | undefined {
+  diff(oldVal: JsonValue, newVal: JsonValue): Diff | undefined {
     throw createNotImplementedError("JsonType#diff");
   }
 
-  patch(oldVal: any, diff: Diff | undefined): any {
+  patch(oldVal: JsonValue, diff: Diff | undefined): JsonValue {
     throw createNotImplementedError("JsonType#patch");
   }
 

@@ -1,6 +1,7 @@
 import { createInvalidTimestampError } from "../errors/invalid-timestamp";
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { VersionedType } from "../types";
+import { readVisitor } from "../readers/read-visitor";
+import { IoType, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "date";
 export const name: Name = "date";
@@ -14,35 +15,29 @@ export namespace json {
 }
 export type Diff = number;
 
-export class DateType implements VersionedType<Date, json.Input, json.Output, Diff> {
+export class DateType implements IoType<Date>, VersionedType<Date, Diff> {
   readonly name: Name = name;
 
   toJSON(): json.Type {
     return {name};
   }
 
-  readTrustedJson(input: json.Output): Date {
-    return new Date(input);
+  // TODO: Dynamically add with prototype?
+  read<R>(reader: Reader<R>, raw: R): Date {
+    return reader.readDate(raw, readVisitor({
+      fromDate: (input: Date): Date => {
+        const error: Error | undefined = this.testError(input);
+        if (error !== undefined) {
+          throw error;
+        }
+        return input;
+      },
+    }));
   }
 
-  readJson(input: any): Date {
-    let result: Date;
-    if (typeof input === "string") {
-      result = new Date(input);
-    } else if (typeof input === "number") {
-      result = new Date(input);
-    } else {
-      throw createInvalidTypeError("string | number", input);
-    }
-    const error: Error | undefined = this.testError(result);
-    if (error !== undefined) {
-      throw error;
-    }
-    return result;
-  }
-
-  writeJson(val: Date): json.Output {
-    return val.toISOString();
+  // TODO: Dynamically add with prototype?
+  write<W>(writer: Writer<W>, value: Date): W {
+    return writer.writeDate(value);
   }
 
   testError(val: Date): Error | undefined {

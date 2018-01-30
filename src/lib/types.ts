@@ -9,10 +9,8 @@
  */
 export type Lazy<T> = T | (() => T);
 
-export type TypeName<T = any> = string;
-
 export interface Type<T> {
-  name: TypeName<any>;
+  // name: string;
 
   testError(val: T): Error | undefined;
 
@@ -23,42 +21,110 @@ export interface Type<T> {
   clone(val: T): T;
 
   toJSON(): any;
+
+  write?<W>(writer: Writer<W>, value: T): W;
+
+  read?<R>(reader: Reader<R>, raw: R): T;
 }
 
-export interface JsonSerializer<T, Input = any, Output extends Input = Input> {
-  name: TypeName<any>;
-
-  writeJson(val: T): Output;
-
-  readJson(serialized: Input): T;
-
-  readTrustedJson(serialized: Output): T;
+export interface Writable<T> {
+  write<W>(writer: Writer<W>, value: T): W;
 }
 
-export interface Serializer {
-  readonly format: string;
-
-  register(serializer: TypeSerializer<any>): void;
-
-  write<T>(type: Type<T>, value: T): any;
-
-  read<T>(type: Type<T>, input: any): T;
-
-  readTrusted<T>(type: Type<T>, input: any): T;
+export interface Readable<T> {
+  read<R>(reader: Reader<R>, raw: R): T;
 }
 
-export interface TypeSerializer<T, Input = any, Output extends Input = Input> {
-  typeName: TypeName<any>;
+/**
+ * Represents a type suitable for IO operations: this type supports serialization and deserialization.
+ */
+export interface IoType<T> extends Type<T>, Readable<T>, Writable<T> {
+  write<W>(writer: Writer<W>, value: T): W;
 
-  write(type: Type<any>, val: T): Output;
-
-  read(type: Type<any>, serialized: Input): T;
-
-  readTrusted(type: Type<any>, serialized: Output): T;
+  read<R>(reader: Reader<R>, raw: R): T;
 }
 
-export interface VersionedType<T, Input, Output extends Input, Diff>
-  extends Type<T>, JsonSerializer<T, Input, Output> {
+/**
+ * W: Write result type.
+ */
+export interface Writer<W> {
+  writeBoolean(value: boolean): W;
+
+  writeBuffer(value: Uint8Array): W;
+
+  writeDate(value: Date): W;
+
+  writeFloat64(value: number): W;
+
+  writeUcs2String(value: string): W;
+
+  writeNull(): W;
+
+  writeJson(value: any): W;
+
+  writeArray(size: number, handler: <IW>(index: number, itemWriter: Writer<IW>) => IW): W;
+
+  writeDocument<K extends string>(keys: Iterable<K>, handler: <FW>(key: K, fieldWriter: Writer<FW>) => FW): W;
+
+  writeMap(
+    size: number,
+    keyHandler: <KW>(index: number, mapKeyWriter: Writer<KW>) => KW,
+    valueHandler: <VW>(index: number, mapValueWriter: Writer<VW>) => VW,
+  ): W;
+}
+
+/**
+ * T: Return type of the read-visitor. This is the type of the value you actually want to create.
+ */
+export interface ReadVisitor<T> {
+  fromBuffer(input: Uint8Array): T;
+
+  fromDate(input: Date): T;
+
+  fromFloat64(input: number): T;
+
+  fromBoolean(input: boolean): T;
+
+  fromNull(): T;
+
+  fromString(input: string): T;
+
+  fromMap<RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T;
+
+  fromSeq(input: Iterable<any>, size?: number): T;
+}
+
+/**
+ * R: Raw input type.
+ */
+export interface Reader<R> {
+  /**
+   * Boolean indicating that this reader wishes to opt-out of unneeded data validity checks.
+   */
+  trustInput?: boolean;
+
+  readAny<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readBoolean<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readDate<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readFloat64<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readBuffer<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readNull<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readString<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readDocument<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readMap<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readSeq<T>(raw: R, visitor: ReadVisitor<T>): T;
+}
+
+export interface VersionedType<T, Diff> extends Type<T> {
   /**
    * Returns undefined if both values are equivalent, otherwise a diff representing the change from
    * oldVal to newVal.
@@ -76,14 +142,3 @@ export interface VersionedType<T, Input, Output extends Input, Diff>
 
   // readonly diffType: Type<Diff>;
 }
-
-export interface CollectionType<T, I> extends Type<T> {
-  iterateSync(value: T, visitor: (item: I) => any): void;
-}
-
-// tslint:disable-next-line:max-line-length
-// export interface VersionedCollectionType<T, S, D, I> extends CollectionType <T, D, I>, VersionedType<T, S, D> {
-//   isCollection: true;
-//   isVersioned: true;
-//   isSerializable: true;
-// }

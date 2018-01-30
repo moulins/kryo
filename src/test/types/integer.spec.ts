@@ -1,8 +1,6 @@
 import { assert } from "chai";
-import { $Sint8 } from "../../lib/builtins/sint8";
-import { $Uint8 } from "../../lib/builtins/uint8";
-import { createQsSerializer } from "../../lib/qs";
-import { Serializer } from "../../lib/types";
+import { QsReader } from "../../lib/readers/qs";
+import { Reader } from "../../lib/types";
 import { IntegerType } from "../../lib/types/integer";
 import { runTests, TypedValue } from "../helpers/test";
 
@@ -53,13 +51,13 @@ describe("IntegerType", function () {
   });
 
   describe("readQs(val)", function () {
-    const qsSerializer: Serializer = createQsSerializer();
+    const qsReader: QsReader = new QsReader();
     const type: IntegerType = new IntegerType();
-    assert.strictEqual(qsSerializer.read(type, "0"), 0);
-    assert.strictEqual(qsSerializer.read(type, "1"), 1);
-    assert.strictEqual(qsSerializer.read(type, "-1"), -1);
-    assert.strictEqual(qsSerializer.read(type, "-1234"), -1234);
-    assert.strictEqual(qsSerializer.read(type, "2147483647"), 2147483647);
-    assert.strictEqual(qsSerializer.read(type, "-2147483648"), -2147483648);
+    assert.strictEqual(type.read(qsReader, "0"), 0);
+    assert.strictEqual(type.read(qsReader, "1"), 1);
+    assert.strictEqual(type.read(qsReader, "-1"), -1);
+    assert.strictEqual(type.read(qsReader, "-1234"), -1234);
+    assert.strictEqual(type.read(qsReader, "2147483647"), 2147483647);
+    assert.strictEqual(type.read(qsReader, "-2147483648"), -2147483648);
   });
 });
