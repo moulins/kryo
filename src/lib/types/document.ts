@@ -6,7 +6,7 @@ import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Lazy, Readable, Reader, Type, VersionedType, Writable, Writer } from "../types";
+import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../types";
 
 export type Name = "document";
 export const name: Name = "document";
@@ -52,9 +52,15 @@ export interface PropertyDescriptor<M extends Type<any>> {
   type: M;
 
   /**
-   * The name used by the serialized data or a case style to apply to get this name.
+   * The key in the serialized documents will be automatically renamed with the provided
+   * case style.
    */
-  rename?: string | CaseStyle;
+  changeCase?: CaseStyle;
+
+  /**
+   * The name of the key used in the serialized documents.
+   */
+  rename?: CaseStyle | string;
 }
 
 export interface DocumentTypeConstructor {
@@ -115,7 +121,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
     if (typeof options !== "function") {
       this._applyOptions();
     } else {
-      lazyProperties(this, this._applyOptions, ["ignoreExtraKeys", "properties", "rename", "keys" as keyof this]);
+      lazyProperties(this, this._applyOptions, [<any> "ignoreExtraKeys", "properties", "rename", "keys" as keyof this]);
     }
   }
 

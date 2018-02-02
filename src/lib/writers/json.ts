@@ -1,43 +1,42 @@
 import { Writer } from "../types";
-import { StructuredWriter } from "./structured";
+import { JsonValueWriter } from "./json-value";
 
-export class JsonWriter extends StructuredWriter {
-  writeFloat64(value: number): number | string {
-    if (isNaN(value)) {
-      return "NaN";
-    } else if (value === Infinity) {
-      return "+Infinity";
-    } else if (value === -Infinity) {
-      return "-Infinity";
-    } else if (Object.is(value, "-0")) {
-      return "-0";
-    }
-    return value;
+export class JsonWriter implements Writer<string> {
+  private readonly valueWriter: JsonValueWriter;
+
+  constructor() {
+    this.valueWriter = new JsonValueWriter();
   }
 
-  writeDate(value: Date): string {
-    return value.toISOString();
+  writeAny(value: number): string {
+    return JSON.stringify(this.valueWriter.writeAny(value));
   }
 
-  writeNull(): null {
-    return null;
+  writeBoolean(value: boolean): string {
+    return JSON.stringify(this.valueWriter.writeBoolean(value));
   }
 
   writeBuffer(value: Uint8Array): string {
-    const result: string[] = new Array(value.length);
-    const len: number = value.length;
-    for (let i: number = 0; i < len; i++) {
-      result[i] = (value[i] < 16 ? "0" : "") + value[i].toString(16);
-    }
-    return result.join("");
+    return JSON.stringify(this.valueWriter.writeBuffer(value));
   }
 
-  writeBoolean(value: boolean): boolean {
-    return value;
+  writeDate(value: Date): string {
+    return JSON.stringify(this.valueWriter.writeDate(value));
   }
 
-  writeUcs2String(value: string): string {
-    return value;
+  writeDocument<K extends string>(
+    keys: Iterable<K>,
+    handler: (key: K, fieldWriter: Writer<any>) => any,
+  ): string {
+    return JSON.stringify(this.valueWriter.writeDocument(keys, handler));
+  }
+
+  writeFloat64(value: number): string {
+    return JSON.stringify(this.valueWriter.writeFloat64(value));
+  }
+
+  writeList(size: number, handler: (index: number, itemWriter: Writer<any>) => any): string {
+    return JSON.stringify(this.valueWriter.writeList(size, handler));
   }
 
   writeMap(
@@ -45,14 +44,14 @@ export class JsonWriter extends StructuredWriter {
     keyHandler: <KW>(index: number, mapKeyWriter: Writer<KW>) => KW,
     valueHandler: <VW>(index: number, mapValueWriter: Writer<VW>) => VW,
   ): any {
-    // TODO: Use a specialized writer that only accepts strings and numbers (KeyMustBeAStringError)
-    // Let users build custom serializers if they want
-    const jsonWriter: JsonWriter = new JsonWriter();
-    const result: any = {};
-    for (let index: number = 0; index < size; index++) {
-      const key: any = keyHandler(index, jsonWriter);
-      result[JSON.stringify(key)] = valueHandler(index, this);
-    }
-    return result;
+    return JSON.stringify(this.valueWriter.writeMap(size, keyHandler, valueHandler));
+  }
+
+  writeNull(): string {
+    return JSON.stringify(this.valueWriter.writeNull());
+  }
+
+  writeString(value: string): string {
+    return JSON.stringify(this.valueWriter.writeString(value));
   }
 }

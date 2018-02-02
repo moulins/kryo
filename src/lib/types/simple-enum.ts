@@ -97,7 +97,7 @@ export class SimpleEnumType<E extends number> implements VersionedType<E, Diff> 
   }
 
   write<W>(writer: Writer<W>, value: E): W {
-    return writer.writeUcs2String(this.valueToOutputName[value as number]);
+    return writer.writeString(this.valueToOutputName[value as number]);
   }
 
   testError(val: E): Error | undefined {

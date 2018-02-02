@@ -76,8 +76,8 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
     const itemType: M = this.itemType;
     const maxLength: number | undefined = this.maxLength;
 
-    return reader.readSeq(raw, readVisitor({
-      fromSeq(input: Iterable<any>, size?: number): T[] {
+    return reader.readList(raw, readVisitor({
+      fromList(input: Iterable<any>, size?: number): T[] {
         if (size === undefined) {
           throw new Incident("UnknownArrayLength");
         }
@@ -111,7 +111,7 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
 
   // TODO: Dynamically add with prototype?
   write<W>(writer: Writer<W>, value: T[]): W {
-    return writer.writeArray(value.length, <IW>(index: number, itemWriter: Writer<IW>): IW => {
+    return writer.writeList(value.length, <IW>(index: number, itemWriter: Writer<IW>): IW => {
       if (this.itemType.write === undefined) {
         throw new Incident("NotWritable", {type: this.itemType});
       }

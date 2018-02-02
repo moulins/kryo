@@ -42,7 +42,7 @@ describe("Document", function () {
       },
       valid: true,
       output: {
-        json: {dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}},
+        json: JSON.stringify({dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}}),
       },
     },
     {
@@ -54,17 +54,17 @@ describe("Document", function () {
       },
       valid: true,
       output: {
-        json: {dateProp: "1970-01-01T00:00:00.000Z", nestedDoc: {id: 10}},
+        json: JSON.stringify({dateProp: "1970-01-01T00:00:00.000Z", nestedDoc: {id: 10}}),
       },
     },
 
     {name: "new Date(0)", value: new Date(0), valid: false},
     {name: "0", value: 0, valid: false},
     {name: "1", value: 1, valid: false},
-    {name: '""', value: "", valid: false},
-    {name: '"0"', value: "0", valid: false},
-    {name: '"true"', value: "true", valid: false},
-    {name: '"false"', value: "false", valid: false},
+    {name: "\"\"", value: "", valid: false},
+    {name: "\"0\"", value: "0", valid: false},
+    {name: "\"true\"", value: "true", valid: false},
+    {name: "\"false\"", value: "false", valid: false},
     {name: "Infinity", value: Infinity, valid: false},
     {name: "-Infinity", value: -Infinity, valid: false},
     {name: "NaN", value: NaN, valid: false},
@@ -113,12 +113,12 @@ describe("Document: rename", function () {
           "y-min": 20,
           "y-max": 30,
         },
-        json: {
+        json: JSON.stringify({
           "x-min": 0,
           "x-max": 10,
           "y-min": 20,
           "y-max": 30,
-        },
+        }),
         qs: {
           "x-min": "0",
           "x-max": "10",

@@ -12,6 +12,7 @@ describe("TaggedUnion", function () {
       Rectangle,
       Circle,
     }
+
     const shapeTypeType: SimpleEnumType<ShapeType> = new SimpleEnumType({
       enum: ShapeType,
       rename: CaseStyle.KebabCase,
@@ -22,6 +23,7 @@ describe("TaggedUnion", function () {
       width: number;
       height: number;
     }
+
     const rectangleType: DocumentType<Rectangle> = new DocumentType<Rectangle>({
       properties: {
         type: {
@@ -40,6 +42,7 @@ describe("TaggedUnion", function () {
       type: ShapeType.Circle;
       radius: number;
     }
+
     const circleType: DocumentType<Circle> = new DocumentType<Circle>({
       properties: {
         type: {
@@ -74,11 +77,7 @@ describe("TaggedUnion", function () {
             width: 10,
             height: 20,
           },
-          json: {
-            type: "rectangle",
-            width: 10,
-            height: 20,
-          },
+          json: "{\"type\":\"rectangle\",\"width\":10,\"height\":20}",
           qs: {
             type: "rectangle",
             width: "10",
@@ -98,10 +97,7 @@ describe("TaggedUnion", function () {
             type: "circle",
             radius: 15,
           },
-          json: {
-            type: "circle",
-            radius: 15,
-          },
+          json: "{\"type\":\"circle\",\"radius\":15}",
           qs: {
             type: "circle",
             radius: "15",
@@ -131,16 +127,16 @@ describe("TaggedUnion", function () {
         },
         valid: false,
       },
-      {name: '"foo"', value: "bar", valid: false},
+      {name: "\"foo\"", value: "bar", valid: false},
       {name: "0", value: 0, valid: false},
       {name: "1", value: 1, valid: false},
-      {name: '""', value: "", valid: false},
-      {name: '"0"', value: "0", valid: false},
+      {name: "\"\"", value: "", valid: false},
+      {name: "\"0\"", value: "0", valid: false},
       {name: "true", value: true, valid: false},
       {name: "false", value: false, valid: false},
       {name: "Infinity", value: Infinity, valid: false},
       {name: "-Infinity", value: -Infinity, valid: false},
-      {name: 'new Date("1247-05-18T19:40:08.418Z")', value: new Date("1247-05-18T19:40:08.418Z"), valid: false},
+      {name: "new Date(\"1247-05-18T19:40:08.418Z\")", value: new Date("1247-05-18T19:40:08.418Z"), valid: false},
       {name: "NaN", value: NaN, valid: false},
       {name: "undefined", value: undefined, valid: false},
       {name: "null", value: null, valid: false},

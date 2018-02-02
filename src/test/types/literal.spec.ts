@@ -17,7 +17,7 @@ describe("Literal", function () {
         valid: true,
         output: {
           bson: "foo",
-          json: "foo",
+          json: "\"foo\"",
           qs: "foo",
         },
       },
@@ -64,7 +64,7 @@ describe("Literal", function () {
         valid: true,
         output: {
           bson: "Red",
-          json: "Red",
+          json: "\"Red\"",
           qs: "Red",
         },
       },
@@ -74,7 +74,7 @@ describe("Literal", function () {
         valid: true,
         output: {
           bson: "Red",
-          json: "Red",
+          json: "\"Red\"",
           qs: "Red",
         },
       },

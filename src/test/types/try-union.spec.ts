@@ -50,10 +50,7 @@ describe("TryUnion", function () {
             width: 10,
             height: 20,
           },
-          json: {
-            width: 10,
-            height: 20,
-          },
+          json: "{\"width\":10,\"height\":20}",
           qs: {
             width: "10",
             height: "20",
@@ -70,9 +67,7 @@ describe("TryUnion", function () {
           bson: {
             radius: 15,
           },
-          json: {
-            radius: 15,
-          },
+          json: "{\"radius\":15}",
           qs: {
             radius: "15",
           },

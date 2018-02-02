@@ -13,21 +13,21 @@ describe("ArrayType", function () {
       value: [],
       valid: true,
       output: {
-        json: [],
+        json: "[]",
       },
     },
     {
       value: [1],
       valid: true,
       output: {
-        json: [1],
+        json: "[1]",
       },
     },
     {
       value: [2, 3],
       valid: true,
       output: {
-        json: [2, 3],
+        json: "[2,3]",
       },
     },
     {

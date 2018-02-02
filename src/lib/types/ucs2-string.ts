@@ -185,7 +185,7 @@ export class Ucs2StringType implements IoType<string>, VersionedType<string, Dif
 
   // TODO: Dynamically add with prototype?
   write<W>(writer: Writer<W>, value: string): W {
-    return writer.writeUcs2String(value);
+    return writer.writeString(value);
   }
 
   testError(val: string): Error | undefined {

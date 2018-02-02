@@ -114,14 +114,12 @@ export function testJsonSerialization<T>(type: IoType<T>, typedValue: ValidTyped
     const output: any = typedValue.output["json"];
     const expectedSerialized: string = JSON.stringify(output);
     it(`\`.writeJson(val)\` should return \`${expectedSerialized}\``, function () {
-      const exported: any = type.write(writer, typedValue.value);
-      actualSerialized = JSON.stringify(exported);
-      chai.assert.deepEqual(exported, output);
+      actualSerialized = type.write(writer, typedValue.value);
+      chai.assert.strictEqual(actualSerialized, output);
     });
   } else {
     it("`t.writeJson(val)` should not throw", function () {
-      const exported: any = type.write(writer, typedValue.value);
-      actualSerialized = JSON.stringify(exported);
+      actualSerialized = type.write(writer, typedValue.value);
     });
   }
 

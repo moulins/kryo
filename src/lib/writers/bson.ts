@@ -32,7 +32,7 @@ export class BsonWriter extends StructuredWriter {
     return new Date(value.getTime());
   }
 
-  writeUcs2String(value: string): string {
+  writeString(value: string): string {
     return value;
   }
 

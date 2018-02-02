@@ -12,7 +12,7 @@ describe("BufferType", function () {
       value: Uint8Array.from([]),
       valid: true,
       output: {
-        json: "",
+        json: "\"\"",
       },
     },
     {
@@ -20,7 +20,7 @@ describe("BufferType", function () {
       value: Uint8Array.from([1]),
       valid: true,
       output: {
-        json: "01",
+        json: "\"01\"",
       },
     },
     {
@@ -28,7 +28,7 @@ describe("BufferType", function () {
       value: Uint8Array.from([2, 3]),
       valid: true,
       output: {
-        json: "0203",
+        json: "\"0203\"",
       },
     },
     {

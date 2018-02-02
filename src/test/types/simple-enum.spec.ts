@@ -17,7 +17,7 @@ describe("SimpleEnum", function () {
       value: Color.Red,
       valid: true,
       output: {
-        json: "Red",
+        json: "\"Red\"",
       },
     },
     {
@@ -25,7 +25,7 @@ describe("SimpleEnum", function () {
       value: Color.Green,
       valid: true,
       output: {
-        json: "Green",
+        json: "\"Green\"",
       },
     },
     {
@@ -33,7 +33,7 @@ describe("SimpleEnum", function () {
       value: Color.Blue,
       valid: true,
       output: {
-        json: "Blue",
+        json: "\"Blue\"",
       },
     },
     {
@@ -41,7 +41,7 @@ describe("SimpleEnum", function () {
       value: 0,
       valid: true,
       output: {
-        json: "Red",
+        json: "\"Red\"",
       },
     },
     {
@@ -49,7 +49,7 @@ describe("SimpleEnum", function () {
       value: 1,
       valid: true,
       output: {
-        json: "Green",
+        json: "\"Green\"",
       },
     },
     {
@@ -57,7 +57,7 @@ describe("SimpleEnum", function () {
       value: 2,
       valid: true,
       output: {
-        json: "Blue",
+        json: "\"Blue\"",
       },
     },
 
@@ -97,7 +97,7 @@ describe("SimpleEnum: rename KebabCase", function () {
       valid: true,
       output: {
         bson: "expression",
-        json: "expression",
+        json: "\"expression\"",
         qs: "expression",
       },
     },
@@ -107,7 +107,7 @@ describe("SimpleEnum: rename KebabCase", function () {
       valid: true,
       output: {
         bson: "binary-operator",
-        json: "binary-operator",
+        json: "\"binary-operator\"",
         qs: "binary-operator",
       },
     },
@@ -117,7 +117,7 @@ describe("SimpleEnum: rename KebabCase", function () {
       valid: true,
       output: {
         bson: "block-statement",
-        json: "block-statement",
+        json: "\"block-statement\"",
         qs: "block-statement",
       },
     },
@@ -127,7 +127,7 @@ describe("SimpleEnum: rename KebabCase", function () {
       valid: true,
       output: {
         bson: "expression",
-        json: "expression",
+        json: "\"expression\"",
         qs: "expression",
       },
     },
@@ -137,7 +137,7 @@ describe("SimpleEnum: rename KebabCase", function () {
       valid: true,
       output: {
         bson: "binary-operator",
-        json: "binary-operator",
+        json: "\"binary-operator\"",
         qs: "binary-operator",
       },
     },
@@ -147,7 +147,7 @@ describe("SimpleEnum: rename KebabCase", function () {
       valid: true,
       output: {
         bson: "block-statement",
-        json: "block-statement",
+        json: "\"block-statement\"",
         qs: "block-statement",
       },
     },

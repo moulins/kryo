@@ -16,7 +16,7 @@
     "prestart": "gulp main:build",
     "start": "npm test",
     "prepublishOnly": "npm test",
-    ":lint": "gulp :lint",
+    "lint": "gulp :lint:fix",
     "typedoc": "gulp lib:typedoc"
   },
   "pre-commit": {

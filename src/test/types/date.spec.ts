@@ -11,17 +11,13 @@ describe("DateType", function () {
       value: new Date(0),
       valid: true,
       output: {
-        json: "1970-01-01T00:00:00.000Z",
+        json: "\"1970-01-01T00:00:00.000Z\"",
       },
       inputs: {
-        json: [
-          0,
-        ],
+        json: ["0"],
       },
       invalidInputs: {
-        json: [
-          null,
-        ],
+        json: ["null"],
       },
     },
     {name: 'new Date("1247-05-18T19:40:08.418Z")', value: new Date("1247-05-18T19:40:08.418Z"), valid: true},

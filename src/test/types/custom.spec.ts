@@ -57,7 +57,7 @@ describe("Custom", function () {
       }));
     },
     write<W>(writer: Writer<W>, value: Complex): W {
-      return writer.writeUcs2String(value.toString());
+      return writer.writeString(value.toString());
     },
     testError(value: Complex): Error | undefined {
       if (!(value instanceof Complex)) {
@@ -80,7 +80,7 @@ describe("Custom", function () {
       valid: true,
       output: {
         bson: "0",
-        json: "0",
+        json: "\"0\"",
         qs: "0",
       },
     },
@@ -90,7 +90,7 @@ describe("Custom", function () {
       valid: true,
       output: {
         bson: "1",
-        json: "1",
+        json: "\"1\"",
         qs: "1",
       },
     },
@@ -100,7 +100,7 @@ describe("Custom", function () {
       valid: true,
       output: {
         bson: "2j",
-        json: "2j",
+        json: "\"2j\"",
         qs: "2j",
       },
     },
@@ -110,7 +110,7 @@ describe("Custom", function () {
       valid: true,
       output: {
         bson: "3 + 4j",
-        json: "3 + 4j",
+        json: "\"3 + 4j\"",
         qs: "3 + 4j",
       },
     },

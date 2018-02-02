@@ -11,7 +11,7 @@ describe("Float64Type", function () {
       value: 0,
       valid: true,
       output: {
-        json: 0,
+        json: "0",
       },
     },
     {name: "1", value: 1, valid: true},

@@ -168,7 +168,7 @@ export class CodepointStringType implements IoType<string>, VersionedType<string
 
   // TODO: Dynamically add with prototype?
   write<W>(writer: Writer<W>, value: string): W {
-    return writer.writeUcs2String(value);
+    return writer.writeString(value);
   }
 
   testError(val: string): Error | undefined {

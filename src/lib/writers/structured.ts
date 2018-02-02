@@ -11,7 +11,7 @@ export abstract class StructuredWriter implements Writer<any> {
 
   abstract writeFloat64(value: number): any;
 
-  abstract writeUcs2String(value: string): any;
+  abstract writeString(value: string): any;
 
   abstract writeBuffer(value: Uint8Array): any;
 
@@ -21,7 +21,7 @@ export abstract class StructuredWriter implements Writer<any> {
     return JSON.parse(JSON.stringify(value));
   }
 
-  writeArray(size: number, handler: (index: number, itemWriter: Writer<any>) => any): any[] {
+  writeList(size: number, handler: (index: number, itemWriter: Writer<any>) => any): any[] {
     const result: any[] = [];
     for (let index: number = 0; index < size; index++) {
       result.push(handler(index, this));

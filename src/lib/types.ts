@@ -56,42 +56,42 @@ export interface Writer<W> {
 
   writeDate(value: Date): W;
 
+  writeDocument<K extends string>(keys: Iterable<K>, handler: <FW>(key: K, fieldWriter: Writer<FW>) => FW): W;
+
   writeFloat64(value: number): W;
 
-  writeUcs2String(value: string): W;
-
-  writeNull(): W;
-
-  writeArray(size: number, handler: <IW>(index: number, itemWriter: Writer<IW>) => IW): W;
-
-  writeDocument<K extends string>(keys: Iterable<K>, handler: <FW>(key: K, fieldWriter: Writer<FW>) => FW): W;
+  writeList(size: number, handler: <IW>(index: number, itemWriter: Writer<IW>) => IW): W;
 
   writeMap(
     size: number,
     keyHandler: <KW>(index: number, mapKeyWriter: Writer<KW>) => KW,
     valueHandler: <VW>(index: number, mapValueWriter: Writer<VW>) => VW,
   ): W;
+
+  writeNull(): W;
+
+  writeString(value: string): W;
 }
 
 /**
  * T: Return type of the read-visitor. This is the type of the value you actually want to create.
  */
 export interface ReadVisitor<T> {
+  fromBoolean(input: boolean): T;
+
   fromBuffer(input: Uint8Array): T;
 
   fromDate(input: Date): T;
 
   fromFloat64(input: number): T;
 
-  fromBoolean(input: boolean): T;
+  fromList(input: Iterable<any>, size?: number): T;
+
+  fromMap<RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T;
 
   fromNull(): T;
 
   fromString(input: string): T;
-
-  fromMap<RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T;
-
-  fromSeq(input: Iterable<any>, size?: number): T;
 }
 
 /**
@@ -107,21 +107,21 @@ export interface Reader<R> {
 
   readBoolean<T>(raw: R, visitor: ReadVisitor<T>): T;
 
+  readBuffer<T>(raw: R, visitor: ReadVisitor<T>): T;
+
   readDate<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readDocument<T>(raw: R, visitor: ReadVisitor<T>): T;
 
   readFloat64<T>(raw: R, visitor: ReadVisitor<T>): T;
 
-  readBuffer<T>(raw: R, visitor: ReadVisitor<T>): T;
+  readList<T>(raw: R, visitor: ReadVisitor<T>): T;
+
+  readMap<T>(raw: R, visitor: ReadVisitor<T>): T;
 
   readNull<T>(raw: R, visitor: ReadVisitor<T>): T;
 
   readString<T>(raw: R, visitor: ReadVisitor<T>): T;
-
-  readDocument<T>(raw: R, visitor: ReadVisitor<T>): T;
-
-  readMap<T>(raw: R, visitor: ReadVisitor<T>): T;
-
-  readSeq<T>(raw: R, visitor: ReadVisitor<T>): T;
 }
 
 export interface VersionedType<T, Diff> extends Type<T> {

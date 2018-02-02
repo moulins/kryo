@@ -10,11 +10,19 @@ export class JsonValueReader implements Reader<JsonValue> {
     this.trustInput = trust;
   }
 
-  readString<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
-    if (typeof raw !== "string") {
-      throw createInvalidTypeError("string", raw);
+  readAny<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
+    switch (typeof raw) {
+      case "boolean":
+        return visitor.fromBoolean(raw as boolean);
+      case "string":
+        return visitor.fromString(raw as string);
+      case "object":
+        return raw === null
+          ? visitor.fromNull()
+          : visitor.fromMap(new Map(Object.keys(raw).map(k => [k, (raw as any)[k]] as [string, any])), this, this);
+      default:
+        throw createInvalidTypeError("array | boolean | null | object | string", raw);
     }
-    return visitor.fromString(raw);
   }
 
   readBoolean<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
@@ -22,6 +30,21 @@ export class JsonValueReader implements Reader<JsonValue> {
       throw createInvalidTypeError("boolean", raw);
     }
     return visitor.fromBoolean(raw);
+  }
+
+  readBuffer<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
+    if (typeof raw !== "string") {
+      throw createInvalidTypeError("string", raw);
+    } else if (!/^(?:[0-9a-f]{2})*$/.test(raw)) {
+      throw createInvalidTypeError("lowerCaseHexEvenLengthString", raw);
+    }
+    let result: Uint8Array;
+    const len: number = raw.length / 2;
+    result = new Uint8Array(len);
+    for (let i: number = 0; i < len; i++) {
+      result[i] = parseInt(raw.substr(2 * i, 2), 16);
+    }
+    return visitor.fromBuffer(result);
   }
 
   readDate<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
@@ -37,21 +60,36 @@ export class JsonValueReader implements Reader<JsonValue> {
     throw createInvalidTypeError("string | number", raw);
   }
 
-  readNull<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
-    if (this.trustInput) {
-      return visitor.fromNull();
+  readDocument<R>(raw: any, visitor: ReadVisitor<R>): R {
+    if (typeof raw !== "object" || raw === null) {
+      throw createInvalidTypeError("object", raw);
     }
-    if (raw !== null) {
-      throw createInvalidTypeError("null", raw);
+    const input: Map<string, any> = new Map();
+    for (const key in raw) {
+      input.set(key, raw[key]);
     }
-    return visitor.fromNull();
+    return visitor.fromMap(input, this, this);
   }
 
-  readSeq<R>(raw: any, visitor: ReadVisitor<R>): R {
+  readFloat64<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
+    const specialValues: Map<any, number> = new Map([
+      ["NaN", NaN],
+      ["Infinity", Infinity],
+      ["+Infinity", Infinity],
+      ["-Infinity", -Infinity],
+    ]);
+    const special: number | undefined = specialValues.get(raw);
+    if (special === undefined && typeof raw !== "number") {
+      throw new Incident("InvalidInput", {raw, expected: "float64"});
+    }
+    return visitor.fromFloat64(special !== undefined ? special : raw as number);
+  }
+
+  readList<R>(raw: any, visitor: ReadVisitor<R>): R {
     if (!Array.isArray(raw)) {
       throw createInvalidTypeError("array", raw);
     }
-    return visitor.fromSeq(raw, raw.length);
+    return visitor.fromList(raw, raw.length);
   }
 
   readMap<R>(raw: any, visitor: ReadVisitor<R>): R {
@@ -74,58 +112,20 @@ export class JsonValueReader implements Reader<JsonValue> {
     return visitor.fromMap(input, keyReader, this);
   }
 
-  readDocument<R>(raw: any, visitor: ReadVisitor<R>): R {
-    if (typeof raw !== "object" || raw === null) {
-      throw createInvalidTypeError("object", raw);
+  readNull<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
+    if (this.trustInput) {
+      return visitor.fromNull();
     }
-    const input: Map<string, any> = new Map();
-    for (const key in raw) {
-      input.set(key, raw[key]);
+    if (raw !== null) {
+      throw createInvalidTypeError("null", raw);
     }
-    return visitor.fromMap(input, this, this);
+    return visitor.fromNull();
   }
 
-  readBuffer<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
+  readString<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
     if (typeof raw !== "string") {
       throw createInvalidTypeError("string", raw);
-    } else if (!/^(?:[0-9a-f]{2})*$/.test(raw)) {
-      throw createInvalidTypeError("lowerCaseHexEvenLengthString", raw);
     }
-    let result: Uint8Array;
-    const len: number = raw.length / 2;
-    result = new Uint8Array(len);
-    for (let i: number = 0; i < len; i++) {
-      result[i] = parseInt(raw.substr(2 * i, 2), 16);
-    }
-    return visitor.fromBuffer(result);
-  }
-
-  readAny<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
-    switch (typeof raw) {
-      case "boolean":
-        return visitor.fromBoolean(raw as boolean);
-      case "string":
-        return visitor.fromString(raw as string);
-      case "object":
-        return raw === null
-          ? visitor.fromNull()
-          : visitor.fromMap(new Map(Object.keys(raw).map(k => [k, (raw as any)[k]] as [string, any])), this, this);
-      default:
-        throw createInvalidTypeError("array | boolean | null | object | string", raw);
-    }
-  }
-
-  readFloat64<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
-    const specialValues: Map<any, number> = new Map([
-      ["NaN", NaN],
-      ["Infinity", Infinity],
-      ["+Infinity", Infinity],
-      ["-Infinity", -Infinity],
-    ]);
-    const special: number | undefined = specialValues.get(raw);
-    if (special === undefined && typeof raw !== "number") {
-      throw new Incident("InvalidInput", {raw, expected: "float64"});
-    }
-    return visitor.fromFloat64(special !== undefined ? special : raw as number);
+    return visitor.fromString(raw);
   }
 }
