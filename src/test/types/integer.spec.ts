@@ -49,7 +49,7 @@ describe("IntegerType", function () {
     runTests(type, items);
   });
 
-  describe("readQs(val)", function () {
+  it("readQs(val)", function () {
     const qsReader: QsValueReader = new QsValueReader();
     const type: IntegerType = new IntegerType();
     assert.strictEqual(type.read(qsReader, "0"), 0);

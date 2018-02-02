@@ -40,6 +40,10 @@ export interface DocumentTypeOptions<T> {
   rename?: CaseStyle;
 }
 
+export interface DocumentIoTypeOptions<T> extends DocumentTypeOptions<T> {
+  properties: {[P in keyof T]: PropertyDescriptor<IoType<T[P]>>};
+}
+
 export interface PropertyDescriptor<M extends Type<any>> {
   /**
    * Allows this property to be missing (undefined values throw errors).
@@ -64,6 +68,8 @@ export interface PropertyDescriptor<M extends Type<any>> {
 }
 
 export interface DocumentTypeConstructor {
+  new<T>(options: Lazy<DocumentIoTypeOptions<T>>): DocumenIoType<T>;
+
   /**
    * Create a new document type checking for objects with the supplied properties.
    *
@@ -79,7 +85,7 @@ export interface DocumentType<T> extends Type<T>, VersionedType<T, Diff<T>>, Doc
   getOutKey(key: keyof T): string;
 }
 
-export interface DocumenDuplexType<T> extends IoType<T>, VersionedType<T, Diff<T>>, DocumentTypeOptions<T> {
+export interface DocumenIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>, DocumentIoTypeOptions<T> {
   getOutKey(key: keyof T): string;
 
   read<R>(reader: Reader<R>, raw: R): T;
@@ -89,7 +95,7 @@ export interface DocumenDuplexType<T> extends IoType<T>, VersionedType<T, Diff<T
 
 // We use an `any` cast because of the `properties` property.
 // tslint:disable-next-line:variable-name
-export const DocumentType: DocumentTypeConstructor = class<T extends {}> implements IoType<T> {
+export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> implements IoType<T> {
   readonly name: Name = name;
   readonly ignoreExtraKeys: boolean;
   readonly properties: {[P in keyof T]: PropertyDescriptor<Type<T[P]>>};

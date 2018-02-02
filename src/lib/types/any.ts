@@ -1,37 +1,21 @@
 import { createNotImplementedError } from "../errors/not-implemented";
 import { IoType, Reader, Writer } from "../types";
 
-export type Name = "json";
-export const name: Name = "json";
 export namespace json {
-  export type Input = any;
-  export type Output = any;
-  // TODO(demurgos): Export options to JSON
   export type Type = undefined;
 }
 export type Diff = any;
 
 export class AnyType<T = any> implements IoType<T> {
-  readonly name: Name = name;
-
   constructor() {
   }
 
   toJSON(): json.Type {
-    throw createNotImplementedError("ArrayType#toJSON");
+    throw createNotImplementedError("AnyType#toJSON");
   }
 
   read<R>(reader: Reader<R>, raw: R): T {
-    return reader.readAny<any>(raw, {
-      fromBoolean: input => input,
-      fromBuffer: input => input,
-      fromDate: input => input,
-      fromFloat64: input => input,
-      fromMap: input => input,
-      fromNull: () => null,
-      fromList: input => [...input],
-      fromString: input => input,
-    });
+    return <any> raw as T;
   }
 
   // TODO: Dynamically add with prototype?
