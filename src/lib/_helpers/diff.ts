@@ -38,6 +38,7 @@
  */
 interface Sequence<T> {
   length: number;
+
   [index: number]: T;
 }
 
@@ -129,7 +130,7 @@ export interface DiffAction {
 
 type IndexValue = [number, number];
 
-function nearestEnd <T>(src: Slice<T>, target: Slice<T>): IndexValue {
+function nearestEnd<T>(src: Slice<T>, target: Slice<T>): IndexValue {
   const xSeq: Sequence<T> = src.sequence;
   const x1: number = 0;
   const x2: number = src.length;

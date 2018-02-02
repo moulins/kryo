@@ -29,7 +29,7 @@ export class AnyType<T = any> implements IoType<T> {
       fromFloat64: input => input,
       fromMap: input => input,
       fromNull: () => null,
-      fromList: input => [...input].map((x, r) => this.read(reader, x)),
+      fromList: input => [...input],
       fromString: input => input,
     });
   }

@@ -1,6 +1,5 @@
 import { assert } from "chai";
-import { QsReader } from "../../lib/readers/qs";
-import { Reader } from "../../lib/types";
+import { QsValueReader } from "../../lib/readers/qs-value";
 import { IntegerType } from "../../lib/types/integer";
 import { runTests, TypedValue } from "../helpers/test";
 
@@ -51,7 +50,7 @@ describe("IntegerType", function () {
   });
 
   describe("readQs(val)", function () {
-    const qsReader: QsReader = new QsReader();
+    const qsReader: QsValueReader = new QsValueReader();
     const type: IntegerType = new IntegerType();
     assert.strictEqual(type.read(qsReader, "0"), 0);
     assert.strictEqual(type.read(qsReader, "1"), 1);

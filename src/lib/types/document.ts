@@ -94,23 +94,8 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
   readonly ignoreExtraKeys: boolean;
   readonly properties: {[P in keyof T]: PropertyDescriptor<Type<T[P]>>};
   readonly rename?: CaseStyle;
-
-  /**
-   * Map from serialized keys to the document keys
-   */
-  get outKeys(): Map<string, keyof T> {
-    if (this._outKeys === undefined) {
-      this._outKeys = new Map();
-      for (const key of Object.keys(this.properties) as (keyof T)[]) {
-        this._outKeys.set(this.getOutKey(key), key);
-      }
-    }
-    return this._outKeys;
-  }
-
-  private _outKeys: Map<string, keyof T> | undefined;
-
   private _options: Lazy<DocumentTypeOptions<T>>;
+  private _outKeys: Map<string, keyof T> | undefined;
 
   constructor(options: Lazy<DocumentTypeOptions<T>>) {
     // TODO: Remove once TS 2.7 is better supported by editors
@@ -123,6 +108,19 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
     } else {
       lazyProperties(this, this._applyOptions, [<any> "ignoreExtraKeys", "properties", "rename", "keys" as keyof this]);
     }
+  }
+
+  /**
+   * Map from serialized keys to the document keys
+   */
+  get outKeys(): Map<string, keyof T> {
+    if (this._outKeys === undefined) {
+      this._outKeys = new Map();
+      for (const key of Object.keys(this.properties) as (keyof T)[]) {
+        this._outKeys.set(this.getOutKey(key), key);
+      }
+    }
+    return this._outKeys;
   }
 
   static fromJSON(options: json.Type): DocumentType<{}> {

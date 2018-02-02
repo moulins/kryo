@@ -7,6 +7,7 @@ describe("rename", function () {
       identifier: string;
       expected: CaseStyle;
     }
+
     const items: Item[] = [
       {identifier: "id", expected: CaseStyle.CamelCase},
       {identifier: "Id", expected: CaseStyle.PascalCase},
@@ -54,6 +55,7 @@ describe("rename", function () {
       identifier: string;
       parts: string[];
     }
+
     const items: Item[] = [
       {identifier: "id", caseStyle: CaseStyle.CamelCase, parts: ["id"]},
       {identifier: "Id", caseStyle: CaseStyle.PascalCase, parts: ["id"]},
@@ -111,6 +113,7 @@ describe("rename", function () {
       to: CaseStyle;
       expected: string;
     }
+
     const items: Item[] = [
       {identifier: "Blue", to: CaseStyle.KebabCase, expected: "blue"},
       {identifier: "ucs2StringType", to: CaseStyle.KebabCase, expected: "ucs2-string-type"},

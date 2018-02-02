@@ -89,7 +89,7 @@ export class JsonValueReader implements Reader<JsonValue> {
     if (!Array.isArray(raw)) {
       throw createInvalidTypeError("array", raw);
     }
-    return visitor.fromList(raw, raw.length);
+    return visitor.fromList(raw, this);
   }
 
   readMap<R>(raw: any, visitor: ReadVisitor<R>): R {

@@ -8,12 +8,12 @@ describe("Ucs2StringType", function () {
 
     const items: TypedValue[] = [
       // Valid items
-      {name: '""', value: "", valid: true},
-      {name: '"Hello World!"', value: "Hello World!", valid: true},
+      {name: "\"\"", value: "", valid: true},
+      {name: "\"Hello World!\"", value: "Hello World!", valid: true},
       {name: "Drop the bass", value: "ԂЯØǷ Łƕ੬ ɃɅϨϞ", valid: true},
       // Invalid items
       /* tslint:disable-next-line:no-construct */
-      {name: 'new String("stringObject")', value: new String("stringObject"), valid: false},
+      {name: "new String(\"stringObject\")", value: new String("stringObject"), valid: false},
       {name: "0.5", value: 0.5, valid: false},
       {name: "0.0001", value: 0.0001, valid: false},
       {name: "Infinity", value: Infinity, valid: false},
@@ -36,16 +36,16 @@ describe("Ucs2StringType", function () {
     it("should accept the empty string, when requiring length exactly 0", function () {
       assert.isTrue(new Ucs2StringType({minLength: 0, maxLength: 0}).test(""));
     });
-    it('should accept the string "a" (ASCII codepoint), when requiring length exactly 1', function () {
+    it("should accept the string \"a\" (ASCII codepoint), when requiring length exactly 1", function () {
       assert.isTrue(new Ucs2StringType({minLength: 1, maxLength: 1}).test("a"));
     });
-    it('should accept the string "∑" (BMP codepoint), when requiring length exactly 1', function () {
+    it("should accept the string \"∑\" (BMP codepoint), when requiring length exactly 1", function () {
       assert.isTrue(new Ucs2StringType({minLength: 1, maxLength: 1}).test("∑"));
     });
-    it('should accept the string "𝄞" (non-BMP codepoint), when requiring length exactly 2', function () {
+    it("should accept the string \"𝄞\" (non-BMP codepoint), when requiring length exactly 2", function () {
       assert.isTrue(new Ucs2StringType({minLength: 2, maxLength: 2}).test("𝄞"));
     });
-    it('should reject the string "𝄞" (non-BMP codepoint), when requiring length exactly 1', function () {
+    it("should reject the string \"𝄞\" (non-BMP codepoint), when requiring length exactly 1", function () {
       assert.isFalse(new Ucs2StringType({minLength: 1, maxLength: 1}).test("𝄞"));
     });
     it("should accept unmatched surrogate halves", function () {

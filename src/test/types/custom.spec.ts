@@ -81,7 +81,7 @@ describe("Custom", function () {
       output: {
         bson: "0",
         json: "\"0\"",
-        qs: "0",
+        qs: "_=0",
       },
     },
     {
@@ -91,7 +91,7 @@ describe("Custom", function () {
       output: {
         bson: "1",
         json: "\"1\"",
-        qs: "1",
+        qs: "_=1",
       },
     },
     {
@@ -101,7 +101,7 @@ describe("Custom", function () {
       output: {
         bson: "2j",
         json: "\"2j\"",
-        qs: "2j",
+        qs: "_=2j",
       },
     },
     {
@@ -111,7 +111,7 @@ describe("Custom", function () {
       output: {
         bson: "3 + 4j",
         json: "\"3 + 4j\"",
-        qs: "3 + 4j",
+        qs: "_=3%20%2B%204j",
       },
     },
     {name: "\"foo\"", value: "bar", valid: false},

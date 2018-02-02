@@ -137,39 +137,34 @@ export function testJsonSerialization<T>(type: IoType<T>, typedValue: ValidTyped
 }
 
 export function testQsSerialization<T>(type: IoType<T>, typedValue: ValidTypedValue): void {
-  const writer: QsWriter = new QsWriter();
-  const reader: QsReader = new QsReader();
-  const trustedReader: QsReader = new QsReader(true);
+  const writer: QsWriter = new QsWriter(qs);
+  const reader: QsReader = new QsReader(qs);
+  const trustedReader: QsReader = new QsReader(qs, true);
   let actualSerialized: string;
 
   if (typedValue.output !== undefined && "qs" in typedValue.output) {
     if (typedValue.output["qs"] === "ignore") {
       return;
     }
-    const output: any = typedValue.output["qs"];
-    const expectedSerialized: string = qs.stringify({wrapper: output});
-    it(`\`.writeQs(val)\` should return the wrapped value \`${expectedSerialized}\``, function () {
-      const exported: any = type.write(writer, typedValue.value);
-      actualSerialized = qs.stringify({wrapper: exported});
-      chai.assert.deepEqual(exported, output);
+    const expectedSerialized: string = typedValue.output["qs"];
+    it(`\`.writeQs(val)\` should return the value \`${expectedSerialized}\``, function () {
+      actualSerialized = type.write(writer, typedValue.value);
+      chai.assert.strictEqual(actualSerialized, expectedSerialized);
     });
   } else {
     it("`t.writeQs(val)` should not throw", function () {
-      const exported: any = type.write(writer, typedValue.value);
-      actualSerialized = qs.stringify({wrapper: exported});
+      actualSerialized = type.write(writer, typedValue.value);
     });
   }
 
   it("`t.readTrustedQs(t.writeQs(val))` should be valid and equal to `val`", function () {
-    const deserialized: any = qs.parse(actualSerialized).wrapper;
-    const imported: T = type.read!(trustedReader, deserialized);
+    const imported: T = type.read!(trustedReader, actualSerialized);
     chai.assert.isTrue(type.test(imported));
     chai.assert.isTrue(type.equals(imported, typedValue.value));
   });
 
   it("`t.readQs(t.writeQs(val))` should be valid and equal to `val`", function () {
-    const deserialized: any = qs.parse(actualSerialized).wrapper;
-    const imported: T = type.read!(reader, deserialized);
+    const imported: T = type.read!(reader, actualSerialized);
     chai.assert.isTrue(type.test(imported));
     chai.assert.isTrue(type.equals(imported, typedValue.value));
   });

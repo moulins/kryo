@@ -78,11 +78,7 @@ describe("TaggedUnion", function () {
             height: 20,
           },
           json: "{\"type\":\"rectangle\",\"width\":10,\"height\":20}",
-          qs: {
-            type: "rectangle",
-            width: "10",
-            height: "20",
-          },
+          qs: "type=rectangle&width=10&height=20",
         },
       },
       {
@@ -98,10 +94,7 @@ describe("TaggedUnion", function () {
             radius: 15,
           },
           json: "{\"type\":\"circle\",\"radius\":15}",
-          qs: {
-            type: "circle",
-            radius: "15",
-          },
+          qs: "type=circle&radius=15",
         },
       },
 

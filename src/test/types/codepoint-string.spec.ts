@@ -8,12 +8,12 @@ describe("CodepointStringType", function () {
 
     const items: TypedValue[] = [
       // Valid items
-      {name: '""', value: "", valid: true},
-      {name: '"Hello World!"', value: "Hello World!", valid: true},
+      {name: "\"\"", value: "", valid: true},
+      {name: "\"Hello World!\"", value: "Hello World!", valid: true},
       {name: "Drop the bass", value: "ԂЯØǷ Łƕ੬ ɃɅϨϞ", valid: true},
       // Invalid items
       /* tslint:disable-next-line:no-construct */
-      {name: 'new String("stringObject")', value: new String("stringObject"), valid: false},
+      {name: "new String(\"stringObject\")", value: new String("stringObject"), valid: false},
       {name: "0.5", value: 0.5, valid: false},
       {name: "0.0001", value: 0.0001, valid: false},
       {name: "Infinity", value: Infinity, valid: false},
@@ -36,16 +36,16 @@ describe("CodepointStringType", function () {
     it("should accept the empty string, when requiring length exactly 0", function () {
       assert.isTrue(new CodepointStringType({minCodepoints: 0, maxCodepoints: 0}).test(""));
     });
-    it('should accept the string "a" (ASCII codepoint), when requiring length exactly 1', function () {
+    it("should accept the string \"a\" (ASCII codepoint), when requiring length exactly 1", function () {
       assert.isTrue(new CodepointStringType({minCodepoints: 1, maxCodepoints: 1}).test("a"));
     });
-    it('should accept the string "∑" (BMP codepoint), when requiring length exactly 1', function () {
+    it("should accept the string \"∑\" (BMP codepoint), when requiring length exactly 1", function () {
       assert.isTrue(new CodepointStringType({minCodepoints: 1, maxCodepoints: 1}).test("∑"));
     });
-    it('should reject the string "𝄞" (non-BMP codepoint), when requiring length exactly 2', function () {
+    it("should reject the string \"𝄞\" (non-BMP codepoint), when requiring length exactly 2", function () {
       assert.isFalse(new CodepointStringType({minCodepoints: 2, maxCodepoints: 2}).test("𝄞"));
     });
-    it('should accept the string "𝄞" (non-BMP codepoint), when requiring length exactly 1', function () {
+    it("should accept the string \"𝄞\" (non-BMP codepoint), when requiring length exactly 1", function () {
       assert.isTrue(new CodepointStringType({minCodepoints: 1, maxCodepoints: 1}).test("𝄞"));
     });
     describe("should reject unmatched surrogate halves", function () {

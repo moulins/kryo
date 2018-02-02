@@ -10,6 +10,8 @@
 
 ## Installation
 
+**TODO: The documentation is outdated since the release of the versions `0.6/0.7`!!!**
+
 _Kryo_ allows to declaratively define types and schemas to test and serialize data.
 While Typescript provides compile-time checks, _Kryo_ is intended for runtime verification, even against
 untrusted input.

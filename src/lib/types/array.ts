@@ -77,19 +77,16 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
     const maxLength: number | undefined = this.maxLength;
 
     return reader.readList(raw, readVisitor({
-      fromList(input: Iterable<any>, size?: number): T[] {
-        if (size === undefined) {
-          throw new Incident("UnknownArrayLength");
-        }
-        if (maxLength !== undefined && size > maxLength) {
-          throw createMaxArrayLengthError([...input], maxLength);
-        }
+      fromList<RI>(input: Iterable<RI>, itemReader: Reader<RI>): T[] {
         let invalid: undefined | Map<number, Error> = undefined;
         const result: T[] = [];
         let i: number = 0;
         for (const rawItem of input) {
+          if (maxLength !== undefined && i === maxLength) {
+            throw createMaxArrayLengthError([...input], maxLength);
+          }
           try {
-            const item: T = itemType.read!(reader, rawItem);
+            const item: T = itemType.read!(itemReader, rawItem);
             if (invalid === undefined) {
               result.push(item);
             }

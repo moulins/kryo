@@ -1,6 +1,6 @@
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Reader, VersionedType, Writable, Writer } from "../types";
+import { IoType, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "null";
 export const name: Name = "null";
@@ -22,7 +22,7 @@ export class NullType implements IoType<null>, VersionedType<null, undefined> {
 
   read<R>(reader: Reader<R>, raw: R): null {
     return reader.readNull(raw, readVisitor({
-      fromNull: () =>  null,
+      fromNull: () => null,
     }));
   }
 

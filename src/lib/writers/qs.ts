@@ -1,42 +1,47 @@
+import _qs from "qs";
 import { Writer } from "../types";
-import { JsonWriter } from "./json";
-import { StructuredWriter } from "./structured";
+import { QsValueWriter } from "./qs-value";
 
-export class QsWriter extends StructuredWriter {
-  writeFloat64(value: number): string {
-    if (isNaN(value)) {
-      return "NaN";
-    } else if (value === Infinity) {
-      return "+Infinity";
-    } else if (value === -Infinity) {
-      return "-Infinity";
-    }
-    return value.toString(10);
+export class QsWriter implements Writer<string> {
+  private readonly valueWriter: QsValueWriter;
+  private readonly qs: typeof _qs;
+  private readonly primitiveWrapper: string;
+
+  constructor(qs: typeof _qs, primitiveWrapper: string = "_") {
+    this.qs = qs;
+    this.primitiveWrapper = primitiveWrapper;
+    this.valueWriter = new QsValueWriter();
   }
 
-  writeDate(value: Date): string {
-    return value.toISOString();
+  writeAny(value: number): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeAny(value)});
   }
 
-  writeNull(): "" {
-    return "";
+  writeBoolean(value: boolean): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeBoolean(value)});
   }
 
   writeBuffer(value: Uint8Array): string {
-    const result: string[] = new Array(value.length);
-    const len: number = value.length;
-    for (let i: number = 0; i < len; i++) {
-      result[i] = (value[i] < 16 ? "0" : "") + value[i].toString(16);
-    }
-    return result.join("");
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeBuffer(value)});
   }
 
-  writeBoolean(value: boolean): "true" | "false" {
-    return value ? "true" : "false";
+  writeDate(value: Date): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeDate(value)});
   }
 
-  writeString(value: string): string {
-    return value;
+  writeDocument<K extends string>(
+    keys: Iterable<K>,
+    handler: (key: K, fieldWriter: Writer<any>) => any,
+  ): string {
+    return this.qs.stringify(this.valueWriter.writeDocument(keys, handler));
+  }
+
+  writeFloat64(value: number): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeFloat64(value)});
+  }
+
+  writeList(size: number, handler: (index: number, itemWriter: Writer<any>) => any): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeList(size, handler)});
   }
 
   writeMap(
@@ -44,14 +49,14 @@ export class QsWriter extends StructuredWriter {
     keyHandler: <KW>(index: number, mapKeyWriter: Writer<KW>) => KW,
     valueHandler: <VW>(index: number, mapValueWriter: Writer<VW>) => VW,
   ): any {
-    const result: any = {};
-    for (let index: number = 0; index < size; index++) {
-      // TODO: Use a specialized writer that only accepts strings and numbers (KeyMustBeAStringError)
-      // Let users build custom serializers if they want
-      const jsonWriter: JsonWriter = new JsonWriter();
-      const key: any = keyHandler(index, jsonWriter);
-      result[JSON.stringify(key)] = valueHandler(index, this);
-    }
-    return result;
+    return this.qs.stringify(this.valueWriter.writeMap(size, keyHandler, valueHandler));
+  }
+
+  writeNull(): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeNull()});
+  }
+
+  writeString(value: string): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeString(value)});
   }
 }

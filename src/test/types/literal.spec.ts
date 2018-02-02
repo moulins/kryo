@@ -18,7 +18,7 @@ describe("Literal", function () {
         output: {
           bson: "foo",
           json: "\"foo\"",
-          qs: "foo",
+          qs: "_=foo",
         },
       },
 
@@ -65,7 +65,7 @@ describe("Literal", function () {
         output: {
           bson: "Red",
           json: "\"Red\"",
-          qs: "Red",
+          qs: "_=Red",
         },
       },
       {
@@ -75,7 +75,7 @@ describe("Literal", function () {
         output: {
           bson: "Red",
           json: "\"Red\"",
-          qs: "Red",
+          qs: "_=Red",
         },
       },
       {name: "Color.Green", value: Color.Green, valid: false},

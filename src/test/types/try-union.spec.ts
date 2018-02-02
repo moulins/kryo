@@ -51,10 +51,7 @@ describe("TryUnion", function () {
             height: 20,
           },
           json: "{\"width\":10,\"height\":20}",
-          qs: {
-            width: "10",
-            height: "20",
-          },
+          qs: "width=10&height=20",
         },
       },
       {
@@ -68,9 +65,7 @@ describe("TryUnion", function () {
             radius: 15,
           },
           json: "{\"radius\":15}",
-          qs: {
-            radius: "15",
-          },
+          qs: "radius=15",
         },
       },
 

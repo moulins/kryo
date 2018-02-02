@@ -43,6 +43,7 @@ describe("Document", function () {
       valid: true,
       output: {
         json: JSON.stringify({dateProp: "1970-01-01T00:00:00.000Z", optIntProp: 50, nestedDoc: {id: 10}}),
+        qs: "dateProp=1970-01-01T00%3A00%3A00.000Z&optIntProp=50&nestedDoc%5Bid%5D=10",
       },
     },
     {
@@ -119,12 +120,7 @@ describe("Document: rename", function () {
           "y-min": 20,
           "y-max": 30,
         }),
-        qs: {
-          "x-min": "0",
-          "x-max": "10",
-          "y-min": "20",
-          "y-max": "30",
-        },
+        qs: "x-min=0&x-max=10&y-min=20&y-max=30",
       },
     },
   ];

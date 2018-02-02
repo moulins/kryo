@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { DiffAction, diffSync } from "../../lib/_helpers/diff";
 
 describe("Diff", function () {
-  it('"rosettacode" -> "raisethysword"', function () {
+  it("\"rosettacode\" -> \"raisethysword\"", function () {
     const actual: DiffAction[] = diffSync("rosettacode", "raisethysword");
     const expected: DiffAction[] = [
       {type: "match", value: 1},   // r    r

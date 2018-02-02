@@ -85,7 +85,7 @@ export interface ReadVisitor<T> {
 
   fromFloat64(input: number): T;
 
-  fromList(input: Iterable<any>, size?: number): T;
+  fromList<RI>(input: Iterable<RI>, itemReader: Reader<RI>): T;
 
   fromMap<RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T;
 

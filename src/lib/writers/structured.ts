@@ -1,5 +1,4 @@
-import { Incident } from "incident";
-import { Type, Writer } from "../types";
+import { Writer } from "../types";
 
 /**
  * Base class for `json`, `qs` and `bson` writers.

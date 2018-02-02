@@ -26,5 +26,8 @@ export type Cause = undefined;
 export type InvalidDocumentError = Incident<Data, Name, Cause>;
 
 export function createInvalidDocumentError(data: Data): InvalidDocumentError {
+  if (data.extra === undefined) {
+    Reflect.deleteProperty(data, "extra");
+  }
   return Incident(name, data);
 }
