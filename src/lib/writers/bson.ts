@@ -1,39 +1,48 @@
-import bson from "bson";
+import _bson from "bson";
 import { Writer } from "../types";
-import { JsonWriter } from "./json";
-import { StructuredWriter } from "./structured";
+import { BsonValueWriter } from "./bson-value";
 
-export class BsonWriter extends StructuredWriter {
-  private readonly bsonLib: typeof bson;
+export class BsonWriter implements Writer<Buffer> {
 
-  constructor(bsonLib: typeof bson) {
-    super();
-    this.bsonLib = bsonLib;
+  private readonly bsonSerializer: _bson.BSON;
+  private readonly valueWriter: BsonValueWriter;
+  private readonly primitiveWrapper: string;
+
+  constructor(bson: typeof _bson, primitiveWrapper: string = "_") {
+    this.bsonSerializer = new bson.BSON();
+    this.primitiveWrapper = primitiveWrapper;
+    this.valueWriter = new BsonValueWriter(bson);
   }
 
-  writeFloat64(value: number): number {
-    return value;
+  writeAny(value: number): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeAny(value)});
   }
 
-  writeBoolean(value: boolean): boolean {
-    return value;
+  writeBoolean(value: boolean): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeBoolean(value)});
   }
 
-  writeNull(): null {
-    return null;
+  writeBuffer(value: Uint8Array): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeBuffer(value)});
   }
 
-  writeBuffer(value: Uint8Array): bson.Binary {
-    // TODO: Update Node type definitions
-    return new this.bsonLib.Binary(Buffer.from(value as any));
+  writeDate(value: Date): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeDate(value)});
   }
 
-  writeDate(value: Date): Date {
-    return new Date(value.getTime());
+  writeDocument<K extends string>(
+    keys: Iterable<K>,
+    handler: (key: K, fieldWriter: Writer<any>) => any,
+  ): Buffer {
+    return this.bsonSerializer.serialize(this.valueWriter.writeDocument(keys, handler));
   }
 
-  writeString(value: string): string {
-    return value;
+  writeFloat64(value: number): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeFloat64(value)});
+  }
+
+  writeList(size: number, handler: (index: number, itemWriter: Writer<any>) => any): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeList(size, handler)});
   }
 
   writeMap(
@@ -41,14 +50,14 @@ export class BsonWriter extends StructuredWriter {
     keyHandler: <KW>(index: number, mapKeyWriter: Writer<KW>) => KW,
     valueHandler: <VW>(index: number, mapValueWriter: Writer<VW>) => VW,
   ): any {
-    const result: any = {};
-    for (let index: number = 0; index < size; index++) {
-      // TODO: Use a specialized writer that only accepts strings and numbers (KeyMustBeAStringError)
-      // Let users build custom serializers if they want
-      const jsonWriter: JsonWriter = new JsonWriter();
-      const key: any = keyHandler(index, jsonWriter);
-      result[JSON.stringify(key)] = valueHandler(index, this);
-    }
-    return result;
+    return this.bsonSerializer.serialize(this.valueWriter.writeMap(size, keyHandler, valueHandler));
+  }
+
+  writeNull(): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeNull()});
+  }
+
+  writeString(value: string): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeString(value)});
   }
 }

@@ -70,35 +70,30 @@ export function testValidValueSync(type: Type<any>, item: ValidTypedValue) {
 
 export function testBsonSerialization<T>(type: IoType<T>, typedValue: ValidTypedValue): void {
   const writer: BsonWriter = new BsonWriter(bson);
-  const reader: BsonReader = new BsonReader();
-  const trustedReader: BsonReader = new BsonReader(true);
+  const reader: BsonReader = new BsonReader(bson);
+  const trustedReader: BsonReader = new BsonReader(bson, true);
   let actualSerialized: Buffer;
 
   if (typedValue.output !== undefined && "bson" in typedValue.output) {
     const output: any = typedValue.output["bson"];
-    const expectedSerialized: Buffer = new bson.BSON().serialize({wrapper: output});
     it("`.writeBson(val)` should return the expected value", function () {
-      const exported: any = type.write(writer, typedValue.value);
-      actualSerialized = new bson.BSON().serialize({wrapper: exported});
-      chai.assert.deepEqual(actualSerialized, expectedSerialized);
+      actualSerialized = type.write(writer, typedValue.value);
+      chai.assert.deepEqual(actualSerialized, output);
     });
   } else {
     it("`t.writeBson(val)` should not throw", function () {
-      const exported: any = type.write(writer, typedValue.value);
-      actualSerialized = new bson.BSON().serialize({wrapper: exported});
+      actualSerialized = type.write(writer, typedValue.value);
     });
   }
 
   it("`t.readTrustedBson(t.writeBson(val))` should be valid and equal to `val`", function () {
-    const deserialized: any = new bson.BSON().deserialize(actualSerialized).wrapper;
-    const imported: T = type.read!(trustedReader, deserialized);
+    const imported: T = type.read!(trustedReader, actualSerialized);
     chai.assert.isTrue(type.test(imported));
     chai.assert.isTrue(type.equals(imported, typedValue.value));
   });
 
   it("`t.readBson(t.writeBson(val))` should be valid and equal to `val`", function () {
-    const deserialized: any = new bson.BSON().deserialize(actualSerialized).wrapper;
-    const imported: T = type.read!(reader, deserialized);
+    const imported: T = type.read!(reader, actualSerialized);
     chai.assert.isTrue(type.test(imported));
     chai.assert.isTrue(type.equals(imported, typedValue.value));
   });

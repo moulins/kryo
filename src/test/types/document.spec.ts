@@ -1,3 +1,4 @@
+import bson from "bson";
 import { CaseStyle } from "../../lib/case-style";
 import { DateType } from "../../lib/types/date";
 import { DocumentType } from "../../lib/types/document";
@@ -97,6 +98,8 @@ describe("Document: rename", function () {
     rename: CaseStyle.KebabCase,
   });
 
+  const bsonSerializer: bson.BSON = new bson.BSON();
+
   const items: TypedValue[] = [
     {
       name: "Rect {xMin: 0, xMax: 10, yMin: 20, yMax: 30}",
@@ -108,12 +111,12 @@ describe("Document: rename", function () {
       },
       valid: true,
       output: {
-        bson: {
+        bson: bsonSerializer.serialize({
           "x-min": 0,
           "x-max": 10,
           "y-min": 20,
           "y-max": 30,
-        },
+        }),
         json: JSON.stringify({
           "x-min": 0,
           "x-max": 10,
