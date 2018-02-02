@@ -48,6 +48,8 @@ export interface IoType<T> extends Type<T>, Readable<T>, Writable<T> {
  * W: Write result type.
  */
 export interface Writer<W> {
+  writeAny(value: any): W;
+
   writeBoolean(value: boolean): W;
 
   writeBuffer(value: Uint8Array): W;
@@ -59,8 +61,6 @@ export interface Writer<W> {
   writeUcs2String(value: string): W;
 
   writeNull(): W;
-
-  writeJson(value: any): W;
 
   writeArray(size: number, handler: <IW>(index: number, itemWriter: Writer<IW>) => IW): W;
 

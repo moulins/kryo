@@ -17,7 +17,7 @@ export abstract class StructuredWriter implements Writer<any> {
 
   abstract writeNull(): any;
 
-  writeJson(value: any): any {
+  writeAny(value: any): any {
     return JSON.parse(JSON.stringify(value));
   }
 

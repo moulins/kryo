@@ -55,7 +55,7 @@ export class JsonStreamWriter implements Writer<boolean> {
     return this.stream.write("null");
   }
 
-  writeJson(value: any): boolean {
+  writeAny(value: any): boolean {
     return this.stream.write(JSON.stringify(value));
   }
 
