@@ -70,7 +70,7 @@ export interface PropertyDescriptor<M extends Type<any>> {
 }
 
 export interface DocumentTypeConstructor {
-  new<T>(options: Lazy<DocumentIoTypeOptions<T>>): DocumenIoType<T>;
+  new<T>(options: Lazy<DocumentIoTypeOptions<T>>): DocumentIoType<T>;
 
   /**
    * Create a new document type checking for objects with the supplied properties.
@@ -87,7 +87,7 @@ export interface DocumentType<T> extends Type<T>, VersionedType<T, Diff<T>>, Doc
   getOutKey(key: keyof T): string;
 }
 
-export interface DocumenIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>, DocumentIoTypeOptions<T> {
+export interface DocumentIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>, DocumentIoTypeOptions<T> {
   getOutKey(key: keyof T): string;
 
   read<R>(reader: Reader<R>, raw: R): T;

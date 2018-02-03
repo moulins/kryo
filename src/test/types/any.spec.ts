@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { JsonReader } from "../../lib/readers/json";
 import { JsonValueReader } from "../../lib/readers/json-value";
 import { AnyType } from "../../lib/types/any";
-import { DocumenIoType, DocumentType } from "../../lib/types/document";
+import { DocumentIoType, DocumentType } from "../../lib/types/document";
 
 describe("AnyType", function () {
   describe("with JsonReader", function () {
@@ -20,7 +20,7 @@ describe("AnyType", function () {
         foo: any;
       }
 
-      const $FooBarQuz: DocumenIoType<FooBarQuz> = new DocumentType({
+      const $FooBarQuz: DocumentIoType<FooBarQuz> = new DocumentType({
         properties: {foo: {type: $Any}},
       });
 

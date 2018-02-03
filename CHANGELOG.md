@@ -1,3 +1,7 @@
+# Next
+
+- **[Fix]** Fix typo `DocumenIoType` to `DocumentIoType`
+
 # 0.7.0-beta.0
 
 - **[Breaking change]** Remove `.readJson`, `.readTrustedJson`, `.writeJson` and serializers in
