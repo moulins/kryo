@@ -7,7 +7,7 @@ import { runTests, TypedValue } from "../helpers/test";
 
 describe("Document", function () {
   const documentType: DocumentType<any> = new DocumentType({
-    ignoreExtraKeys: true,
+    noExtraKeys: false,
     properties: {
       dateProp: {
         optional: false,
@@ -20,7 +20,7 @@ describe("Document", function () {
       nestedDoc: {
         optional: true,
         type: new DocumentType({
-          ignoreExtraKeys: true,
+          noExtraKeys: false,
           properties: {
             id: {
               optional: true,

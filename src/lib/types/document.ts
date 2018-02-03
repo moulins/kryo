@@ -24,9 +24,9 @@ export interface Diff<T> {
 
 export interface DocumentTypeOptions<T> {
   /**
-   * Do not throw error when the object contains extraneous keys.
+   * Treat values with extra keys as invalid.
    */
-  ignoreExtraKeys?: boolean;
+  noExtraKeys?: boolean;
 
   /**
    * A dictionary between a property name and its description.
@@ -97,10 +97,11 @@ export interface DocumenIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>, 
 
 // We use an `any` cast because of the `properties` property.
 // tslint:disable-next-line:variable-name
-export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> implements IoType<T> {
+export const DocumentType: DocumentTypeConstructor = class<T extends {}> implements IoType<T>,
+  DocumentIoTypeOptions<T> {
   readonly name: Name = name;
-  readonly ignoreExtraKeys: boolean;
-  readonly properties: {[P in keyof T]: PropertyDescriptor<Type<T[P]>>};
+  readonly noExtraKeys?: boolean;
+  readonly properties: {[P in keyof T]: PropertyDescriptor<any>};
   readonly rename?: {[P in keyof T]?: string};
   readonly changeCase?: CaseStyle;
   private _options: Lazy<DocumentTypeOptions<T>>;
@@ -108,14 +109,13 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
 
   constructor(options: Lazy<DocumentTypeOptions<T>>) {
     // TODO: Remove once TS 2.7 is better supported by editors
-    this.ignoreExtraKeys = <any> undefined;
     this.properties = <any> undefined;
 
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();
     } else {
-      lazyProperties(this, this._applyOptions, ["ignoreExtraKeys", "properties", "changeCase", "rename" as keyof this]);
+      lazyProperties(this, this._applyOptions, ["noExtraKeys", "properties", "changeCase", "rename" as keyof this]);
     }
   }
 
@@ -159,7 +159,7 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
   read<R>(reader: Reader<R>, raw: R): T {
     return reader.readDocument(raw, readVisitor({
       fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T => {
-        const extra: Set<string> | undefined = this.ignoreExtraKeys ? undefined : new Set(Object.keys(input));
+        const extra: Set<string> | undefined = this.noExtraKeys ? new Set(Object.keys(input)) : undefined;
         const missing: Set<string> = new Set();
         const invalid: Map<keyof T, Error> = new Map();
 
@@ -219,7 +219,7 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
       return createInvalidTypeError("object", val);
     }
 
-    const extra: Set<string> | undefined = this.ignoreExtraKeys ? undefined : new Set(Object.keys(val));
+    const extra: Set<string> | undefined = this.noExtraKeys ? new Set(Object.keys(val)) : undefined;
     const missing: Set<string> = new Set();
     const invalid: Map<keyof T, Error> = new Map();
 
@@ -252,7 +252,7 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
       return false;
     }
 
-    const extra: Set<string> | undefined = this.ignoreExtraKeys ? undefined : new Set(Object.keys(val));
+    const extra: Set<string> | undefined = this.noExtraKeys ? new Set(Object.keys(val)) : undefined;
 
     for (const key in this.properties) {
       if (extra !== undefined) {
@@ -376,12 +376,12 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
       this._options() :
       this._options;
 
-    const ignoreExtraKeys: boolean = options.ignoreExtraKeys || false;
+    const noExtraKeys: boolean | undefined = options.noExtraKeys;
     const properties: {[P in keyof T]: PropertyDescriptor<Type<any>>} = options.properties;
     const rename: {[P in keyof T]?: string} | undefined = options.rename;
     const changeCase: CaseStyle | undefined = options.changeCase;
 
-    Object.assign(this, {ignoreExtraKeys, properties, rename, changeCase});
+    Object.assign(this, {noExtraKeys, properties, rename, changeCase});
   }
 };
 
