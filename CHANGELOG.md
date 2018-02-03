@@ -1,6 +1,7 @@
 # Next
 
-- **[Fix]** Fix typo `DocumenIoType` to `DocumentIoType`
+- **[Feature]** Add builtin `$Any` for `AnyType`.
+- **[Fix]** Fix typo `DocumenIoType` to `DocumentIoType`.
 
 # 0.7.0-beta.0
 
