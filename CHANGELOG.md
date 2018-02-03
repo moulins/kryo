@@ -1,11 +1,11 @@
-# Next
+# 0.7.0-beta.1 (2018-02-03)
 
 - **[Feature]** Add builtin `$Any` for `AnyType`.
 - **[Fix]** Fix typo `DocumenIoType` to `DocumentIoType`.
 - **[Fix]** Fix inference on `ArrayType` from its `itemType` (`IoType` or simple `Type`).
 - **[Fix]** Fix inference on `LiteralType` from its `type` (`IoType` or simple `Type`).
 
-# 0.7.0-beta.0
+# 0.7.0-beta.0 (2018-02-03)
 
 - **[Breaking change]** Remove `.readJson`, `.readTrustedJson`, `.writeJson` and serializers in
   favor of `.read`, `.write` and `Writer`/`Reader` interfaces to better support various formats.
