@@ -2,7 +2,7 @@ import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
-import { IoType, Lazy, Readable, Reader, Type, Writable, Writer } from "../types";
+import { IoType, Lazy, Reader, Type, Writer } from "../types";
 
 export type Name = "literal";
 export const name: Name = "literal";
@@ -21,20 +21,18 @@ export interface LiteralTypeOptions<T, M extends Type<any> = Type<any>> {
 }
 
 export interface LiteralTypeConstructor {
-  new<T>(options: Lazy<LiteralTypeOptions<T>>): LiteralType<T>;
-
-  new<T>(options: Lazy<LiteralTypeOptions<T, Readable<any> & Type<any>>>): LiteralType<T> & Readable<T>;
-
-  new<T>(options: Lazy<LiteralTypeOptions<T, Writable<any> & Type<any>>>): LiteralType<T> & Writable<T>;
-
   new<T>(options: Lazy<LiteralTypeOptions<T, IoType<any>>>): LiteralIoType<T>;
+
+  new<T>(options: Lazy<LiteralTypeOptions<T>>): LiteralType<T>;
 }
 
 export interface LiteralType<T, M extends Type<any> = Type<any>> extends Type<T>, LiteralTypeOptions<T, M> {
 }
 
-export interface LiteralIoType<T, M extends IoType<any> = IoType<any>> extends IoType<T>,
-  LiteralTypeOptions<T, M> {
+export interface LiteralIoType<T, M extends IoType<any> = IoType<any>> extends IoType<T>, LiteralType<T, M> {
+  read<R>(reader: Reader<R>, raw: R): T;
+
+  write<W>(writer: Writer<W>, value: T): W;
 }
 
 /**

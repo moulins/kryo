@@ -1,4 +1,4 @@
-import { LiteralType } from "../../lib/types/literal";
+import { LiteralIoType, LiteralType } from "../../lib/types/literal";
 import { TsEnumType } from "../../lib/types/ts-enum";
 import { Ucs2StringType } from "../../lib/types/ucs2-string";
 import { runTests, TypedValue } from "../helpers/test";
@@ -52,7 +52,7 @@ describe("Literal", function () {
       Blue,
     }
 
-    const type: LiteralType<Color.Red> = new LiteralType<Color.Red>({
+    const $ColorRed: LiteralIoType<Color.Red> = new LiteralType<Color.Red>({
       type: new TsEnumType({enum: Color}),
       value: Color.Red,
     });
@@ -82,6 +82,6 @@ describe("Literal", function () {
       {name: "undefined", value: undefined, valid: false},
     ];
 
-    runTests(type, items);
+    runTests($ColorRed, items);
   });
 });
