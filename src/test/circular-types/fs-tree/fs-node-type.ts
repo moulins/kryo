@@ -6,7 +6,7 @@ export enum FsNodeType {
 }
 
 export const $FsNodeType: TsEnumType<FsNodeType> = new TsEnumType<FsNodeType>({
-  tsEnum: FsNodeType,
+  enum: FsNodeType,
   rename: {
     File: "Node/File",
     Directory: "Node/Directory",

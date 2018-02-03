@@ -12,7 +12,7 @@ describe("TsEnum", function () {
     Blue,
   }
 
-  const $Color: TsEnumType<Color> = new TsEnumType({tsEnum: Color});
+  const $Color: TsEnumType<Color> = new TsEnumType({enum: Color});
 
   const items: TypedValue[] = [
     {
@@ -91,7 +91,7 @@ describe("SimpleEnum: rename KebabCase", function () {
     BlockStatement,
   }
 
-  const $Node: TsEnumType<Node> = new TsEnumType(() => ({tsEnum: Node, changeCase: CaseStyle.KebabCase}));
+  const $Node: TsEnumType<Node> = new TsEnumType(() => ({enum: Node, changeCase: CaseStyle.KebabCase}));
 
   const items: TypedValue[] = [
     {

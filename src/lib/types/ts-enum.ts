@@ -103,7 +103,7 @@ function getEnumMaps<K extends string, E extends string | number>(
 }
 
 export interface TsEnumTypeOptions<E extends string | number, EO extends {} = {}> {
-  tsEnum: EnumObject<EO, E>;
+  enum: EnumObject<EO, E>;
   changeCase?: CaseStyle;
   rename?: {[P in keyof EO]?: string};
 }
@@ -117,20 +117,20 @@ export interface TsEnumTypeOptions<E extends string | number, EO extends {} = {}
  */
 export class TsEnumType<E extends string | number, EO extends {} = {}> implements IoType<E>, TsEnumTypeOptions<E, EO> {
   readonly name: Name = name;
-  readonly tsEnum: Record<keyof EO, E>;
+  readonly enum: Record<keyof EO, E>;
   readonly changeCase?: CaseStyle;
   readonly rename?: {[P in keyof EO]?: string};
 
   private get jsToOut(): Map<E, string> {
     if (this._jsToOut === undefined) {
-      [this._jsToOut, this._outToJs] = getEnumMaps(this.tsEnum, this.changeCase, this.rename);
+      [this._jsToOut, this._outToJs] = getEnumMaps(this.enum, this.changeCase, this.rename);
     }
     return this._jsToOut;
   }
 
   private get outToJs(): Map<string, E> {
     if (this._outToJs === undefined) {
-      [this._jsToOut, this._outToJs] = getEnumMaps(this.tsEnum, this.changeCase, this.rename);
+      [this._jsToOut, this._outToJs] = getEnumMaps(this.enum, this.changeCase, this.rename);
     }
     return this._outToJs;
   }
@@ -142,13 +142,13 @@ export class TsEnumType<E extends string | number, EO extends {} = {}> implement
 
   constructor(options: Lazy<TsEnumTypeOptions<E>>) {
     // TODO: Remove once TS 2.7 is better supported by editors
-    this.tsEnum = <any> undefined;
+    this.enum = <any> undefined;
 
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();
     } else {
-      lazyProperties(this, this._applyOptions, ["tsEnum", "changeCase", "rename"]);
+      lazyProperties(this, this._applyOptions, ["enum", "changeCase", "rename"]);
     }
   }
 
@@ -200,10 +200,10 @@ export class TsEnumType<E extends string | number, EO extends {} = {}> implement
     }
     const options: TsEnumTypeOptions<E> = typeof this._options === "function" ? this._options() : this._options;
 
-    const tsEnum: EO = options.tsEnum as EO;
+    const tsEnum: EO = options.enum as EO;
     const changeCase: CaseStyle | undefined = options.changeCase;
     const rename: {[P in keyof EO]?: string} | undefined = options.rename;
 
-    Object.assign(this, {tsEnum, changeCase, rename});
+    Object.assign(this, {enum: tsEnum, changeCase, rename});
   }
 }

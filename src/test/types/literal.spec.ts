@@ -53,7 +53,7 @@ describe("Literal", function () {
     }
 
     const type: LiteralType<Color.Red> = new LiteralType<Color.Red>({
-      type: new TsEnumType({tsEnum: Color}),
+      type: new TsEnumType({enum: Color}),
       value: Color.Red,
     });
 

@@ -17,7 +17,7 @@ describe("TaggedUnion", function () {
     }
 
     const shapeTypeType: TsEnumType<ShapeType> = new TsEnumType({
-      tsEnum: ShapeType,
+      enum: ShapeType,
       changeCase: CaseStyle.KebabCase,
     });
 

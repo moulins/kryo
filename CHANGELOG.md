@@ -1,7 +1,12 @@
-# Next
+# 0.7.0-beta.0
 
 - **[Breaking change]** Remove `.readJson`, `.readTrustedJson`, `.writeJson` and serializers in
   favor of `.read`, `.write` and `Writer`/`Reader` interfaces to better support various formats.
+- **[Breaking change]** Rename `SimpleEnumType` to `TsEnumType`
+- **[Breaking change]** Rename `.rename` to `.changeCase` in `DocumentTypeOptions` and `TsEnumOptions`
+- **[Feature]** Support string values for enums
+- **[Feature]** Add support for custom renames for documents and enums
+- **[Feature]** Read/Write from JSON, BSON and qs strings or buffers directly
 
 # 0.6.1 (2018-01-30)
 
