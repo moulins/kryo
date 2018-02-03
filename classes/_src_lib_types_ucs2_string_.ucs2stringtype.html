@@ -125,7 +125,8 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_src_lib_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_ucs2_string_.json.html#input" class="tsd-signature-type">Input</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_ucs2_string_.json.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_ucs2_string_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_types_.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_ucs2_string_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -159,14 +160,13 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#diff" class="tsd-kind-icon">diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#equals" class="tsd-kind-icon">equals</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#patch" class="tsd-kind-icon">patch</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#readjson" class="tsd-kind-icon">read<wbr>Json</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#readtrustedjson" class="tsd-kind-icon">read<wbr>Trusted<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#read" class="tsd-kind-icon">read</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#squash" class="tsd-kind-icon">squash</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#test" class="tsd-kind-icon">test</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#writejson" class="tsd-kind-icon">write<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#write" class="tsd-kind-icon">write</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#fromjson" class="tsd-kind-icon">fromJSON</a></li>
 							</ul>
 						</section>
@@ -179,22 +179,19 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Ucs2<wbr>String<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_ucs2_string_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span>, lazy<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html" class="tsd-signature-type">Ucs2StringType</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Ucs2<wbr>String<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_ucs2_string_.ucs2stringtypeoptions.html" class="tsd-signature-type">Ucs2StringTypeOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_types_ucs2_string_.ucs2stringtype.html" class="tsd-signature-type">Ucs2StringType</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L117">src/lib/types/ucs2-string.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L119">src/lib/types/ucs2-string.ts:119</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>options: <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_ucs2_string_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> lazy: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>options: <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_ucs2_string_.ucs2stringtypeoptions.html" class="tsd-signature-type">Ucs2StringTypeOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_src_lib_types_ucs2_string_.ucs2stringtype.html" class="tsd-signature-type">Ucs2StringType</a></h4>
@@ -207,10 +204,10 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_options" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _options</h3>
-					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_ucs2_string_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_ucs2_string_.ucs2stringtypeoptions.html" class="tsd-signature-type">Ucs2StringTypeOptions</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L117">src/lib/types/ucs2-string.ts:117</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L119">src/lib/types/ucs2-string.ts:119</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -220,7 +217,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 					<div class="tsd-signature tsd-kind-icon">allow<wbr>Unicode<wbr>Reg<wbr>Exp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L110">src/lib/types/ucs2-string.ts:110</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L112">src/lib/types/ucs2-string.ts:112</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -230,7 +227,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 					<div class="tsd-signature tsd-kind-icon">lower<wbr>Case<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L112">src/lib/types/ucs2-string.ts:112</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L114">src/lib/types/ucs2-string.ts:114</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -240,17 +237,17 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L115">src/lib/types/ucs2-string.ts:115</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L117">src/lib/types/ucs2-string.ts:117</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="minlength" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> min<wbr>Length</h3>
-					<div class="tsd-signature tsd-kind-icon">min<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">min<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L114">src/lib/types/ucs2-string.ts:114</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L116">src/lib/types/ucs2-string.ts:116</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -259,9 +256,8 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 					<h3>name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_types_ucs2_string_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;name</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/_src_lib_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib_types_.versionedtype.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L109">src/lib/types/ucs2-string.ts:109</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L111">src/lib/types/ucs2-string.ts:111</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -271,7 +267,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 					<div class="tsd-signature tsd-kind-icon">pattern<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L111">src/lib/types/ucs2-string.ts:111</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L113">src/lib/types/ucs2-string.ts:113</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -281,7 +277,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 					<div class="tsd-signature tsd-kind-icon">trimmed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L113">src/lib/types/ucs2-string.ts:113</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L115">src/lib/types/ucs2-string.ts:115</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -298,7 +294,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L252">src/lib/types/ucs2-string.ts:252</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L259">src/lib/types/ucs2-string.ts:259</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -315,7 +311,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L227">src/lib/types/ucs2-string.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L234">src/lib/types/ucs2-string.ts:234</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -338,7 +334,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L231">src/lib/types/ucs2-string.ts:231</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L238">src/lib/types/ucs2-string.ts:238</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -367,7 +363,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L223">src/lib/types/ucs2-string.ts:223</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L230">src/lib/types/ucs2-string.ts:230</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -393,7 +389,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L235">src/lib/types/ucs2-string.ts:235</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L242">src/lib/types/ucs2-string.ts:242</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -409,46 +405,33 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="readjson" class="tsd-anchor"></a>
-					<h3>read<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Json<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="read" class="tsd-anchor"></a>
+					<h3>read</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_lib_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib_types_.versionedtype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L172">src/lib/types/ucs2-string.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L174">src/lib/types/ucs2-string.ts:174</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
 								<li>
-									<h5>input: <span class="tsd-signature-type">any</span></h5>
+									<h4>R</h4>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="readtrustedjson" class="tsd-anchor"></a>
-					<h3>read<wbr>Trusted<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Json<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_types_ucs2_string_.json.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L168">src/lib/types/ucs2-string.ts:168</a></li>
-								</ul>
-							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>input: <a href="../modules/_src_lib_types_ucs2_string_.json.html#output" class="tsd-signature-type">Output</a></h5>
+									<h5>reader: <a href="../interfaces/_src_lib_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>raw: <span class="tsd-signature-type">R</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -465,7 +448,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L239">src/lib/types/ucs2-string.ts:239</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L246">src/lib/types/ucs2-string.ts:246</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -491,7 +474,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L243">src/lib/types/ucs2-string.ts:243</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L250">src/lib/types/ucs2-string.ts:250</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -520,7 +503,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L219">src/lib/types/ucs2-string.ts:219</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L226">src/lib/types/ucs2-string.ts:226</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -543,7 +526,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L184">src/lib/types/ucs2-string.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L191">src/lib/types/ucs2-string.ts:191</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -570,33 +553,42 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib_types_.versionedtype.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L151">src/lib/types/ucs2-string.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L156">src/lib/types/ucs2-string.ts:156</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_src_lib_types_ucs2_string_.json.type.html" class="tsd-signature-type">Type</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="writejson" class="tsd-anchor"></a>
-					<h3>write<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Json<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_types_ucs2_string_.json.html#output" class="tsd-signature-type">Output</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="write" class="tsd-anchor"></a>
+					<h3>write</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_lib_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L180">src/lib/types/ucs2-string.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L187">src/lib/types/ucs2-string.ts:187</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>W</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">string</span></h5>
+									<h5>writer: <a href="../interfaces/_src_lib_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_types_ucs2_string_.json.html#output" class="tsd-signature-type">Output</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">W</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -610,7 +602,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/ucs2-string.ts#L135">src/lib/types/ucs2-string.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/ucs2-string.ts#L140">src/lib/types/ucs2-string.ts:140</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -690,11 +682,8 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#patch" class="tsd-kind-icon">patch</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#readjson" class="tsd-kind-icon">read<wbr>Json</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#readtrustedjson" class="tsd-kind-icon">read<wbr>Trusted<wbr>Json</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#read" class="tsd-kind-icon">read</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a>
@@ -711,8 +700,8 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#writejson" class="tsd-kind-icon">write<wbr>Json</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#write" class="tsd-kind-icon">write</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="_src_lib_types_ucs2_string_.ucs2stringtype.html#fromjson" class="tsd-kind-icon">fromJSON</a>
@@ -722,7 +711,7 @@ Displayed (from UCS2BE with surrogates) </span>|<span class="hljs-string">   A  
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_src_lib_types_ucs2_string_.options.html" class="tsd-kind-icon">Options</a>
+						<a href="../interfaces/_src_lib_types_ucs2_string_.ucs2stringtypeoptions.html" class="tsd-kind-icon">Ucs2<wbr>String<wbr>Type<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="../modules/_src_lib_types_ucs2_string_.html#diff" class="tsd-kind-icon">Diff</a>

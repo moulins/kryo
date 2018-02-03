@@ -80,19 +80,20 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.collectiontype.html" class="tsd-kind-icon">Collection<wbr>Type</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.jsonserializer.html" class="tsd-kind-icon">Json<wbr>Serializer</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_src_lib_types_.serializer.html" class="tsd-kind-icon">Serializer</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.iotype.html" class="tsd-kind-icon">Io<wbr>Type</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.readvisitor.html" class="tsd-kind-icon">Read<wbr>Visitor</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.readable.html" class="tsd-kind-icon">Readable</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.reader.html" class="tsd-kind-icon">Reader</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.type.html" class="tsd-kind-icon">Type</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.typeserializer.html" class="tsd-kind-icon">Type<wbr>Serializer</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.versionedtype.html" class="tsd-kind-icon">Versioned<wbr>Type</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.writable.html" class="tsd-kind-icon">Writable</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_src_lib_types_.writer.html" class="tsd-kind-icon">Writer</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_src_lib_types_.html#lazy" class="tsd-kind-icon">Lazy</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_src_lib_types_.html#typename" class="tsd-kind-icon">Type<wbr>Name</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_src_lib_types_.html#lazy" class="tsd-kind-icon">Lazy</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,13 +101,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 					<a name="lazy" class="tsd-anchor"></a>
 					<h3>Lazy</h3>
 					<div class="tsd-signature tsd-kind-icon">Lazy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L10">src/lib/types.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L10">src/lib/types.ts:10</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -116,16 +117,6 @@
 							This library guarantees that it will be only called once but you should still ensure that it is idempotent.</p>
 						</div>
 					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
-					<a name="typename" class="tsd-anchor"></a>
-					<h3>Type<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">Type<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L12">src/lib/types.ts:12</a></li>
-						</ul>
-					</aside>
 				</section>
 			</section>
 		</div>
@@ -143,28 +134,31 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../interfaces/_src_lib_types_.collectiontype.html" class="tsd-kind-icon">Collection<wbr>Type</a>
+						<a href="../interfaces/_src_lib_types_.iotype.html" class="tsd-kind-icon">Io<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../interfaces/_src_lib_types_.jsonserializer.html" class="tsd-kind-icon">Json<wbr>Serializer</a>
+						<a href="../interfaces/_src_lib_types_.readvisitor.html" class="tsd-kind-icon">Read<wbr>Visitor</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_src_lib_types_.serializer.html" class="tsd-kind-icon">Serializer</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/_src_lib_types_.readable.html" class="tsd-kind-icon">Readable</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/_src_lib_types_.reader.html" class="tsd-kind-icon">Reader</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/_src_lib_types_.type.html" class="tsd-kind-icon">Type</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../interfaces/_src_lib_types_.typeserializer.html" class="tsd-kind-icon">Type<wbr>Serializer</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/_src_lib_types_.versionedtype.html" class="tsd-kind-icon">Versioned<wbr>Type</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="_src_lib_types_.html#lazy" class="tsd-kind-icon">Lazy</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/_src_lib_types_.writable.html" class="tsd-kind-icon">Writable</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="_src_lib_types_.html#typename" class="tsd-kind-icon">Type<wbr>Name</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/_src_lib_types_.writer.html" class="tsd-kind-icon">Writer</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_src_lib_types_.html#lazy" class="tsd-kind-icon">Lazy</a>
 					</li>
 				</ul>
 			</nav>

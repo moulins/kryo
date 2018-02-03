@@ -62,7 +62,7 @@
 					<a href="_src_lib_types_.versionedtype.html">VersionedType</a>
 				</li>
 			</ul>
-			<h1>Interface VersionedType&lt;T, Input, Output, Diff&gt;</h1>
+			<h1>Interface VersionedType&lt;T, Diff&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -76,12 +76,6 @@
 						<h4>T</h4>
 					</li>
 					<li>
-						<h4>Input</h4>
-					</li>
-					<li>
-						<h4>Output<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Input</span></h4>
-					</li>
-					<li>
 						<h4>Diff</h4>
 					</li>
 				</ul>
@@ -91,12 +85,17 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<a href="_src_lib_types_.type.html" class="tsd-signature-type">Type</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
-					</li>
-					<li>
-						<a href="_src_lib_types_.jsonserializer.html" class="tsd-signature-type">JsonSerializer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Input</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Output</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">VersionedType</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="_src_lib_types_document_.documenttype.html" class="tsd-signature-type">DocumentType</a>
+									</li>
+									<li>
+										<a href="_src_lib_types_document_.documeniotype.html" class="tsd-signature-type">DocumenIoType</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -105,23 +104,15 @@
 			<section class="tsd-panel">
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../classes/_src_lib_types_array_.arraytype.html" class="tsd-signature-type">ArrayType</a></li>
 					<li><a href="../classes/_src_lib_types_boolean_.booleantype.html" class="tsd-signature-type">BooleanType</a></li>
 					<li><a href="../classes/_src_lib_types_buffer_.buffertype.html" class="tsd-signature-type">BufferType</a></li>
 					<li><a href="../classes/_src_lib_types_codepoint_string_.codepointstringtype.html" class="tsd-signature-type">CodepointStringType</a></li>
 					<li><a href="../classes/_src_lib_types_date_.datetype.html" class="tsd-signature-type">DateType</a></li>
-					<li><a href="../classes/_src_lib_types_document_.documenttype.html" class="tsd-signature-type">DocumentType</a></li>
 					<li><a href="../classes/_src_lib_types_float64_.float64type.html" class="tsd-signature-type">Float64Type</a></li>
 					<li><a href="../classes/_src_lib_types_integer_.integertype.html" class="tsd-signature-type">IntegerType</a></li>
-					<li><a href="../classes/_src_lib_types_json_.jsontype.html" class="tsd-signature-type">JsonType</a></li>
-					<li><a href="../classes/_src_lib_types_literal_.literaltype.html" class="tsd-signature-type">LiteralType</a></li>
 					<li><a href="../classes/_src_lib_types_map_.maptype.html" class="tsd-signature-type">MapType</a></li>
 					<li><a href="../classes/_src_lib_types_null_.nulltype.html" class="tsd-signature-type">NullType</a></li>
-					<li><a href="../classes/_src_lib_types_simple_enum_.simpleenumtype.html" class="tsd-signature-type">SimpleEnumType</a></li>
-					<li><a href="../classes/_src_lib_types_tagged_union_.taggeduniontype.html" class="tsd-signature-type">TaggedUnionType</a></li>
-					<li><a href="../classes/_src_lib_types_try_union_.tryuniontype.html" class="tsd-signature-type">TryUnionType</a></li>
 					<li><a href="../classes/_src_lib_types_ucs2_string_.ucs2stringtype.html" class="tsd-signature-type">Ucs2StringType</a></li>
-					<li><a href="../classes/_src_lib_types_union_.uniontype.html" class="tsd-signature-type">UnionType</a></li>
 					<li><a href="../classes/_src_lib_types_white_list_.whitelisttype.html" class="tsd-signature-type">WhiteListType</a></li>
 				</ul>
 			</section>
@@ -129,12 +120,6 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#name" class="tsd-kind-icon">name</a></li>
-							</ul>
-						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
@@ -142,32 +127,16 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_src_lib_types_.versionedtype.html#diff" class="tsd-kind-icon">diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#equals" class="tsd-kind-icon">equals</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_src_lib_types_.versionedtype.html#patch" class="tsd-kind-icon">patch</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#readjson" class="tsd-kind-icon">read<wbr>Json</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#readtrustedjson" class="tsd-kind-icon">read<wbr>Trusted<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#read" class="tsd-kind-icon">read</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_src_lib_types_.versionedtype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_src_lib_types_.versionedtype.html#squash" class="tsd-kind-icon">squash</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#test" class="tsd-kind-icon">test</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#writejson" class="tsd-kind-icon">write<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited"><a href="_src_lib_types_.versionedtype.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
 						</section>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_types_.html#typename" class="tsd-signature-type">TypeName</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#name">name</a></p>
-						<p>Overrides <a href="_src_lib_types_.jsonserializer.html">JsonSerializer</a>.<a href="_src_lib_types_.jsonserializer.html#name">name</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L15">src/lib/types.ts:15</a></li>
-						</ul>
-					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -183,7 +152,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L23">src/lib/types.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L21">src/lib/types.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -206,7 +175,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L69">src/lib/types.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L135">src/lib/types.ts:135</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -248,7 +217,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L21">src/lib/types.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L19">src/lib/types.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -274,7 +243,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L71">src/lib/types.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L137">src/lib/types.ts:137</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -290,48 +259,33 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="readjson" class="tsd-anchor"></a>
-					<h3>read<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Json<span class="tsd-signature-symbol">(</span>serialized<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Input</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited">
+					<a name="read" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> read</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="_src_lib_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_lib_types_.jsonserializer.html">JsonSerializer</a>.<a href="_src_lib_types_.jsonserializer.html#readjson">readJson</a></p>
+								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L33">src/lib/types.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L27">src/lib/types.ts:27</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
 								<li>
-									<h5>serialized: <span class="tsd-signature-type">Input</span></h5>
+									<h4>R</h4>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="readtrustedjson" class="tsd-anchor"></a>
-					<h3>read<wbr>Trusted<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Json<span class="tsd-signature-symbol">(</span>serialized<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Output</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_lib_types_.jsonserializer.html">JsonSerializer</a>.<a href="_src_lib_types_.jsonserializer.html#readtrustedjson">readTrustedJson</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L35">src/lib/types.ts:35</a></li>
-								</ul>
-							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>serialized: <span class="tsd-signature-type">Output</span></h5>
+									<h5>reader: <a href="_src_lib_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>raw: <span class="tsd-signature-type">R</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
@@ -348,7 +302,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L73">src/lib/types.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L139">src/lib/types.ts:139</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -374,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L75">src/lib/types.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L141">src/lib/types.ts:141</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -404,7 +358,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#test">test</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L19">src/lib/types.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L17">src/lib/types.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -428,7 +382,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#testerror">testError</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L17">src/lib/types.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L15">src/lib/types.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -455,34 +409,43 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L25">src/lib/types.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L23">src/lib/types.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="writejson" class="tsd-anchor"></a>
-					<h3>write<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Json<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Output</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited">
+					<a name="write" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> write</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="_src_lib_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_lib_types_.jsonserializer.html">JsonSerializer</a>.<a href="_src_lib_types_.jsonserializer.html#writejson">writeJson</a></p>
+								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types.ts#L31">src/lib/types.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types.ts#L25">src/lib/types.ts:25</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>W</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">T</span></h5>
+									<h5>writer: <a href="_src_lib_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Output</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">W</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -502,28 +465,25 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_src_lib_types_.collectiontype.html" class="tsd-kind-icon">Collection<wbr>Type</a>
+						<a href="_src_lib_types_.iotype.html" class="tsd-kind-icon">Io<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_src_lib_types_.jsonserializer.html" class="tsd-kind-icon">Json<wbr>Serializer</a>
+						<a href="_src_lib_types_.readvisitor.html" class="tsd-kind-icon">Read<wbr>Visitor</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_src_lib_types_.serializer.html" class="tsd-kind-icon">Serializer</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_src_lib_types_.readable.html" class="tsd-kind-icon">Readable</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_src_lib_types_.reader.html" class="tsd-kind-icon">Reader</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_src_lib_types_.type.html" class="tsd-kind-icon">Type</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_src_lib_types_.typeserializer.html" class="tsd-kind-icon">Type<wbr>Serializer</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_src_lib_types_.versionedtype.html" class="tsd-kind-icon">Versioned<wbr>Type</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-								<a href="_src_lib_types_.versionedtype.html#name" class="tsd-kind-icon">name</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 								<a href="_src_lib_types_.versionedtype.html#clone" class="tsd-kind-icon">clone</a>
 							</li>
@@ -536,11 +496,8 @@
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_src_lib_types_.versionedtype.html#patch" class="tsd-kind-icon">patch</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_src_lib_types_.versionedtype.html#readjson" class="tsd-kind-icon">read<wbr>Json</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_src_lib_types_.versionedtype.html#readtrustedjson" class="tsd-kind-icon">read<wbr>Trusted<wbr>Json</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited">
+								<a href="_src_lib_types_.versionedtype.html#read" class="tsd-kind-icon">read</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_src_lib_types_.versionedtype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a>
@@ -557,18 +514,21 @@
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 								<a href="_src_lib_types_.versionedtype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_src_lib_types_.versionedtype.html#writejson" class="tsd-kind-icon">write<wbr>Json</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-inherited">
+								<a href="_src_lib_types_.versionedtype.html#write" class="tsd-kind-icon">write</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_src_lib_types_.html#lazy" class="tsd-kind-icon">Lazy</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_src_lib_types_.writable.html" class="tsd-kind-icon">Writable</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_src_lib_types_.html#typename" class="tsd-kind-icon">Type<wbr>Name</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_src_lib_types_.writer.html" class="tsd-kind-icon">Writer</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/_src_lib_types_.html#lazy" class="tsd-kind-icon">Lazy</a>
 					</li>
 				</ul>
 			</nav>

@@ -85,15 +85,25 @@
 					<a name="lazyproperties" class="tsd-anchor"></a>
 					<h3>lazy<wbr>Properties</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">lazy<wbr>Properties&lt;T&gt;<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, apply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">lazy<wbr>Properties&lt;T&gt;<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, apply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">keyof T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/_helpers/lazy-properties.ts#L1">src/lib/_helpers/lazy-properties.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/_helpers/lazy-properties.ts#L15">src/lib/_helpers/lazy-properties.ts:15</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Intercepts reads to the provided <code>keys</code> of <code>target</code> to run <code>apply</code> before returning
+										the value. This allows to initialize these properties lazily.
+										You should ensure that <code>apply</code> never throws.
+										Once one of the trapped properties was read, all the properties become normal properties.
+									Call <code>lazyProperties</code> on different subsets of keys to have independent lazy properties.</p>
+								</div>
+								<p>Calling <code>lazyProperties</code> multiple time on the same key is undefined behavior.</p>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -104,9 +114,16 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>target: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The object holding the properties to intercept.</p>
+									</div>
 								</li>
 								<li>
 									<h5>apply: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The function called once one of the lazy properties is accessed. Its <code>this</code> value
+										will be <code>target</code>.</p>
+									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
@@ -121,7 +138,10 @@
 									</ul>
 								</li>
 								<li>
-									<h5>keys: <span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>keys: <span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">keyof T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The names of the properties to intercept.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>

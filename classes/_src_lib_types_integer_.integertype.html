@@ -80,7 +80,8 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_src_lib_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_integer_.json.html#input" class="tsd-signature-type">Input</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_integer_.json.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_integer_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_types_.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/_src_lib_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../modules/_src_lib_types_integer_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -110,14 +111,13 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#diff" class="tsd-kind-icon">diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#equals" class="tsd-kind-icon">equals</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#patch" class="tsd-kind-icon">patch</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#readjson" class="tsd-kind-icon">read<wbr>Json</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#readtrustedjson" class="tsd-kind-icon">read<wbr>Trusted<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_src_lib_types_integer_.integertype.html#read" class="tsd-kind-icon">read</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#squash" class="tsd-kind-icon">squash</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#test" class="tsd-kind-icon">test</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_types_integer_.integertype.html#writejson" class="tsd-kind-icon">write<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_src_lib_types_integer_.integertype.html#write" class="tsd-kind-icon">write</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_src_lib_types_integer_.integertype.html#fromjson" class="tsd-kind-icon">fromJSON</a></li>
 							</ul>
 						</section>
@@ -130,22 +130,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Integer<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_integer_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span>, lazy<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_types_integer_.integertype.html" class="tsd-signature-type">IntegerType</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Integer<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_integer_.integertypeoptions.html" class="tsd-signature-type">IntegerTypeOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_types_integer_.integertype.html" class="tsd-signature-type">IntegerType</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L54">src/lib/types/integer.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L56">src/lib/types/integer.ts:56</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_integer_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> lazy: <span class="tsd-signature-type">boolean</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_integer_.integertypeoptions.html" class="tsd-signature-type">IntegerTypeOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_src_lib_types_integer_.integertype.html" class="tsd-signature-type">IntegerType</a></h4>
@@ -158,10 +155,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_options" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _options</h3>
-					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_integer_.options.html" class="tsd-signature-type">Options</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_types_integer_.integertypeoptions.html" class="tsd-signature-type">IntegerTypeOptions</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L54">src/lib/types/integer.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L56">src/lib/types/integer.ts:56</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -171,7 +168,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L52">src/lib/types/integer.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L54">src/lib/types/integer.ts:54</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -181,7 +178,7 @@
 					<div class="tsd-signature tsd-kind-icon">min<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L51">src/lib/types/integer.ts:51</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L53">src/lib/types/integer.ts:53</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -190,9 +187,8 @@
 					<h3>name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_src_lib_types_integer_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;name</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/_src_lib_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib_types_.versionedtype.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L50">src/lib/types/integer.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L52">src/lib/types/integer.ts:52</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -209,7 +205,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L154">src/lib/types/integer.ts:154</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L148">src/lib/types/integer.ts:148</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -226,7 +222,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L128">src/lib/types/integer.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L122">src/lib/types/integer.ts:122</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -249,7 +245,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L132">src/lib/types/integer.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L126">src/lib/types/integer.ts:126</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -278,7 +274,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L124">src/lib/types/integer.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L118">src/lib/types/integer.ts:118</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -304,7 +300,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L136">src/lib/types/integer.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L130">src/lib/types/integer.ts:130</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -320,46 +316,33 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="readjson" class="tsd-anchor"></a>
-					<h3>read<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Json<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="read" class="tsd-anchor"></a>
+					<h3>read</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_lib_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_src_lib_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib_types_.versionedtype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L89">src/lib/types/integer.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L84">src/lib/types/integer.ts:84</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
 								<li>
-									<h5>input: <span class="tsd-signature-type">any</span></h5>
+									<h4>R</h4>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="readtrustedjson" class="tsd-anchor"></a>
-					<h3>read<wbr>Trusted<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Trusted<wbr>Json<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_types_integer_.json.html#output" class="tsd-signature-type">Output</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L85">src/lib/types/integer.ts:85</a></li>
-								</ul>
-							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>input: <a href="../modules/_src_lib_types_integer_.json.html#output" class="tsd-signature-type">Output</a></h5>
+									<h5>reader: <a href="../interfaces/_src_lib_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>raw: <span class="tsd-signature-type">R</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -376,7 +359,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L140">src/lib/types/integer.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L134">src/lib/types/integer.ts:134</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -402,7 +385,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L145">src/lib/types/integer.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L139">src/lib/types/integer.ts:139</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -431,7 +414,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L120">src/lib/types/integer.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L114">src/lib/types/integer.ts:114</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -454,7 +437,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L107">src/lib/types/integer.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L101">src/lib/types/integer.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -481,33 +464,42 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_src_lib_types_.versionedtype.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L81">src/lib/types/integer.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L80">src/lib/types/integer.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_src_lib_types_integer_.json.type.html" class="tsd-signature-type">Type</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="writejson" class="tsd-anchor"></a>
-					<h3>write<wbr>Json</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Json<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_src_lib_types_integer_.json.html#output" class="tsd-signature-type">Output</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="write" class="tsd-anchor"></a>
+					<h3>write</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_lib_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L103">src/lib/types/integer.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L97">src/lib/types/integer.ts:97</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>W</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">number</span></h5>
+									<h5>writer: <a href="../interfaces/_src_lib_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../modules/_src_lib_types_integer_.json.html#output" class="tsd-signature-type">Output</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">W</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -521,7 +513,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/f76aad4/src/lib/types/integer.ts#L77">src/lib/types/integer.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/b5a09ce/src/lib/types/integer.ts#L76">src/lib/types/integer.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -589,11 +581,8 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_lib_types_integer_.integertype.html#patch" class="tsd-kind-icon">patch</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_types_integer_.integertype.html#readjson" class="tsd-kind-icon">read<wbr>Json</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_types_integer_.integertype.html#readtrustedjson" class="tsd-kind-icon">read<wbr>Trusted<wbr>Json</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="_src_lib_types_integer_.integertype.html#read" class="tsd-kind-icon">read</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_lib_types_integer_.integertype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a>
@@ -610,8 +599,8 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_lib_types_integer_.integertype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_types_integer_.integertype.html#writejson" class="tsd-kind-icon">write<wbr>Json</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="_src_lib_types_integer_.integertype.html#write" class="tsd-kind-icon">write</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="_src_lib_types_integer_.integertype.html#fromjson" class="tsd-kind-icon">fromJSON</a>
@@ -621,7 +610,7 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_src_lib_types_integer_.options.html" class="tsd-kind-icon">Options</a>
+						<a href="../interfaces/_src_lib_types_integer_.integertypeoptions.html" class="tsd-kind-icon">Integer<wbr>Type<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="../modules/_src_lib_types_integer_.html#diff" class="tsd-kind-icon">Diff</a>
