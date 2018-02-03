@@ -6,8 +6,7 @@ import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Lazy, Readable, Reader, Type, Writable, Writer } from "../types";
-import { LiteralTypeOptions } from "./literal";
+import { IoType, Lazy, Reader, Type, Writer } from "../types";
 
 export type Name = "array";
 export const name: Name = "array";
@@ -28,15 +27,14 @@ export interface ArrayTypeOptions<T, M extends Type<T> = Type<T>> {
 
 export interface ArrayTypeConstructor {
   /**
-   * Create a new array type
+   * Create a new array type with full read/write support
+   */
+  new<T>(options: Lazy<ArrayTypeOptions<T, IoType<T>>>): ArrayIoType<T, IoType<T>>;
+
+  /**
+   * Create a new simple array type
    */
   new<T>(options: Lazy<ArrayTypeOptions<T>>): ArrayType<T>;
-
-  new<T>(options: Lazy<LiteralTypeOptions<T, Readable<T> & Type<T>>>): ArrayType<T> & Readable<T>;
-
-  new<T>(options: Lazy<LiteralTypeOptions<T, Writable<T> & Type<T>>>): ArrayType<T> & Writable<T>;
-
-  new<T>(options: Lazy<LiteralTypeOptions<T, IoType<T>>>): ArrayIoType<T>;
 }
 
 export interface ArrayType<T, M extends Type<T> = Type<T>> extends Type<T[]>, ArrayTypeOptions<T, M> {

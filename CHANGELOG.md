@@ -2,6 +2,7 @@
 
 - **[Feature]** Add builtin `$Any` for `AnyType`.
 - **[Fix]** Fix typo `DocumenIoType` to `DocumentIoType`.
+- **[Fix]** Fix inference on `ArrayType` from its `itemType` (`IoType` or simple `Type`).
 
 # 0.7.0-beta.0
 
