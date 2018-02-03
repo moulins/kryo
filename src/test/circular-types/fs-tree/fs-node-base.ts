@@ -13,5 +13,5 @@ export const $FsNodeBase: DocumentType<FsNodeBase> = new DocumentType<FsNodeBase
     tag: {type: $FsNodeType},
     name: {type: new Ucs2StringType({maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
+  changeCase: CaseStyle.SnakeCase,
 });

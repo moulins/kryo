@@ -91,11 +91,12 @@ describe("Document: rename", function () {
   const type: DocumentType<Rect> = new DocumentType<Rect>({
     properties: {
       xMin: {type: new IntegerType()},
-      xMax: {type: new IntegerType()},
-      yMin: {type: new IntegerType()},
+      xMax: {type: new IntegerType(), changeCase: CaseStyle.ScreamingSnakeCase},
+      yMin: {type: new IntegerType(), rename: "__yMin"},
       yMax: {type: new IntegerType()},
     },
-    rename: CaseStyle.KebabCase,
+    rename: {xMin: "xmin"},
+    changeCase: CaseStyle.KebabCase,
   });
 
   const bsonSerializer: bson.BSON = new bson.BSON();
@@ -111,19 +112,9 @@ describe("Document: rename", function () {
       },
       valid: true,
       output: {
-        bson: bsonSerializer.serialize({
-          "x-min": 0,
-          "x-max": 10,
-          "y-min": 20,
-          "y-max": 30,
-        }),
-        json: JSON.stringify({
-          "x-min": 0,
-          "x-max": 10,
-          "y-min": 20,
-          "y-max": 30,
-        }),
-        qs: "x-min=0&x-max=10&y-min=20&y-max=30",
+        bson: bsonSerializer.serialize({"xmin": 0, "X_MAX": 10, "__yMin": 20, "y-max": 30}),
+        json: JSON.stringify({"xmin": 0, "X_MAX": 10, "__yMin": 20, "y-max": 30}),
+        qs: "xmin=0&X_MAX=10&__yMin=20&y-max=30",
       },
     },
   ];

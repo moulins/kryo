@@ -1,12 +1,14 @@
-import { CaseStyle } from "../../../lib/case-style";
-import { SimpleEnumType } from "../../../lib/types/simple-enum";
+import { TsEnumType } from "../../../lib/types/ts-enum";
 
 export enum FsNodeType {
   File,
   Directory,
 }
 
-export const $FsNodeType: SimpleEnumType<FsNodeType> = new SimpleEnumType<FsNodeType>({
-  enum: FsNodeType,
-  rename: CaseStyle.KebabCase,
+export const $FsNodeType: TsEnumType<FsNodeType> = new TsEnumType<FsNodeType>({
+  tsEnum: FsNodeType,
+  rename: {
+    File: "Node/File",
+    Directory: "Node/Directory",
+  },
 });

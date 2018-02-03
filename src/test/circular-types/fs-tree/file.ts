@@ -16,5 +16,5 @@ export const $File: DocumentType<File> = new DocumentType<File>(() => ({
     tag: {type: new LiteralType<FsNodeType.File>({type: $FsNodeType, value: FsNodeType.File})},
     size: {type: new IntegerType()},
   },
-  rename: CaseStyle.SnakeCase,
+  changeCase: CaseStyle.SnakeCase,
 }));

@@ -1,18 +1,18 @@
 import bson from "bson";
 import { CaseStyle } from "../../lib/case-style";
-import { SimpleEnumType } from "../../lib/types/simple-enum";
+import { TsEnumType } from "../../lib/types/ts-enum";
 import { runTests, TypedValue } from "../helpers/test";
 
 const bsonSerializer: bson.BSON = new bson.BSON();
 
-describe("SimpleEnum", function () {
+describe("TsEnum", function () {
   enum Color {
     Red,
     Green,
     Blue,
   }
 
-  const type: SimpleEnumType<Color> = new SimpleEnumType({enum: Color});
+  const $Color: TsEnumType<Color> = new TsEnumType({tsEnum: Color});
 
   const items: TypedValue[] = [
     {
@@ -81,7 +81,7 @@ describe("SimpleEnum", function () {
     {name: "/regex/", value: /regex/, valid: false},
   ];
 
-  runTests(type, items);
+  runTests($Color, items);
 });
 
 describe("SimpleEnum: rename KebabCase", function () {
@@ -91,7 +91,7 @@ describe("SimpleEnum: rename KebabCase", function () {
     BlockStatement,
   }
 
-  const type: SimpleEnumType<Node> = new SimpleEnumType({enum: Node, rename: CaseStyle.KebabCase});
+  const $Node: TsEnumType<Node> = new TsEnumType(() => ({tsEnum: Node, changeCase: CaseStyle.KebabCase}));
 
   const items: TypedValue[] = [
     {
@@ -156,5 +156,5 @@ describe("SimpleEnum: rename KebabCase", function () {
     },
   ];
 
-  runTests(type, items);
+  runTests($Node, items);
 });

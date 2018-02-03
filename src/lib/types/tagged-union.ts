@@ -7,7 +7,7 @@ import { readVisitor } from "../readers/read-visitor";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 import { DocumentType } from "./document";
 import { LiteralType } from "./literal";
-import { SimpleEnumType } from "./simple-enum";
+import { TsEnumType } from "./ts-enum";
 
 export type Name = "union";
 export const name: Name = "union";
@@ -35,7 +35,7 @@ export class TaggedUnionType<T extends {}, M extends DocumentType<T> = DocumentT
 
   private _outTag: string | undefined;
 
-  private _tagType: SimpleEnumType<any> | undefined;
+  private _tagType: TsEnumType<any> | undefined;
 
   private _valueToVariantMap: Map<any, M> | undefined;
 
@@ -189,13 +189,13 @@ export class TaggedUnionType<T extends {}, M extends DocumentType<T> = DocumentT
     return this._outTag;
   }
 
-  private getTagType(): SimpleEnumType<any> {
+  private getTagType(): TsEnumType<any> {
     if (this._tagType === undefined) {
       const tag: keyof T = this.tag;
-      let tagType: SimpleEnumType<any> | undefined = undefined;
+      let tagType: TsEnumType<any> | undefined = undefined;
       for (const variant of this.variants) {
         const lit: LiteralType<any> = variant.properties[tag].type as any;
-        const cur: SimpleEnumType<any> = lit.type as any;
+        const cur: TsEnumType<any> = lit.type as any;
         if (tagType === undefined) {
           tagType = cur;
         } else if (cur !== tagType) {

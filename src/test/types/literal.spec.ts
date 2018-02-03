@@ -1,5 +1,5 @@
 import { LiteralType } from "../../lib/types/literal";
-import { SimpleEnumType } from "../../lib/types/simple-enum";
+import { TsEnumType } from "../../lib/types/ts-enum";
 import { Ucs2StringType } from "../../lib/types/ucs2-string";
 import { runTests, TypedValue } from "../helpers/test";
 
@@ -53,7 +53,7 @@ describe("Literal", function () {
     }
 
     const type: LiteralType<Color.Red> = new LiteralType<Color.Red>({
-      type: new SimpleEnumType({enum: Color}),
+      type: new TsEnumType({tsEnum: Color}),
       value: Color.Red,
     });
 

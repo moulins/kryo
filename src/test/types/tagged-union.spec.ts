@@ -3,8 +3,8 @@ import { CaseStyle } from "../../lib/case-style";
 import { DocumentType } from "../../lib/types/document";
 import { IntegerType } from "../../lib/types/integer";
 import { LiteralType } from "../../lib/types/literal";
-import { SimpleEnumType } from "../../lib/types/simple-enum";
 import { TaggedUnionType } from "../../lib/types/tagged-union";
+import { TsEnumType } from "../../lib/types/ts-enum";
 import { runTests, TypedValue } from "../helpers/test";
 
 const bsonSerializer: bson.BSON = new bson.BSON();
@@ -16,9 +16,9 @@ describe("TaggedUnion", function () {
       Circle,
     }
 
-    const shapeTypeType: SimpleEnumType<ShapeType> = new SimpleEnumType({
-      enum: ShapeType,
-      rename: CaseStyle.KebabCase,
+    const shapeTypeType: TsEnumType<ShapeType> = new TsEnumType({
+      tsEnum: ShapeType,
+      changeCase: CaseStyle.KebabCase,
     });
 
     interface Rectangle {
@@ -38,7 +38,6 @@ describe("TaggedUnion", function () {
         width: {type: new IntegerType()},
         height: {type: new IntegerType()},
       },
-      rename: CaseStyle.KebabCase,
     });
 
     interface Circle {
@@ -56,7 +55,6 @@ describe("TaggedUnion", function () {
         },
         radius: {type: new IntegerType()},
       },
-      rename: CaseStyle.KebabCase,
     });
 
     type Shape = Rectangle | Circle;

@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { CaseStyle, isCaseStyle, rename } from "../case-style";
+import { CaseStyle, rename } from "../case-style";
 import { createInvalidDocumentError } from "../errors/invalid-document";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
@@ -37,7 +37,9 @@ export interface DocumentTypeOptions<T> {
    * The keys of the serialized documents are renamed following the
    * supplied style (undefined to keep the original name).
    */
-  rename?: CaseStyle;
+  changeCase?: CaseStyle;
+
+  rename?: {[P in keyof T]?: string};
 }
 
 export interface DocumentIoTypeOptions<T> extends DocumentTypeOptions<T> {
@@ -64,7 +66,7 @@ export interface PropertyDescriptor<M extends Type<any>> {
   /**
    * The name of the key used in the serialized documents.
    */
-  rename?: CaseStyle | string;
+  rename?: string;
 }
 
 export interface DocumentTypeConstructor {
@@ -99,7 +101,8 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
   readonly name: Name = name;
   readonly ignoreExtraKeys: boolean;
   readonly properties: {[P in keyof T]: PropertyDescriptor<Type<T[P]>>};
-  readonly rename?: CaseStyle;
+  readonly rename?: {[P in keyof T]?: string};
+  readonly changeCase?: CaseStyle;
   private _options: Lazy<DocumentTypeOptions<T>>;
   private _outKeys: Map<string, keyof T> | undefined;
 
@@ -112,7 +115,7 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
     if (typeof options !== "function") {
       this._applyOptions();
     } else {
-      lazyProperties(this, this._applyOptions, [<any> "ignoreExtraKeys", "properties", "rename", "keys" as keyof this]);
+      lazyProperties(this, this._applyOptions, ["ignoreExtraKeys", "properties", "changeCase", "rename" as keyof this]);
     }
   }
 
@@ -140,14 +143,14 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
   getOutKey(key: keyof T): string {
     const descriptor: PropertyDescriptor<Type<any>> = this.properties[key];
     if (descriptor.rename !== undefined) {
-      if (isCaseStyle(descriptor.rename)) {
-        return rename(key, descriptor.rename);
-      } else {
-        return descriptor.rename;
-      }
+      return descriptor.rename;
+    } else if (descriptor.changeCase !== undefined) {
+      return rename(key, descriptor.changeCase);
     }
-    if (this.rename !== undefined) {
-      return rename(key, this.rename);
+    if (this.rename !== undefined && this.rename[key] !== undefined) {
+      return this.rename[key] as string;
+    } else if (this.changeCase !== undefined) {
+      return rename(key, this.changeCase);
     }
     return key;
   }
@@ -375,10 +378,10 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T extends {}> i
 
     const ignoreExtraKeys: boolean = options.ignoreExtraKeys || false;
     const properties: {[P in keyof T]: PropertyDescriptor<Type<any>>} = options.properties;
-    const renameAll: CaseStyle | undefined = options.rename;
-    const keys: Map<keyof T, string> = renameKeys(properties, renameAll);
+    const rename: {[P in keyof T]?: string} | undefined = options.rename;
+    const changeCase: CaseStyle | undefined = options.changeCase;
 
-    Object.assign(this, {ignoreExtraKeys, properties, rename: renameAll, keys});
+    Object.assign(this, {ignoreExtraKeys, properties, rename, changeCase});
   }
 };
 

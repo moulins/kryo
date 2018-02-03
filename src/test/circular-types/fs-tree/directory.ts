@@ -17,5 +17,5 @@ export const $Directory: DocumentType<Directory> = new DocumentType<Directory>((
     tag: {type: new LiteralType<FsNodeType.Directory>({type: $FsNodeType, value: FsNodeType.Directory})},
     children: {type: new ArrayType({itemType: $FsNode, maxLength: Infinity}), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
+  changeCase: CaseStyle.SnakeCase,
 }));

@@ -9,7 +9,13 @@ import { FsNodeType } from "./fs-node-type";
 describe("FS Tree", function () {
   describe("File", function () {
     const items: TypedValue[] = [
-      {value: {tag: FsNodeType.File, name: "a", size: 1}, valid: true},
+      {
+        value: {tag: FsNodeType.File, name: "a", size: 1},
+        valid: true,
+        output: {
+          json: "{\"tag\":\"Node/File\",\"name\":\"a\",\"size\":1}",
+        },
+      },
       {value: {tag: FsNodeType.File, name: 2, size: 1}, valid: false},
     ];
     runTests($File, items);

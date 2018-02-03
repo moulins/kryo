@@ -21,7 +21,7 @@ describe("TryUnion", function () {
         width: {type: new IntegerType()},
         height: {type: new IntegerType()},
       },
-      rename: CaseStyle.KebabCase,
+      changeCase: CaseStyle.KebabCase,
     });
 
     interface Circle {
@@ -32,7 +32,7 @@ describe("TryUnion", function () {
       properties: {
         radius: {type: new IntegerType()},
       },
-      rename: CaseStyle.KebabCase,
+      changeCase: CaseStyle.KebabCase,
     });
 
     type Shape = Rectangle | Circle;
