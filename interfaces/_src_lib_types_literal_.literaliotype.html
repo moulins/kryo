@@ -87,7 +87,7 @@
 						<a href="_src_lib_types_.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
 					</li>
 					<li>
-						<a href="_src_lib_types_literal_.literaltypeoptions.html" class="tsd-signature-type">LiteralTypeOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="_src_lib_types_literal_.literaltype.html" class="tsd-signature-type">LiteralType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">LiteralIoType</span>
@@ -100,30 +100,53 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_src_lib_types_literal_.literaliotype.html#literaltype" class="tsd-kind-icon">Literal<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#type" class="tsd-kind-icon">type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#value" class="tsd-kind-icon">value</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#clone" class="tsd-kind-icon">clone</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#equals" class="tsd-kind-icon">equals</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#read" class="tsd-kind-icon">read</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#test" class="tsd-kind-icon">test</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#write" class="tsd-kind-icon">write</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#clone" class="tsd-kind-icon">clone</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#equals" class="tsd-kind-icon">equals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite"><a href="_src_lib_types_literal_.literaliotype.html#read" class="tsd-kind-icon">read</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#test" class="tsd-kind-icon">test</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_src_lib_types_literal_.literaliotype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite"><a href="_src_lib_types_literal_.literaliotype.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="literaltype" class="tsd-anchor"></a>
+					<h3>Literal<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">Literal<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="_src_lib_types_literal_.literaltypeconstructor.html" class="tsd-signature-type">LiteralTypeConstructor</a><span class="tsd-signature-symbol"> =&nbsp;class&lt;T, M extends Type&lt;T&gt; &#x3D; Type&lt;T&gt;&gt; implements IoType&lt;T&gt; {readonly name: Name &#x3D; name;readonly type: M;readonly value: T;private _options: Lazy&lt;LiteralTypeOptions&lt;T, M&gt;&gt;;constructor(options: Lazy&lt;LiteralTypeOptions&lt;T, M&gt;&gt;) {// TODO: Remove once TS 2.7 is better supported by editorsthis.type &#x3D; &lt;any&gt; undefined;this.value &#x3D; &lt;any&gt; undefined;this._options &#x3D; options;if (typeof options !&#x3D;&#x3D; &quot;function&quot;) {this._applyOptions();} else {lazyProperties(this, this._applyOptions, [&quot;type&quot;, &quot;value&quot;]);}}toJSON(): json.Type {throw createNotImplementedError(&quot;LiteralType#toJSON&quot;);}read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): T {if (this.type.read &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotReadable&quot;, {type: this});}return reader.trustInput ? this.clone(this.value) : this.type.read(reader, raw);}write&lt;W&gt;(writer: Writer&lt;W&gt;, value: T): W {if (this.type.write &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotWritable&quot;, {type: this});}return this.type.write(writer, value);}testError(val: T): Error | undefined {const error: Error | undefined &#x3D; this.type.testError(val);if (error !&#x3D;&#x3D; undefined) {return error;}if (!this.type.equals(val, this.value)) {return Incident(&quot;InvalidLiteral&quot;, &quot;Invalid literal value&quot;);}return undefined;}test(val: T): boolean {return this.testError(val) &#x3D;&#x3D;&#x3D; undefined;}equals(val1: T, val2: T): boolean {return this.type.equals(val1, val2);}clone(val: T): T {return this.type.clone(val);}diff(oldVal: T, newVal: T): undefined {return;}patch(oldVal: T, diff: undefined): T {return this.type.clone(oldVal);}reverseDiff(diff: Diff | undefined): undefined {return;}squash(diff1: undefined, diff2: undefined): undefined {return;}private _applyOptions(): void {if (this._options &#x3D;&#x3D;&#x3D; undefined) {throw createLazyOptionsError(this);}const options: LiteralTypeOptions&lt;T, M&gt; &#x3D; typeof this._options &#x3D;&#x3D;&#x3D; &quot;function&quot;? this._options(): this._options;const type: M &#x3D; options.type;const value: T &#x3D; options.value;Object.assign(this, {type, value});}}</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L46">src/lib/types/literal.ts:46</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>You may need to explicitly write the type or inference won&#39;t pick it.
+								For example, in the case of enum values, inference will pick the type of the enum instead of
+							the specific property you pass.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="https://github.com/Microsoft/TypeScript/issues/10195">https://github.com/Microsoft/TypeScript/issues/10195</a></p>
+							</dd>
+						</dl>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="type" class="tsd-anchor"></a>
 					<h3>type</h3>
@@ -131,7 +154,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_src_lib_types_literal_.literaltypeoptions.html">LiteralTypeOptions</a>.<a href="_src_lib_types_literal_.literaltypeoptions.html#type">type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types/literal.ts#L19">src/lib/types/literal.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L19">src/lib/types/literal.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -142,25 +165,26 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_src_lib_types_literal_.literaltypeoptions.html">LiteralTypeOptions</a>.<a href="_src_lib_types_literal_.literaltypeoptions.html#value">value</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types/literal.ts#L20">src/lib/types/literal.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L20">src/lib/types/literal.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="clone" class="tsd-anchor"></a>
 					<h3>clone</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#clone">clone</a></p>
+								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types.ts#L21">src/lib/types.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L21">src/lib/types.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -173,18 +197,19 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#equals">equals</a></p>
+								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types.ts#L19">src/lib/types.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L19">src/lib/types.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -200,19 +225,18 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite">
 					<a name="read" class="tsd-anchor"></a>
 					<h3>read</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="_src_lib_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_lib_types_.iotype.html">IoType</a>.<a href="_src_lib_types_.iotype.html#read">read</a></p>
-								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#read">read</a></p>
+								<p>Overrides <a href="_src_lib_types_.iotype.html">IoType</a>.<a href="_src_lib_types_.iotype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types.ts#L44">src/lib/types.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L33">src/lib/types/literal.ts:33</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -234,18 +258,19 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="test" class="tsd-anchor"></a>
 					<h3>test</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">test<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#test">test</a></p>
+								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#test">test</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types.ts#L17">src/lib/types.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L17">src/lib/types.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -258,18 +283,19 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="testerror" class="tsd-anchor"></a>
 					<h3>test<wbr>Error</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">test<wbr>Error<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#testerror">testError</a></p>
+								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#testerror">testError</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types.ts#L15">src/lib/types.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L15">src/lib/types.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -285,37 +311,37 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="tojson" class="tsd-anchor"></a>
 					<h3>toJSON</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#tojson">toJSON</a></p>
+								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types.ts#L23">src/lib/types.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L23">src/lib/types.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite">
 					<a name="write" class="tsd-anchor"></a>
 					<h3>write</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="_src_lib_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_src_lib_types_.iotype.html">IoType</a>.<a href="_src_lib_types_.iotype.html#write">write</a></p>
-								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#write">write</a></p>
+								<p>Overrides <a href="_src_lib_types_.iotype.html">IoType</a>.<a href="_src_lib_types_.iotype.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/4315f33/src/lib/types.ts#L42">src/lib/types.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L35">src/lib/types/literal.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -362,31 +388,34 @@
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_src_lib_types_literal_.literaliotype.html" class="tsd-kind-icon">Literal<wbr>IoType</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_src_lib_types_literal_.literaliotype.html#literaltype" class="tsd-kind-icon">Literal<wbr>Type</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="_src_lib_types_literal_.literaliotype.html#type" class="tsd-kind-icon">type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="_src_lib_types_literal_.literaliotype.html#value" class="tsd-kind-icon">value</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 								<a href="_src_lib_types_literal_.literaliotype.html#clone" class="tsd-kind-icon">clone</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 								<a href="_src_lib_types_literal_.literaliotype.html#equals" class="tsd-kind-icon">equals</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite">
 								<a href="_src_lib_types_literal_.literaliotype.html#read" class="tsd-kind-icon">read</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 								<a href="_src_lib_types_literal_.literaliotype.html#test" class="tsd-kind-icon">test</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 								<a href="_src_lib_types_literal_.literaliotype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 								<a href="_src_lib_types_literal_.literaliotype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite">
 								<a href="_src_lib_types_literal_.literaliotype.html#write" class="tsd-kind-icon">write</a>
 							</li>
 						</ul>
