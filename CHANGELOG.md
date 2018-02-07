@@ -1,3 +1,7 @@
+# Next
+
+- **[Fix]** Publish source `.ts` files in a different directory than the corresponding `.js` and `.d.ts`.
+
 # 0.7.0-beta.1 (2018-02-03)
 
 - **[Feature]** Add builtin `$Any` for `AnyType`.
