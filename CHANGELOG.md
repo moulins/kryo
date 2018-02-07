@@ -1,4 +1,4 @@
-# Next
+# 0.7.0-beta.2 (2018-02-07)
 
 - **[Fix]** Publish source `.ts` files in a different directory than the corresponding `.js` and `.d.ts`.
 
