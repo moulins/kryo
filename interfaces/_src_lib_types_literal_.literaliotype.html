@@ -131,7 +131,7 @@
 					<div class="tsd-signature tsd-kind-icon">Literal<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="_src_lib_types_literal_.literaltypeconstructor.html" class="tsd-signature-type">LiteralTypeConstructor</a><span class="tsd-signature-symbol"> =&nbsp;class&lt;T, M extends Type&lt;T&gt; &#x3D; Type&lt;T&gt;&gt; implements IoType&lt;T&gt; {readonly name: Name &#x3D; name;readonly type: M;readonly value: T;private _options: Lazy&lt;LiteralTypeOptions&lt;T, M&gt;&gt;;constructor(options: Lazy&lt;LiteralTypeOptions&lt;T, M&gt;&gt;) {// TODO: Remove once TS 2.7 is better supported by editorsthis.type &#x3D; &lt;any&gt; undefined;this.value &#x3D; &lt;any&gt; undefined;this._options &#x3D; options;if (typeof options !&#x3D;&#x3D; &quot;function&quot;) {this._applyOptions();} else {lazyProperties(this, this._applyOptions, [&quot;type&quot;, &quot;value&quot;]);}}toJSON(): json.Type {throw createNotImplementedError(&quot;LiteralType#toJSON&quot;);}read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): T {if (this.type.read &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotReadable&quot;, {type: this});}return reader.trustInput ? this.clone(this.value) : this.type.read(reader, raw);}write&lt;W&gt;(writer: Writer&lt;W&gt;, value: T): W {if (this.type.write &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotWritable&quot;, {type: this});}return this.type.write(writer, value);}testError(val: T): Error | undefined {const error: Error | undefined &#x3D; this.type.testError(val);if (error !&#x3D;&#x3D; undefined) {return error;}if (!this.type.equals(val, this.value)) {return Incident(&quot;InvalidLiteral&quot;, &quot;Invalid literal value&quot;);}return undefined;}test(val: T): boolean {return this.testError(val) &#x3D;&#x3D;&#x3D; undefined;}equals(val1: T, val2: T): boolean {return this.type.equals(val1, val2);}clone(val: T): T {return this.type.clone(val);}diff(oldVal: T, newVal: T): undefined {return;}patch(oldVal: T, diff: undefined): T {return this.type.clone(oldVal);}reverseDiff(diff: Diff | undefined): undefined {return;}squash(diff1: undefined, diff2: undefined): undefined {return;}private _applyOptions(): void {if (this._options &#x3D;&#x3D;&#x3D; undefined) {throw createLazyOptionsError(this);}const options: LiteralTypeOptions&lt;T, M&gt; &#x3D; typeof this._options &#x3D;&#x3D;&#x3D; &quot;function&quot;? this._options(): this._options;const type: M &#x3D; options.type;const value: T &#x3D; options.value;Object.assign(this, {type, value});}}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L46">src/lib/types/literal.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types/literal.ts#L46">src/lib/types/literal.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,7 +154,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_src_lib_types_literal_.literaltypeoptions.html">LiteralTypeOptions</a>.<a href="_src_lib_types_literal_.literaltypeoptions.html#type">type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L19">src/lib/types/literal.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types/literal.ts#L19">src/lib/types/literal.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -165,7 +165,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_src_lib_types_literal_.literaltypeoptions.html">LiteralTypeOptions</a>.<a href="_src_lib_types_literal_.literaltypeoptions.html#value">value</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L20">src/lib/types/literal.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types/literal.ts#L20">src/lib/types/literal.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -184,7 +184,7 @@
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#clone">clone</a></p>
 								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L21">src/lib/types.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types.ts#L21">src/lib/types.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -209,7 +209,7 @@
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#equals">equals</a></p>
 								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L19">src/lib/types.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types.ts#L19">src/lib/types.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -236,7 +236,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_src_lib_types_.iotype.html">IoType</a>.<a href="_src_lib_types_.iotype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L33">src/lib/types/literal.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types/literal.ts#L33">src/lib/types/literal.ts:33</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -270,7 +270,7 @@
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#test">test</a></p>
 								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#test">test</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L17">src/lib/types.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types.ts#L17">src/lib/types.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -295,7 +295,7 @@
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#testerror">testError</a></p>
 								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#testerror">testError</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L15">src/lib/types.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types.ts#L15">src/lib/types.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -323,7 +323,7 @@
 								<p>Inherited from <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#tojson">toJSON</a></p>
 								<p>Overrides <a href="_src_lib_types_.type.html">Type</a>.<a href="_src_lib_types_.type.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types.ts#L23">src/lib/types.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types.ts#L23">src/lib/types.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -341,7 +341,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_src_lib_types_.iotype.html">IoType</a>.<a href="_src_lib_types_.iotype.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/8b86b85/src/lib/types/literal.ts#L35">src/lib/types/literal.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/ceee2a5/src/lib/types/literal.ts#L35">src/lib/types/literal.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
