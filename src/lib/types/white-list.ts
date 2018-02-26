@@ -3,6 +3,7 @@ import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
+import { testError } from "../test-error";
 
 export type Name = "white-list";
 export const name: Name = "white-list";
@@ -55,7 +56,7 @@ export class WhiteListType<T> implements IoType<T>, VersionedType<T, Diff> {
   }
 
   testError(val: T): Error | undefined {
-    const error: Error | undefined = this.itemType.testError(val);
+    const error: Error | undefined = testError(this.itemType, val);
     if (error !== undefined) {
       return error;
     }
@@ -67,8 +68,16 @@ export class WhiteListType<T> implements IoType<T>, VersionedType<T, Diff> {
     return Incident("UnkownVariant", "Unknown variant");
   }
 
-  test(val: T): boolean {
-    return this.testError(val) === undefined;
+  test(value: T): boolean {
+    if (!this.itemType.test(value)) {
+      return false;
+    }
+    for (const allowed of this.values) {
+      if (this.itemType.equals(value, allowed)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   equals(val1: T, val2: T): boolean {

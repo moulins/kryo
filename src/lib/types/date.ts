@@ -1,4 +1,4 @@
-import { IoType, Reader, VersionedType, Writer } from "../core";
+import { IoType, Ord, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTimestampError } from "../errors/invalid-timestamp";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { readVisitor } from "../readers/read-visitor";
@@ -7,7 +7,7 @@ export type Name = "date";
 export const name: Name = "date";
 export type Diff = number;
 
-export class DateType implements IoType<Date>, VersionedType<Date, Diff> {
+export class DateType implements IoType<Date>, VersionedType<Date, Diff>, Ord<Date> {
   readonly name: Name = name;
 
   // TODO: Dynamically add with prototype?
@@ -44,8 +44,12 @@ export class DateType implements IoType<Date>, VersionedType<Date, Diff> {
     return this.testError(val) === undefined;
   }
 
-  equals(val1: Date, val2: Date): boolean {
-    return val1.getTime() === val2.getTime();
+  equals(left: Date, right: Date): boolean {
+    return left.getTime() === right.getTime();
+  }
+
+  lte(left: Date, right: Date): boolean {
+    return left.getTime() <= right.getTime();
   }
 
   clone(val: Date): Date {
@@ -53,17 +57,17 @@ export class DateType implements IoType<Date>, VersionedType<Date, Diff> {
   }
 
   diff(oldVal: Date, newVal: Date): Diff | undefined {
-    /* tslint:disable-next-line:strict-boolean-expressions */
+    // tslint:disable-next-line:strict-boolean-expressions
     return newVal.getTime() - oldVal.getTime() || undefined;
   }
 
   patch(oldVal: Date, diff: Diff | undefined): Date {
-    /* tslint:disable-next-line:strict-boolean-expressions */
+    // tslint:disable-next-line:strict-boolean-expressions
     return new Date(oldVal.getTime() + (diff || 0));
   }
 
   reverseDiff(diff: Diff | undefined): Diff | undefined {
-    /* tslint:disable-next-line:strict-boolean-expressions */
+    // tslint:disable-next-line:strict-boolean-expressions
     return diff && -diff;
   }
 

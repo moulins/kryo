@@ -4,6 +4,9 @@
   `fromBuffer` to `fromBytes`, etc.) 
 - **[Breaking change]** Rename `kryo/types` to `kryo/core` to avoid confusion with the `types`
   directory.
+- **[Breaking change]** Make `.testError` optional.
+- **[Feature]** Add `Ord` interface for types supporting comparison. Implement it to provide total
+  order for float64, integer, date, bytes and boolean.
 - **[Internal]** Remove unused `json` namespaces.
 
 # 0.7.0-beta.2 (2018-02-07)

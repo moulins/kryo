@@ -1,5 +1,5 @@
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
+import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
@@ -12,7 +12,7 @@ export interface BytesTypeOptions {
   maxLength: number;
 }
 
-export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, Diff> {
+export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, Diff>, Ord<Uint8Array> {
   readonly maxLength: number;
 
   private _options: Lazy<BytesTypeOptions>;
@@ -57,16 +57,26 @@ export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, 
     return this.testError(val) === undefined;
   }
 
-  equals(val1: Uint8Array, val2: Uint8Array): boolean {
-    if (val2.length !== val1.length) {
+  equals(left: Uint8Array, right: Uint8Array): boolean {
+    if (left.length !== right.length) {
       return false;
     }
-    for (let i: number = 0; i < val1.length; i++) {
-      if (val2[i] !== val1[i]) {
+    for (let i: number = 0; i < left.length; i++) {
+      if (left[i] !== right[i]) {
         return false;
       }
     }
     return true;
+  }
+
+  lte(left: Uint8Array, right: Uint8Array): boolean {
+    const minLength: number = Math.min(left.length, right.length);
+    for (let i: number = 0; i < minLength; i++) {
+      if (left[i] > right[i]) {
+        return false;
+      }
+    }
+    return left.length <= right.length;
   }
 
   clone(val: Uint8Array): Uint8Array {

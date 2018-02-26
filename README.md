@@ -57,8 +57,8 @@ outdated.**
 A Kryo **Type** represents a set of valid values. Kryo provides you multiple builtin types and
 utilities to easily create your own types.
 
-It is simply an object with methods to:
-- test if a value is valid (`.test` and `.testError`)
+It is simply an object with 3 methods to:
+- test if a value is valid (`.test`)
 - check if two valid values are equivalent (`.equals`)
 - create a deep copy of a valid value (`.clone`)
 

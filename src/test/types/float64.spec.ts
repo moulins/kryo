@@ -1,4 +1,5 @@
 import chai from "chai";
+import { BooleanType } from "../../lib/types/boolean";
 import { Float64Type } from "../../lib/types/float64";
 import { runTests, TypedValue } from "../helpers/test";
 
@@ -97,5 +98,29 @@ describe("Float64Type", function () {
     it("should return `false` for `.equals(Infinity, -Infinity)`", function () {
       chai.assert.isFalse($Float64WithInfinity.equals(Infinity, -Infinity));
     });
+  });
+
+  describe("lte", function () {
+    const $Float64: Float64Type = new Float64Type({allowNaN: true, allowInfinity: true});
+
+    interface TestItem {
+      left: number;
+      right: number;
+      expected: boolean;
+    }
+
+    const values: number[] = [-Infinity, -1, -0, +0, +1, +Infinity, NaN];
+    const testItems: TestItem[] = [];
+    for (let i: number = 0; i < values.length; i++) {
+      for (let j: number = 0; j < values.length; j++) {
+        testItems.push({left: values[i], right: values[j], expected: i <= j});
+      }
+    }
+
+    for (const {left, right, expected} of testItems) {
+      it(`.lte(${left}, ${right}) should return ${expected}`, function () {
+        chai.assert.strictEqual($Float64.lte(left, right), expected);
+      });
+    }
   });
 });

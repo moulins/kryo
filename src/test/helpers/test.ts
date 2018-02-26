@@ -45,25 +45,29 @@ function getName(namedValue: NamedValue) {
   return "name" in namedValue ? namedValue.name : JSON.stringify(namedValue.value);
 }
 
-export function testInvalidValueSync(type: Type<any>, item: InvalidTypedValue) {
-  it("Should return an Error for .testErrorSync", function () {
-    chai.assert.instanceOf(type.testError(item.value), Error);
-  });
+export function testInvalidValue(type: Type<any>, item: InvalidTypedValue) {
+  if (type.testError !== undefined) {
+    it("Should return an Error for .testError", function () {
+      chai.assert.instanceOf(type.testError!(item.value), Error);
+    });
+  }
 
-  it("Should return `false` for .testSync", function () {
+  it("Should return `false` for .test", function () {
     chai.assert.isFalse(type.test(item.value));
   });
 }
 
-export function testValidValueSync(type: Type<any>, item: ValidTypedValue) {
-  it("Should return `undefined` for .testErrorSync", function () {
-    const error: Error | undefined = type.testError(item.value);
-    if (error !== undefined) {
-      chai.assert.fail(error, undefined, String(error));
-    }
-  });
+export function testValidValue(type: Type<any>, item: ValidTypedValue) {
+  if (type.testError !== undefined) {
+    it("Should return `undefined` for .testError", function () {
+      const error: Error | undefined = type.testError!(item.value);
+      if (error !== undefined) {
+        chai.assert.fail(error, undefined, String(error));
+      }
+    });
+  }
 
-  it("Should return `true` for .testSync", function () {
+  it("Should return `true` for .test", function () {
     chai.assert.isTrue(type.test(item.value));
   });
 }
@@ -173,10 +177,10 @@ export function testSerialization<T>(type: IoType<T>, typedValue: ValidTypedValu
 
 export function testValueSync(type: Type<any>, item: TypedValue): void {
   if (item.valid) {
-    testValidValueSync(type, item);
+    testValidValue(type, item);
     testSerialization(type as IoType<any>, item);
   } else {
-    testInvalidValueSync(type, item);
+    testInvalidValue(type, item);
   }
 }
 

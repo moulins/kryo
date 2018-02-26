@@ -3,9 +3,11 @@ import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, Type, Writer } from "../core";
 import { createInvalidArrayItemsError } from "../errors/invalid-array-items";
 import { createInvalidTypeError } from "../errors/invalid-type";
+import { createInvalidValueError } from "../errors/invalid-value";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
 import { readVisitor } from "../readers/read-visitor";
+import { testError } from "../test-error";
 
 export type Name = "array";
 export const name: Name = "array";
@@ -105,17 +107,17 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
     });
   }
 
-  testError(val: T[]): Error | undefined {
-    if (!Array.isArray(val)) {
-      return createInvalidTypeError("array", val);
+  testError(value: T[]): Error | undefined {
+    if (!Array.isArray(value)) {
+      return createInvalidTypeError("array", value);
     }
-    if (this.maxLength !== undefined && val.length > this.maxLength) {
-      return createMaxArrayLengthError(val, this.maxLength);
+    if (this.maxLength !== undefined && value.length > this.maxLength) {
+      return createMaxArrayLengthError(value, this.maxLength);
     }
     const invalid: Map<number, Error> = new Map();
-    const itemCount: number = val.length;
+    const itemCount: number = value.length;
     for (let i: number = 0; i < itemCount; i++) {
-      const error: Error | undefined = this.itemType.testError(val[i]);
+      const error: Error | undefined = testError(this.itemType, value[i]);
       if (error !== undefined) {
         invalid.set(i, error);
       }

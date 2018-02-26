@@ -1,6 +1,6 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
+import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "../core";
 import { createInvalidIntegerError } from "../errors/invalid-integer";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
@@ -44,7 +44,7 @@ export const DEFAULT_MIN: number = Number.MIN_SAFE_INTEGER - 1;
  */
 export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 
-export class IntegerType implements IoType<number>, VersionedType<number, Diff> {
+export class IntegerType implements IoType<number>, VersionedType<number, Diff>, Ord<number> {
 
   readonly name: Name = name;
   readonly min: number;
@@ -112,8 +112,12 @@ export class IntegerType implements IoType<number>, VersionedType<number, Diff> 
     return typeof val === "number" && val >= this.min && val <= this.max && Math.round(val) === val;
   }
 
-  equals(val1: number, val2: number): boolean {
-    return val1 === val2;
+  equals(left: number, right: number): boolean {
+    return left === right;
+  }
+
+  lte(left: number, right: number): boolean {
+    return left <= right;
   }
 
   clone(val: number): number {

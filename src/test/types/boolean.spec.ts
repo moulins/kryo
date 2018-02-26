@@ -1,3 +1,4 @@
+import chai from "chai";
 import { BooleanType } from "../../lib/types/boolean";
 import { runTests, TypedValue } from "../helpers/test";
 
@@ -30,4 +31,27 @@ describe("BooleanType", function () {
   ];
 
   runTests(type, items);
+
+  describe("lte", function () {
+    const $Boolean: BooleanType = new BooleanType();
+
+    interface TestItem {
+      left: boolean;
+      right: boolean;
+      expected: boolean;
+    }
+
+    const testItems: TestItem[] = [
+      {left: false, right: false, expected: true},
+      {left: false, right: true, expected: true},
+      {left: true, right: false, expected: false},
+      {left: true, right: true, expected: true},
+    ];
+
+    for (const {left, right, expected} of testItems) {
+      it(`.lte(${left}, ${right}) should return ${expected}`, function () {
+        chai.assert.strictEqual($Boolean.lte(left, right), expected);
+      });
+    }
+  });
 });

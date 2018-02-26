@@ -24,15 +24,6 @@ export interface Type<T> {
   name?: string;
 
   /**
-   * Tests if this type matches `value`, describes the error if not.
-   *
-   * @param value The value to test against this type.
-   * @return If this type matches `value` then `undefined`; otherwise an error describing why this
-   *         type does not match `value`.
-   */
-  testError(value: T): Error | undefined;
-
-  /**
    * Tests if this type matches `value`.
    *
    * @param value The value to test against this type.
@@ -68,9 +59,45 @@ export interface Type<T> {
    */
   clone(value: T): T;
 
+  /**
+   * Tests if this type matches `value`, describes the error if not.
+   *
+   * @param value The value to test against this type.
+   * @return If this type matches `value` then `undefined`; otherwise an error describing why this
+   *         type does not match `value`.
+   */
+  testError?(value: T): Error | undefined;
+
+  /**
+   * Compares two valid values.
+   *
+   * @param left Left operand, a valid value.
+   * @param right Right operand, a valid value.
+   * @return Boolean indicating if `left <= right` is true.
+   */
+  lte?(left: T, right: T): boolean;
+
+  /**
+   * Serializes the valid value `value`.
+   *
+   * @param writer Writer used to emit the data.
+   * @param value Value to serialize.
+   * @return Writer result.
+   */
   write?<W>(writer: Writer<W>, value: T): W;
 
-  read?<R>(reader: Reader<R>, raw: R): T;
+  /**
+   * Deserializes a value of this type.
+   *
+   * @param reader Reader to drive during the deserialization.
+   * @param input Reader input.
+   * @return Valid value.
+   */
+  read?<R>(reader: Reader<R>, input: R): T;
+}
+
+export interface Ord<T> {
+  lte(left: T, right: T): boolean;
 }
 
 export interface Writable<T> {
@@ -82,7 +109,8 @@ export interface Readable<T> {
 }
 
 /**
- * Represents a type suitable for IO operations: this type supports serialization and deserialization.
+ * Represents a type suitable for IO operations: this type supports both serialization and
+ * deserialization.
  */
 export interface IoType<T> extends Type<T>, Readable<T>, Writable<T> {
   write<W>(writer: Writer<W>, value: T): W;

@@ -2,6 +2,7 @@ import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
+import { testError } from "../test-error";
 
 export type Name = "union";
 export const name: Name = "union";
@@ -81,7 +82,7 @@ export class TryUnionType<T, M extends Type<T> = Type<T>> implements IoType<T>, 
     if (variant === undefined) {
       return new Incident("UnknownUnionVariant", "Unknown union variant");
     }
-    return variant.testError(value);
+    return testError(variant, value);
   }
 
   test(val: T): boolean {

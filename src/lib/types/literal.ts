@@ -3,6 +3,7 @@ import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, Type, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
+import { testError } from "../test-error";
 
 export type Name = "literal";
 export const name: Name = "literal";
@@ -75,7 +76,7 @@ export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = 
   }
 
   testError(val: T): Error | undefined {
-    const error: Error | undefined = this.type.testError(val);
+    const error: Error | undefined = testError(this.type, val);
     if (error !== undefined) {
       return error;
     }
@@ -85,8 +86,8 @@ export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = 
     return undefined;
   }
 
-  test(val: T): boolean {
-    return this.testError(val) === undefined;
+  test(value: T): boolean {
+    return this.type.test(value) && this.type.equals(value, this.value);
   }
 
   equals(val1: T, val2: T): boolean {

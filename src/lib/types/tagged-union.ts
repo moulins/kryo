@@ -5,6 +5,7 @@ import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
+import { testError } from "../test-error";
 import { DocumentType } from "./document";
 import { LiteralType } from "./literal";
 import { TsEnumType } from "./ts-enum";
@@ -113,7 +114,7 @@ export class TaggedUnionType<T extends {}, M extends DocumentType<T> = DocumentT
     if (variant === undefined) {
       return new Incident("UnknownUnionVariant", "Unknown union variant");
     }
-    return variant.testError(value);
+    return testError(variant, value);
   }
 
   // testWithVariant(val: T): TestWithVariantResult<T> {

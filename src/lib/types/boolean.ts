@@ -1,4 +1,4 @@
-import { IoType, Reader, VersionedType, Writer } from "../core";
+import { IoType, Ord, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { readVisitor } from "../readers/read-visitor";
 
@@ -7,7 +7,7 @@ export const name: Name = "boolean";
 
 export type Diff = boolean;
 
-export class BooleanType implements IoType<boolean>, VersionedType<boolean, Diff> {
+export class BooleanType implements IoType<boolean>, VersionedType<boolean, Diff>, Ord<boolean> {
   readonly name: Name = name;
 
   // TODO: Dynamically add with prototype?
@@ -31,12 +31,16 @@ export class BooleanType implements IoType<boolean>, VersionedType<boolean, Diff
     return undefined;
   }
 
-  test(val: boolean): val is boolean {
-    return this.testError(val) === undefined;
+  test(value: boolean): value is boolean {
+    return typeof value === "boolean";
   }
 
-  equals(val1: boolean, val2: boolean): boolean {
-    return val1 === val2;
+  equals(left: boolean, right: boolean): boolean {
+    return left === right;
+  }
+
+  lte(left: boolean, right: boolean): boolean {
+    return left <= right;
   }
 
   clone(val: boolean): boolean {

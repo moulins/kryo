@@ -1,5 +1,5 @@
 import { lazyProperties } from "../_helpers/lazy-properties";
-import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
+import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "../core";
 import { createInvalidFloat64Error } from "../errors/invalid-float64";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
@@ -37,8 +37,7 @@ export interface Float64TypeOptions {
   // TODO: Add `unifyZeros` (defaults to `true`) to handle `+0` and `-0`
 }
 
-// tslint:disable:max-line-length
-export class Float64Type implements IoType<number>, VersionedType<number, [number, number]> {
+export class Float64Type implements IoType<number>, VersionedType<number, [number, number]>, Ord<number> {
   readonly name: Name = name;
   readonly allowNaN: boolean;
   readonly allowInfinity: boolean;
@@ -100,18 +99,51 @@ export class Float64Type implements IoType<number>, VersionedType<number, [numbe
   }
 
   test(val: number): boolean {
-    return typeof val === "number" && (this.allowNaN || !isNaN(val)) && (this.allowInfinity || Math.abs(val) !== Infinity);
+    return typeof val === "number"
+      && (this.allowNaN || !isNaN(val))
+      && (this.allowInfinity || Math.abs(val) !== Infinity);
   }
 
-  equals(val1: number, val2: number): boolean {
-    if (isNaN(val1) || isNaN(val2)) {
-      return isNaN(val1) && isNaN(val2);
+  /**
+   * Tests the equivalence of two valid float64 values.
+   *
+   * Two values are equivalent if they are both `NaN`, both `-0`, both `+0` or non-zero and
+   * numerically equal.
+   */
+  equals(left: number, right: number): boolean {
+    return Object.is(left, right);
+  }
+
+  /**
+   * Compares two valid float64 values.
+   *
+   * The values are ordered as follow:
+   * - `-Infinity`
+   * - Negative non-zero finite values
+   * - `-0`
+   * - `+0`
+   * - Positive non-zero finite values
+   * - `+Infinity`
+   * - `NaN`
+   *
+   * @param left Left operand.
+   * @param right Right operand.
+   * @return Boolean indicating if `left <= right`
+   */
+  lte(left: number, right: number): boolean {
+    if (isNaN(right)) {
+      return true;
+    } else if (isNaN(left)) {
+      return false;
     }
-    return val1 === val2;
+    if (left === 0 && right === 0) {
+      return Object.is(left, -0) || Object.is(right, +0);
+    }
+    return left <= right;
   }
 
-  clone(val: number): number {
-    return val;
+  clone(value: number): number {
+    return value;
   }
 
   diff(oldVal: number, newVal: number): [number, number] | undefined {

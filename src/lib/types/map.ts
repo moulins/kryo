@@ -5,6 +5,7 @@ import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
+import { testError } from "../test-error";
 
 export type Name = "map";
 export const name: Name = "map";
@@ -86,12 +87,11 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
       return createInvalidTypeError("Map", val);
     }
     for (const [key, value] of val) {
-      // TODO: test keyType
-      const keyError: Error | undefined = this.keyType.testError(key);
+      const keyError: Error | undefined = testError(this.keyType, key);
       if (keyError !== undefined) {
         return new Incident("InvalidMapKey", {key, value}, "Invalid map entry: invalid key");
       }
-      const valueError: Error | undefined = this.valueType.testError(value);
+      const valueError: Error | undefined = testError(this.valueType, value);
       if (valueError !== undefined) {
         return new Incident("InvalidMapValue", {key, value}, "Invalid map entry: invalid value");
       }
@@ -100,7 +100,15 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
   }
 
   test(val: Map<K, V>): boolean {
-    return this.testError(val) === undefined;
+    if (!(val instanceof Map)) {
+      return false;
+    }
+    for (const [key, value] of val) {
+      if (!this.keyType.test(key) || !this.valueType.test(value)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   equals(val1: Map<K, V>, val2: Map<K, V>): boolean {
