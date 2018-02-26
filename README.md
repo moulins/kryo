@@ -8,30 +8,196 @@
 
 [Documentation](https://demurgos.github.io/kryo/)
 
+## Introduction
+
+Kryo is a library to represent data types at runtime. For example, it lets you test if a value
+matches a type or safely serialize data between various formats such as `JSON` or `BSON`.
+
+Deserializing the JSON string `'{createdAt: "2017-10-15T17:10:08.218Z"}'` requires type information
+to convert the value to a `Date` instance: Kryo simplifies it so you don't have to manually
+handle type conversions.
+
 ## Installation
 
-**TODO: The documentation is outdated since the release of the versions `0.6/0.7`!!!**
-
-_Kryo_ allows to declaratively define types and schemas to test and serialize data.
-While Typescript provides compile-time checks, _Kryo_ is intended for runtime verification, even against
-untrusted input.
-
-Install _Kryo_ from _npm_:
+You can install the latest stable version of Kryo with _yarn_ (recommended) or _npm_:
 
 ```shell
+# Using yarn:
+yarn add kryo
+# Usin npm:
 npm install --save kryo
 ```
 
-Note that the `master` branch is continuously deployed to _npm_ with the `next` tag. You can use it to install
-the next version without waiting for the release.
+The package includes Typescript type defintion files (`.d.ts`) and source maps.
 
-```shell
-npm isntall --save kryp@next
+You can install the preview of the next version. This version is continuously deployed from the
+`master` branch of the repo (it is the most up-to-date version).
+
+```
+yarn add kryo@next
+npm install --save kryp@next
 ```
 
 ## Getting started
 
+Kryo specifies its types with a few Typescript interfaces: any object matching the shape of the
+interface is a valid type.
+
+Every type object implements at least the simple `Type` interface with its 4 required methods:
+
+```typescript
+export interface Type<T> {
+  /**
+   * Tests if this type matches `value`,  describes the error if not.
+   */
+  testError(value: T): Error | undefined;
+  
+  /**
+   * Tests if this type matches `value`.
+   */
+  test(value: T): boolean;
+
+  /**
+   * Tests if two valid values are equal.
+   */
+  equals(left: T, right: T): boolean;
+
+  /**
+   * Creates a deep copy of the provided valid value.
+   */
+  clone(value: T): T;
+}
+```
+
+For example we can define a `Prime` type describing prime numbers.
+
+```typescript
+// By convention, the names of type objects are prefixed by `$`
+const $Prime: Type<number> = {
+  testError(value: number): Error | undefined {
+    if (typeof value !== "number") {
+      // Notice the error is returned and not thrown:
+      // this is not a logic problem but an expected error.
+      return new Error("Expected `number`");
+    }
+    if (value <= 1 || Math.floor(value) !== value) {
+      return new Error("Expected a positive integer strictly greater than 1");
+    }
+    for (let divisor: number = 2; divisor <= Math.sqrt(value); divisor++) {
+      if (value % divisor === 0) {
+        return new Error(`Divisible by ${divisor}`);
+      }
+    }
+    return undefined; // No error
+  },
+  test(value: number): boolean {
+    return this.testError(value) === undefined;
+    // You can either reuse `testError` as above or provide a new implementation without error messages:
+    // ```typescript
+    // if (typeof value !== "number" || value <= 1 || Math.floor(value) !== value) {
+    //   return false;
+    // }
+    // for (let divisor: number = 2; divisor <= Math.sqrt(value); divisor++) {
+    //   if (value % divisor === 0) {
+    //     return false;
+    //   }
+    // }
+    // return true;
+    // ```
+  },
+  equal(left: number, right: number): boolean {
+    return left === right;
+  },
+  clone(value: number): number {
+    return value;
+  },
+}
+```
+
+You can already use your type (`$Prime.test(7)` for example) but Kryo helps you to create common
+types with its type constructors and then compose these types to describe more advanced structures.
+
+Suppose that we are building a database of prime numbers: each record is a number with its
+discovery date. We can use the provided `DocumentType` constructor to create our record type
+from `$Prime` and the builtin `$Date` type:
+
+```typescript
+import { $Date } from "kryo/builtins/date";
+import { DocumentType } from "kryo/types/document";
+
+const $Record = new DocumentType({
+  properties: {
+    discoveryDate: {type: $Date},
+    value: {type: $Prime},
+  }
+});
+
+$Record.test({}); // `false` (missing required properties)
+$Record.test({discoveryDate: new Date(), value: 10}); // `false` (not a prime)
+$Record.test({discoveryDate: null, value: 10}); // `false` (invalid value for `discoveryDate`)
+$Record.test({discoveryDate: new Date(), value: 11}); // `true`
+```
+
+`$Date` and instances of `DocumentType` implement not only the `Type` interface but also the
+`IoType` interface: they support serialization.
+
+The `IoType` interface has two additional methods:
+
+```typescript
+interface IoType {
+  write<W>(writer: Writer<W>, value: T): W;
+  read<R>(reader: Reader<R>, raw: R): T;
+}
+```
+
+The signature is more complex but it lets you write a single serialization and deserialization
+method to handle most general-pupose formats: the format details are abstracted by the `writer`
+and `reader` objects.
+
+```typescript
+const $Prime: IoType<number> = {
+  testError(value: number): Error | undefined { ... },
+  test(value: number): boolean { ... },
+  equal(left: number, right: number): boolean { ... },
+  clone(value: number): number { ... },
+  write<W>(writer: Writer<W>, value: number): W {
+    return writer.writeFloat64(value);
+  },
+  read<R>(reader: Reader<R>, raw: R): number {
+    return reader.readFloat64(raw, readVisitor({
+      fromFloat64: (input: number): number => {
+        const error: Error | undefined = reader.trustInput ? undefined : this.testError(input);
+        if (error !== undefined) { throw error; }
+        return input;
+      },
+    }));
+  },
+}
+```
+
+The reader and writer objects use an intermediate model for types: rich enough to represent the
+types of most popular general-purpose languages but simpler than the runtime types.
+
+**TODO**: Serialization needs way more explanations.
+
+Now that all of our objects support serialization, we can use it to read to and from JSON despite
+the `Date` type (used by `discoveryDate` but not supported by JSON):
+
+```typescript
+const reader: JsonReader = new JsonReader();
+const writer: JsonReader = new JsonWriter();
+
+const record = $Record.read(reader, '{"discoveryDate": "2017-10-15T17:10:08.218Z", value: 5}');
+// Notice that the Date type is not supported by JSON but we properly deserialized it thanks to the
+// runtime description:
+console.log(record.discoveryDate instanceof Date); // `true`
+const record.value = 11;
+console.log($Record.write(writer, record)); // `'{"discoveryDate": "2017-10-15T17:10:08.218Z", value: 11}'`
+```
+
 ### Types
+
+**THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED**
 
 Kryo differentiates three level of types.
 - The simplest types only guarantee support for runtime values: test if the value match the type, clone values,
@@ -84,6 +250,8 @@ $Date.patch($Date.reverseDiff(diff3)); // 30: Apply the reverse diff to retrieve
 
 ### Type constructors and builtins
 
+**THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED**
+
 Kryo provides both constructors to let you instantiate types by providing a minimal configuration but also builtins
 for common types. By convention, the names of actual types start with `$` while the names of type constructors end
 with `Type`.
@@ -111,6 +279,8 @@ $Uint32.test(2 ** 32 - 1); // true
 ```
 
 ### Types
+
+**THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED**
 
 Kryo currently provide support for the following types:
 
@@ -145,6 +315,8 @@ import {$Uint8} from "kryo/integer";
 ```
 
 ### Circular definitions, lazy options
+
+**THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED**
 
 Kryo supports circular type definitions, this allows to describe recursive values such as trees.
 Note that circular values are not supported (yet) by Kryo: you have to break and recreate the cycles in the values yourself.

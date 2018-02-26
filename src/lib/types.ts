@@ -9,18 +9,53 @@
  */
 export type Lazy<T> = T | (() => T);
 
+/**
+ * Simple type interface.
+ *
+ * This is the smallest interface for objects to be valid types.
+ * A type with this interface can check the validity and equality of values, and clone them.
+ */
 export interface Type<T> {
-  // name: string;
+  /**
+   * Name of this type. This is only used to help with debugging.
+   */
+  name?: string;
 
-  testError(val: T): Error | undefined;
+  /**
+   * Tests if this type matches `value`, describes the error if not.
+   *
+   * @param value The value to test against this type.
+   * @return If this type matches `value` then `undefined`; otherwise an error describing why this
+   *         type does not match `value`.
+   */
+  testError(value: T): Error | undefined;
 
-  test(val: T): boolean;
+  /**
+   * Tests if this type matches `value`.
+   *
+   * @param value The value to test against this type.
+   * @return Boolean indicating if this type matches `value`.
+   */
+  test(value: T): boolean;
 
-  equals(val1: T, val2: T): boolean;
+  /**
+   * Tests if `left` is equal to `value`.
+   *
+   * This is a deep strict structural equality test restricted to the properties of this type.
+   *
+   * @param left Left value, trusted to be compatible with this type.
+   * @param right Right value, trusted to be compatible with this type.
+   * @return Boolean indicating if both values are equal.
+   */
+  equals(left: T, right: T): boolean;
 
-  clone(val: T): T;
-
-  toJSON(): any;
+  /**
+   * Returns a deep copy of `value`.
+   *
+   * @param value The value to clone, trusted to be compatible with this type.
+   * @return A deep copy of the supplied value, restricted to the properties of this type.
+   */
+  clone(value: T): T;
 
   write?<W>(writer: Writer<W>, value: T): W;
 
