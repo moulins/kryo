@@ -1,4 +1,4 @@
-# Next
+# 0.7.0 (2018-02-26)
 
 - **[Breaking change]** Rename `buffer` to `bytes` (`BufferType` to `BytesType`,
   `fromBuffer` to `fromBytes`, etc.) 

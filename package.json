@@ -1,6 +1,6 @@
 {
   "name": "kryo",
-  "version": "0.7.0-beta.2",
+  "version": "0.7.0",
   "description": "Runtime types",
   "main": "dist/lib/index",
   "types": "dist/lib/index.d.ts",
