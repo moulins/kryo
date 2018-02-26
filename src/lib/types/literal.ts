@@ -6,9 +6,6 @@ import { IoType, Lazy, Reader, Type, Writer } from "../types";
 
 export type Name = "literal";
 export const name: Name = "literal";
-export namespace json {
-  export type Type = undefined;
-}
 export type Diff = any;
 
 /**
@@ -61,10 +58,6 @@ export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = 
     } else {
       lazyProperties(this, this._applyOptions, ["type", "value"]);
     }
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("LiteralType#toJSON");
   }
 
   read<R>(reader: Reader<R>, raw: R): T {

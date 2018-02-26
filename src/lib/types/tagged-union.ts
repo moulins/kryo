@@ -11,9 +11,6 @@ import { TsEnumType } from "./ts-enum";
 
 export type Name = "union";
 export const name: Name = "union";
-export namespace json {
-  export type Type = undefined;
-}
 export type Diff = any;
 
 export interface TaggedUnionTypeOptions<T extends {}, M extends DocumentType<T> = DocumentType<T>> {
@@ -54,10 +51,6 @@ export class TaggedUnionType<T extends {}, M extends DocumentType<T> = DocumentT
         ["variants", "tag"],
       );
     }
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("UnionType#toJSON");
   }
 
   match(value: T): M | undefined {

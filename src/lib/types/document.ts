@@ -10,11 +10,6 @@ import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../types";
 
 export type Name = "document";
 export const name: Name = "document";
-export namespace json {
-  export interface Type {
-    name: Name;
-  }
-}
 
 export interface Diff<T> {
   set: {[P in keyof T]?: any}; // val
@@ -130,14 +125,6 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
       }
     }
     return this._outKeys;
-  }
-
-  static fromJSON(options: json.Type): DocumentType<{}> {
-    throw createNotImplementedError("DocumentType.fromJSON");
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("DocumentType#toJSON");
   }
 
   getOutKey(key: keyof T): string {

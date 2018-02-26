@@ -8,12 +8,6 @@ import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "buffer";
 export const name: Name = "buffer";
-export namespace json {
-  export type Input = string;
-  export type Output = string;
-  // TODO(demurgos): Export bufferType to JSON
-  export type Type = undefined;
-}
 export type Diff = any;
 
 export interface BufferTypeOptions {
@@ -36,10 +30,6 @@ export class BufferType implements IoType<Uint8Array>, VersionedType<Uint8Array,
     } else {
       lazyProperties(this, this._applyOptions, ["maxLength"]);
     }
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("BufferType#toJSON");
   }
 
   // TODO: Dynamically add with prototype?

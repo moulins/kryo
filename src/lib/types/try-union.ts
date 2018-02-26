@@ -1,14 +1,10 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createLazyOptionsError } from "../errors/lazy-options";
-import { createNotImplementedError } from "../errors/not-implemented";
 import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../types";
 
 export type Name = "union";
 export const name: Name = "union";
-export namespace json {
-  export type Type = undefined;
-}
 export type Diff = any;
 
 export interface TryUnionTypeOptions<T, M extends Type<T> = Type<T>> {
@@ -39,10 +35,6 @@ export class TryUnionType<T, M extends Type<T> = Type<T>> implements IoType<T>, 
         ["variants"],
       );
     }
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("UnionType#toJSON");
   }
 
   match(value: T): M | undefined {

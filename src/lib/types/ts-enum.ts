@@ -14,12 +14,6 @@ export type SimpleEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumCon
 
 export type Name = "simple-enum";
 export const name: Name = "simple-enum";
-export namespace json {
-  export interface Type {
-    name: Name;
-    enum: any;
-  }
-}
 export type Diff = number;
 
 export type EnumObject<EO, E extends number | string> = Record<keyof EO, E>;
@@ -153,11 +147,7 @@ export class TsEnumType<E extends string | number, EO extends {} = {}> implement
   }
 
   static fromJSON(): TsEnumType<any> {
-    throw createNotImplementedError("SimpleEnumType.fromJSON");
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("SimpleEnumType#toJSON");
+    throw createNotImplementedError("TsEnumType.fromJSON");
   }
 
   read<R>(reader: Reader<R>, raw: R): E {

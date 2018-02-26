@@ -4,16 +4,11 @@ import { createInvalidArrayItemsError } from "../errors/invalid-array-items";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
-import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
 import { IoType, Lazy, Reader, Type, Writer } from "../types";
 
 export type Name = "array";
 export const name: Name = "array";
-export namespace json {
-  // TODO(demurgos): Export arrayType to JSON
-  export type Type = undefined;
-}
 export type Diff = any;
 
 /**
@@ -63,10 +58,6 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
     } else {
       lazyProperties(this, this._applyOptions, ["itemType", "maxLength"]);
     }
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("ArrayType#toJSON");
   }
 
   // TODO: Dynamically add with prototype?

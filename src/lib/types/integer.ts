@@ -9,9 +9,6 @@ import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 export type Name = "integer";
 export const name: Name = "integer";
 export namespace json {
-  export type Input = number;
-  export type Output = number;
-
   export interface Type {
     name: Name;
     min: number;

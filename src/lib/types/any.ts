@@ -1,17 +1,9 @@
-import { createNotImplementedError } from "../errors/not-implemented";
 import { IoType, Reader, Writer } from "../types";
 
-export namespace json {
-  export type Type = undefined;
-}
 export type Diff = any;
 
 export class AnyType<T = any> implements IoType<T> {
   constructor() {
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("AnyType#toJSON");
   }
 
   read<R>(reader: Reader<R>, raw: R): T {

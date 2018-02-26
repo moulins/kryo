@@ -5,22 +5,10 @@ import { IoType, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "date";
 export const name: Name = "date";
-export namespace json {
-  export type Input = string | number;
-  export type Output = string;
-
-  export interface Type {
-    name: Name;
-  }
-}
 export type Diff = number;
 
 export class DateType implements IoType<Date>, VersionedType<Date, Diff> {
   readonly name: Name = name;
-
-  toJSON(): json.Type {
-    return {name};
-  }
 
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): Date {

@@ -4,21 +4,9 @@ import { IoType, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "null";
 export const name: Name = "null";
-export namespace json {
-  export type Input = null;
-  export type Output = null;
-
-  export interface Type {
-    name: Name;
-  }
-}
 
 export class NullType implements IoType<null>, VersionedType<null, undefined> {
   readonly name: Name = name;
-
-  toJSON(): json.Type {
-    return {name};
-  }
 
   read<R>(reader: Reader<R>, raw: R): null {
     return reader.readNull(raw, readVisitor({

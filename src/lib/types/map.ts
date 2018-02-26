@@ -8,18 +8,6 @@ import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "map";
 export const name: Name = "map";
-export namespace json {
-  export interface Input {
-    [key: string]: any;
-  }
-
-  export interface Output {
-    [key: string]: any;
-  }
-
-  // TODO(demurgos): Export arrayType to JSON
-  export type Type = undefined;
-}
 export type Diff = any;
 
 export interface MapTypeOptions<K, V> {
@@ -51,10 +39,6 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
     } else {
       lazyProperties(this, this._applyOptions, ["keyType", "valueType", "maxSize", "assumeStringKey"]);
     }
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("MapType#toJSON");
   }
 
   // TODO: Dynamically add with prototype?

@@ -10,11 +10,6 @@ export type Diff = boolean;
 export class BooleanType implements IoType<boolean>, VersionedType<boolean, Diff> {
   readonly name: Name = name;
 
-  toJSON(): undefined {
-    /* tslint:disable-next-line:return-undefined */
-    return undefined;
-  }
-
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): boolean {
     return reader.readBoolean(raw, readVisitor({

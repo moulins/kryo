@@ -28,9 +28,6 @@ export enum Normalization {
 export type Name = "codepoint-string";
 export const name: Name = "codepoint-string";
 export namespace json {
-  export type Input = string;
-  export type Output = string;
-
   export interface Type {
     name: Name;
     normalization: "none" | "nfc";

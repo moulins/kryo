@@ -1,6 +1,5 @@
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { createLazyOptionsError } from "../errors/lazy-options";
-import { createNotImplementedError } from "../errors/not-implemented";
 import { Lazy, Reader, Type, Writer } from "../types";
 
 export type Name = "custom";
@@ -44,10 +43,6 @@ export class CustomType<T> implements Type<T> {
     } else {
       lazyProperties(this, this._applyOptions, ["read", "write", "testError", "equals", "clone"]);
     }
-  }
-
-  toJSON(): never {
-    throw createNotImplementedError("CustomType#toJSON");
   }
 
   test(val: T): boolean {

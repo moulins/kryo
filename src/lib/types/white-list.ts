@@ -6,14 +6,6 @@ import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "white-list";
 export const name: Name = "white-list";
-export namespace json {
-  export type Input = any;
-  export type Output = any;
-
-  export interface Type {
-    name: Name;
-  }
-}
 export type Diff = [number, number];
 
 export interface WhiteListTypeOptions<T> {
@@ -39,14 +31,6 @@ export class WhiteListType<T> implements IoType<T>, VersionedType<T, Diff> {
     } else {
       lazyProperties(this, this._applyOptions, ["itemType", "values"]);
     }
-  }
-
-  static fromJSON(options: json.Type): WhiteListType<any> {
-    throw createNotImplementedError("WhiteListType.fromJSON");
-  }
-
-  toJSON(): json.Type {
-    throw createNotImplementedError("TypedUnionType#toJSON");
   }
 
   read<R>(reader: Reader<R>, raw: R): T {
