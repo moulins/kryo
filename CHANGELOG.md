@@ -7,6 +7,7 @@
 - **[Breaking change]** Make `.testError` optional.
 - **[Feature]** Add `Ord` interface for types supporting comparison. Implement it to provide total
   order for float64, integer, date, bytes and boolean.
+- **[Feature]** Add `$Bytes` and `$Ucs2String` builtins.
 - **[Internal]** Remove unused `json` namespaces.
 
 # 0.7.0-beta.2 (2018-02-07)
