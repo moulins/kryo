@@ -81,10 +81,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_types_.type.html" class="tsd-signature-type">Type</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="kryo_core.type.html" class="tsd-signature-type">Type</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
 					</li>
 					<li>
-						<a href="_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="_types_document_.diff.html" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="kryo_core.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="_types_document_.diff.html" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>
 					</li>
 					<li>
 						<a href="_types_document_.documenttypeoptions.html" class="tsd-signature-type">DocumentTypeOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
@@ -104,6 +104,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#changecase" class="tsd-kind-icon">change<wbr>Case</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#noextrakeys" class="tsd-kind-icon">no<wbr>Extra<wbr>Keys</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#properties" class="tsd-kind-icon">properties</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#rename" class="tsd-kind-icon">rename</a></li>
@@ -116,13 +117,13 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#diff" class="tsd-kind-icon">diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#equals" class="tsd-kind-icon">equals</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_types_document_.documenttype.html#getoutkey" class="tsd-kind-icon">get<wbr>Out<wbr>Key</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#lte" class="tsd-kind-icon">lte</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#patch" class="tsd-kind-icon">patch</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#read" class="tsd-kind-icon">read</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_types_document_.documenttype.html#squash" class="tsd-kind-icon">squash</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#test" class="tsd-kind-icon">test</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited"><a href="_types_document_.documenttype.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
 						</section>
@@ -134,17 +135,34 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="changecase" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> change<wbr>Case</h3>
-					<div class="tsd-signature tsd-kind-icon">change<wbr>Case<span class="tsd-signature-symbol">:</span> <a href="../enums/_case_style_.casestyle.html" class="tsd-signature-type">CaseStyle</a></div>
+					<div class="tsd-signature tsd-kind-icon">change<wbr>Case<span class="tsd-signature-symbol">:</span> <a href="../enums/kryo_case_style.casestyle.html" class="tsd-signature-type">CaseStyle</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_types_document_.documenttypeoptions.html">DocumentTypeOptions</a>.<a href="_types_document_.documenttypeoptions.html#changecase">changeCase</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/document.ts#L40">types/document.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/document.ts#L35">types/document.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The keys of the serialized documents are renamed following the
 							supplied style (undefined to keep the original name).</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+					<a name="name" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#name">name</a></p>
+						<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L24">core.ts:24</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Name of this type. This is only used to help with debugging.</p>
 						</div>
 					</div>
 				</section>
@@ -155,7 +173,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_types_document_.documenttypeoptions.html">DocumentTypeOptions</a>.<a href="_types_document_.documenttypeoptions.html#noextrakeys">noExtraKeys</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/document.ts#L29">types/document.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/document.ts#L24">types/document.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -171,7 +189,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_types_document_.documenttypeoptions.html">DocumentTypeOptions</a>.<a href="_types_document_.documenttypeoptions.html#properties">properties</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/document.ts#L34">types/document.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/document.ts#L29">types/document.ts:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -192,7 +210,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_types_document_.documenttypeoptions.html">DocumentTypeOptions</a>.<a href="_types_document_.documenttypeoptions.html#rename">rename</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/document.ts#L42">types/document.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/document.ts#L37">types/document.ts:37</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -203,24 +221,33 @@
 					<a name="clone" class="tsd-anchor"></a>
 					<h3>clone</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#clone">clone</a></p>
-								<p>Overrides <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#clone">clone</a></p>
+								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#clone">clone</a></p>
+								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L21">types.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L60">core.ts:60</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns a deep copy of <code>value</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">T</span></h5>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to clone, trusted to be compatible with this type.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<p>A deep copy of the supplied value, restricted to the properties of this type.</p>
 						</li>
 					</ul>
 				</section>
@@ -233,9 +260,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.versionedtype.html">VersionedType</a>.<a href="_types_.versionedtype.html#diff">diff</a></p>
+								<p>Inherited from <a href="kryo_core.versionedtype.html">VersionedType</a>.<a href="kryo_core.versionedtype.html#diff">diff</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L135">types.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L209">core.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -270,27 +297,53 @@
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#equals">equals</a></p>
-								<p>Overrides <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#equals">equals</a></p>
+								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#equals">equals</a></p>
+								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L19">types.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L52">core.ts:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tests if <code>left</code> is equal to <code>value</code>.</p>
+								</div>
+								<p>This is a deep strict structural equality test restricted to the properties of this type.</p>
+								<p>It satisfies the following properties (the variables <code>a</code>, <code>b</code> and <code>c</code> are valid values):</p>
+								<ul>
+									<li>Reflexivity: <code>type.equal(a, a) === true</code></li>
+									<li>Symmetry: <code>type.equals(a, b) === type.equals(b, a)</code></li>
+									<li>Transitivity: if <code>type.equals(a, b) &amp;&amp; type.equals(b, c)</code> then <code>type.equals(a, c)</code></li>
+								</ul>
+								<p>The above properties mean that type objects implement the <code>Setoid</code> algebra as specified by
+								Static Land.</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="https://github.com/rpominov/static-land/blob/master/docs/spec.md#setoid">https://github.com/rpominov/static-land/blob/master/docs/spec.md#setoid</a></p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val1: <span class="tsd-signature-type">T</span></h5>
+									<h5>left: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Left value, trusted to be compatible with this type.</p>
+									</div>
 								</li>
 								<li>
-									<h5>val2: <span class="tsd-signature-type">T</span></h5>
+									<h5>right: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Right value, trusted to be compatible with this type.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>Boolean indicating if both values are equal.</p>
 						</li>
 					</ul>
 				</section>
@@ -304,7 +357,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/document.ts#L87">types/document.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/document.ts#L82">types/document.ts:82</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -317,6 +370,46 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+					<a name="lte" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> lte</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">lte<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#lte">lte</a></p>
+								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#lte">lte</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L78">core.ts:78</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Compares two valid values.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>left: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Left operand, a valid value.</p>
+									</div>
+								</li>
+								<li>
+									<h5>right: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Right operand, a valid value.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>Boolean indicating if <code>left &lt;= right</code> is true.</p>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="patch" class="tsd-anchor"></a>
 					<h3>patch</h3>
@@ -326,9 +419,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.versionedtype.html">VersionedType</a>.<a href="_types_.versionedtype.html#patch">patch</a></p>
+								<p>Inherited from <a href="kryo_core.versionedtype.html">VersionedType</a>.<a href="kryo_core.versionedtype.html#patch">patch</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L137">types.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L211">core.ts:211</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -348,17 +441,22 @@
 					<a name="read" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> read</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#read">read</a></p>
-								<p>Overrides <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#read">read</a></p>
+								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#read">read</a></p>
+								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L27">types.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L96">core.ts:96</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Deserializes a value of this type.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -368,13 +466,20 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>reader: <a href="_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>reader: <a href="kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Reader to drive during the deserialization.</p>
+									</div>
 								</li>
 								<li>
-									<h5>raw: <span class="tsd-signature-type">R</span></h5>
+									<h5>input: <span class="tsd-signature-type">R</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Reader input.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<p>Valid value.</p>
 						</li>
 					</ul>
 				</section>
@@ -387,9 +492,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.versionedtype.html">VersionedType</a>.<a href="_types_.versionedtype.html#reversediff">reverseDiff</a></p>
+								<p>Inherited from <a href="kryo_core.versionedtype.html">VersionedType</a>.<a href="kryo_core.versionedtype.html#reversediff">reverseDiff</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L139">types.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L213">core.ts:213</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -414,9 +519,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.versionedtype.html">VersionedType</a>.<a href="_types_.versionedtype.html#squash">squash</a></p>
+								<p>Inherited from <a href="kryo_core.versionedtype.html">VersionedType</a>.<a href="kryo_core.versionedtype.html#squash">squash</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L141">types.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L215">core.ts:215</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -439,71 +544,71 @@
 					<a name="test" class="tsd-anchor"></a>
 					<h3>test</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">test<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">test<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#test">test</a></p>
-								<p>Overrides <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#test">test</a></p>
+								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#test">test</a></p>
+								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#test">test</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L17">types.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L32">core.ts:32</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tests if this type matches <code>value</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">T</span></h5>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to test against this type.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>Boolean indicating if this type matches <code>value</code>.</p>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="testerror" class="tsd-anchor"></a>
-					<h3>test<wbr>Error</h3>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> test<wbr>Error</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">test<wbr>Error<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">test<wbr>Error<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#testerror">testError</a></p>
-								<p>Overrides <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#testerror">testError</a></p>
+								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#testerror">testError</a></p>
+								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#testerror">testError</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L15">types.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L69">core.ts:69</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tests if this type matches <code>value</code>, describes the error if not.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">T</span></h5>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to test against this type.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Error</span>
 								<span class="tsd-signature-symbol"> | </span>
 								<span class="tsd-signature-type">undefined</span>
 							</h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-					<a name="tojson" class="tsd-anchor"></a>
-					<h3>toJSON</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#tojson">toJSON</a></p>
-								<p>Overrides <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#tojson">toJSON</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L23">types.ts:23</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<p>If this type matches <code>value</code> then <code>undefined</code>; otherwise an error describing why this
+							type does not match <code>value</code>.</p>
 						</li>
 					</ul>
 				</section>
@@ -511,17 +616,22 @@
 					<a name="write" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> write</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
+						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#write">write</a></p>
-								<p>Overrides <a href="_types_.type.html">Type</a>.<a href="_types_.type.html#write">write</a></p>
+								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#write">write</a></p>
+								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types.ts#L25">types.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/core.ts#L87">core.ts:87</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Serializes the valid value <code>value</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -531,13 +641,20 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>writer: <a href="_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>writer: <a href="kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Writer used to emit the data.</p>
+									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Value to serialize.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">W</span></h4>
+							<p>Writer result.</p>
 						</li>
 					</ul>
 				</section>
@@ -551,11 +668,6 @@
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_types_document_.html">"types/document"</a>
-						<ul>
-							<li class=" tsd-kind-module tsd-parent-kind-external-module">
-								<a href="../modules/_types_document_.json.html">json</a>
-							</li>
-						</ul>
 					</li>
 				</ul>
 			</nav>
@@ -578,6 +690,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="_types_document_.documenttype.html#changecase" class="tsd-kind-icon">change<wbr>Case</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+								<a href="_types_document_.documenttype.html#name" class="tsd-kind-icon">name</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="_types_document_.documenttype.html#noextrakeys" class="tsd-kind-icon">no<wbr>Extra<wbr>Keys</a>
 							</li>
@@ -599,6 +714,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_types_document_.documenttype.html#getoutkey" class="tsd-kind-icon">get<wbr>Out<wbr>Key</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+								<a href="_types_document_.documenttype.html#lte" class="tsd-kind-icon">lte</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 								<a href="_types_document_.documenttype.html#patch" class="tsd-kind-icon">patch</a>
 							</li>
@@ -616,9 +734,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 								<a href="_types_document_.documenttype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
-								<a href="_types_document_.documenttype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter tsd-is-overwrite tsd-is-inherited">
 								<a href="_types_document_.documenttype.html#write" class="tsd-kind-icon">write</a>

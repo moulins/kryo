@@ -71,20 +71,260 @@
 					<a href="https://codecov.io/gh/demurgos/kryo"><img src="https://codecov.io/gh/demurgos/kryo/branch/master/graph/badge.svg" alt="Codecov"></a>
 				<a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/demurgos/kryo.svg" alt="Greenkeeper badge"></a></p>
 				<p><a href="https://demurgos.github.io/kryo/">Documentation</a></p>
+				<h2 id="introduction">Introduction</h2>
+				<p>Kryo is a library to represent data types at runtime. For example, it lets you test if a value
+				matches a type or safely serialize data between various formats such as <code>JSON</code> or <code>BSON</code>.</p>
+				<p>Here are other examples of problems that Kryo was written to solve:</p>
+				<ul>
+					<li><p>The public functions of your library check the validity of their arguments (arguments are not
+						trusted). Having runtime types allows this verification to be explicit and easier to maintain.</p>
+					</li>
+					<li><p>Deserializing the JSON string <code>&#39;{createdAt: &quot;2017-10-15T17:10:08.218Z&quot;}&#39;</code> requires type
+							information to convert the value to a <code>Date</code> instance: Kryo simplifies it so you don&#39;t have to
+						manually handle type conversions.</p>
+					</li>
+					<li><p>The convention in Javascript/Typescript is to use <code>camelCase</code> for property names but you consume
+							serialized data (like <code>JSON</code>) with <code>snake_case</code> and don&#39;t want to manually maintain name
+						rewrites.</p>
+					</li>
+				</ul>
 				<h2 id="installation">Installation</h2>
-				<p><strong>TODO: The documentation is outdated since the release of the versions <code>0.6/0.7</code>!!!</strong></p>
-				<p><em>Kryo</em> allows to declaratively define types and schemas to test and serialize data.
-					While Typescript provides compile-time checks, <em>Kryo</em> is intended for runtime verification, even against
-				untrusted input.</p>
-				<p>Install <em>Kryo</em> from <em>npm</em>:</p>
-				<pre><code class="lang-shell">npm install --save kryo
+				<p>You can install the latest stable version of Kryo with <em>yarn</em> (recommended) or <em>npm</em>:</p>
+				<pre><code class="lang-shell"><span class="hljs-meta">#</span><span class="bash"> Using yarn:</span>
+yarn add kryo
+<span class="hljs-meta">#</span><span class="bash"> Usin npm:</span>
+npm install --save kryo
 </code></pre>
-				<p>Note that the <code>master</code> branch is continuously deployed to <em>npm</em> with the <code>next</code> tag. You can use it to install
-				the next version without waiting for the release.</p>
-				<pre><code class="lang-shell">npm isntall --save kryp@next
-</code></pre>
-				<h2 id="getting-started">Getting started</h2>
+				<p>The package includes Typescript type defintion files (<code>.d.ts</code>) and source maps.</p>
+				<p>You can install the preview of the next version. This version is continuously deployed from the
+				<code>master</code> branch of the repo (it is the most up-to-date version).</p>
+				<pre><code>yarn add kryo@next
+<span class="hljs-built_in">npm</span> install --save kryp@next
+</code></pre><h2 id="getting-started">Getting started</h2>
+				<p><strong>Note: The documentation is in the process of being rewritten. Some sections are drafts or
+				outdated.</strong></p>
 				<h3 id="types">Types</h3>
+				<p>A Kryo <strong>Type</strong> represents a set of valid values. Kryo provides you multiple builtin types and
+				utilities to easily create your own types.</p>
+				<p>It is simply an object with 3 methods to:</p>
+				<ul>
+					<li>test if a value is valid (<code>.test</code>)</li>
+					<li>check if two valid values are equivalent (<code>.equals</code>)</li>
+					<li>create a deep copy of a valid value (<code>.clone</code>)</li>
+				</ul>
+				<p>If you like fancy words, it defines a <a href="https://en.wikipedia.org/wiki/Setoid">setoid</a>.</p>
+				<p>There are more advanced types with additional methods and operators (for example to support
+					serialization) but any object implementing <a href="https://demurgos.github.io/kryo/interfaces/_types_.type.html">the <code>Type</code> interface</a>
+				is compatible with Kryo. </p>
+				<p>For example, the builtin type <code>$Uint8</code> represents an unsigned integer in the inclusive range
+				<code>[0, 255]</code>.</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { $Uint8 } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/builtins/uint8"</span>;
+
+$Uint8.test(<span class="hljs-number">15</span>); <span class="hljs-comment">// `true`</span>
+$Uint8.test(<span class="hljs-built_in">Math</span>.PI); <span class="hljs-comment">// `false`</span>
+$Uint8.test(<span class="hljs-string">"Hello, World!"</span>); <span class="hljs-comment">// `false`</span>
+$Uint8.equals(<span class="hljs-number">6</span>, <span class="hljs-number">6</span>); <span class="hljs-comment">// `true`</span>
+$Uint8.clone(<span class="hljs-number">255</span>); <span class="hljs-comment">// `255`</span>
+</code></pre>
+				<h3 id="type-constructors">Type constructors</h3>
+				<p>Kryo provides <strong>type constructors</strong> for common types. They let you instanciate types using a
+				configuration object.</p>
+				<p>For example you may want to define a <code>$Percentage</code> type representing unsigned integers in the
+					inclusive range <code>[0, 100]</code>. You can implement it from scratch, or use the <code>IntegerType</code> type
+				constructor.</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { IntegerType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/integer"</span>;
+
+<span class="hljs-keyword">const</span> $Percentage = <span class="hljs-keyword">new</span> IntegerType({min: <span class="hljs-number">0</span>, max: <span class="hljs-number">100</span>});
+<span class="hljs-comment">// You can also define `$Uint8` yourself</span>
+<span class="hljs-keyword">const</span> $Uint8 = <span class="hljs-keyword">new</span> IntegerType({min: <span class="hljs-number">0</span>, max: <span class="hljs-number">255</span>});
+
+$Percentage.test(<span class="hljs-number">50</span>); <span class="hljs-comment">// `true`</span>
+$Percentage.test(<span class="hljs-number">101</span>); <span class="hljs-comment">// `false`</span>
+</code></pre>
+				<h4 id="documenttype">DocumentType</h4>
+				<p>One of the most important type constructors is <code>DocumentType</code>. It lets you describe the interface
+				of Javascript objects by composing types for each property.</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { DocumentType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/document"</span>;
+<span class="hljs-keyword">import</span> { Ucs2StringType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/ucs2-string"</span>;
+
+<span class="hljs-keyword">const</span> $DisplayName = <span class="hljs-keyword">new</span> Ucs2StringType({maxLength: <span class="hljs-number">32</span>});
+
+<span class="hljs-comment">/**
+ * Typescript interface describing our values: a user id
+ * an optional (can be undefined) display name.
+ */</span>
+<span class="hljs-keyword">interface</span> User {
+  id: <span class="hljs-built_in">number</span>;
+  displayName?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> $PriceTag = <span class="hljs-keyword">new</span> DocumentType&lt;PriceTag&gt;({
+  properties: {
+    id: {<span class="hljs-keyword">type</span>: $Uint8},
+    displayName: {<span class="hljs-keyword">type</span>: $DisplayName, optional: <span class="hljs-literal">true</span>},
+  }
+});
+</code></pre>
+				<h4 id="taggeduniontype">TaggedUnionType</h4>
+				<p>One of the most powerful type constructors provided by Kryo is <code>TaggedUnionType</code>. It allows to
+					combine multiple document types and differentiate them using the value of a &quot;tag&quot; property. This
+					property must describe Typescript-like enum: each document type is associated with a distinct
+					value of the enum.
+				This is the analogue of Typescript&#39;s discriminated unions.</p>
+				<p>For example, Github&#39;s repository owners can either be users or organizations. We can define it
+				as follow:</p>
+				<pre><code class="lang-typescript"><span class="hljs-comment">// 1. We create an enum used to differentiate the possible values.</span>
+<span class="hljs-keyword">enum</span> RepositoryOwnerType {
+  User = <span class="hljs-string">"user"</span>,
+  Organization = <span class="hljs-string">"organization"</span>,
+}
+<span class="hljs-keyword">const</span> $RepositoryOwnerType = <span class="hljs-keyword">new</span> TsEnumType({<span class="hljs-keyword">enum</span>: RepositoryOwnerType});
+
+<span class="hljs-comment">// 2. We define the User document</span>
+<span class="hljs-keyword">interface</span> User {
+  <span class="hljs-keyword">type</span>: RepositoryOwnerType.User;
+  id: <span class="hljs-built_in">number</span>;
+  username: <span class="hljs-built_in">string</span>;
+}
+<span class="hljs-keyword">const</span> $User = <span class="hljs-keyword">new</span> DocumentType({
+  properties: {
+    <span class="hljs-keyword">type</span>: {<span class="hljs-keyword">type</span>: <span class="hljs-keyword">new</span> LiteralType({itemType: $RepositoryOwnerType, value: RepositoryOwnerType.User})},
+    id: {<span class="hljs-keyword">type</span>: $Uint32},
+    username: {<span class="hljs-keyword">type</span>: $Username},
+  }
+});
+
+<span class="hljs-comment">// 3. We define the Organization document</span>
+<span class="hljs-keyword">interface</span> Organization {
+  <span class="hljs-keyword">type</span>: RepositoryOwnerType.Organization;
+  id: <span class="hljs-built_in">number</span>;
+  members: <span class="hljs-built_in">any</span>[];
+}
+<span class="hljs-keyword">const</span> $Organization = <span class="hljs-keyword">new</span> DocumentType({
+  properties: {
+    <span class="hljs-keyword">type</span>: {<span class="hljs-keyword">type</span>: <span class="hljs-keyword">new</span> LiteralType({itemType: $RepositoryOwnerType, value: RepositoryOwnerType.Organization})},
+    id: {<span class="hljs-keyword">type</span>: $Uint32},
+    members: {<span class="hljs-keyword">type</span>: <span class="hljs-keyword">new</span> ArrayType({itemType: $Any})},
+  }
+});
+
+<span class="hljs-comment">// 4. We create the union type</span>
+<span class="hljs-keyword">type</span> RepositoryOwner = User | Organization;
+<span class="hljs-keyword">const</span> $RepositoryOwner = <span class="hljs-keyword">new</span> TaggedUnionType({variants: [User, Organization], tag: <span class="hljs-string">"type"</span>});
+</code></pre>
+				<hr>
+				<p>You can define custom types, for example we can define a <code>Prime</code> type describing prime numbers.</p>
+				<pre><code class="lang-typescript"><span class="hljs-comment">// By convention, the names of type objects are prefixed by `$`</span>
+<span class="hljs-keyword">const</span> $Prime: Type&lt;<span class="hljs-built_in">number</span>&gt; = {
+  testError(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">Error</span> | <span class="hljs-literal">undefined</span> {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">"number"</span>) {
+      <span class="hljs-comment">// Notice the error is returned and not thrown:</span>
+      <span class="hljs-comment">// this is not a logic problem but an expected error.</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Expected `number`"</span>);
+    }
+    <span class="hljs-keyword">if</span> (value &lt;= <span class="hljs-number">1</span> || <span class="hljs-built_in">Math</span>.floor(value) !== value) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Expected a positive integer strictly greater than 1"</span>);
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> divisor: <span class="hljs-built_in">number</span> = <span class="hljs-number">2</span>; divisor &lt;= <span class="hljs-built_in">Math</span>.sqrt(value); divisor++) {
+      <span class="hljs-keyword">if</span> (value % divisor === <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Divisible by <span class="hljs-subst">${divisor}</span>`</span>);
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>; <span class="hljs-comment">// No error</span>
+  },
+  test(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">boolean</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.testError(value) === <span class="hljs-literal">undefined</span>;
+    <span class="hljs-comment">// You can either reuse `testError` as above or provide a new implementation without error messages:</span>
+    <span class="hljs-comment">// ```typescript</span>
+    <span class="hljs-comment">// if (typeof value !== "number" || value &lt;= 1 || Math.floor(value) !== value) {</span>
+    <span class="hljs-comment">//   return false;</span>
+    <span class="hljs-comment">// }</span>
+    <span class="hljs-comment">// for (let divisor: number = 2; divisor &lt;= Math.sqrt(value); divisor++) {</span>
+    <span class="hljs-comment">//   if (value % divisor === 0) {</span>
+    <span class="hljs-comment">//     return false;</span>
+    <span class="hljs-comment">//   }</span>
+    <span class="hljs-comment">// }</span>
+    <span class="hljs-comment">// return true;</span>
+    <span class="hljs-comment">//</span>
+</code></pre>
+				<p>  },
+					equal(left: number, right: number): boolean {
+					return left === right;
+					},
+					clone(value: number): number {
+					return value;
+					},
+				}</p>
+				<pre><code>
+You can already <span class="hljs-keyword">use</span> your <span class="hljs-keyword">type</span> (<span class="hljs-string">`$Prime.test(7)`</span> <span class="hljs-keyword">for</span> example) but Kryo helps you <span class="hljs-keyword">to</span> <span class="hljs-keyword">create</span> common
+types <span class="hljs-keyword">with</span> its <span class="hljs-keyword">type</span> constructors <span class="hljs-keyword">and</span> <span class="hljs-keyword">then</span> compose these types <span class="hljs-keyword">to</span> <span class="hljs-keyword">describe</span> more <span class="hljs-keyword">advanced</span> structures.
+
+Suppose that we <span class="hljs-keyword">are</span> building a <span class="hljs-keyword">database</span> <span class="hljs-keyword">of</span> prime numbers: <span class="hljs-keyword">each</span> <span class="hljs-built_in">record</span> <span class="hljs-keyword">is</span> a <span class="hljs-built_in">number</span> <span class="hljs-keyword">with</span> its
+discovery date. We can <span class="hljs-keyword">use</span> the provided <span class="hljs-string">`DocumentType`</span> <span class="hljs-keyword">constructor</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">create</span> our <span class="hljs-built_in">record</span> <span class="hljs-keyword">type</span>
+<span class="hljs-keyword">from</span> <span class="hljs-string">`$Prime`</span> <span class="hljs-keyword">and</span> the builtin <span class="hljs-string">`$Date`</span> <span class="hljs-keyword">type</span>:
+
+<span class="hljs-string">``</span><span class="hljs-string">`typescript
+import { $Date } from "kryo/builtins/date";
+import { DocumentType } from "kryo/types/document";
+
+const $Record = new DocumentType({
+  properties: {
+    discoveryDate: {type: $Date},
+    value: {type: $Prime},
+  }
+});
+
+$Record.test({}); // `</span><span class="hljs-literal">false</span><span class="hljs-string">` (missing required properties)
+$Record.test({discoveryDate: new Date(), value: 10}); // `</span><span class="hljs-literal">false</span><span class="hljs-string">` (not a prime)
+$Record.test({discoveryDate: null, value: 10}); // `</span><span class="hljs-literal">false</span><span class="hljs-string">` (invalid value for `</span>discoveryDate<span class="hljs-string">`)
+$Record.test({discoveryDate: new Date(), value: 11}); // `</span><span class="hljs-literal">true</span><span class="hljs-string">`</span>
+</code></pre><p><code>$Date</code> and instances of <code>DocumentType</code> implement not only the <code>Type</code> interface but also the
+				<code>IoType</code> interface: they support serialization.</p>
+				<p>The <code>IoType</code> interface has two additional methods:</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">interface</span> IoType {
+  write&lt;W&gt;(writer: Writer&lt;W&gt;, value: T): W;
+  read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): T;
+}
+</code></pre>
+				<p>The signature is more complex but it lets you write a single serialization and deserialization
+					method to handle most general-pupose formats: the format details are abstracted by the <code>writer</code>
+				and <code>reader</code> objects.</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> $Prime: IoType&lt;<span class="hljs-built_in">number</span>&gt; = {
+  testError(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">Error</span> | <span class="hljs-literal">undefined</span> { ... },
+  test(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">boolean</span> { ... },
+  equal(left: <span class="hljs-built_in">number</span>, right: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">boolean</span> { ... },
+  clone(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span> { ... },
+  write&lt;W&gt;(writer: Writer&lt;W&gt;, value: <span class="hljs-built_in">number</span>): W {
+    <span class="hljs-keyword">return</span> writer.writeFloat64(value);
+  },
+  read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">return</span> reader.readFloat64(raw, readVisitor({
+      fromFloat64: (input: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">number</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> error: <span class="hljs-built_in">Error</span> | <span class="hljs-literal">undefined</span> = reader.trustInput ? <span class="hljs-literal">undefined</span> : <span class="hljs-keyword">this</span>.testError(input);
+        <span class="hljs-keyword">if</span> (error !== <span class="hljs-literal">undefined</span>) { <span class="hljs-keyword">throw</span> error; }
+        <span class="hljs-keyword">return</span> input;
+      },
+    }));
+  },
+}
+</code></pre>
+				<p>The reader and writer objects use an intermediate model for types: rich enough to represent the
+				types of most popular general-purpose languages but simpler than the runtime types.</p>
+				<p><strong>TODO</strong>: Serialization needs way more explanations.</p>
+				<p>Now that all of our objects support serialization, we can use it to read to and from JSON despite
+				the <code>Date</code> type (used by <code>discoveryDate</code> but not supported by JSON):</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> reader: JsonReader = <span class="hljs-keyword">new</span> JsonReader();
+<span class="hljs-keyword">const</span> writer: JsonReader = <span class="hljs-keyword">new</span> JsonWriter();
+
+<span class="hljs-keyword">const</span> record = $Record.read(reader, <span class="hljs-string">'{"discoveryDate": "2017-10-15T17:10:08.218Z", value: 5}'</span>);
+<span class="hljs-comment">// Notice that the Date type is not supported by JSON but we properly deserialized it thanks to the</span>
+<span class="hljs-comment">// runtime description:</span>
+<span class="hljs-built_in">console</span>.log(record.discoveryDate <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>); <span class="hljs-comment">// `true`</span>
+<span class="hljs-keyword">const</span> record.value = <span class="hljs-number">11</span>;
+<span class="hljs-built_in">console</span>.log($Record.write(writer, record)); <span class="hljs-comment">// `'{"discoveryDate": "2017-10-15T17:10:08.218Z", value: 11}'`</span>
+</code></pre>
+				<h3 id="types">Types</h3>
+				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo differentiates three level of types.</p>
 				<ul>
 					<li>The simplest types only guarantee support for runtime values: test if the value match the type, clone values,
@@ -133,6 +373,7 @@ $<span class="hljs-built_in">Date</span>.reverseDiff(diff3); <span class="hljs-c
 $<span class="hljs-built_in">Date</span>.patch($<span class="hljs-built_in">Date</span>.reverseDiff(diff3)); <span class="hljs-comment">// 30: Apply the reverse diff to retrieve `30` from `60`</span>
 </code></pre>
 				<h3 id="type-constructors-and-builtins">Type constructors and builtins</h3>
+				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo provides both constructors to let you instantiate types by providing a minimal configuration but also builtins
 					for common types. By convention, the names of actual types start with <code>$</code> while the names of type constructors end
 				with <code>Type</code>.</p>
@@ -156,6 +397,7 @@ $Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32<
 $Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32</span> - <span class="hljs-number">1</span>); <span class="hljs-comment">// true</span>
 </code></pre>
 				<h3 id="types">Types</h3>
+				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo currently provide support for the following types:</p>
 				<ul>
 					<li>Null: Represents the single the value <code>null</code></li>
@@ -181,8 +423,10 @@ $Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32<
 				out of the box.</p>
 				<p>Here is an example to define the type of a point in a RGBa color-space with 8-bit depth:</p>
 				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> {$Uint8} <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/integer"</span>;
+
 </code></pre>
 				<h3 id="circular-definitions-lazy-options">Circular definitions, lazy options</h3>
+				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo supports circular type definitions, this allows to describe recursive values such as trees.
 				Note that circular values are not supported (yet) by Kryo: you have to break and recreate the cycles in the values yourself.</p>
 				<p>Here is an example of values with a recursive structure:</p>
@@ -259,45 +503,6 @@ $evenLevel.test(v4); <span class="hljs-comment">// Success: returns `true`</span
 						<a href="modules/__helpers_lazy_properties_.html">"_<wbr>helpers/lazy-<wbr>properties"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_any_.html">"builtins/any"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_boolean_.html">"builtins/boolean"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_date_.html">"builtins/date"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_sint16_.html">"builtins/sint16"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_sint32_.html">"builtins/sint32"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_sint54_.html">"builtins/sint54"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_sint8_.html">"builtins/sint8"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_uint16_.html">"builtins/uint16"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_uint32_.html">"builtins/uint32"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_uint53_.html">"builtins/uint53"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_uint8_.html">"builtins/uint8"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_builtins_uuid_hex_.html">"builtins/uuid-<wbr>hex"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_case_style_.html">"case-<wbr>style"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_errors_finite_number_.html">"errors/finite-<wbr>number"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -317,6 +522,9 @@ $evenLevel.test(v4); <span class="hljs-comment">// Success: returns `true`</span
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_errors_invalid_type_.html">"errors/invalid-<wbr>type"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_errors_invalid_value_.html">"errors/invalid-<wbr>value"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_errors_lazy_options_.html">"errors/lazy-<wbr>options"</a>
@@ -361,34 +569,7 @@ $evenLevel.test(v4); <span class="hljs-comment">// Success: returns `true`</span
 						<a href="modules/_errors_unknown_format_.html">"errors/unknown-<wbr>format"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_index_.html">"index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_json_value_.html">"json-<wbr>value"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_readers_bson_.html">"readers/bson"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_readers_bson_value_.html">"readers/bson-<wbr>value"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_readers_json_.html">"readers/json"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_readers_json_value_.html">"readers/json-<wbr>value"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_readers_qs_.html">"readers/qs"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_readers_qs_value_.html">"readers/qs-<wbr>value"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_readers_read_visitor_.html">"readers/read-<wbr>visitor"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_types_.html">"types"</a>
+						<a href="modules/_test_error_.html">"test-<wbr>error"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_types_any_.html">"types/any"</a>
@@ -400,7 +581,7 @@ $evenLevel.test(v4); <span class="hljs-comment">// Success: returns `true`</span
 						<a href="modules/_types_boolean_.html">"types/boolean"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_types_buffer_.html">"types/buffer"</a>
+						<a href="modules/_types_bytes_.html">"types/bytes"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_types_codepoint_string_.html">"types/codepoint-<wbr>string"</a>
@@ -445,28 +626,103 @@ $evenLevel.test(v4); <span class="hljs-comment">// Success: returns `true`</span
 						<a href="modules/_types_white_list_.html">"types/white-<wbr>list"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_bson_.html">"writers/bson"</a>
+						<a href="modules/kryo.html">kryo</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_bson_value_.html">"writers/bson-<wbr>value"</a>
+						<a href="modules/kryo_builtins_any.html">kryo/builtins/any</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_json_.html">"writers/json"</a>
+						<a href="modules/kryo_builtins_boolean.html">kryo/builtins/boolean</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_json_stream_.html">"writers/json-<wbr>stream"</a>
+						<a href="modules/kryo_builtins_bytes.html">kryo/builtins/bytes</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_json_value_.html">"writers/json-<wbr>value"</a>
+						<a href="modules/kryo_builtins_date.html">kryo/builtins/date</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_qs_.html">"writers/qs"</a>
+						<a href="modules/kryo_builtins_sint16.html">kryo/builtins/sint16</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_qs_value_.html">"writers/qs-<wbr>value"</a>
+						<a href="modules/kryo_builtins_sint32.html">kryo/builtins/sint32</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_writers_structured_.html">"writers/structured"</a>
+						<a href="modules/kryo_builtins_sint54.html">kryo/builtins/sint54</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_builtins_sint8.html">kryo/builtins/sint8</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_builtins_ucs2_string.html">kryo/builtins/ucs2-<wbr>string</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_builtins_uint16.html">kryo/builtins/uint16</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_builtins_uint32.html">kryo/builtins/uint32</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_builtins_uint53.html">kryo/builtins/uint53</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_builtins_uint8.html">kryo/builtins/uint8</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_builtins_uuid_hex.html">kryo/builtins/uuid-<wbr>hex</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_case_style.html">kryo/case-<wbr>style</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_core.html">kryo/core</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_json_value.html">kryo/json-<wbr>value</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_readers_bson.html">kryo/readers/bson</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_readers_bson_value.html">kryo/readers/bson-<wbr>value</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_readers_json.html">kryo/readers/json</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_readers_json_value.html">kryo/readers/json-<wbr>value</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_readers_qs.html">kryo/readers/qs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_readers_qs_value.html">kryo/readers/qs-<wbr>value</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_readers_read_visitor.html">kryo/readers/read-<wbr>visitor</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_bson.html">kryo/writers/bson</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_bson_value.html">kryo/writers/bson-<wbr>value</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_json.html">kryo/writers/json</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_json_stream.html">kryo/writers/json-<wbr>stream</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_json_value.html">kryo/writers/json-<wbr>value</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_qs.html">kryo/writers/qs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_qs_value.html">kryo/writers/qs-<wbr>value</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/kryo_writers_structured.html">kryo/writers/structured</a>
 					</li>
 				</ul>
 			</nav>

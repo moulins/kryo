@@ -80,8 +80,9 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_types_.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li><a href="../interfaces/_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><a href="../modules/_types_boolean_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><a href="../modules/_types_boolean_.html#diff" class="tsd-signature-type">Diff</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.ord.html" class="tsd-signature-type">Ord</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -100,13 +101,13 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#diff" class="tsd-kind-icon">diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#equals" class="tsd-kind-icon">equals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#lte" class="tsd-kind-icon">lte</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#patch" class="tsd-kind-icon">patch</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_types_boolean_.booleantype.html#read" class="tsd-kind-icon">read</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#squash" class="tsd-kind-icon">squash</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#test" class="tsd-kind-icon">test</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_boolean_.booleantype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_types_boolean_.booleantype.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
 						</section>
@@ -120,8 +121,9 @@
 					<h3>name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_boolean_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;name</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/kryo_core.versionedtype.html">VersionedType</a>.<a href="../interfaces/kryo_core.versionedtype.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L11">types/boolean.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L11">types/boolean.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -138,7 +140,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L47">types/boolean.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L46">types/boolean.ts:46</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -161,7 +163,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L56">types/boolean.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L55">types/boolean.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -187,22 +189,48 @@
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L43">types/boolean.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L38">types/boolean.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val1: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>left: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 								<li>
-									<h5>val2: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>right: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="lte" class="tsd-anchor"></a>
+					<h3>lte</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">lte<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L42">types/boolean.ts:42</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>left: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+								<li>
+									<h5>right: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -219,7 +247,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L61">types/boolean.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L60">types/boolean.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -239,14 +267,14 @@
 					<a name="read" class="tsd-anchor"></a>
 					<h3>read</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_types_.versionedtype.html#read">read</a></p>
+								<p>Implementation of <a href="../interfaces/kryo_core.versionedtype.html">VersionedType</a>.<a href="../interfaces/kryo_core.versionedtype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L19">types/boolean.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L14">types/boolean.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -258,7 +286,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>reader: <a href="../interfaces/_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>reader: <a href="../interfaces/kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>raw: <span class="tsd-signature-type">R</span></h5>
@@ -278,7 +306,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L65">types/boolean.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L64">types/boolean.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -304,7 +332,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L69">types/boolean.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L68">types/boolean.ts:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -327,19 +355,19 @@
 					<a name="test" class="tsd-anchor"></a>
 					<h3>test</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">test<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">test<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L39">types/boolean.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L34">types/boolean.ts:34</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>value: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -356,7 +384,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L32">types/boolean.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L27">types/boolean.ts:27</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -372,35 +400,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="tojson" class="tsd-anchor"></a>
-					<h3>toJSON</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_types_.versionedtype.html#tojson">toJSON</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L13">types/boolean.ts:13</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="write" class="tsd-anchor"></a>
 					<h3>write</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
+						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/boolean.ts#L28">types/boolean.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/boolean.ts#L23">types/boolean.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -412,7 +422,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>writer: <a href="../interfaces/_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>writer: <a href="../interfaces/kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">boolean</span></h5>
@@ -455,6 +465,9 @@
 								<a href="_types_boolean_.booleantype.html#equals" class="tsd-kind-icon">equals</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_types_boolean_.booleantype.html#lte" class="tsd-kind-icon">lte</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_types_boolean_.booleantype.html#patch" class="tsd-kind-icon">patch</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -471,9 +484,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_types_boolean_.booleantype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_types_boolean_.booleantype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="_types_boolean_.booleantype.html#write" class="tsd-kind-icon">write</a>

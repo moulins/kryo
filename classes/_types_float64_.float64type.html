@@ -80,8 +80,9 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_types_.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li><a href="../interfaces/_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.ord.html" class="tsd-signature-type">Ord</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -110,6 +111,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_float64_.float64type.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_float64_.float64type.html#diff" class="tsd-kind-icon">diff</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_float64_.float64type.html#equals" class="tsd-kind-icon">equals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_float64_.float64type.html#lte" class="tsd-kind-icon">lte</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_float64_.float64type.html#patch" class="tsd-kind-icon">patch</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_types_float64_.float64type.html#read" class="tsd-kind-icon">read</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_float64_.float64type.html#reversediff" class="tsd-kind-icon">reverse<wbr>Diff</a></li>
@@ -130,19 +132,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Float64<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_float64_.float64typeoptions.html" class="tsd-signature-type">Float64TypeOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_types_float64_.float64type.html" class="tsd-signature-type">Float64Type</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Float64<wbr>Type<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/kryo_core.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_float64_.float64typeoptions.html" class="tsd-signature-type">Float64TypeOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_types_float64_.float64type.html" class="tsd-signature-type">Float64Type</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L46">types/float64.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L45">types/float64.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_float64_.float64typeoptions.html" class="tsd-signature-type">Float64TypeOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/kryo_core.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_float64_.float64typeoptions.html" class="tsd-signature-type">Float64TypeOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_types_float64_.float64type.html" class="tsd-signature-type">Float64Type</a></h4>
@@ -155,10 +157,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_options" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _options</h3>
-					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_float64_.float64typeoptions.html" class="tsd-signature-type">Float64TypeOptions</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="../modules/kryo_core.html#lazy" class="tsd-signature-type">Lazy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_float64_.float64typeoptions.html" class="tsd-signature-type">Float64TypeOptions</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L46">types/float64.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L45">types/float64.ts:45</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -168,7 +170,7 @@
 					<div class="tsd-signature tsd-kind-icon">allow<wbr>Infinity<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L44">types/float64.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L43">types/float64.ts:43</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -178,7 +180,7 @@
 					<div class="tsd-signature tsd-kind-icon">allow<wbr>NaN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L43">types/float64.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L42">types/float64.ts:42</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -187,8 +189,9 @@
 					<h3>name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_float64_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;name</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/kryo_core.versionedtype.html">VersionedType</a>.<a href="../interfaces/kryo_core.versionedtype.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L42">types/float64.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L41">types/float64.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -205,7 +208,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L139">types/float64.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L171">types/float64.ts:171</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -216,19 +219,19 @@
 					<a name="clone" class="tsd-anchor"></a>
 					<h3>clone</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L113">types/float64.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L145">types/float64.ts:145</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val: <span class="tsd-signature-type">number</span></h5>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -245,7 +248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L117">types/float64.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L149">types/float64.ts:149</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -268,25 +271,80 @@
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>val1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, val2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L106">types/float64.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L113">types/float64.ts:113</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tests the equivalence of two valid float64 values.</p>
+								</div>
+								<p>Two values are equivalent if they are both <code>NaN</code>, both <code>-0</code>, both <code>+0</code> or non-zero and
+								numerically equal.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>val1: <span class="tsd-signature-type">number</span></h5>
+									<h5>left: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>val2: <span class="tsd-signature-type">number</span></h5>
+									<h5>right: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="lte" class="tsd-anchor"></a>
+					<h3>lte</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">lte<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L133">types/float64.ts:133</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Compares two valid float64 values.</p>
+								</div>
+								<p>The values are ordered as follow:</p>
+								<ul>
+									<li><code>-Infinity</code></li>
+									<li>Negative non-zero finite values</li>
+									<li><code>-0</code></li>
+									<li><code>+0</code></li>
+									<li>Positive non-zero finite values</li>
+									<li><code>+Infinity</code></li>
+									<li><code>NaN</code></li>
+								</ul>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>left: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Left operand.</p>
+									</div>
+								</li>
+								<li>
+									<h5>right: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Right operand.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>Boolean indicating if <code>left &lt;= right</code></p>
 						</li>
 					</ul>
 				</section>
@@ -300,7 +358,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L122">types/float64.ts:122</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L154">types/float64.ts:154</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -320,14 +378,14 @@
 					<a name="read" class="tsd-anchor"></a>
 					<h3>read</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_types_.versionedtype.html#read">read</a></p>
+								<p>Implementation of <a href="../interfaces/kryo_core.versionedtype.html">VersionedType</a>.<a href="../interfaces/kryo_core.versionedtype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L73">types/float64.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L72">types/float64.ts:72</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -339,7 +397,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>reader: <a href="../interfaces/_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>reader: <a href="../interfaces/kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>raw: <span class="tsd-signature-type">R</span></h5>
@@ -359,7 +417,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L126">types/float64.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L158">types/float64.ts:158</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -385,7 +443,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L130">types/float64.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L162">types/float64.ts:162</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -414,7 +472,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L102">types/float64.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L101">types/float64.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -437,7 +495,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L90">types/float64.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L89">types/float64.ts:89</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -462,9 +520,8 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_types_.versionedtype.html#tojson">toJSON</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L65">types/float64.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L64">types/float64.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_types_float64_.json.type.html" class="tsd-signature-type">Type</a></h4>
@@ -475,13 +532,13 @@
 					<a name="write" class="tsd-anchor"></a>
 					<h3>write</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
+						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L86">types/float64.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L85">types/float64.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -493,7 +550,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>writer: <a href="../interfaces/_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>writer: <a href="../interfaces/kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">number</span></h5>
@@ -513,7 +570,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/float64.ts#L61">types/float64.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/float64.ts#L60">types/float64.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -577,6 +634,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_types_float64_.float64type.html#equals" class="tsd-kind-icon">equals</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_types_float64_.float64type.html#lte" class="tsd-kind-icon">lte</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_types_float64_.float64type.html#patch" class="tsd-kind-icon">patch</a>

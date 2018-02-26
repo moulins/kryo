@@ -80,8 +80,8 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_types_.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li><a href="../interfaces/_types_.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.iotype.html" class="tsd-signature-type">IoType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/kryo_core.versionedtype.html" class="tsd-signature-type">VersionedType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -106,7 +106,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_null_.nulltype.html#squash" class="tsd-kind-icon">squash</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_null_.nulltype.html#test" class="tsd-kind-icon">test</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_null_.nulltype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_types_null_.nulltype.html#tojson" class="tsd-kind-icon">toJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_types_null_.nulltype.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
 						</section>
@@ -120,8 +119,9 @@
 					<h3>name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_null_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;name</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/kryo_core.versionedtype.html">VersionedType</a>.<a href="../interfaces/kryo_core.versionedtype.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L17">types/null.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L9">types/null.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -138,7 +138,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L49">types/null.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L37">types/null.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -161,7 +161,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L58">types/null.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L46">types/null.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -190,7 +190,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L45">types/null.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L33">types/null.ts:33</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -216,7 +216,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L62">types/null.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L50">types/null.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -236,14 +236,14 @@
 					<a name="read" class="tsd-anchor"></a>
 					<h3>read</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">read&lt;R&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><a href="../interfaces/kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, raw<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_types_.versionedtype.html#read">read</a></p>
+								<p>Implementation of <a href="../interfaces/kryo_core.versionedtype.html">VersionedType</a>.<a href="../interfaces/kryo_core.versionedtype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L23">types/null.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L11">types/null.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -255,7 +255,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>reader: <a href="../interfaces/_types_.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>reader: <a href="../interfaces/kryo_core.reader.html" class="tsd-signature-type">Reader</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>raw: <span class="tsd-signature-type">R</span></h5>
@@ -275,7 +275,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L66">types/null.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L54">types/null.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -298,7 +298,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L70">types/null.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L58">types/null.ts:58</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -324,7 +324,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L41">types/null.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L29">types/null.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -347,7 +347,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L34">types/null.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L22">types/null.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -363,35 +363,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="tojson" class="tsd-anchor"></a>
-					<h3>toJSON</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_null_.json.type.html" class="tsd-signature-type">Type</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_types_.versionedtype.html">VersionedType</a>.<a href="../interfaces/_types_.versionedtype.html#tojson">toJSON</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L19">types/null.ts:19</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_types_null_.json.type.html" class="tsd-signature-type">Type</a></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="write" class="tsd-anchor"></a>
 					<h3>write</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
+						<li class="tsd-signature tsd-kind-icon">write&lt;W&gt;<span class="tsd-signature-symbol">(</span>writer<span class="tsd-signature-symbol">: </span><a href="../interfaces/kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">W</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/2e4844f/src/lib/types/null.ts#L30">types/null.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/3615d6f/src/lib/types/null.ts#L18">types/null.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -403,7 +385,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>writer: <a href="../interfaces/_types_.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>writer: <a href="../interfaces/kryo_core.writer.html" class="tsd-signature-type">Writer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">W</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">null</span></h5>
@@ -423,11 +405,6 @@
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_types_null_.html">"types/null"</a>
-						<ul>
-							<li class=" tsd-kind-module tsd-parent-kind-external-module">
-								<a href="../modules/_types_null_.json.html">json</a>
-							</li>
-						</ul>
 					</li>
 				</ul>
 			</nav>
@@ -467,9 +444,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_types_null_.nulltype.html#testerror" class="tsd-kind-icon">test<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_types_null_.nulltype.html#tojson" class="tsd-kind-icon">toJSON</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="_types_null_.nulltype.html#write" class="tsd-kind-icon">write</a>
