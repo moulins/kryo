@@ -1,6 +1,6 @@
+import { IoType, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "boolean";
 export const name: Name = "boolean";

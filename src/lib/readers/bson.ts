@@ -3,7 +3,7 @@
  */
 
 import _bson from "bson";
-import { Reader, ReadVisitor } from "../types";
+import { Reader, ReadVisitor } from "../core";
 import { BsonValueReader } from "./bson-value";
 
 export class BsonReader implements Reader<Buffer> {

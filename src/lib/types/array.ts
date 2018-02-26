@@ -1,11 +1,11 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
+import { IoType, Lazy, Reader, Type, Writer } from "../core";
 import { createInvalidArrayItemsError } from "../errors/invalid-array-items";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Lazy, Reader, Type, Writer } from "../types";
 
 export type Name = "array";
 export const name: Name = "array";

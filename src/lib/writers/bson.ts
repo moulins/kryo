@@ -3,7 +3,7 @@
  */
 
 import _bson from "bson";
-import { Writer } from "../types";
+import { Writer } from "../core";
 import { BsonValueWriter } from "./bson-value";
 
 export class BsonWriter implements Writer<Buffer> {

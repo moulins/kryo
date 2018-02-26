@@ -1,10 +1,10 @@
 import bson from "bson";
 import chai from "chai";
 import qs from "qs";
+import { IoType, Type } from "../../lib/core";
 import { BsonReader } from "../../lib/readers/bson";
 import { JsonReader } from "../../lib/readers/json";
 import { QsReader } from "../../lib/readers/qs";
-import { IoType, Type } from "../../lib/types";
 import { BsonWriter } from "../../lib/writers/bson";
 import { JsonWriter } from "../../lib/writers/json";
 import { QsWriter } from "../../lib/writers/qs";

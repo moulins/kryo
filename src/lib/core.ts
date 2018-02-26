@@ -1,7 +1,7 @@
 /**
  * This module defines most of the Typescript interfaces and type aliases used by Kryo.
  *
- * @module kryo/types
+ * @module kryo/core
  */
 
 /**

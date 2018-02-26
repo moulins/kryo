@@ -2,7 +2,7 @@
  * @module kryo/writers/json
  */
 
-import { Writer } from "../types";
+import { Writer } from "../core";
 import { JsonValueWriter } from "./json-value";
 
 export class JsonWriter implements Writer<string> {

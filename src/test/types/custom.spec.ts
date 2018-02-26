@@ -1,8 +1,8 @@
 import bson from "bson";
 import { Incident } from "incident";
+import { Reader, Writer } from "../../lib/core";
 import { createInvalidTypeError } from "../../lib/errors/invalid-type";
 import { readVisitor } from "../../lib/readers/read-visitor";
-import { Reader, Writer } from "../../lib/types";
 import { CustomType } from "../../lib/types/custom";
 import { runTests, TypedValue } from "../helpers/test";
 

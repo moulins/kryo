@@ -1,10 +1,10 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
 import { createInvalidIntegerError } from "../errors/invalid-integer";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "integer";
 export const name: Name = "integer";

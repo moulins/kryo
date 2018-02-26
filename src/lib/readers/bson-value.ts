@@ -4,8 +4,8 @@
 
 import bson from "bson";
 import { Incident } from "incident";
+import { Reader, ReadVisitor } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Reader, ReadVisitor } from "../types";
 import { JsonReader } from "./json";
 
 function isBinary(val: any): val is bson.Binary {

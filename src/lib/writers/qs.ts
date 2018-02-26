@@ -3,7 +3,7 @@
  */
 
 import _qs from "qs";
-import { Writer } from "../types";
+import { Writer } from "../core";
 import { QsValueWriter } from "./qs-value";
 
 export class QsWriter implements Writer<string> {

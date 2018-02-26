@@ -2,7 +2,7 @@
  * @module kryo/readers/json
  */
 
-import { Reader, ReadVisitor } from "../types";
+import { Reader, ReadVisitor } from "../core";
 import { JsonValueReader } from "./json-value";
 
 export class JsonReader implements Reader<string> {

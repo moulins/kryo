@@ -3,9 +3,9 @@
  */
 
 import { Incident } from "incident";
+import { Reader, ReadVisitor } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { JsonValue } from "../json-value";
-import { Reader, ReadVisitor } from "../types";
 
 export class JsonValueReader implements Reader<JsonValue> {
   trustInput?: boolean | undefined;

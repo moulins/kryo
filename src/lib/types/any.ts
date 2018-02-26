@@ -1,4 +1,4 @@
-import { IoType, Reader, Writer } from "../types";
+import { IoType, Reader, Writer } from "../core";
 
 export type Diff = any;
 

@@ -2,7 +2,7 @@
  * @module kryo/writers/json-value
  */
 
-import { Writer } from "../types";
+import { Writer } from "../core";
 import { StructuredWriter } from "./structured";
 
 export class JsonValueWriter extends StructuredWriter {

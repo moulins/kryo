@@ -3,7 +3,7 @@
  */
 
 import _qs from "qs";
-import { Reader, ReadVisitor } from "../types";
+import { Reader, ReadVisitor } from "../core";
 import { QsValueReader } from "./qs-value";
 
 export class QsReader implements Reader<string> {

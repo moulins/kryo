@@ -1,11 +1,11 @@
 import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { CaseStyle, rename } from "../case-style";
+import { IoType, Lazy, Reader, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Lazy, Reader, Writer } from "../types";
 
 /**
  * Represents an enum value defined in `EnumConstructor`

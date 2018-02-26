@@ -2,6 +2,8 @@
 
 - **[Breaking change]** Rename `buffer` to `bytes` (`BufferType` to `BytesType`,
   `fromBuffer` to `fromBytes`, etc.) 
+- **[Breaking change]** Rename `kryo/types` to `kryo/core` to avoid confusion with the `types`
+  directory.
 - **[Internal]** Remove unused `json` namespaces.
 
 # 0.7.0-beta.2 (2018-02-07)

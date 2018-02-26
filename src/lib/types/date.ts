@@ -1,7 +1,7 @@
+import { IoType, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTimestampError } from "../errors/invalid-timestamp";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { readVisitor } from "../readers/read-visitor";
-import { IoType, Reader, VersionedType, Writer } from "../types";
 
 export type Name = "date";
 export const name: Name = "date";

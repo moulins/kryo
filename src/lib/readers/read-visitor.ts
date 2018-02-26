@@ -2,7 +2,7 @@
  * @module kryo/readers/read-visitor
  */
 
-import { ReadVisitor } from "../types";
+import { ReadVisitor } from "../core";
 
 function fromBoolean(input: boolean): never {
   throw new Error("Unable to read from boolean");

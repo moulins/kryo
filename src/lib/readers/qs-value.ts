@@ -3,8 +3,8 @@
  */
 
 import { Incident } from "incident";
+import { Reader, ReadVisitor } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { Reader, ReadVisitor } from "../types";
 import { JsonReader } from "./json";
 
 export class QsValueReader implements Reader<any> {
