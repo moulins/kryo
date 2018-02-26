@@ -9,6 +9,7 @@
   order for float64, integer, date, bytes and boolean.
 - **[Feature]** Add `$Bytes` and `$Ucs2String` builtins.
 - **[Internal]** Remove unused `json` namespaces.
+- **[Internal]** Update dependencies
 
 # 0.7.0-beta.2 (2018-02-07)
 
