@@ -21,8 +21,8 @@ export class QsWriter implements Writer<string> {
     return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeBoolean(value)});
   }
 
-  writeBuffer(value: Uint8Array): string {
-    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeBuffer(value)});
+  writeBytes(value: Uint8Array): string {
+    return this.qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeBytes(value)});
   }
 
   writeDate(value: Date): string {

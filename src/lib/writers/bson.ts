@@ -22,8 +22,8 @@ export class BsonWriter implements Writer<Buffer> {
     return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeBoolean(value)});
   }
 
-  writeBuffer(value: Uint8Array): Buffer {
-    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeBuffer(value)});
+  writeBytes(value: Uint8Array): Buffer {
+    return this.bsonSerializer.serialize({[this.primitiveWrapper]: this.valueWriter.writeBytes(value)});
   }
 
   writeDate(value: Date): Buffer {

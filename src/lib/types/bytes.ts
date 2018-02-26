@@ -6,21 +6,18 @@ import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../types";
 
-export type Name = "buffer";
-export const name: Name = "buffer";
 export type Diff = any;
 
-export interface BufferTypeOptions {
+export interface BytesTypeOptions {
   maxLength: number;
 }
 
-export class BufferType implements IoType<Uint8Array>, VersionedType<Uint8Array, Diff> {
-  readonly name: Name = name;
+export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, Diff> {
   readonly maxLength: number;
 
-  private _options: Lazy<BufferTypeOptions>;
+  private _options: Lazy<BytesTypeOptions>;
 
-  constructor(options: Lazy<BufferTypeOptions>) {
+  constructor(options: Lazy<BytesTypeOptions>) {
     // TODO: Remove once TS 2.7 is better supported by editors
     this.maxLength = <any> undefined;
 
@@ -34,8 +31,8 @@ export class BufferType implements IoType<Uint8Array>, VersionedType<Uint8Array,
 
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): Uint8Array {
-    return reader.readBuffer(raw, readVisitor({
-      fromBuffer(input: Uint8Array): Uint8Array {
+    return reader.readBytes(raw, readVisitor({
+      fromBytes(input: Uint8Array): Uint8Array {
         return input;
       },
     }));
@@ -43,7 +40,7 @@ export class BufferType implements IoType<Uint8Array>, VersionedType<Uint8Array,
 
   // TODO: Dynamically add with prototype?
   write<W>(writer: Writer<W>, value: Uint8Array): W {
-    return writer.writeBuffer(value);
+    return writer.writeBytes(value);
   }
 
   testError(val: Uint8Array): Error | undefined {
@@ -101,7 +98,7 @@ export class BufferType implements IoType<Uint8Array>, VersionedType<Uint8Array,
     if (this._options === undefined) {
       throw createLazyOptionsError(this);
     }
-    const options: BufferTypeOptions = typeof this._options === "function" ? this._options() : this._options;
+    const options: BytesTypeOptions = typeof this._options === "function" ? this._options() : this._options;
 
     const maxLength: number = options.maxLength;
 

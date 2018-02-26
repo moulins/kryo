@@ -23,7 +23,7 @@ export class BsonValueWriter extends StructuredWriter {
     return null;
   }
 
-  writeBuffer(value: Uint8Array): bson.Binary {
+  writeBytes(value: Uint8Array): bson.Binary {
     // TODO: Update Node type definitions
     return new this.bsonLib.Binary(Buffer.from(value as any));
   }

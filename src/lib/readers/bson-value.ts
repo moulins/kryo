@@ -37,7 +37,7 @@ export class BsonValueReader implements Reader<any> {
     return visitor.fromBoolean(input);
   }
 
-  readBuffer<R>(raw: any, visitor: ReadVisitor<R>): R {
+  readBytes<R>(raw: any, visitor: ReadVisitor<R>): R {
     let input: Uint8Array;
     if (isBinary(raw)) {
       // TODO: Fix BSON type definitions
@@ -46,7 +46,7 @@ export class BsonValueReader implements Reader<any> {
       // TODO: typecheck
       input = raw;
     }
-    return visitor.fromBuffer(input);
+    return visitor.fromBytes(input);
   }
 
   readDate<R>(raw: any, visitor: ReadVisitor<R>): R {

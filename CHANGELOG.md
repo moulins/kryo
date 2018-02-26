@@ -1,5 +1,7 @@
 # Next
 
+- **[Breaking change]** Rename `buffer` to `bytes` (`BufferType` to `BytesType`,
+  `fromBuffer` to `fromBytes`, etc.) 
 - **[Internal]** Remove unused `json` namespaces.
 
 # 0.7.0-beta.2 (2018-02-07)

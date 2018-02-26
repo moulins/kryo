@@ -12,7 +12,7 @@ export abstract class StructuredWriter implements Writer<any> {
 
   abstract writeString(value: string): any;
 
-  abstract writeBuffer(value: Uint8Array): any;
+  abstract writeBytes(value: Uint8Array): any;
 
   abstract writeNull(): any;
 

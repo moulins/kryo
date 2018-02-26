@@ -26,8 +26,8 @@ export class QsReader implements Reader<string> {
     return this.valueReader.readBoolean(this.qs.parse(raw)[this.primitiveWrapper], visitor);
   }
 
-  readBuffer<R>(raw: string, visitor: ReadVisitor<R>): R {
-    return this.valueReader.readBuffer(this.qs.parse(raw)[this.primitiveWrapper], visitor);
+  readBytes<R>(raw: string, visitor: ReadVisitor<R>): R {
+    return this.valueReader.readBytes(this.qs.parse(raw)[this.primitiveWrapper], visitor);
   }
 
   readDate<R>(raw: string, visitor: ReadVisitor<R>): R {

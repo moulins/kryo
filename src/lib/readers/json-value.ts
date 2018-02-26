@@ -32,7 +32,7 @@ export class JsonValueReader implements Reader<JsonValue> {
     return visitor.fromBoolean(raw);
   }
 
-  readBuffer<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
+  readBytes<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {
     if (typeof raw !== "string") {
       throw createInvalidTypeError("string", raw);
     } else if (!/^(?:[0-9a-f]{2})*$/.test(raw)) {
@@ -44,7 +44,7 @@ export class JsonValueReader implements Reader<JsonValue> {
     for (let i: number = 0; i < len; i++) {
       result[i] = parseInt(raw.substr(2 * i, 2), 16);
     }
-    return visitor.fromBuffer(result);
+    return visitor.fromBytes(result);
   }
 
   readDate<R>(raw: JsonValue, visitor: ReadVisitor<R>): R {

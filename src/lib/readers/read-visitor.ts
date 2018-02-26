@@ -4,8 +4,8 @@ function fromBoolean(input: boolean): never {
   throw new Error("Unable to read from boolean");
 }
 
-function fromBuffer(input: Uint8Array): never {
-  throw new Error("Unable to read from buffer");
+function fromBytes(input: Uint8Array): never {
+  throw new Error("Unable to read from bytes");
 }
 
 function fromDate(input: Date): never {
@@ -34,7 +34,7 @@ function fromString(input: string): never {
 
 export function readVisitor<R>(partial: Partial<ReadVisitor<R>>): ReadVisitor<R> {
   return {
-    fromBuffer,
+    fromBytes,
     fromBoolean,
     fromDate,
     fromFloat64,

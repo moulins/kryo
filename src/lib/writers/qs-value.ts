@@ -7,7 +7,7 @@ export class QsValueWriter extends StructuredWriter {
     return value ? "true" : "false";
   }
 
-  writeBuffer(value: Uint8Array): string {
+  writeBytes(value: Uint8Array): string {
     const result: string[] = new Array(value.length);
     const len: number = value.length;
     for (let i: number = 0; i < len; i++) {

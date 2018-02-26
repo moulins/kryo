@@ -26,8 +26,8 @@ export class BsonReader implements Reader<Buffer> {
     return this.valueReader.readBoolean(this.bsonSerializer.deserialize(raw)[this.primitiveWrapper], visitor);
   }
 
-  readBuffer<R>(raw: Buffer, visitor: ReadVisitor<R>): R {
-    return this.valueReader.readBuffer(this.bsonSerializer.deserialize(raw)[this.primitiveWrapper], visitor);
+  readBytes<R>(raw: Buffer, visitor: ReadVisitor<R>): R {
+    return this.valueReader.readBytes(this.bsonSerializer.deserialize(raw)[this.primitiveWrapper], visitor);
   }
 
   readDate<R>(raw: Buffer, visitor: ReadVisitor<R>): R {

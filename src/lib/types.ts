@@ -87,7 +87,7 @@ export interface Writer<W> {
 
   writeBoolean(value: boolean): W;
 
-  writeBuffer(value: Uint8Array): W;
+  writeBytes(value: Uint8Array): W;
 
   writeDate(value: Date): W;
 
@@ -114,7 +114,7 @@ export interface Writer<W> {
 export interface ReadVisitor<T> {
   fromBoolean(input: boolean): T;
 
-  fromBuffer(input: Uint8Array): T;
+  fromBytes(input: Uint8Array): T;
 
   fromDate(input: Date): T;
 
@@ -142,7 +142,7 @@ export interface Reader<R> {
 
   readBoolean<T>(raw: R, visitor: ReadVisitor<T>): T;
 
-  readBuffer<T>(raw: R, visitor: ReadVisitor<T>): T;
+  readBytes<T>(raw: R, visitor: ReadVisitor<T>): T;
 
   readDate<T>(raw: R, visitor: ReadVisitor<T>): T;
 

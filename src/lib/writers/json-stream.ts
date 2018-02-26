@@ -25,7 +25,7 @@ export class JsonStreamWriter implements Writer<boolean> {
     return this.stream.write(value ? "true" : "false");
   }
 
-  writeBuffer(value: Uint8Array): boolean {
+  writeBytes(value: Uint8Array): boolean {
     const result: string[] = new Array(value.length);
     const len: number = value.length;
     for (let i: number = 0; i < len; i++) {

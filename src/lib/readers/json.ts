@@ -19,8 +19,8 @@ export class JsonReader implements Reader<string> {
     return this.valueReader.readBoolean(JSON.parse(raw), visitor);
   }
 
-  readBuffer<R>(raw: string, visitor: ReadVisitor<R>): R {
-    return this.valueReader.readBuffer(JSON.parse(raw), visitor);
+  readBytes<R>(raw: string, visitor: ReadVisitor<R>): R {
+    return this.valueReader.readBytes(JSON.parse(raw), visitor);
   }
 
   readDate<R>(raw: string, visitor: ReadVisitor<R>): R {

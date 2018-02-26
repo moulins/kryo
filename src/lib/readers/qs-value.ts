@@ -32,7 +32,7 @@ export class QsValueReader implements Reader<any> {
     return visitor.fromBoolean(input === "true");
   }
 
-  readBuffer<R>(input: any, visitor: ReadVisitor<R>): R {
+  readBytes<R>(input: any, visitor: ReadVisitor<R>): R {
     if (typeof input !== "string") {
       throw createInvalidTypeError("string", input);
     } else if (!/^(?:[0-9a-f]{2})*$/.test(input)) {
@@ -44,7 +44,7 @@ export class QsValueReader implements Reader<any> {
     for (let i: number = 0; i < len; i++) {
       result[i] = parseInt(input.substr(2 * i, 2), 16);
     }
-    return visitor.fromBuffer(result);
+    return visitor.fromBytes(result);
   }
 
   readDate<R>(input: any, visitor: ReadVisitor<R>): R {

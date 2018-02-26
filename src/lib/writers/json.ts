@@ -16,8 +16,8 @@ export class JsonWriter implements Writer<string> {
     return JSON.stringify(this.valueWriter.writeBoolean(value));
   }
 
-  writeBuffer(value: Uint8Array): string {
-    return JSON.stringify(this.valueWriter.writeBuffer(value));
+  writeBytes(value: Uint8Array): string {
+    return JSON.stringify(this.valueWriter.writeBytes(value));
   }
 
   writeDate(value: Date): string {

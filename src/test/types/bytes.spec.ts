@@ -1,8 +1,8 @@
-import { BufferType } from "../../lib/types/buffer";
+import { BytesType } from "../../lib/types/bytes";
 import { runTests, TypedValue } from "../helpers/test";
 
-describe("BufferType", function () {
-  const shortBuffer: BufferType = new BufferType({
+describe("BytesType", function () {
+  const shortBuffer: BytesType = new BytesType({
     maxLength: 2,
   });
 
