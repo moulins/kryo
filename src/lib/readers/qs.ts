@@ -1,3 +1,7 @@
+/**
+ * @module kryo/readers/qs
+ */
+
 import _qs from "qs";
 import { Reader, ReadVisitor } from "../types";
 import { QsValueReader } from "./qs-value";

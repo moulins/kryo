@@ -13,9 +13,18 @@
 Kryo is a library to represent data types at runtime. For example, it lets you test if a value
 matches a type or safely serialize data between various formats such as `JSON` or `BSON`.
 
-Deserializing the JSON string `'{createdAt: "2017-10-15T17:10:08.218Z"}'` requires type information
-to convert the value to a `Date` instance: Kryo simplifies it so you don't have to manually
-handle type conversions.
+Here are other examples of problems that Kryo was written to solve:
+
+- The public functions of your library check the validity of their arguments (arguments are not
+  trusted). Having runtime types allows this verification to be explicit and easier to maintain.
+
+- Deserializing the JSON string `'{createdAt: "2017-10-15T17:10:08.218Z"}'` requires type
+  information to convert the value to a `Date` instance: Kryo simplifies it so you don't have to
+  manually handle type conversions.
+
+- The convention in Javascript/Typescript is to use `camelCase` for property names but you consume
+  serialized data (like `JSON`) with `snake_case` and don't want to manually maintain name
+  rewrites.
 
 ## Installation
 
@@ -40,36 +49,141 @@ npm install --save kryp@next
 
 ## Getting started
 
-Kryo specifies its types with a few Typescript interfaces: any object matching the shape of the
-interface is a valid type.
+**Note: The documentation is in the process of being rewritten. Some sections are drafts or
+outdated.**
 
-Every type object implements at least the simple `Type` interface with its 4 required methods:
+### Types
+
+A Kryo **Type** represents a set of valid values. Kryo provides you multiple builtin types and
+utilities to easily create your own types.
+
+It is simply an object with methods to:
+- test if a value is valid (`.test` and `.testError`)
+- check if two valid values are equivalent (`.equals`)
+- create a deep copy of a valid value (`.clone`)
+
+If you like fancy words, it defines a [setoid](https://en.wikipedia.org/wiki/Setoid).
+
+There are more advanced types with additional methods and operators (for example to support
+serialization) but any object implementing [the `Type` interface](https://demurgos.github.io/kryo/interfaces/_types_.type.html)
+is compatible with Kryo. 
+
+For example, the builtin type `$Uint8` represents an unsigned integer in the inclusive range
+`[0, 255]`.
 
 ```typescript
-export interface Type<T> {
-  /**
-   * Tests if this type matches `value`,  describes the error if not.
-   */
-  testError(value: T): Error | undefined;
-  
-  /**
-   * Tests if this type matches `value`.
-   */
-  test(value: T): boolean;
+import { $Uint8 } from "kryo/builtins/uint8";
 
-  /**
-   * Tests if two valid values are equal.
-   */
-  equals(left: T, right: T): boolean;
-
-  /**
-   * Creates a deep copy of the provided valid value.
-   */
-  clone(value: T): T;
-}
+$Uint8.test(15); // `true`
+$Uint8.test(Math.PI); // `false`
+$Uint8.test("Hello, World!"); // `false`
+$Uint8.equals(6, 6); // `true`
+$Uint8.clone(255); // `255`
 ```
 
-For example we can define a `Prime` type describing prime numbers.
+### Type constructors
+
+Kryo provides **type constructors** for common types. They let you instanciate types using a
+configuration object.
+
+For example you may want to define a `$Percentage` type representing unsigned integers in the
+inclusive range `[0, 100]`. You can implement it from scratch, or use the `IntegerType` type
+constructor.
+
+```typescript
+import { IntegerType } from "kryo/types/integer";
+
+const $Percentage = new IntegerType({min: 0, max: 100});
+// You can also define `$Uint8` yourself
+const $Uint8 = new IntegerType({min: 0, max: 255});
+
+$Percentage.test(50); // `true`
+$Percentage.test(101); // `false`
+```
+
+#### DocumentType
+
+One of the most important type constructors is `DocumentType`. It lets you describe the interface
+of Javascript objects by composing types for each property.
+
+```typescript
+import { DocumentType } from "kryo/types/document";
+import { Ucs2StringType } from "kryo/types/ucs2-string";
+
+const $DisplayName = new Ucs2StringType({maxLength: 32});
+
+/**
+ * Typescript interface describing our values: a user id
+ * an optional (can be undefined) display name.
+ */
+interface User {
+  id: number;
+  displayName?: string;
+}
+
+const $PriceTag = new DocumentType<PriceTag>({
+  properties: {
+    id: {type: $Uint8},
+    displayName: {type: $DisplayName, optional: true},
+  }
+});
+```
+
+#### TaggedUnionType
+
+One of the most powerful type constructors provided by Kryo is `TaggedUnionType`. It allows to
+combine multiple document types and differentiate them using the value of a "tag" property. This
+property must describe Typescript-like enum: each document type is associated with a distinct
+value of the enum.
+This is the analogue of Typescript's discriminated unions.
+
+For example, Github's repository owners can either be users or organizations. We can define it
+as follow:
+
+```typescript
+// 1. We create an enum used to differentiate the possible values.
+enum RepositoryOwnerType {
+  User = "user",
+  Organization = "organization",
+}
+const $RepositoryOwnerType = new TsEnumType({enum: RepositoryOwnerType});
+
+// 2. We define the User document
+interface User {
+  type: RepositoryOwnerType.User;
+  id: number;
+  username: string;
+}
+const $User = new DocumentType({
+  properties: {
+    type: {type: new LiteralType({itemType: $RepositoryOwnerType, value: RepositoryOwnerType.User})},
+    id: {type: $Uint32},
+    username: {type: $Username},
+  }
+});
+
+// 3. We define the Organization document
+interface Organization {
+  type: RepositoryOwnerType.Organization;
+  id: number;
+  members: any[];
+}
+const $Organization = new DocumentType({
+  properties: {
+    type: {type: new LiteralType({itemType: $RepositoryOwnerType, value: RepositoryOwnerType.Organization})},
+    id: {type: $Uint32},
+    members: {type: new ArrayType({itemType: $Any})},
+  }
+});
+
+// 4. We create the union type
+type RepositoryOwner = User | Organization;
+const $RepositoryOwner = new TaggedUnionType({variants: [User, Organization], tag: "type"});
+```
+
+---
+
+You can define custom types, for example we can define a `Prime` type describing prime numbers.
 
 ```typescript
 // By convention, the names of type objects are prefixed by `$`

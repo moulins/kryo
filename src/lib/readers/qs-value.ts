@@ -1,3 +1,7 @@
+/**
+ * @module kryo/readers/qs-value
+ */
+
 import { Incident } from "incident";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { Reader, ReadVisitor } from "../types";

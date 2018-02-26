@@ -1,3 +1,7 @@
+/**
+ * @module kryo/writers/qs-value
+ */
+
 import { Writer } from "../types";
 import { JsonWriter } from "./json";
 import { StructuredWriter } from "./structured";

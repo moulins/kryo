@@ -1,3 +1,7 @@
+/**
+ * @module kryo/readers/bson
+ */
+
 import _bson from "bson";
 import { Reader, ReadVisitor } from "../types";
 import { BsonValueReader } from "./bson-value";

@@ -1,3 +1,7 @@
+/**
+ * @module kryo/readers/read-visitor
+ */
+
 import { ReadVisitor } from "../types";
 
 function fromBoolean(input: boolean): never {

@@ -1,3 +1,9 @@
+/**
+ * This module defines utility functions to detect and change case styles.
+ *
+ * @module kryo/case-style
+ */
+
 import { Incident } from "incident";
 
 export enum CaseStyle {

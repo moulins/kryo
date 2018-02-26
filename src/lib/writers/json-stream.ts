@@ -1,3 +1,7 @@
+/**
+ * @module kryo/writers/json-stream
+ */
+
 import { Writer } from "../types";
 
 export interface WritableStream {

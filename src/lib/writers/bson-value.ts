@@ -1,3 +1,7 @@
+/**
+ * @module kryo/writers/bson-value
+ */
+
 import bson from "bson";
 import { Writer } from "../types";
 import { JsonWriter } from "./json";

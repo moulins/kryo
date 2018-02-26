@@ -1,5 +1,7 @@
 /**
  * This module defines most of the Typescript interfaces and type aliases used by Kryo.
+ *
+ * @module kryo/types
  */
 
 /**
@@ -43,6 +45,15 @@ export interface Type<T> {
    *
    * This is a deep strict structural equality test restricted to the properties of this type.
    *
+   * It satisfies the following properties (the variables `a`, `b` and `c` are valid values):
+   * - Reflexivity: `type.equal(a, a) === true`
+   * - Symmetry: `type.equals(a, b) === type.equals(b, a)`
+   * - Transitivity: if `type.equals(a, b) && type.equals(b, c)` then `type.equals(a, c)`
+   *
+   * The above properties mean that type objects implement the `Setoid` algebra as specified by
+   * Static Land.
+   *
+   * @see https://github.com/rpominov/static-land/blob/master/docs/spec.md#setoid
    * @param left Left value, trusted to be compatible with this type.
    * @param right Right value, trusted to be compatible with this type.
    * @return Boolean indicating if both values are equal.

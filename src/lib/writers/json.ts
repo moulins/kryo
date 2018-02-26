@@ -1,3 +1,7 @@
+/**
+ * @module kryo/writers/json
+ */
+
 import { Writer } from "../types";
 import { JsonValueWriter } from "./json-value";
 

@@ -1,3 +1,7 @@
+/**
+ * @module kryo/writers/qs
+ */
+
 import _qs from "qs";
 import { Writer } from "../types";
 import { QsValueWriter } from "./qs-value";

@@ -1,3 +1,7 @@
+/**
+ * @module kryo/readers/bson-value
+ */
+
 import bson from "bson";
 import { Incident } from "incident";
 import { createInvalidTypeError } from "../errors/invalid-type";

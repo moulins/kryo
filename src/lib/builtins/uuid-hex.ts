@@ -1,3 +1,7 @@
+/**
+ * @module kryo/builtins/uuid-hex
+ */
+
 import { Ucs2StringType } from "../types/ucs2-string";
 
 /**

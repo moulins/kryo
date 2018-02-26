@@ -1,3 +1,7 @@
+/**
+ * @module kryo/writers/structured
+ */
+
 import { Writer } from "../types";
 
 /**

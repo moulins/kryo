@@ -1,3 +1,7 @@
+/**
+ * @module kryo/readers/json-value
+ */
+
 import { Incident } from "incident";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { JsonValue } from "../json-value";
