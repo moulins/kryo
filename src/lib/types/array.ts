@@ -3,7 +3,6 @@ import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, Type, Writer } from "../core";
 import { createInvalidArrayItemsError } from "../errors/invalid-array-items";
 import { createInvalidTypeError } from "../errors/invalid-type";
-import { createInvalidValueError } from "../errors/invalid-value";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
 import { readVisitor } from "../readers/read-visitor";

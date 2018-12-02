@@ -2,7 +2,6 @@ import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { CaseStyle, rename } from "../case-style";
 import { IoType, Lazy, Reader, Writer } from "../core";
-import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
@@ -17,35 +16,6 @@ export const name: Name = "simple-enum";
 export type Diff = number;
 
 export type EnumObject<EO, E extends number | string> = Record<keyof EO, E>;
-
-enum EnumKind {
-  Empty,
-  Numeric,
-  String,
-  Mixed,
-}
-
-function getEnumKind<EO, E extends number | string>(enumObject: EnumObject<EO, E>): EnumKind {
-  let hasNumericValues: boolean = false;
-  let hasStringValues: boolean = false;
-  for (const key in enumObject) {
-    switch (typeof enumObject[key]) {
-      case "number":
-        hasNumericValues = true;
-        break;
-      case "string":
-        hasStringValues = true;
-        break;
-      default:
-        throw createInvalidTypeError("number | string", enumObject[key], "enumObject[key]");
-    }
-  }
-  if (hasStringValues) {
-    return hasNumericValues ? EnumKind.Mixed : EnumKind.String;
-  } else {
-    return hasNumericValues ? EnumKind.Numeric : EnumKind.Empty;
-  }
-}
 
 /**
  * Builds a map from a TS enum by removing reverse-lookup keys.

@@ -103,12 +103,12 @@ describe("TryUnion", function () {
     const jsonValueReader: JsonValueReader = new JsonValueReader();
 
     it(".readTrustedWithVariant should return $Rectangle", () => {
-      const [variant, _] = $Shape.variantRead(jsonValueReader, {width: 10, height: 20});
+      const {variant} = $Shape.variantRead(jsonValueReader, {width: 10, height: 20});
       chai.assert.strictEqual(variant, $Rectangle);
     });
 
     it(".readTrustedWithVariant should return $Circle", () => {
-      const [variant, _] = $Shape.variantRead(jsonValueReader, {radius: 15});
+      const {variant} = $Shape.variantRead(jsonValueReader, {radius: 15});
       chai.assert.strictEqual(variant, $Circle);
     });
 

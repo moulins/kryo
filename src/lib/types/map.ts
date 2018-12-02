@@ -135,24 +135,24 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
     for (const [key, value] of val) {
       const keyClone: K = this.keyType.clone(key);
       const valueClone: V = this.valueType.clone(value);
-      result.set(key, value);
+      result.set(keyClone, valueClone);
     }
     return result;
   }
 
-  diff(oldVal: Map<K, V>, newVal: Map<K, V>): Diff | undefined {
+  diff(_oldVal: Map<K, V>, _newVal: Map<K, V>): Diff | undefined {
     throw createNotImplementedError("MapType#diff");
   }
 
-  patch(oldVal: Map<K, V>, diff: Diff | undefined): Map<K, V> {
+  patch(_oldVal: Map<K, V>, _diff: Diff | undefined): Map<K, V> {
     throw createNotImplementedError("MapType#patch");
   }
 
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
+  reverseDiff(_diff: Diff | undefined): Diff | undefined {
     throw createNotImplementedError("MapType#reverseDiff");
   }
 
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
+  squash(_diff1: Diff | undefined, _diff2: Diff | undefined): Diff | undefined {
     throw createNotImplementedError("MapType#squash");
   }
 

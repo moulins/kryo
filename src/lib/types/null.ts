@@ -15,7 +15,7 @@ export class NullType implements IoType<null>, VersionedType<null, undefined> {
   }
 
   // TODO: Dynamically add with prototype?
-  write<W>(writer: Writer<W>, value: null): W {
+  write<W>(writer: Writer<W>, _: null): W {
     return writer.writeNull();
   }
 
@@ -39,23 +39,23 @@ export class NullType implements IoType<null>, VersionedType<null, undefined> {
   }
 
   /**
-   * @param oldVal
-   * @param newVal
+   * @param _oldVal
+   * @param _newVal
    * @returns `true` if there is a difference, `undefined` otherwise
    */
-  diff(oldVal: null, newVal: null): undefined {
+  diff(_oldVal: null, _newVal: null): undefined {
     return;
   }
 
-  patch(oldVal: null, diff: undefined): null {
+  patch(_oldVal: null, _diff: undefined): null {
     return null;
   }
 
-  reverseDiff(diff: undefined): undefined {
+  reverseDiff(_diff: undefined): undefined {
     return;
   }
 
-  squash(diff1: undefined, diff2: undefined): undefined {
+  squash(_diff1: undefined, _diff2: undefined): undefined {
     return;
   }
 }

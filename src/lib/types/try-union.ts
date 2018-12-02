@@ -12,6 +12,11 @@ export interface TryUnionTypeOptions<T, M extends Type<T> = Type<T>> {
   variants: M[];
 }
 
+export interface VariantValue<T, K> {
+  variant: K;
+  value: T;
+}
+
 export type TestWithVariantResult<T> =
   [true, VersionedType<T, any>]
   | [false, VersionedType<T, any> | undefined];
@@ -63,13 +68,14 @@ export class TryUnionType<T, M extends Type<T> = Type<T>> implements IoType<T>, 
   }
 
   read<R>(reader: Reader<R>, raw: R): T {
-    return this.variantRead(reader, raw)[1];
+    return this.variantRead(reader, raw).value;
   }
 
-  variantRead<R>(reader: Reader<R>, raw: R): [M, T] {
+  variantRead<R>(reader: Reader<R>, raw: R): VariantValue<T, M> {
     for (const variant of this.variants) {
       try {
-        return [variant, variant.read!(reader, raw)];
+        const value: T = variant.read!(reader, raw);
+        return {value, variant};
       } catch (err) {
         // TODO: Do not swallow all errors
       }

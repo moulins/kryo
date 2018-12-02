@@ -2,7 +2,6 @@ import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, Type, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
-import { createNotImplementedError } from "../errors/not-implemented";
 import { testError } from "../test-error";
 
 export type Name = "literal";
@@ -11,10 +10,10 @@ export type Diff = any;
 
 /**
  * T: Typescript type
- * M: Kryo meta-type
+ * K: Kryo type
  */
-export interface LiteralTypeOptions<T, M extends Type<any> = Type<any>> {
-  type: M;
+export interface LiteralTypeOptions<T, K extends Type<any> = Type<any>> {
+  type: K;
   value: T;
 }
 
@@ -24,10 +23,10 @@ export interface LiteralTypeConstructor {
   new<T>(options: Lazy<LiteralTypeOptions<T>>): LiteralType<T>;
 }
 
-export interface LiteralType<T, M extends Type<any> = Type<any>> extends Type<T>, LiteralTypeOptions<T, M> {
+export interface LiteralType<T, K extends Type<any> = Type<any>> extends Type<T>, LiteralTypeOptions<T, K> {
 }
 
-export interface LiteralIoType<T, M extends IoType<any> = IoType<any>> extends IoType<T>, LiteralType<T, M> {
+export interface LiteralIoType<T, K extends IoType<any> = IoType<any>> extends IoType<T>, LiteralType<T, K> {
   read<R>(reader: Reader<R>, raw: R): T;
 
   write<W>(writer: Writer<W>, value: T): W;
@@ -41,14 +40,14 @@ export interface LiteralIoType<T, M extends IoType<any> = IoType<any>> extends I
  * @see https://github.com/Microsoft/TypeScript/issues/10195
  */
 // tslint:disable-next-line:variable-name
-export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = Type<T>> implements IoType<T> {
+export const LiteralType: LiteralTypeConstructor = class<TT, K extends Type<any> = Type<any>> implements IoType<TT> {
   readonly name: Name = name;
-  readonly type: M;
-  readonly value: T;
+  readonly type: K;
+  readonly value: TT;
 
-  private _options: Lazy<LiteralTypeOptions<T, M>>;
+  private _options: Lazy<LiteralTypeOptions<TT, K>>;
 
-  constructor(options: Lazy<LiteralTypeOptions<T, M>>) {
+  constructor(options: Lazy<LiteralTypeOptions<TT, K>>) {
     // TODO: Remove once TS 2.7 is better supported by editors
     this.type = <any> undefined;
     this.value = <any> undefined;
@@ -61,21 +60,21 @@ export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = 
     }
   }
 
-  read<R>(reader: Reader<R>, raw: R): T {
+  read<R>(reader: Reader<R>, raw: R): TT {
     if (this.type.read === undefined) {
       throw new Incident("NotReadable", {type: this});
     }
     return reader.trustInput ? this.clone(this.value) : this.type.read(reader, raw);
   }
 
-  write<W>(writer: Writer<W>, value: T): W {
+  write<W>(writer: Writer<W>, value: TT): W {
     if (this.type.write === undefined) {
       throw new Incident("NotWritable", {type: this});
     }
     return this.type.write(writer, value);
   }
 
-  testError(val: T): Error | undefined {
+  testError(val: TT): Error | undefined {
     const error: Error | undefined = testError(this.type, val);
     if (error !== undefined) {
       return error;
@@ -86,31 +85,31 @@ export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = 
     return undefined;
   }
 
-  test(value: T): boolean {
+  test(value: TT): boolean {
     return this.type.test(value) && this.type.equals(value, this.value);
   }
 
-  equals(val1: T, val2: T): boolean {
+  equals(val1: TT, val2: TT): boolean {
     return this.type.equals(val1, val2);
   }
 
-  clone(val: T): T {
+  clone(val: TT): TT {
     return this.type.clone(val);
   }
 
-  diff(oldVal: T, newVal: T): undefined {
+  diff(_oldVal: TT, _newVal: TT): undefined {
     return;
   }
 
-  patch(oldVal: T, diff: undefined): T {
+  patch(oldVal: TT, _diff: undefined): TT {
     return this.type.clone(oldVal);
   }
 
-  reverseDiff(diff: Diff | undefined): undefined {
+  reverseDiff(_diff: Diff | undefined): undefined {
     return;
   }
 
-  squash(diff1: undefined, diff2: undefined): undefined {
+  squash(_diff1: undefined, _diff2: undefined): undefined {
     return;
   }
 
@@ -118,12 +117,12 @@ export const LiteralType: LiteralTypeConstructor = class<T, M extends Type<T> = 
     if (this._options === undefined) {
       throw createLazyOptionsError(this);
     }
-    const options: LiteralTypeOptions<T, M> = typeof this._options === "function"
+    const options: LiteralTypeOptions<TT, K> = typeof this._options === "function"
       ? this._options()
       : this._options;
 
-    const type: M = options.type;
-    const value: T = options.value;
+    const type: K = options.type;
+    const value: TT = options.value;
 
     Object.assign(this, {type, value});
   }

@@ -84,23 +84,23 @@ export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, 
   }
 
   /**
-   * @param oldVal
-   * @param newVal
+   * @param _oldVal
+   * @param _newVal
    * @returns `true` if there is a difference, `undefined` otherwise
    */
-  diff(oldVal: Uint8Array, newVal: Uint8Array): Diff | undefined {
+  diff(_oldVal: Uint8Array, _newVal: Uint8Array): Diff | undefined {
     throw createNotImplementedError("BufferType#diff");
   }
 
-  patch(oldVal: Uint8Array, diff: Diff | undefined): Uint8Array {
+  patch(_oldVal: Uint8Array, _diff: Diff | undefined): Uint8Array {
     throw createNotImplementedError("BufferType#patch");
   }
 
-  reverseDiff(diff: Diff | undefined): Diff | undefined {
+  reverseDiff(_diff: Diff | undefined): Diff | undefined {
     throw createNotImplementedError("BufferType#reverseDiff");
   }
 
-  squash(diff1: Diff | undefined, diff2: Diff | undefined): Diff | undefined {
+  squash(_diff1: Diff | undefined, _diff2: Diff | undefined): Diff | undefined {
     throw createNotImplementedError("BufferType#squash");
   }
 

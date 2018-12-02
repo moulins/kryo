@@ -1,4 +1,4 @@
-import { assert } from "chai";
+import chai from "chai";
 import { QsValueReader } from "../../lib/readers/qs-value";
 import { IntegerType } from "../../lib/types/integer";
 import { runTests, TypedValue } from "../helpers/test";
@@ -52,11 +52,11 @@ describe("IntegerType", function () {
   it("readQs(val)", function () {
     const qsReader: QsValueReader = new QsValueReader();
     const type: IntegerType = new IntegerType();
-    assert.strictEqual(type.read(qsReader, "0"), 0);
-    assert.strictEqual(type.read(qsReader, "1"), 1);
-    assert.strictEqual(type.read(qsReader, "-1"), -1);
-    assert.strictEqual(type.read(qsReader, "-1234"), -1234);
-    assert.strictEqual(type.read(qsReader, "2147483647"), 2147483647);
-    assert.strictEqual(type.read(qsReader, "-2147483648"), -2147483648);
+    chai.assert.strictEqual(type.read(qsReader, "0"), 0);
+    chai.assert.strictEqual(type.read(qsReader, "1"), 1);
+    chai.assert.strictEqual(type.read(qsReader, "-1"), -1);
+    chai.assert.strictEqual(type.read(qsReader, "-1234"), -1234);
+    chai.assert.strictEqual(type.read(qsReader, "2147483647"), 2147483647);
+    chai.assert.strictEqual(type.read(qsReader, "-2147483648"), -2147483648);
   });
 });

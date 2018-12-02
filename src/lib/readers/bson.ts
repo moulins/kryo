@@ -16,7 +16,7 @@ export class BsonReader implements Reader<Buffer> {
   private readonly primitiveWrapper: string;
 
   constructor(bson: typeof _bson, trust?: boolean, primitiveWrapper: string = "_") {
-    this.bsonSerializer = new _bson.BSON();
+    this.bsonSerializer = new bson.BSON();
     this.trustInput = trust;
     this.primitiveWrapper = primitiveWrapper;
     this.valueReader = new BsonValueReader(trust);

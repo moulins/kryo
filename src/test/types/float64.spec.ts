@@ -1,5 +1,4 @@
 import chai from "chai";
-import { BooleanType } from "../../lib/types/boolean";
 import { Float64Type } from "../../lib/types/float64";
 import { runTests, TypedValue } from "../helpers/test";
 

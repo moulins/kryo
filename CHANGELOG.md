@@ -1,3 +1,11 @@
+# Next
+
+- **[Breaking change]** Change `variantRead` result from `[variant, value]` to `{variant, value}`.
+- **[Breaking change]** Require `unorm` is `CodepointString` constructor.
+- **[Feature]** Update to Typescript 3.2.
+- **[Feature]** First class ESM support.
+- **[Internal]** Update dependencies.
+
 # 0.7.0 (2018-02-26)
 
 - **[Breaking change]** Rename `buffer` to `bytes` (`BufferType` to `BytesType`,

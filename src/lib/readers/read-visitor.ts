@@ -4,27 +4,27 @@
 
 import { ReadVisitor } from "../core";
 
-function fromBoolean(input: boolean): never {
+function fromBoolean(_: boolean): never {
   throw new Error("Unable to read from boolean");
 }
 
-function fromBytes(input: Uint8Array): never {
+function fromBytes(_: Uint8Array): never {
   throw new Error("Unable to read from bytes");
 }
 
-function fromDate(input: Date): never {
+function fromDate(_: Date): never {
   throw new Error("Unable to read from date");
 }
 
-function fromFloat64(input: number): never {
+function fromFloat64(_: number): never {
   throw new Error("Unable to read from float64");
 }
 
-function fromList(input: Iterable<any>): never {
+function fromList(_: Iterable<any>): never {
   throw new Error("Unable to read from list");
 }
 
-function fromMap(input: Map<any, any>): never {
+function fromMap(_: Map<any, any>): never {
   throw new Error("Unable to read from map");
 }
 
@@ -32,7 +32,7 @@ function fromNull(): never {
   throw new Error("Unable to read from null");
 }
 
-function fromString(input: string): never {
+function fromString(_: string): never {
   throw new Error("Unable to read from string");
 }
 

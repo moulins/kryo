@@ -6,7 +6,7 @@ export class AnyType<T = any> implements IoType<T> {
   constructor() {
   }
 
-  read<R>(reader: Reader<R>, raw: R): T {
+  read<R>(_reader: Reader<R>, raw: R): T {
     return <any> raw as T;
   }
 
@@ -24,7 +24,7 @@ export class AnyType<T = any> implements IoType<T> {
     }
   }
 
-  test(value: T): boolean {
+  test(_value: T): boolean {
     return true;
   }
 

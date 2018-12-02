@@ -2,7 +2,6 @@ import { Incident } from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
-import { createNotImplementedError } from "../errors/not-implemented";
 import { testError } from "../test-error";
 
 export type Name = "white-list";

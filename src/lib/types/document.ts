@@ -26,7 +26,7 @@ export interface DocumentTypeOptions<T> {
   /**
    * A dictionary between a property name and its description.
    */
-  properties: {[P in keyof T]: PropertyDescriptor<Type<T[P]>>};
+  properties: {readonly [P in keyof T]: PropertyDescriptor<T[P], Type<T[P]>>};
 
   /**
    * The keys of the serialized documents are renamed following the
@@ -34,14 +34,14 @@ export interface DocumentTypeOptions<T> {
    */
   changeCase?: CaseStyle;
 
-  rename?: {[P in keyof T]?: string};
+  rename?: {readonly [P in keyof T]?: string};
 }
 
 export interface DocumentIoTypeOptions<T> extends DocumentTypeOptions<T> {
-  properties: {[P in keyof T]: PropertyDescriptor<IoType<T[P]>>};
+  properties: {readonly [P in keyof T]: PropertyDescriptor<T[P], IoType<T[P]>>};
 }
 
-export interface PropertyDescriptor<M extends Type<any>> {
+export interface PropertyDescriptor<T, K extends Type<T> = Type<T>> {
   /**
    * Allows this property to be missing (undefined values throw errors).
    */
@@ -50,7 +50,7 @@ export interface PropertyDescriptor<M extends Type<any>> {
   /**
    * The type of this property.
    */
-  type: M;
+  type: K;
 
   /**
    * The key in the serialized documents will be automatically renamed with the provided
@@ -82,6 +82,7 @@ export interface DocumentType<T> extends Type<T>, VersionedType<T, Diff<T>>, Doc
   getOutKey(key: keyof T): string;
 }
 
+// tslint:disable-next-line:max-line-length
 export interface DocumentIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>, DocumentIoTypeOptions<T> {
   getOutKey(key: keyof T): string;
 
@@ -92,12 +93,12 @@ export interface DocumentIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>,
 
 // We use an `any` cast because of the `properties` property.
 // tslint:disable-next-line:variable-name
-export const DocumentType: DocumentTypeConstructor = class<T extends {}> implements IoType<T>,
+export const DocumentType: DocumentTypeConstructor = <any> class<T> implements IoType<T>,
   DocumentIoTypeOptions<T> {
   readonly name: Name = name;
   readonly noExtraKeys?: boolean;
-  readonly properties: {[P in keyof T]: PropertyDescriptor<any>};
-  readonly rename?: {[P in keyof T]?: string};
+  readonly properties: {readonly [P in keyof T]: PropertyDescriptor<T[P], any>};
+  readonly rename?: {readonly [P in keyof T]?: string};
   readonly changeCase?: CaseStyle;
   private _options: Lazy<DocumentTypeOptions<T>>;
   private _outKeys: Map<string, keyof T> | undefined;
@@ -128,16 +129,19 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
   }
 
   getOutKey(key: keyof T): string {
-    const descriptor: PropertyDescriptor<Type<any>> = this.properties[key];
+    if (typeof key !== "string") {
+      throw new Error(`NonStringKey: ${key}`);
+    }
+    const descriptor: PropertyDescriptor<any> = this.properties[key];
     if (descriptor.rename !== undefined) {
       return descriptor.rename;
     } else if (descriptor.changeCase !== undefined) {
-      return rename(key, descriptor.changeCase);
+      return rename(key as string, descriptor.changeCase);
     }
     if (this.rename !== undefined && this.rename[key] !== undefined) {
-      return this.rename[key] as string;
+      return this.rename[key]!;
     } else if (this.changeCase !== undefined) {
-      return rename(key, this.changeCase);
+      return rename(key as string, this.changeCase);
     }
     return key;
   }
@@ -146,34 +150,47 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
   read<R>(reader: Reader<R>, raw: R): T {
     return reader.readDocument(raw, readVisitor({
       fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T => {
-        const extra: Set<string> | undefined = this.noExtraKeys ? new Set(Object.keys(input)) : undefined;
+        const extra: Set<string> = new Set();
         const missing: Set<string> = new Set();
-        const invalid: Map<keyof T, Error> = new Map();
-
+        for (const key in this.properties) {
+          const descriptor: PropertyDescriptor<any> = this.properties[key];
+          if (!descriptor.optional) {
+            missing.add(key);
+          }
+        }
+        const invalid: Map<string, Error> = new Map();
         const result: Partial<T> = {}; // Object.create(null);
 
-        for (const [outKey, key] of this.outKeys) {
-          if (extra !== undefined) {
-            extra.delete(outKey);
+        for (const [rawKey, rawValue] of input) {
+          const outKey: string = keyReader.readString(
+            rawKey,
+            readVisitor({fromString: (input: string): string  => input}),
+          );
+          const key: keyof T | undefined = this.outKeys.get(outKey);
+          if (key === undefined) {
+            // Extra key
+            extra.add(outKey);
+            continue;
           }
+          missing.delete(key as string);
           const descriptor: PropertyDescriptor<any> = this.properties[key];
-          const rawValue: any = input.get(outKey as any); // TODO: Improve this...
+          // TODO: Update readers so `undefined` is impossible/not handled here
           if (rawValue === undefined) {
             if (descriptor.optional) {
               result[key] = undefined;
             } else {
-              missing.add(key);
+              missing.add(key as string);
             }
             continue;
           }
           try {
             result[key] = descriptor.type.read!(valueReader, rawValue);
           } catch (err) {
-            invalid.set(key, err);
+            invalid.set(key as string, err);
           }
         }
 
-        if (extra !== undefined && extra.size > 0 || missing.size > 0 || invalid.size > 0) {
+        if (this.noExtraKeys && extra.size > 0 || missing.size > 0 || invalid.size > 0) {
           throw createInvalidDocumentError({extra, missing, invalid});
         }
         return result as T;
@@ -208,7 +225,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
 
     const extra: Set<string> | undefined = this.noExtraKeys ? new Set(Object.keys(val)) : undefined;
     const missing: Set<string> = new Set();
-    const invalid: Map<keyof T, Error> = new Map();
+    const invalid: Map<string, Error> = new Map();
 
     for (const key in this.properties) {
       if (extra !== undefined) {
@@ -222,9 +239,9 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
         }
         continue;
       }
-      const error: Error | undefined = descriptor.type.testError(propertyValue);
+      const error: Error | undefined = descriptor.type.testError!(propertyValue);
       if (error !== undefined) {
-        invalid.set(key, error);
+        invalid.set(key as string, error);
       }
     }
 
@@ -261,7 +278,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
 
   equals(val1: T, val2: T): boolean {
     for (const key in this.properties) {
-      const descriptor: PropertyDescriptor<Type<any>> = this.properties[key];
+      const descriptor: PropertyDescriptor<any> = this.properties[key];
       if (!descriptor.optional) {
         if (!descriptor.type.equals(val1[key], val2[key])) {
           return false;
@@ -291,7 +308,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
     const result: Diff<T> = {set: {}, unset: {}, update: {}};
     for (const key in this.properties) {
       // TODO: Remove cast
-      const descriptor: PropertyDescriptor<VersionedType<any, any>> = <any> this.properties[key];
+      const descriptor: PropertyDescriptor<any, VersionedType<any, any>> = <any> this.properties[key];
       const oldMember: any = (<any> oldVal)[key];
       const newMember: any = (<any> newVal)[key];
       if (oldMember !== undefined) {
@@ -324,7 +341,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
       result[key] = this.properties[key].type.clone(diff.set[key]);
     }
     for (const key in diff.unset) {
-      Reflect.deleteProperty(result, key);
+      Reflect.deleteProperty(result as any as object, key);
     }
     for (const key in diff.update) {
       // TODO: Remove cast
@@ -351,7 +368,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
     return result;
   }
 
-  squash(diff1: Diff<T> | undefined, diff2: Diff<T> | undefined): Diff<T> | undefined {
+  squash(_diff1: Diff<T> | undefined, _diff2: Diff<T> | undefined): Diff<T> | undefined {
     throw createNotImplementedError("DocumentType#squash");
   }
 
@@ -364,7 +381,7 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
       this._options;
 
     const noExtraKeys: boolean | undefined = options.noExtraKeys;
-    const properties: {[P in keyof T]: PropertyDescriptor<Type<any>>} = options.properties;
+    const properties: {[P in keyof T]: PropertyDescriptor<any>} = options.properties;
     const rename: {[P in keyof T]?: string} | undefined = options.rename;
     const changeCase: CaseStyle | undefined = options.changeCase;
 
@@ -373,12 +390,12 @@ export const DocumentType: DocumentTypeConstructor = class<T extends {}> impleme
 };
 
 export function renameKeys<T>(obj: T, renameAll?: CaseStyle): Map<keyof T, string> {
-  const keys: (keyof T)[] = Object.keys(obj) as (keyof T)[];
+  const keys: string[] = Object.keys(obj);
   const result: Map<keyof T, string> = new Map();
   const outKeys: Set<string> = new Set();
   for (const key of keys) {
     const renamed: string = renameAll === undefined ? key : rename(key, renameAll);
-    result.set(key, renamed);
+    result.set(key as keyof T, renamed);
     if (outKeys.has(renamed)) {
       throw new Incident("NonBijectiveKeyRename", "Some keys are the same after renaming");
     }

@@ -12,12 +12,10 @@ import { createNotTrimmedError } from "../errors/not-trimmed";
 import { createPatternNotMatchedError } from "../errors/pattern-not-matched";
 import { readVisitor } from "../readers/read-visitor";
 
-let unormNfc: ((str: string) => string) | undefined = undefined;
-try {
-  /* tslint:disable-next-line:no-var-requires no-require-imports */
-  unormNfc = require("unorm").nfc;
-} catch (err) {
-  // Ignore dependency not found error.
+export type UnormNfc = (str: string) => string;
+
+export interface UnormLike {
+  nfc: UnormNfc;
 }
 
 export enum Normalization {
@@ -80,6 +78,11 @@ export interface CodepointStringOptions {
   trimmed?: boolean;
   minCodepoints?: number;
   maxCodepoints: number;
+
+  /**
+   * Unicode normalization library to use.
+   */
+  unorm?: UnormLike;
 }
 
 export class CodepointStringType implements IoType<string>, VersionedType<string, Diff> {
@@ -92,6 +95,7 @@ export class CodepointStringType implements IoType<string>, VersionedType<string
   readonly trimmed: boolean;
   readonly minCodepoints?: number;
   readonly maxCodepoints: number;
+  readonly unorm?: UnormLike;
 
   private _options: Lazy<CodepointStringOptions>;
 
@@ -110,7 +114,16 @@ export class CodepointStringType implements IoType<string>, VersionedType<string
       lazyProperties(
         this,
         this._applyOptions,
-        ["normalization", "enforceUnicodeRegExp", "pattern", "lowerCase", "trimmed", "minCodepoints", "maxCodepoints"],
+        [
+          "normalization",
+          "enforceUnicodeRegExp",
+          "pattern",
+          "lowerCase",
+          "trimmed",
+          "minCodepoints",
+          "maxCodepoints",
+          "unorm",
+        ],
       );
     }
   }
@@ -175,10 +188,10 @@ export class CodepointStringType implements IoType<string>, VersionedType<string
 
     switch (this.normalization) {
       case Normalization.Nfc:
-        if (unormNfc === undefined) {
+        if (this.unorm === undefined) {
           throw createMissingDependencyError("unorm", "Required to normalize unicode strings to NFC.");
         }
-        if (val !== unormNfc(val)) {
+        if (val !== this.unorm.nfc(val)) {
           return Incident("UnicodeNormalization", "Not NFC-Normalized");
         }
         break;
@@ -280,10 +293,11 @@ export class CodepointStringType implements IoType<string>, VersionedType<string
     const trimmed: boolean = options.trimmed !== undefined ? options.trimmed : false;
     const minCodepoints: number | undefined = options.minCodepoints;
     const maxCodepoints: number = options.maxCodepoints;
+    const unorm: UnormLike | undefined = options.unorm;
 
     Object.assign(
       this,
-      {normalization, enforceUnicodeRegExp, pattern, lowerCase, trimmed, minCodepoints, maxCodepoints},
+      {normalization, enforceUnicodeRegExp, pattern, lowerCase, trimmed, minCodepoints, maxCodepoints, unorm},
     );
   }
 }
