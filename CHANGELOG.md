@@ -1,4 +1,4 @@
-# Next
+# 0.8.0 (2018-12-03)
 
 - **[Breaking change]** Change `variantRead` result from `[variant, value]` to `{variant, value}`.
 - **[Breaking change]** Require `unorm` is `CodepointString` constructor.
