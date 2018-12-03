@@ -109,22 +109,16 @@ export interface Ucs2StringTypeOptions {
  */
 export class Ucs2StringType implements IoType<string>, VersionedType<string, Diff> {
   readonly name: Name = name;
-  readonly allowUnicodeRegExp: boolean;
+  readonly allowUnicodeRegExp!: boolean;
   readonly pattern?: RegExp;
-  readonly lowerCase: boolean;
-  readonly trimmed: boolean;
+  readonly lowerCase!: boolean;
+  readonly trimmed!: boolean;
   readonly minLength?: number;
-  readonly maxLength: number;
+  readonly maxLength!: number;
 
   private _options: Lazy<Ucs2StringTypeOptions>;
 
   constructor(options: Lazy<Ucs2StringTypeOptions>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.allowUnicodeRegExp = <any> undefined;
-    this.lowerCase = <any> undefined;
-    this.trimmed = <any> undefined;
-    this.maxLength = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

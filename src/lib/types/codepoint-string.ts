@@ -88,25 +88,18 @@ export interface CodepointStringOptions {
 export class CodepointStringType implements IoType<string>, VersionedType<string, Diff> {
 
   readonly name: Name = name;
-  readonly normalization: Normalization;
-  readonly enforceUnicodeRegExp: boolean;
+  readonly normalization!: Normalization;
+  readonly enforceUnicodeRegExp!: boolean;
   readonly pattern?: RegExp;
-  readonly lowerCase: boolean;
-  readonly trimmed: boolean;
+  readonly lowerCase!: boolean;
+  readonly trimmed!: boolean;
   readonly minCodepoints?: number;
-  readonly maxCodepoints: number;
+  readonly maxCodepoints!: number;
   readonly unorm?: UnormLike;
 
   private _options: Lazy<CodepointStringOptions>;
 
   constructor(options: Lazy<CodepointStringOptions>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.normalization = <any> undefined;
-    this.enforceUnicodeRegExp = <any> undefined;
-    this.lowerCase = <any> undefined;
-    this.trimmed = <any> undefined;
-    this.maxCodepoints = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

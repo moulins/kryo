@@ -25,8 +25,8 @@ export type TestWithVariantResult<T> =
 export class TaggedUnionType<T, K extends DocumentType<T> = DocumentType<T>> implements IoType<T>,
   TaggedUnionTypeOptions<T, K> {
   readonly name: Name = name;
-  readonly variants: ReadonlyArray<K>;
-  readonly tag: keyof T;
+  readonly variants!: ReadonlyArray<K>;
+  readonly tag!: keyof T;
 
   private _options?: Lazy<TaggedUnionTypeOptions<T, K>>;
 
@@ -37,10 +37,6 @@ export class TaggedUnionType<T, K extends DocumentType<T> = DocumentType<T>> imp
   private _valueToVariantMap: Map<any, K> | undefined;
 
   constructor(options: Lazy<TaggedUnionTypeOptions<T, K>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.variants = <any> undefined;
-    this.tag = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

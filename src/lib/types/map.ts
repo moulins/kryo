@@ -20,20 +20,14 @@ export interface MapTypeOptions<K, V> {
 
 export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>, Diff> {
   readonly name: Name = name;
-  readonly keyType: VersionedType<K, any>;
-  readonly valueType: VersionedType<V, any>;
-  readonly maxSize: number;
-  readonly assumeStringKey: boolean;
+  readonly keyType!: VersionedType<K, any>;
+  readonly valueType!: VersionedType<V, any>;
+  readonly maxSize!: number;
+  readonly assumeStringKey!: boolean;
 
   private _options: Lazy<MapTypeOptions<K, V>>;
 
   constructor(options: Lazy<MapTypeOptions<K, V>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.keyType = <any> undefined;
-    this.valueType = <any> undefined;
-    this.maxSize = <any> undefined;
-    this.assumeStringKey = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

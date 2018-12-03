@@ -21,22 +21,15 @@ export interface CustomTypeOptions<T> {
 
 export class CustomType<T> implements Type<T> {
   readonly name: Name = name;
-  readonly read: Read<T>;
-  readonly write: Write<T>;
-  readonly testError: TestError<T>;
-  readonly equals: Equals<T>;
-  readonly clone: Clone<T>;
+  readonly read!: Read<T>;
+  readonly write!: Write<T>;
+  readonly testError!: TestError<T>;
+  readonly equals!: Equals<T>;
+  readonly clone!: Clone<T>;
 
   private _options?: Lazy<CustomTypeOptions<T>>;
 
   constructor(options: Lazy<CustomTypeOptions<T>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.read = <any> undefined;
-    this.write = <any> undefined;
-    this.testError = <any> undefined;
-    this.equals = <any> undefined;
-    this.clone = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

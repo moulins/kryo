@@ -47,16 +47,12 @@ export const DEFAULT_MAX: number = Number.MAX_SAFE_INTEGER;
 export class IntegerType implements IoType<number>, VersionedType<number, Diff>, Ord<number> {
 
   readonly name: Name = name;
-  readonly min: number;
-  readonly max: number;
+  readonly min!: number;
+  readonly max!: number;
 
   private _options: Lazy<IntegerTypeOptions>;
 
   constructor(options?: Lazy<IntegerTypeOptions>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.min = <any> undefined;
-    this.max = <any> undefined;
-
     if (options === undefined) {
       this._options = {};
       this._applyOptions();

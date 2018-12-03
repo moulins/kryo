@@ -39,16 +39,12 @@ export interface Float64TypeOptions {
 
 export class Float64Type implements IoType<number>, VersionedType<number, [number, number]>, Ord<number> {
   readonly name: Name = name;
-  readonly allowNaN: boolean;
-  readonly allowInfinity: boolean;
+  readonly allowNaN!: boolean;
+  readonly allowInfinity!: boolean;
 
   private _options: Lazy<Float64TypeOptions>;
 
   constructor(options?: Lazy<Float64TypeOptions>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.allowNaN = <any> undefined;
-    this.allowInfinity = <any> undefined;
-
     this._options = options !== undefined ? options : {};
     if (typeof options !== "function") {
       this._applyOptions();

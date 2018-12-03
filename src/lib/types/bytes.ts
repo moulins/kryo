@@ -13,14 +13,11 @@ export interface BytesTypeOptions {
 }
 
 export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, Diff>, Ord<Uint8Array> {
-  readonly maxLength: number;
+  readonly maxLength!: number;
 
   private _options: Lazy<BytesTypeOptions>;
 
   constructor(options: Lazy<BytesTypeOptions>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.maxLength = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

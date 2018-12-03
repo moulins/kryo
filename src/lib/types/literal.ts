@@ -42,16 +42,12 @@ export interface LiteralIoType<T, K extends IoType<any> = IoType<any>> extends I
 // tslint:disable-next-line:variable-name
 export const LiteralType: LiteralTypeConstructor = class<TT, K extends Type<any> = Type<any>> implements IoType<TT> {
   readonly name: Name = name;
-  readonly type: K;
-  readonly value: TT;
+  readonly type!: K;
+  readonly value!: TT;
 
   private _options: Lazy<LiteralTypeOptions<TT, K>>;
 
   constructor(options: Lazy<LiteralTypeOptions<TT, K>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.type = <any> undefined;
-    this.value = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

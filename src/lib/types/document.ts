@@ -97,16 +97,13 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T> implements I
   DocumentIoTypeOptions<T> {
   readonly name: Name = name;
   readonly noExtraKeys?: boolean;
-  readonly properties: {readonly [P in keyof T]: PropertyDescriptor<T[P], any>};
+  readonly properties!: {readonly [P in keyof T]: PropertyDescriptor<T[P], any>};
   readonly rename?: {readonly [P in keyof T]?: string};
   readonly changeCase?: CaseStyle;
   private _options: Lazy<DocumentTypeOptions<T>>;
   private _outKeys: Map<string, keyof T> | undefined;
 
   constructor(options: Lazy<DocumentTypeOptions<T>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.properties = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

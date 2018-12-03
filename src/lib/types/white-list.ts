@@ -15,16 +15,12 @@ export interface WhiteListTypeOptions<T> {
 
 export class WhiteListType<T> implements IoType<T>, VersionedType<T, Diff> {
   readonly name: Name = name;
-  readonly itemType: VersionedType<any, any>;
-  readonly values: T[];
+  readonly itemType!: VersionedType<any, any>;
+  readonly values!: T[];
 
   private _options: Lazy<WhiteListTypeOptions<T>>;
 
   constructor(options: Lazy<WhiteListTypeOptions<T>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.itemType = <any> undefined;
-    this.values = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

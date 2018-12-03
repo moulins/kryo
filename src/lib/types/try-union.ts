@@ -23,14 +23,11 @@ export type TestWithVariantResult<T> =
 
 export class TryUnionType<T, M extends Type<T> = Type<T>> implements IoType<T>, TryUnionTypeOptions<T, M> {
   readonly name: Name = name;
-  readonly variants: M[];
+  readonly variants!: M[];
 
   private _options?: Lazy<TryUnionTypeOptions<T, M>>;
 
   constructor(options: Lazy<TryUnionTypeOptions<T, M>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.variants = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

@@ -4,6 +4,7 @@
 - **[Breaking change]** Require `unorm` is `CodepointString` constructor.
 - **[Feature]** Update to Typescript 3.2.
 - **[Feature]** First class ESM support.
+- **[Fix]** Replace fake property assignations by property existence assertions.
 - **[Internal]** Update dependencies.
 
 # 0.7.0 (2018-02-26)

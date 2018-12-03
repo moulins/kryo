@@ -81,7 +81,7 @@ export interface TsEnumTypeOptions<E extends string | number, EO extends {} = {}
  */
 export class TsEnumType<E extends string | number, EO extends {} = {}> implements IoType<E>, TsEnumTypeOptions<E, EO> {
   readonly name: Name = name;
-  readonly enum: Record<keyof EO, E>;
+  readonly enum!: Record<keyof EO, E>;
   readonly changeCase?: CaseStyle;
   readonly rename?: {[P in keyof EO]?: string};
 
@@ -105,9 +105,6 @@ export class TsEnumType<E extends string | number, EO extends {} = {}> implement
   private _options: Lazy<TsEnumTypeOptions<E>>;
 
   constructor(options: Lazy<TsEnumTypeOptions<E>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.enum = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();

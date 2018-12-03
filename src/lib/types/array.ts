@@ -43,16 +43,12 @@ export interface ArrayIoType<T, M extends IoType<T> = IoType<T>> extends IoType<
 // tslint:disable-next-line:variable-name
 export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> = Type<T>> {
   readonly name: Name = name;
-  readonly itemType: M;
-  readonly maxLength: number;
+  readonly itemType!: M;
+  readonly maxLength!: number;
 
   private _options: Lazy<ArrayTypeOptions<T, M>>;
 
   constructor(options: Lazy<ArrayTypeOptions<T, M>>) {
-    // TODO: Remove once TS 2.7 is better supported by editors
-    this.itemType = <any> undefined;
-    this.maxLength = <any> undefined;
-
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();
