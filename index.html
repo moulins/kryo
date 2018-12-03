@@ -90,17 +90,15 @@
 				</ul>
 				<h2 id="installation">Installation</h2>
 				<p>You can install the latest stable version of Kryo with <em>yarn</em> (recommended) or <em>npm</em>:</p>
-				<pre><code class="lang-shell"><span class="hljs-meta">#</span><span class="bash"> Using yarn:</span>
+				<pre><code class="language-shell"><span class="hljs-meta">#</span><span class="bash"> Using yarn:</span>
 yarn add kryo
 <span class="hljs-meta">#</span><span class="bash"> Usin npm:</span>
-npm install --save kryo
-</code></pre>
+npm install --save kryo</code></pre>
 				<p>The package includes Typescript type defintion files (<code>.d.ts</code>) and source maps.</p>
 				<p>You can install the preview of the next version. This version is continuously deployed from the
 				<code>master</code> branch of the repo (it is the most up-to-date version).</p>
 				<pre><code>yarn add kryo@next
-<span class="hljs-built_in">npm</span> install --save kryp@next
-</code></pre><h2 id="getting-started">Getting started</h2>
+<span class="hljs-built_in">npm</span> install --save kryp@next</code></pre><h2 id="getting-started">Getting started</h2>
 				<p><strong>Note: The documentation is in the process of being rewritten. Some sections are drafts or
 				outdated.</strong></p>
 				<h3 id="types">Types</h3>
@@ -118,33 +116,31 @@ npm install --save kryo
 				is compatible with Kryo. </p>
 				<p>For example, the builtin type <code>$Uint8</code> represents an unsigned integer in the inclusive range
 				<code>[0, 255]</code>.</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { $Uint8 } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/builtins/uint8"</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { $Uint8 } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/builtins/uint8"</span>;
 
 $Uint8.test(<span class="hljs-number">15</span>); <span class="hljs-comment">// `true`</span>
 $Uint8.test(<span class="hljs-built_in">Math</span>.PI); <span class="hljs-comment">// `false`</span>
 $Uint8.test(<span class="hljs-string">"Hello, World!"</span>); <span class="hljs-comment">// `false`</span>
 $Uint8.equals(<span class="hljs-number">6</span>, <span class="hljs-number">6</span>); <span class="hljs-comment">// `true`</span>
-$Uint8.clone(<span class="hljs-number">255</span>); <span class="hljs-comment">// `255`</span>
-</code></pre>
+$Uint8.clone(<span class="hljs-number">255</span>); <span class="hljs-comment">// `255`</span></code></pre>
 				<h3 id="type-constructors">Type constructors</h3>
 				<p>Kryo provides <strong>type constructors</strong> for common types. They let you instanciate types using a
 				configuration object.</p>
 				<p>For example you may want to define a <code>$Percentage</code> type representing unsigned integers in the
 					inclusive range <code>[0, 100]</code>. You can implement it from scratch, or use the <code>IntegerType</code> type
 				constructor.</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { IntegerType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/integer"</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { IntegerType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/integer"</span>;
 
 <span class="hljs-keyword">const</span> $Percentage = <span class="hljs-keyword">new</span> IntegerType({min: <span class="hljs-number">0</span>, max: <span class="hljs-number">100</span>});
 <span class="hljs-comment">// You can also define `$Uint8` yourself</span>
 <span class="hljs-keyword">const</span> $Uint8 = <span class="hljs-keyword">new</span> IntegerType({min: <span class="hljs-number">0</span>, max: <span class="hljs-number">255</span>});
 
 $Percentage.test(<span class="hljs-number">50</span>); <span class="hljs-comment">// `true`</span>
-$Percentage.test(<span class="hljs-number">101</span>); <span class="hljs-comment">// `false`</span>
-</code></pre>
+$Percentage.test(<span class="hljs-number">101</span>); <span class="hljs-comment">// `false`</span></code></pre>
 				<h4 id="documenttype">DocumentType</h4>
 				<p>One of the most important type constructors is <code>DocumentType</code>. It lets you describe the interface
 				of Javascript objects by composing types for each property.</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { DocumentType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/document"</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { DocumentType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/document"</span>;
 <span class="hljs-keyword">import</span> { Ucs2StringType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/ucs2-string"</span>;
 
 <span class="hljs-keyword">const</span> $DisplayName = <span class="hljs-keyword">new</span> Ucs2StringType({maxLength: <span class="hljs-number">32</span>});
@@ -163,8 +159,7 @@ $Percentage.test(<span class="hljs-number">101</span>); <span class="hljs-commen
     id: {<span class="hljs-keyword">type</span>: $Uint8},
     displayName: {<span class="hljs-keyword">type</span>: $DisplayName, optional: <span class="hljs-literal">true</span>},
   }
-});
-</code></pre>
+});</code></pre>
 				<h4 id="taggeduniontype">TaggedUnionType</h4>
 				<p>One of the most powerful type constructors provided by Kryo is <code>TaggedUnionType</code>. It allows to
 					combine multiple document types and differentiate them using the value of a &quot;tag&quot; property. This
@@ -173,7 +168,7 @@ $Percentage.test(<span class="hljs-number">101</span>); <span class="hljs-commen
 				This is the analogue of Typescript&#39;s discriminated unions.</p>
 				<p>For example, Github&#39;s repository owners can either be users or organizations. We can define it
 				as follow:</p>
-				<pre><code class="lang-typescript"><span class="hljs-comment">// 1. We create an enum used to differentiate the possible values.</span>
+				<pre><code class="language-typescript"><span class="hljs-comment">// 1. We create an enum used to differentiate the possible values.</span>
 <span class="hljs-keyword">enum</span> RepositoryOwnerType {
   User = <span class="hljs-string">"user"</span>,
   Organization = <span class="hljs-string">"organization"</span>,
@@ -210,11 +205,10 @@ $Percentage.test(<span class="hljs-number">101</span>); <span class="hljs-commen
 
 <span class="hljs-comment">// 4. We create the union type</span>
 <span class="hljs-keyword">type</span> RepositoryOwner = User | Organization;
-<span class="hljs-keyword">const</span> $RepositoryOwner = <span class="hljs-keyword">new</span> TaggedUnionType({variants: [User, Organization], tag: <span class="hljs-string">"type"</span>});
-</code></pre>
+<span class="hljs-keyword">const</span> $RepositoryOwner = <span class="hljs-keyword">new</span> TaggedUnionType({variants: [User, Organization], tag: <span class="hljs-string">"type"</span>});</code></pre>
 				<hr>
 				<p>You can define custom types, for example we can define a <code>Prime</code> type describing prime numbers.</p>
-				<pre><code class="lang-typescript"><span class="hljs-comment">// By convention, the names of type objects are prefixed by `$`</span>
+				<pre><code class="language-typescript"><span class="hljs-comment">// By convention, the names of type objects are prefixed by `$`</span>
 <span class="hljs-keyword">const</span> $Prime: Type&lt;<span class="hljs-built_in">number</span>&gt; = {
   testError(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">Error</span> | <span class="hljs-literal">undefined</span> {
     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">"number"</span>) {
@@ -245,8 +239,7 @@ $Percentage.test(<span class="hljs-number">101</span>); <span class="hljs-commen
     <span class="hljs-comment">//   }</span>
     <span class="hljs-comment">// }</span>
     <span class="hljs-comment">// return true;</span>
-    <span class="hljs-comment">//</span>
-</code></pre>
+    <span class="hljs-comment">//</span></code></pre>
 				<p>  },
 					equal(left: number, right: number): boolean {
 					return left === right;
@@ -277,19 +270,17 @@ const $Record = new DocumentType({
 $Record.test({}); // `</span><span class="hljs-literal">false</span><span class="hljs-string">` (missing required properties)
 $Record.test({discoveryDate: new Date(), value: 10}); // `</span><span class="hljs-literal">false</span><span class="hljs-string">` (not a prime)
 $Record.test({discoveryDate: null, value: 10}); // `</span><span class="hljs-literal">false</span><span class="hljs-string">` (invalid value for `</span>discoveryDate<span class="hljs-string">`)
-$Record.test({discoveryDate: new Date(), value: 11}); // `</span><span class="hljs-literal">true</span><span class="hljs-string">`</span>
-</code></pre><p><code>$Date</code> and instances of <code>DocumentType</code> implement not only the <code>Type</code> interface but also the
+$Record.test({discoveryDate: new Date(), value: 11}); // `</span><span class="hljs-literal">true</span><span class="hljs-string">`</span></code></pre><p><code>$Date</code> and instances of <code>DocumentType</code> implement not only the <code>Type</code> interface but also the
 				<code>IoType</code> interface: they support serialization.</p>
 				<p>The <code>IoType</code> interface has two additional methods:</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">interface</span> IoType {
+				<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> IoType {
   write&lt;W&gt;(writer: Writer&lt;W&gt;, value: T): W;
   read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): T;
-}
-</code></pre>
+}</code></pre>
 				<p>The signature is more complex but it lets you write a single serialization and deserialization
 					method to handle most general-pupose formats: the format details are abstracted by the <code>writer</code>
 				and <code>reader</code> objects.</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> $Prime: IoType&lt;<span class="hljs-built_in">number</span>&gt; = {
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> $Prime: IoType&lt;<span class="hljs-built_in">number</span>&gt; = {
   testError(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">Error</span> | <span class="hljs-literal">undefined</span> { ... },
   test(value: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">boolean</span> { ... },
   equal(left: <span class="hljs-built_in">number</span>, right: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">boolean</span> { ... },
@@ -306,14 +297,13 @@ $Record.test({discoveryDate: new Date(), value: 11}); // `</span><span class="hl
       },
     }));
   },
-}
-</code></pre>
+}</code></pre>
 				<p>The reader and writer objects use an intermediate model for types: rich enough to represent the
 				types of most popular general-purpose languages but simpler than the runtime types.</p>
 				<p><strong>TODO</strong>: Serialization needs way more explanations.</p>
 				<p>Now that all of our objects support serialization, we can use it to read to and from JSON despite
 				the <code>Date</code> type (used by <code>discoveryDate</code> but not supported by JSON):</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> reader: JsonReader = <span class="hljs-keyword">new</span> JsonReader();
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> reader: JsonReader = <span class="hljs-keyword">new</span> JsonReader();
 <span class="hljs-keyword">const</span> writer: JsonReader = <span class="hljs-keyword">new</span> JsonWriter();
 
 <span class="hljs-keyword">const</span> record = $Record.read(reader, <span class="hljs-string">'{"discoveryDate": "2017-10-15T17:10:08.218Z", value: 5}'</span>);
@@ -321,8 +311,7 @@ $Record.test({discoveryDate: new Date(), value: 11}); // `</span><span class="hl
 <span class="hljs-comment">// runtime description:</span>
 <span class="hljs-built_in">console</span>.log(record.discoveryDate <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>); <span class="hljs-comment">// `true`</span>
 <span class="hljs-keyword">const</span> record.value = <span class="hljs-number">11</span>;
-<span class="hljs-built_in">console</span>.log($Record.write(writer, record)); <span class="hljs-comment">// `'{"discoveryDate": "2017-10-15T17:10:08.218Z", value: 11}'`</span>
-</code></pre>
+<span class="hljs-built_in">console</span>.log($Record.write(writer, record)); <span class="hljs-comment">// `'{"discoveryDate": "2017-10-15T17:10:08.218Z", value: 11}'`</span></code></pre>
 				<h3 id="types">Types</h3>
 				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo differentiates three level of types.</p>
@@ -337,7 +326,7 @@ $Record.test({discoveryDate: new Date(), value: 11}); // `</span><span class="hl
 				</ul>
 				<p>You can import all the types from the main module, but it is recommended to import them them directly from
 				their module (to allow better dead-code elimination):</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Ucs2StringType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/ucs2-string"</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Ucs2StringType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/ucs2-string"</span>;
 <span class="hljs-keyword">import</span> { DateType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/date"</span>;
 
 <span class="hljs-comment">// Use the type constructor to create a specialized string</span>
@@ -370,8 +359,7 @@ $<span class="hljs-built_in">Date</span>.readTrusted(<span class="hljs-string">"
 $<span class="hljs-built_in">Date</span>.patch(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">10</span>), diff2); <span class="hljs-comment">// applies the diff: returns a value equivalent to `new Date(30)`</span>
 $<span class="hljs-built_in">Date</span>.squash(diff2, diff3); <span class="hljs-comment">// 50: merge the two diffs in a single diff representing the whole change</span>
 $<span class="hljs-built_in">Date</span>.reverseDiff(diff3); <span class="hljs-comment">// -30: Diffs are symetric: you can always reverse them</span>
-$<span class="hljs-built_in">Date</span>.patch($<span class="hljs-built_in">Date</span>.reverseDiff(diff3)); <span class="hljs-comment">// 30: Apply the reverse diff to retrieve `30` from `60`</span>
-</code></pre>
+$<span class="hljs-built_in">Date</span>.patch($<span class="hljs-built_in">Date</span>.reverseDiff(diff3)); <span class="hljs-comment">// 30: Apply the reverse diff to retrieve `30` from `60`</span></code></pre>
 				<h3 id="type-constructors-and-builtins">Type constructors and builtins</h3>
 				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo provides both constructors to let you instantiate types by providing a minimal configuration but also builtins
@@ -380,7 +368,7 @@ $<span class="hljs-built_in">Date</span>.patch($<span class="hljs-built_in">Date
 				<p>Example: Kryo provides the class <code>IntegerType</code> to produce types for integers in a given range. Kryo also provide
 					the built-in <code>$Uint32</code> type: an instance of <code>IntegerType</code> already configured for the common range of unsigned
 				32-bit integers (<code>[0, 2**32 - 1]</code>).</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { IntegerType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/integer"</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { IntegerType } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/types/integer"</span>;
 <span class="hljs-keyword">import</span> { $Uint32 } <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/builtins/uint32"</span>;
 
 <span class="hljs-comment">/** Represents the type of the outcome of throwing two D6 dices and summing their value */</span>
@@ -394,8 +382,7 @@ $twoDicesOutcome.test(<span class="hljs-number">1</span>); <span class="hljs-com
 $Uint32.test(<span class="hljs-number">1</span>); <span class="hljs-comment">// true</span>
 $Uint32.test(<span class="hljs-number">1.5</span>); <span class="hljs-comment">// false</span>
 $Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32</span>); <span class="hljs-comment">// false</span>
-$Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32</span> - <span class="hljs-number">1</span>); <span class="hljs-comment">// true</span>
-</code></pre>
+$Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32</span> - <span class="hljs-number">1</span>); <span class="hljs-comment">// true</span></code></pre>
 				<h3 id="types">Types</h3>
 				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo currently provide support for the following types:</p>
@@ -422,24 +409,22 @@ $Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32<
 				<p>Please check the documentation of each type to see that options are available and which builtins are provided
 				out of the box.</p>
 				<p>Here is an example to define the type of a point in a RGBa color-space with 8-bit depth:</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> {$Uint8} <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/integer"</span>;
-
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {$Uint8} <span class="hljs-keyword">from</span> <span class="hljs-string">"kryo/integer"</span>;
 </code></pre>
 				<h3 id="circular-definitions-lazy-options">Circular definitions, lazy options</h3>
 				<p><strong>THE DOCUMENTATION IS IN THE PROCESS OF BEING REWRITTEN, THIS SECTION IS OUTDATED</strong></p>
 				<p>Kryo supports circular type definitions, this allows to describe recursive values such as trees.
 				Note that circular values are not supported (yet) by Kryo: you have to break and recreate the cycles in the values yourself.</p>
 				<p>Here is an example of values with a recursive structure:</p>
-				<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> v0 = {}
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> v0 = {}
 <span class="hljs-keyword">const</span> v1 = {foo: {}}
 <span class="hljs-keyword">const</span> v2 = {foo: {bar: {}}}
 <span class="hljs-keyword">const</span> v3 = {foo: {bar: {foo: {}}}}
-<span class="hljs-keyword">const</span> v4 = {foo: {bar: {foo: {bar: {}}}}}
-</code></pre>
+<span class="hljs-keyword">const</span> v4 = {foo: {bar: {foo: {bar: {}}}}}</code></pre>
 				<p>At each level, the value is a document with an optional key alternating between <code>foo</code> and <code>bar</code>.
 				The value is not circular, but we see that to describe it we need the types to be self-referential.</p>
 				<p>A simple (invalid) approach would be to define it as follow:</p>
-				<pre><code class="lang-typescript"><span class="hljs-comment">// The document at each even level can have an optional key `foo` of type `$oddLevel`</span>
+				<pre><code class="language-typescript"><span class="hljs-comment">// The document at each even level can have an optional key `foo` of type `$oddLevel`</span>
 <span class="hljs-keyword">const</span> $evenLevel = <span class="hljs-keyword">new</span> DocumentType({
   properties: {
     foo: {<span class="hljs-keyword">type</span>: $oddLevel, optional: <span class="hljs-literal">true</span>},
@@ -453,14 +438,13 @@ $Uint32.test(<span class="hljs-number">2</span> ** <span class="hljs-number">32<
   }
 });
 
-$evenLevel.test(v4); <span class="hljs-comment">// Error</span>
-</code></pre>
+$evenLevel.test(v4); <span class="hljs-comment">// Error</span></code></pre>
 				<p>The issue with the code above is that during the declaration of <code>$evenLevel</code>, <code>$oddLevel</code> is not yet defined so the
 					received properties object is <code>{foo: {type: undefined, optional: true}}</code>.
 					To solve this problem, Kryo&#39;s types use a simple trick: you can pass the options lazily. Instead of providing
 					the options object directly, you can use a function returning this function object. This function will be called
 				only once, but not at the creation of the instance but at its first use.</p>
-				<pre><code class="lang-typescript"><span class="hljs-comment">// Note that the options were wrapped in a lambda</span>
+				<pre><code class="language-typescript"><span class="hljs-comment">// Note that the options were wrapped in a lambda</span>
 <span class="hljs-keyword">const</span> $evenLevel = <span class="hljs-keyword">new</span> DocumentType(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({
   properties: {
     foo: {<span class="hljs-keyword">type</span>: $oddLevel, optional: <span class="hljs-literal">true</span>},
@@ -478,8 +462,7 @@ $evenLevel.test(v4); <span class="hljs-comment">// Error</span>
 
 <span class="hljs-comment">// When call a method for the first time, `$evenLevel` initializes itself by calling the lambda</span>
 <span class="hljs-comment">// When testing `v4`, `$oddLevel` will also be used so it will be initialized at this point.</span>
-$evenLevel.test(v4); <span class="hljs-comment">// Success: returns `true`</span>
-</code></pre>
+$evenLevel.test(v4); <span class="hljs-comment">// Success: returns `true`</span></code></pre>
 				<h2 id="license">License</h2>
 				<p><a href="./LICENSE.md">MIT License</a></p>
 			</div>

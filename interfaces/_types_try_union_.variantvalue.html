@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Type | Kryo</title>
+	<title>VariantValue | Kryo</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,27 +56,35 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_types_float64_.html">&quot;types/float64&quot;</a>
+					<a href="../modules/_types_try_union_.html">&quot;types/try-union&quot;</a>
 				</li>
 				<li>
-					<a href="../modules/_types_float64_.json.html">json</a>
-				</li>
-				<li>
-					<a href="_types_float64_.json.type.html">Type</a>
+					<a href="_types_try_union_.variantvalue.html">VariantValue</a>
 				</li>
 			</ul>
-			<h1>Interface Type</h1>
+			<h1>Interface VariantValue&lt;T, K&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+					<li>
+						<h4>K</h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Type</span>
+						<span class="target">VariantValue</span>
 					</li>
 				</ul>
 			</section>
@@ -87,9 +95,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_float64_.json.type.html#allowinfinity" class="tsd-kind-icon">allow<wbr>Infinity</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_float64_.json.type.html#allownan" class="tsd-kind-icon">allow<wbr>NaN</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_float64_.json.type.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_try_union_.variantvalue.html#value" class="tsd-kind-icon">value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_try_union_.variantvalue.html#variant" class="tsd-kind-icon">variant</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,32 +105,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="allowinfinity" class="tsd-anchor"></a>
-					<h3>allow<wbr>Infinity</h3>
-					<div class="tsd-signature tsd-kind-icon">allow<wbr>Infinity<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="value" class="tsd-anchor"></a>
+					<h3>value</h3>
+					<div class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/239f010/src/lib/types/float64.ts#L14">types/float64.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/239f010/src/lib/types/try-union.ts#L17">types/try-union.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="allownan" class="tsd-anchor"></a>
-					<h3>allow<wbr>NaN</h3>
-					<div class="tsd-signature tsd-kind-icon">allow<wbr>NaN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="variant" class="tsd-anchor"></a>
+					<h3>variant</h3>
+					<div class="tsd-signature tsd-kind-icon">variant<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">K</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/239f010/src/lib/types/float64.ts#L13">types/float64.ts:13</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_float64_.html#name" class="tsd-signature-type">Name</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/239f010/src/lib/types/float64.ts#L12">types/float64.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/239f010/src/lib/types/try-union.ts#L16">types/try-union.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -136,35 +133,45 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_types_float64_.html">"types/float64"</a>
-						<ul>
-							<li class="current tsd-kind-module tsd-parent-kind-external-module">
-								<a href="../modules/_types_float64_.json.html">json</a>
-							</li>
-						</ul>
+						<a href="../modules/_types_try_union_.html">"types/try-<wbr>union"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../classes/_types_try_union_.tryuniontype.html" class="tsd-kind-icon">Try<wbr>Union<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_types_try_union_.tryuniontypeoptions.html" class="tsd-kind-icon">Try<wbr>Union<wbr>Type<wbr>Options</a>
+					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_float64_.json.type.html" class="tsd-kind-icon">Type</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_types_try_union_.variantvalue.html" class="tsd-kind-icon">Variant<wbr>Value</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_float64_.json.type.html#allowinfinity" class="tsd-kind-icon">allow<wbr>Infinity</a>
+								<a href="_types_try_union_.variantvalue.html#value" class="tsd-kind-icon">value</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_float64_.json.type.html#allownan" class="tsd-kind-icon">allow<wbr>NaN</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_float64_.json.type.html#name" class="tsd-kind-icon">name</a>
+								<a href="_types_try_union_.variantvalue.html#variant" class="tsd-kind-icon">variant</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_types_try_union_.html#diff" class="tsd-kind-icon">Diff</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_types_try_union_.html#name" class="tsd-kind-icon">Name</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/_types_try_union_.html#testwithvariantresult" class="tsd-kind-icon">Test<wbr>With<wbr>Variant<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/_types_try_union_.html#name-1" class="tsd-kind-icon">name</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
