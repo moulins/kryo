@@ -9,10 +9,10 @@ import { readVisitor } from "../readers/read-visitor";
 /**
  * Represents an enum value defined in `EnumConstructor`
  */
-export type SimpleEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumConstructor[K]};
+export type TsEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumConstructor[K]};
 
-export type Name = "simple-enum";
-export const name: Name = "simple-enum";
+export type Name = "ts-enum";
+export const name: Name = "ts-enum";
 export type Diff = number;
 
 export type EnumObject<EO, E extends number | string> = Record<keyof EO, E>;
