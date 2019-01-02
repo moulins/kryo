@@ -1,6 +1,7 @@
 # Next
 
 - **[Fix]** Fix `TsEnumType` name.
+- **[Fix]** Restore `assumeStringKey` option for `MapType`.
 
 # 0.8.0 (2018-12-03)
 

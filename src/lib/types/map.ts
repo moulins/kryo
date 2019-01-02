@@ -38,6 +38,39 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
 
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): Map<K, V> {
+    if (this.assumeStringKey) {
+      return reader.readDocument(raw, readVisitor({
+        fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): Map<K, V> => {
+          const result: Map<K, V> = new Map();
+
+          for (const [rawKey, rawValue] of input) {
+            const uncheckedKey: string = keyReader.readString(
+              rawKey,
+              readVisitor({fromString: (input: string): string => input}),
+            );
+            const keyErr: Error | undefined = this.keyType.testError!(uncheckedKey as any);
+            if (keyErr !== undefined) {
+              throw keyErr;
+            }
+            const key: K = uncheckedKey as any;
+            let value: V;
+            try {
+              value = this.valueType.read!(valueReader, rawValue);
+            } catch (err) {
+              throw err;
+            }
+            result.set(key, value);
+          }
+
+          const error: Error | undefined = this.testError(result);
+          if (error !== undefined) {
+            throw error;
+          }
+          return result;
+        },
+      }));
+    }
+
     return reader.readMap(raw, readVisitor({
       fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): Map<K, V> => {
         const result: Map<K, V> = new Map();
@@ -57,6 +90,15 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
 
   // TODO: Dynamically add with prototype?
   write<W>(writer: Writer<W>, value: Map<K, V>): W {
+    if (this.assumeStringKey) {
+      return writer.writeDocument(
+        value.keys() as Iterable<any> as Iterable<string>,
+        <FW>(outKey: string, fieldWriter: Writer<FW>): FW => {
+          return this.valueType.write!(fieldWriter, value.get(outKey as any)!);
+        },
+      );
+    }
+
     const entries: [K, V][] = [...value];
 
     return writer.writeMap(

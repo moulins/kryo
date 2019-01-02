@@ -1,5 +1,6 @@
 import { IntegerType } from "../../lib/types/integer";
 import { MapType } from "../../lib/types/map";
+import { Ucs2StringType } from "../../lib/types/ucs2-string";
 import { runTests, TypedValue } from "../helpers/test";
 
 describe("Map", function () {
@@ -35,6 +36,28 @@ describe("Map", function () {
     {name: "[]", value: [], valid: false},
     {name: "{}", value: {}, valid: false},
     {name: "/regex/", value: /regex/, valid: false},
+  ];
+
+  runTests(mapType, items);
+});
+
+describe("Map (assumeStringKey)", function () {
+  const mapType: MapType<string, number> = new MapType({
+    keyType: new Ucs2StringType({pattern: /^a+$/, maxLength: 10}),
+    valueType: new IntegerType(),
+    maxSize: 5,
+    assumeStringKey: true,
+  });
+
+  const items: TypedValue[] = [
+    {
+      name: "new Map([[a, 100], [aa, 200]])",
+      value: new Map([["a", 100], ["aa", 200]]),
+      valid: true,
+      output: {
+        json: "{\"a\":100,\"aa\":200}",
+      },
+    },
   ];
 
   runTests(mapType, items);

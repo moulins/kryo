@@ -35,7 +35,7 @@ export abstract class StructuredWriter implements Writer<any> {
   writeDocument<K extends string>(
     keys: Iterable<K>,
     handler: (key: K, fieldWriter: Writer<any>) => any,
-  ): {[P in K]: any} {
+  ): Record<K, any> {
     const result: any = {};
     for (const key of keys) {
       result[key] = handler(key, this);
