@@ -1,12 +1,13 @@
 # Next
 
+- **[Feature]** Add `$Null` builtin.
 - **[Fix]** Fix `TsEnumType` name.
 - **[Fix]** Restore `assumeStringKey` option for `MapType`.
 
 # 0.8.0 (2018-12-03)
 
 - **[Breaking change]** Change `variantRead` result from `[variant, value]` to `{variant, value}`.
-- **[Breaking change]** Require `unorm` is `CodepointString` constructor.
+- **[Breaking change]** Require `unorm` in `CodepointString` constructor.
 - **[Feature]** Update to Typescript 3.2.
 - **[Feature]** First class ESM support.
 - **[Fix]** Replace fake property assignations by property existence assertions.
