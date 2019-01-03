@@ -1,4 +1,4 @@
-# Next
+# 0.8.1 (2019-01-03)
 
 - **[Feature]** Add `$Null` builtin.
 - **[Feature]** Add `minLength` option to `ArrayType`.
