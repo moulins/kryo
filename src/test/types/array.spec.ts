@@ -1,5 +1,6 @@
 import chai from "chai";
 import { $Boolean } from "../../lib/builtins/boolean";
+import { $Uint8 } from "../../lib/builtins/uint8";
 import { JsonReader } from "../../lib/readers/json";
 import { ArrayIoType, ArrayType } from "../../lib/types/array";
 import { IntegerType } from "../../lib/types/integer";
@@ -83,6 +84,52 @@ describe("ArrayType", function () {
       {name: "null", value: null, valid: false},
       {name: "{}", value: {}, valid: false},
       {name: "/regex/", value: /regex/, valid: false},
+    ];
+
+    runTests($IntArray, items);
+  });
+
+  describe("Min/max length", function () {
+    const $IntArray: ArrayType<number> = new ArrayType({
+      itemType: $Uint8,
+      minLength: 2,
+      maxLength: 4,
+    });
+
+    const items: TypedValue[] = [
+      {
+        value: [],
+        valid: false,
+      },
+      {
+        value: [0],
+        valid: false,
+      },
+      {
+        value: [0, 1],
+        valid: true,
+        output: {
+          json: "[0,1]",
+        },
+      },
+      {
+        value: [0, 1, 2],
+        valid: true,
+        output: {
+          json: "[0,1,2]",
+        },
+      },
+      {
+        value: [0, 1, 2, 3],
+        valid: true,
+        output: {
+          json: "[0,1,2,3]",
+        },
+      },
+      {
+        value: [0, 1, 2, 3, 4],
+        valid: false,
+      },
     ];
 
     runTests($IntArray, items);

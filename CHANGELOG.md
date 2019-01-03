@@ -1,6 +1,7 @@
 # Next
 
 - **[Feature]** Add `$Null` builtin.
+- **[Feature]** Add `minLength` option to `ArrayType`.
 - **[Fix]** Fix `TsEnumType` name.
 - **[Fix]** Restore `assumeStringKey` option for `MapType`.
 

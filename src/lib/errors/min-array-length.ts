@@ -15,6 +15,6 @@ export function format({array, min}: Data): string {
   return `Expected array length (${array.length}) to be greater than or equal to ${min}`;
 }
 
-export function create(array: ArrayLike<any>, min: number): MinArrayLengthError {
+export function createMinArrayLengthError(array: ArrayLike<any>, min: number): MinArrayLengthError {
   return Incident(name, {array, min}, format);
 }

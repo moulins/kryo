@@ -5,6 +5,7 @@ import { createInvalidArrayItemsError } from "../errors/invalid-array-items";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
+import { createMinArrayLengthError } from "../errors/min-array-length";
 import { readVisitor } from "../readers/read-visitor";
 import { testError } from "../test-error";
 
@@ -18,6 +19,7 @@ export type Diff = any;
  */
 export interface ArrayTypeOptions<T, M extends Type<T> = Type<T>> {
   itemType: M;
+  minLength?: number;
   maxLength: number;
 }
 
@@ -44,6 +46,7 @@ export interface ArrayIoType<T, M extends IoType<T> = IoType<T>> extends IoType<
 export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> = Type<T>> {
   readonly name: Name = name;
   readonly itemType!: M;
+  readonly minLength?: number;
   readonly maxLength!: number;
 
   private _options: Lazy<ArrayTypeOptions<T, M>>;
@@ -53,13 +56,14 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
     if (typeof options !== "function") {
       this._applyOptions();
     } else {
-      lazyProperties(this, this._applyOptions, ["itemType", "maxLength"]);
+      lazyProperties(this, this._applyOptions, ["itemType", "minLength", "maxLength"]);
     }
   }
 
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): T[] {
     const itemType: M = this.itemType;
+    const minLength: number | undefined = this.minLength;
     const maxLength: number | undefined = this.maxLength;
 
     return reader.readList(raw, readVisitor({
@@ -87,6 +91,9 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
         if (invalid !== undefined) {
           throw createInvalidArrayItemsError(invalid);
         }
+        if (minLength !== undefined && i < minLength) {
+          throw createMinArrayLengthError([...input], minLength);
+        }
         return result;
       },
     }));
@@ -109,6 +116,9 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
     if (this.maxLength !== undefined && value.length > this.maxLength) {
       return createMaxArrayLengthError(value, this.maxLength);
     }
+    if (this.minLength !== undefined && value.length < this.minLength) {
+      return createMinArrayLengthError(value, this.minLength);
+    }
     const invalid: Map<number, Error> = new Map();
     const itemCount: number = value.length;
     for (let i: number = 0; i < itemCount; i++) {
@@ -124,7 +134,11 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
   }
 
   test(val: T[]): val is T[] {
-    if (!Array.isArray(val) || (this.maxLength !== undefined && val.length > this.maxLength)) {
+    if (
+      !Array.isArray(val)
+      || (this.maxLength !== undefined && val.length > this.maxLength)
+      || (this.minLength !== undefined && val.length < this.minLength)
+    ) {
       return false;
     }
     for (const item of val) {
@@ -158,8 +172,9 @@ export const ArrayType: ArrayTypeConstructor = <any> class<T, M extends Type<T> 
     const options: ArrayTypeOptions<T, M> = typeof this._options === "function" ? this._options() : this._options;
 
     const itemType: M = options.itemType;
+    const minLength: number | undefined = options.minLength;
     const maxLength: number = options.maxLength;
 
-    Object.assign(this, {itemType, maxLength});
+    Object.assign(this, {itemType, minLength, maxLength});
   }
 };
