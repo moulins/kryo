@@ -132,7 +132,7 @@
 					<div class="tsd-signature tsd-kind-icon">Literal<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="_types_literal_.literaltypeconstructor.html" class="tsd-signature-type">LiteralTypeConstructor</a><span class="tsd-signature-symbol"> =&nbsp;class&lt;TT, K extends Type&lt;any&gt; &#x3D; Type&lt;any&gt;&gt; implements IoType&lt;TT&gt; {readonly name: Name &#x3D; name;readonly type!: K;readonly value!: TT;private _options: Lazy&lt;LiteralTypeOptions&lt;TT, K&gt;&gt;;constructor(options: Lazy&lt;LiteralTypeOptions&lt;TT, K&gt;&gt;) {this._options &#x3D; options;if (typeof options !&#x3D;&#x3D; &quot;function&quot;) {this._applyOptions();} else {lazyProperties(this, this._applyOptions, [&quot;type&quot;, &quot;value&quot;]);}}read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): TT {if (this.type.read &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotReadable&quot;, {type: this});}return reader.trustInput ? this.clone(this.value) : this.type.read(reader, raw);}write&lt;W&gt;(writer: Writer&lt;W&gt;, value: TT): W {if (this.type.write &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotWritable&quot;, {type: this});}return this.type.write(writer, value);}testError(val: TT): Error | undefined {const error: Error | undefined &#x3D; testError(this.type, val);if (error !&#x3D;&#x3D; undefined) {return error;}if (!this.type.equals(val, this.value)) {return Incident(&quot;InvalidLiteral&quot;, &quot;Invalid literal value&quot;);}return undefined;}test(value: TT): boolean {return this.type.test(value) &amp;&amp; this.type.equals(value, this.value);}equals(val1: TT, val2: TT): boolean {return this.type.equals(val1, val2);}clone(val: TT): TT {return this.type.clone(val);}diff(_oldVal: TT, _newVal: TT): undefined {return;}patch(oldVal: TT, _diff: undefined): TT {return this.type.clone(oldVal);}reverseDiff(_diff: Diff | undefined): undefined {return;}squash(_diff1: undefined, _diff2: undefined): undefined {return;}private _applyOptions(): void {if (this._options &#x3D;&#x3D;&#x3D; undefined) {throw createLazyOptionsError(this);}const options: LiteralTypeOptions&lt;TT, K&gt; &#x3D; typeof this._options &#x3D;&#x3D;&#x3D; &quot;function&quot;? this._options(): this._options;const type: K &#x3D; options.type;const value: TT &#x3D; options.value;Object.assign(this, {type, value});}}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/literal.ts#L43">types/literal.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/literal.ts#L43">types/literal.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -156,7 +156,7 @@
 						<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#name">name</a></p>
 						<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/core.ts#L24">core.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/core.ts#L24">core.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -172,7 +172,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_types_literal_.literaltypeoptions.html">LiteralTypeOptions</a>.<a href="_types_literal_.literaltypeoptions.html#type">type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/literal.ts#L16">types/literal.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/literal.ts#L16">types/literal.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -183,7 +183,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_types_literal_.literaltypeoptions.html">LiteralTypeOptions</a>.<a href="_types_literal_.literaltypeoptions.html#value">value</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/literal.ts#L17">types/literal.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/literal.ts#L17">types/literal.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -202,7 +202,7 @@
 								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#clone">clone</a></p>
 								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/core.ts#L60">core.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/core.ts#L60">core.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -236,7 +236,7 @@
 								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#equals">equals</a></p>
 								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/core.ts#L52">core.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/core.ts#L52">core.ts:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -290,7 +290,7 @@
 								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#lte">lte</a></p>
 								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#lte">lte</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/core.ts#L78">core.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/core.ts#L78">core.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -329,7 +329,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="kryo_core.iotype.html">IoType</a>.<a href="kryo_core.iotype.html#read">read</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/literal.ts#L30">types/literal.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/literal.ts#L30">types/literal.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -363,7 +363,7 @@
 								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#test">test</a></p>
 								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#test">test</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/core.ts#L32">core.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/core.ts#L32">core.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -397,7 +397,7 @@
 								<p>Inherited from <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#testerror">testError</a></p>
 								<p>Overrides <a href="kryo_core.type.html">Type</a>.<a href="kryo_core.type.html#testerror">testError</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/core.ts#L69">core.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/core.ts#L69">core.ts:69</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -434,7 +434,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="kryo_core.iotype.html">IoType</a>.<a href="kryo_core.iotype.html#write">write</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/literal.ts#L32">types/literal.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/literal.ts#L32">types/literal.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -529,6 +529,9 @@
 						<a href="../modules/_types_literal_.html#name" class="tsd-kind-icon">Name</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/_types_literal_.html#literaltype-1" class="tsd-kind-icon">Literal<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/_types_literal_.html#name-1" class="tsd-kind-icon">name</a>
 					</li>
 				</ul>
@@ -548,6 +551,7 @@
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -596,7 +600,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>

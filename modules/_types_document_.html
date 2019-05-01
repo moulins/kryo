@@ -91,6 +91,7 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_types_document_.html#documenttype-1" class="tsd-kind-icon">Document<wbr>Type</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_types_document_.html#name-1" class="tsd-kind-icon">name</a></li>
 							</ul>
 						</section>
@@ -111,7 +112,7 @@
 					<div class="tsd-signature tsd-kind-icon">Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"document"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/document.ts#L11">types/document.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/document.ts#L11">types/document.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -119,12 +120,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="documenttype-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Document<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">Document<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_document_.documenttypeconstructor.html" class="tsd-signature-type">DocumentTypeConstructor</a><span class="tsd-signature-symbol"> =&nbsp;&lt;any&gt; class&lt;T&gt; implements IoType&lt;T&gt;,DocumentIoTypeOptions&lt;T&gt; {readonly name: Name &#x3D; name;readonly noExtraKeys?: boolean;readonly properties!: {readonly [P in keyof T]: PropertyDescriptor&lt;T[P], any&gt;};readonly rename?: {readonly [P in keyof T]?: string};readonly changeCase?: CaseStyle;private _options: Lazy&lt;DocumentTypeOptions&lt;T&gt;&gt;;private _outKeys: Map&lt;string, keyof T&gt; | undefined;constructor(options: Lazy&lt;DocumentTypeOptions&lt;T&gt;&gt;) {this._options &#x3D; options;if (typeof options !&#x3D;&#x3D; &quot;function&quot;) {this._applyOptions();} else {lazyProperties(this, this._applyOptions, [&quot;noExtraKeys&quot;, &quot;properties&quot;, &quot;changeCase&quot;, &quot;rename&quot; as keyof this]);}}/*** Map from serialized keys to the document keys*/get outKeys(): Map&lt;string, keyof T&gt; {if (this._outKeys &#x3D;&#x3D;&#x3D; undefined) {this._outKeys &#x3D; new Map();for (const key of Object.keys(this.properties) as (keyof T)[]) {this._outKeys.set(this.getOutKey(key), key);}}return this._outKeys;}getOutKey(key: keyof T): string {if (typeof key !&#x3D;&#x3D; &quot;string&quot;) {throw new Error(&#x60;NonStringKey: ${key}&#x60;);}const descriptor: PropertyDescriptor&lt;any&gt; &#x3D; this.properties[key];if (descriptor.rename !&#x3D;&#x3D; undefined) {return descriptor.rename;} else if (descriptor.changeCase !&#x3D;&#x3D; undefined) {return rename(key as string, descriptor.changeCase);}if (this.rename !&#x3D;&#x3D; undefined &amp;&amp; this.rename[key] !&#x3D;&#x3D; undefined) {return this.rename[key]!;} else if (this.changeCase !&#x3D;&#x3D; undefined) {return rename(key as string, this.changeCase);}return key;}// TODO: Dynamically add with prototype?read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): T {return reader.readDocument(raw, readVisitor({fromMap: &lt;RK, RV&gt;(input: Map&lt;RK, RV&gt;, keyReader: Reader&lt;RK&gt;, valueReader: Reader&lt;RV&gt;): T &#x3D;&gt; {const extra: Set&lt;string&gt; &#x3D; new Set();const missing: Set&lt;string&gt; &#x3D; new Set();for (const key in this.properties) {const descriptor: PropertyDescriptor&lt;any&gt; &#x3D; this.properties[key];if (!descriptor.optional) {missing.add(key);}}const invalid: Map&lt;string, Error&gt; &#x3D; new Map();const result: Partial&lt;T&gt; &#x3D; {}; // Object.create(null);for (const [rawKey, rawValue] of input) {const outKey: string &#x3D; keyReader.readString(rawKey,readVisitor({fromString: (input: string): string  &#x3D;&gt; input}),);const key: keyof T | undefined &#x3D; this.outKeys.get(outKey);if (key &#x3D;&#x3D;&#x3D; undefined) {// Extra keyextra.add(outKey);continue;}missing.delete(key as string);const descriptor: PropertyDescriptor&lt;any&gt; &#x3D; this.properties[key];// TODO: Update readers so &#x60;undefined&#x60; is impossible/not handled hereif (rawValue &#x3D;&#x3D;&#x3D; undefined) {if (descriptor.optional) {result[key] &#x3D; undefined;} else {missing.add(key as string);}continue;}try {result[key] &#x3D; descriptor.type.read!(valueReader, rawValue);} catch (err) {invalid.set(key as string, err);}}if (this.noExtraKeys &amp;&amp; extra.size &gt; 0 || missing.size &gt; 0 || invalid.size &gt; 0) {throw createInvalidDocumentError({extra, missing, invalid});}return result as T;},}));}// TODO: Dynamically add with prototype?write&lt;W&gt;(writer: Writer&lt;W&gt;, value: T): W {const outKeys: Map&lt;string, keyof T&gt; &#x3D; new Map(this.outKeys);for (const [outKey, jskey] of outKeys) {if (value[jskey] &#x3D;&#x3D;&#x3D; undefined) {outKeys.delete(outKey);}}return writer.writeDocument(outKeys.keys(), &lt;FW&gt;(outKey: string, fieldWriter: Writer&lt;FW&gt;): FW &#x3D;&gt; {const jsKey: keyof T &#x3D; this.outKeys.get(outKey)!;const descriptor: PropertyDescriptor&lt;any&gt; &#x3D; this.properties[jsKey];if (descriptor.type.write &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotWritable&quot;, {type: descriptor.type});}return descriptor.type.write(fieldWriter, value[jsKey]);});}testError(val: T): Error | undefined {if (typeof val !&#x3D;&#x3D; &quot;object&quot; || val &#x3D;&#x3D;&#x3D; null) {return createInvalidTypeError(&quot;object&quot;, val);}const extra: Set&lt;string&gt; | undefined &#x3D; this.noExtraKeys ? new Set(Object.keys(val)) : undefined;const missing: Set&lt;string&gt; &#x3D; new Set();const invalid: Map&lt;string, Error&gt; &#x3D; new Map();for (const key in this.properties) {if (extra !&#x3D;&#x3D; undefined) {extra.delete(key);}const descriptor: PropertyDescriptor&lt;any&gt; &#x3D; this.properties[key];const propertyValue: any &#x3D; val[key];if (propertyValue &#x3D;&#x3D;&#x3D; undefined) {if (!descriptor.optional) {missing.add(key);}continue;}const error: Error | undefined &#x3D; descriptor.type.testError!(propertyValue);if (error !&#x3D;&#x3D; undefined) {invalid.set(key as string, error);}}if (extra !&#x3D;&#x3D; undefined &amp;&amp; extra.size &gt; 0 || missing.size &gt; 0 || invalid.size &gt; 0) {return createInvalidDocumentError({extra, missing, invalid});}return undefined;}test(val: T): val is T {if (typeof val !&#x3D;&#x3D; &quot;object&quot; || val &#x3D;&#x3D;&#x3D; null) {return false;}const extra: Set&lt;string&gt; | undefined &#x3D; this.noExtraKeys ? new Set(Object.keys(val)) : undefined;for (const key in this.properties) {if (extra !&#x3D;&#x3D; undefined) {extra.delete(key);}const descriptor: PropertyDescriptor&lt;any&gt; &#x3D; this.properties[key];const propertyValue: any &#x3D; val[key];if (propertyValue &#x3D;&#x3D;&#x3D; undefined) {if (!descriptor.optional) {return false;}} else if (!descriptor.type.test(propertyValue)) {return false;}}return extra &#x3D;&#x3D;&#x3D; undefined || extra.size &#x3D;&#x3D;&#x3D; 0;}equals(val1: T, val2: T): boolean {for (const key in this.properties) {const descriptor: PropertyDescriptor&lt;any&gt; &#x3D; this.properties[key];if (!descriptor.optional) {if (!descriptor.type.equals(val1[key], val2[key])) {return false;}continue;}if (val1[key] &#x3D;&#x3D;&#x3D; undefined &amp;&amp; val2[key] &#x3D;&#x3D;&#x3D; undefined) {continue;}if (val1[key] &#x3D;&#x3D;&#x3D; undefined || val2[key] &#x3D;&#x3D;&#x3D; undefined || !descriptor.type.equals(val1[key], val2[key])) {return false;}}return true;}clone(val: T): T {const result: Partial&lt;T&gt; &#x3D; {}; // Object.create(null);for (const key in this.properties) {result[key] &#x3D; val[key] &#x3D;&#x3D;&#x3D; undefined ? undefined : this.properties[key].type.clone(val[key]);}return result as T;}diff(oldVal: T, newVal: T): Diff&lt;T&gt; | undefined {let equal: boolean &#x3D; true;const result: Diff&lt;T&gt; &#x3D; {set: {}, unset: {}, update: {}};for (const key in this.properties) {// TODO: Remove castconst descriptor: PropertyDescriptor&lt;any, VersionedType&lt;any, any&gt;&gt; &#x3D; &lt;any&gt; this.properties[key];const oldMember: any &#x3D; (&lt;any&gt; oldVal)[key];const newMember: any &#x3D; (&lt;any&gt; newVal)[key];if (oldMember !&#x3D;&#x3D; undefined) {if (newMember !&#x3D;&#x3D; undefined) {const diff: any &#x3D; descriptor.type.diff(oldMember, newMember);if (diff !&#x3D;&#x3D; undefined) {result.update[key] &#x3D; diff;equal &#x3D; false;}} else {result.unset[key] &#x3D; descriptor.type.clone(oldMember);equal &#x3D; false;}} else {if (newMember &#x3D;&#x3D;&#x3D; undefined) {result.set[key] &#x3D; descriptor.type.clone(newMember);equal &#x3D; false;}}}return equal ? undefined : result;}patch(oldVal: T, diff: Diff&lt;T&gt; | undefined): T {const result: T &#x3D; this.clone(oldVal);if (diff &#x3D;&#x3D;&#x3D; undefined) {return result;}for (const key in diff.set) {result[key] &#x3D; this.properties[key].type.clone(diff.set[key]);}for (const key in diff.unset) {Reflect.deleteProperty(result as any as object, key);}for (const key in diff.update) {// TODO: Remove castresult[key] &#x3D; (this.properties[key].type as any).patch(result[key], diff.update[key]);}return result;}reverseDiff(diff: Diff&lt;T&gt; | undefined): Diff&lt;T&gt; | undefined {if (diff &#x3D;&#x3D;&#x3D; undefined) {return undefined;}const result: Diff&lt;T&gt; &#x3D; {set: {}, unset: {}, update: {}};for (const key in diff.unset) {result.set[key] &#x3D; this.properties[key].type.clone(diff.unset[key]);}for (const key in diff.set) {result.unset[key] &#x3D; this.properties[key].type.clone(diff.set[key]);}for (const key in diff.update) {// TODO: Remove castresult.update[key] &#x3D; (this.properties[key].type as any).reverseDiff(diff.update[key]);}return result;}squash(_diff1: Diff&lt;T&gt; | undefined, _diff2: Diff&lt;T&gt; | undefined): Diff&lt;T&gt; | undefined {throw createNotImplementedError(&quot;DocumentType#squash&quot;);}private _applyOptions(): void {if (this._options &#x3D;&#x3D;&#x3D; undefined) {throw createLazyOptionsError(this);}const options: DocumentTypeOptions&lt;T&gt; &#x3D; typeof this._options &#x3D;&#x3D;&#x3D; &quot;function&quot; ?this._options() :this._options;const noExtraKeys: boolean | undefined &#x3D; options.noExtraKeys;const properties: {[P in keyof T]: PropertyDescriptor&lt;any&gt;} &#x3D; options.properties;const rename: {[P in keyof T]?: string} | undefined &#x3D; options.rename;const changeCase: CaseStyle | undefined &#x3D; options.changeCase;Object.assign(this, {noExtraKeys, properties, rename, changeCase});}}</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/document.ts#L96">types/document.ts:96</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
 					<a name="name-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="_types_document_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;&quot;document&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/document.ts#L12">types/document.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/document.ts#L12">types/document.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -135,13 +146,13 @@
 					<a name="renamekeys" class="tsd-anchor"></a>
 					<h3>rename<wbr>Keys</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">rename<wbr>Keys&lt;T&gt;<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, renameAll<span class="tsd-signature-symbol">?: </span><a href="../enums/kryo_case_style.casestyle.html" class="tsd-signature-type">CaseStyle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">keyof T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">rename<wbr>Keys&lt;T&gt;<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, renameAll<span class="tsd-signature-symbol">?: </span><a href="../enums/_case_style_.casestyle.html" class="tsd-signature-type">CaseStyle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">keyof T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/document.ts#L389">types/document.ts:389</a></li>
+									<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/document.ts#L389">types/document.ts:389</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -156,7 +167,7 @@
 									<h5>obj: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> renameAll: <a href="../enums/kryo_case_style.casestyle.html" class="tsd-signature-type">CaseStyle</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> renameAll: <a href="../enums/_case_style_.casestyle.html" class="tsd-signature-type">CaseStyle</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">keyof T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -203,6 +214,9 @@
 						<a href="_types_document_.html#name" class="tsd-kind-icon">Name</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="_types_document_.html#documenttype-1" class="tsd-kind-icon">Document<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="_types_document_.html#name-1" class="tsd-kind-icon">name</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
@@ -225,6 +239,7 @@
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -273,7 +288,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>

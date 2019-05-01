@@ -89,6 +89,7 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_types_array_.html#arraytype-1" class="tsd-kind-icon">Array<wbr>Type</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_types_array_.html#name-1" class="tsd-kind-icon">name</a></li>
 							</ul>
 						</section>
@@ -103,7 +104,7 @@
 					<div class="tsd-signature tsd-kind-icon">Diff<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/array.ts#L14">types/array.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/array.ts#L14">types/array.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -113,7 +114,7 @@
 					<div class="tsd-signature tsd-kind-icon">Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"array"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/array.ts#L12">types/array.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/array.ts#L12">types/array.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -121,12 +122,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="arraytype-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Array<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">Array<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_array_.arraytypeconstructor.html" class="tsd-signature-type">ArrayTypeConstructor</a><span class="tsd-signature-symbol"> =&nbsp;&lt;any&gt; class&lt;T, M extends Type&lt;T&gt; &#x3D; Type&lt;T&gt;&gt; {readonly name: Name &#x3D; name;readonly itemType!: M;readonly minLength?: number;readonly maxLength!: number;private _options: Lazy&lt;ArrayTypeOptions&lt;T, M&gt;&gt;;constructor(options: Lazy&lt;ArrayTypeOptions&lt;T, M&gt;&gt;) {this._options &#x3D; options;if (typeof options !&#x3D;&#x3D; &quot;function&quot;) {this._applyOptions();} else {lazyProperties(this, this._applyOptions, [&quot;itemType&quot;, &quot;minLength&quot;, &quot;maxLength&quot;]);}}// TODO: Dynamically add with prototype?read&lt;R&gt;(reader: Reader&lt;R&gt;, raw: R): T[] {const itemType: M &#x3D; this.itemType;const minLength: number | undefined &#x3D; this.minLength;const maxLength: number | undefined &#x3D; this.maxLength;return reader.readList(raw, readVisitor({fromList&lt;RI&gt;(input: Iterable&lt;RI&gt;, itemReader: Reader&lt;RI&gt;): T[] {let invalid: undefined | Map&lt;number, Error&gt; &#x3D; undefined;const result: T[] &#x3D; [];let i: number &#x3D; 0;for (const rawItem of input) {if (maxLength !&#x3D;&#x3D; undefined &amp;&amp; i &#x3D;&#x3D;&#x3D; maxLength) {throw createMaxArrayLengthError([...input], maxLength);}try {const item: T &#x3D; itemType.read!(itemReader, rawItem);if (invalid &#x3D;&#x3D;&#x3D; undefined) {result.push(item);}} catch (err) {if (invalid &#x3D;&#x3D;&#x3D; undefined) {invalid &#x3D; new Map();}invalid.set(i, err);}i++;}if (invalid !&#x3D;&#x3D; undefined) {throw createInvalidArrayItemsError(invalid);}if (minLength !&#x3D;&#x3D; undefined &amp;&amp; i &lt; minLength) {throw createMinArrayLengthError([...input], minLength);}return result;},}));}// TODO: Dynamically add with prototype?write&lt;W&gt;(writer: Writer&lt;W&gt;, value: T[]): W {return writer.writeList(value.length, &lt;IW&gt;(index: number, itemWriter: Writer&lt;IW&gt;): IW &#x3D;&gt; {if (this.itemType.write &#x3D;&#x3D;&#x3D; undefined) {throw new Incident(&quot;NotWritable&quot;, {type: this.itemType});}return this.itemType.write(itemWriter, value[index]);});}testError(value: T[]): Error | undefined {if (!Array.isArray(value)) {return createInvalidTypeError(&quot;array&quot;, value);}if (this.maxLength !&#x3D;&#x3D; undefined &amp;&amp; value.length &gt; this.maxLength) {return createMaxArrayLengthError(value, this.maxLength);}if (this.minLength !&#x3D;&#x3D; undefined &amp;&amp; value.length &lt; this.minLength) {return createMinArrayLengthError(value, this.minLength);}const invalid: Map&lt;number, Error&gt; &#x3D; new Map();const itemCount: number &#x3D; value.length;for (let i: number &#x3D; 0; i &lt; itemCount; i++) {const error: Error | undefined &#x3D; testError(this.itemType, value[i]);if (error !&#x3D;&#x3D; undefined) {invalid.set(i, error);}}if (invalid.size !&#x3D;&#x3D; 0) {return createInvalidArrayItemsError(invalid);}return undefined;}test(val: T[]): val is T[] {if (!Array.isArray(val)|| (this.maxLength !&#x3D;&#x3D; undefined &amp;&amp; val.length &gt; this.maxLength)|| (this.minLength !&#x3D;&#x3D; undefined &amp;&amp; val.length &lt; this.minLength)) {return false;}for (const item of val) {if (!this.itemType.test(item)) {return false;}}return true;}equals(val1: T[], val2: T[]): boolean {if (val2.length !&#x3D;&#x3D; val1.length) {return false;}for (let i: number &#x3D; 0; i &lt; val1.length; i++) {if (!this.itemType.equals(val2[i], val1[i])) {return false;}}return true;}clone(val: T[]): T[] {return val.map((item: T): T &#x3D;&gt; this.itemType.clone(item));}private _applyOptions(): void {if (this._options &#x3D;&#x3D;&#x3D; undefined) {throw createLazyOptionsError(this);}const options: ArrayTypeOptions&lt;T, M&gt; &#x3D; typeof this._options &#x3D;&#x3D;&#x3D; &quot;function&quot; ? this._options() : this._options;const itemType: M &#x3D; options.itemType;const minLength: number | undefined &#x3D; options.minLength;const maxLength: number &#x3D; options.maxLength;Object.assign(this, {itemType, minLength, maxLength});}}</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/array.ts#L46">types/array.ts:46</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
 					<a name="name-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="_types_array_.html#name" class="tsd-signature-type">Name</a><span class="tsd-signature-symbol"> =&nbsp;&quot;array&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/dfd9363/src/lib/types/array.ts#L13">types/array.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/demurgos/kryo/blob/59796a3/src/lib/types/array.ts#L13">types/array.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -164,6 +175,9 @@
 						<a href="_types_array_.html#name" class="tsd-kind-icon">Name</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="_types_array_.html#arraytype-1" class="tsd-kind-icon">Array<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="_types_array_.html#name-1" class="tsd-kind-icon">name</a>
 					</li>
 				</ul>
@@ -183,6 +197,7 @@
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -231,7 +246,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
