@@ -1,4 +1,4 @@
-import bson from "bson";
+import BSON from "bson";
 import { CaseStyle } from "../../lib/case-style";
 import { DocumentType } from "../../lib/types/document";
 import { IntegerType } from "../../lib/types/integer";
@@ -6,8 +6,6 @@ import { LiteralType } from "../../lib/types/literal";
 import { TaggedUnionType } from "../../lib/types/tagged-union";
 import { TsEnumType } from "../../lib/types/ts-enum";
 import { runTests, TypedValue } from "../helpers/test";
-
-const bsonSerializer: bson.BSON = new bson.BSON();
 
 describe("TaggedUnion", function () {
   describe("TaggedUnion<Shape>", function () {
@@ -73,7 +71,7 @@ describe("TaggedUnion", function () {
         },
         valid: true,
         output: {
-          bson: bsonSerializer.serialize({type: "rectangle", width: 10, height: 20}),
+          bson: BSON.serialize({type: "rectangle", width: 10, height: 20}),
           json: "{\"type\":\"rectangle\",\"width\":10,\"height\":20}",
           qs: "type=rectangle&width=10&height=20",
         },
@@ -86,7 +84,7 @@ describe("TaggedUnion", function () {
         },
         valid: true,
         output: {
-          bson: bsonSerializer.serialize({type: "circle", radius: 15}),
+          bson: BSON.serialize({type: "circle", radius: 15}),
           json: "{\"type\":\"circle\",\"radius\":15}",
           qs: "type=circle&radius=15",
         },

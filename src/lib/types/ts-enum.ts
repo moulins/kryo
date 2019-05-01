@@ -9,7 +9,7 @@ import { readVisitor } from "../readers/read-visitor";
 /**
  * Represents an enum value defined in `EnumConstructor`
  */
-export type TsEnum<EnumConstructor> = {[K in keyof EnumConstructor]: EnumConstructor[K]};
+export type TsEnum<EnumConstructor> = { [K in keyof EnumConstructor]: EnumConstructor[K] };
 
 export type Name = "ts-enum";
 export const name: Name = "ts-enum";
@@ -47,7 +47,7 @@ function isValidEnumMember(key: string): boolean {
 function getEnumMaps<K extends string, E extends string | number>(
   tsEnum: Record<K, E>,
   changeCase: CaseStyle | undefined,
-  renameAll?: {[P in K]?: string},
+  renameAll?: { [P in K]?: string },
 ): [Map<E, string>, Map<string, E>] {
   const jsToOut: Map<E, string> = new Map();
   const outToJs: Map<string, E> = new Map();
@@ -69,7 +69,7 @@ function getEnumMaps<K extends string, E extends string | number>(
 export interface TsEnumTypeOptions<E extends string | number, EO extends {} = {}> {
   enum: EnumObject<EO, E>;
   changeCase?: CaseStyle;
-  rename?: {[P in keyof EO]?: string};
+  rename?: { [P in keyof EO]?: string };
 }
 
 /**
@@ -79,11 +79,12 @@ export interface TsEnumTypeOptions<E extends string | number, EO extends {} = {}
  * non-numeric strings to strings or numbers and "reversed" properties from numeric strings to
  * keys of forward properties with constant numeric values.
  */
-export class TsEnumType<E extends string | number, EO extends {} = {}> implements IoType<E>, TsEnumTypeOptions<E, EO> {
+export class TsEnumType<E extends string | number, EO extends any = any>
+  implements IoType<E>, TsEnumTypeOptions<E, EO> {
   readonly name: Name = name;
   readonly enum!: Record<keyof EO, E>;
   readonly changeCase?: CaseStyle;
-  readonly rename?: {[P in keyof EO]?: string};
+  readonly rename?: { [P in keyof EO]?: string };
 
   private get jsToOut(): Map<E, string> {
     if (this._jsToOut === undefined) {
@@ -159,7 +160,7 @@ export class TsEnumType<E extends string | number, EO extends {} = {}> implement
 
     const tsEnum: EO = options.enum as EO;
     const changeCase: CaseStyle | undefined = options.changeCase;
-    const rename: {[P in keyof EO]?: string} | undefined = options.rename;
+    const rename: { [P in keyof EO]?: string } | undefined = options.rename;
 
     Object.assign(this, {enum: tsEnum, changeCase, rename});
   }

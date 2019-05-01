@@ -497,3 +497,4 @@ $evenLevel.test(v4); // Success: returns `true`
 ## License
 
 [MIT License](./LICENSE.md)
+

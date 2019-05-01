@@ -1,4 +1,4 @@
-import bson from "bson";
+import BSON from "bson";
 import chai from "chai";
 import { CaseStyle } from "../../lib/case-style";
 import { JsonValueReader } from "../../lib/readers/json-value";
@@ -6,8 +6,6 @@ import { DocumentType } from "../../lib/types/document";
 import { IntegerType } from "../../lib/types/integer";
 import { TryUnionType } from "../../lib/types/try-union";
 import { runTests, TypedValue } from "../helpers/test";
-
-const bsonSerializer: bson.BSON = new bson.BSON();
 
 describe("TryUnion", function () {
   describe("TryUnion<Shape>", function () {
@@ -49,7 +47,7 @@ describe("TryUnion", function () {
         },
         valid: true,
         output: {
-          bson: bsonSerializer.serialize({width: 10, height: 20}),
+          bson: BSON.serialize({width: 10, height: 20}),
           json: "{\"width\":10,\"height\":20}",
           qs: "width=10&height=20",
         },
@@ -61,7 +59,7 @@ describe("TryUnion", function () {
         },
         valid: true,
         output: {
-          bson: bsonSerializer.serialize({radius: 15}),
+          bson: BSON.serialize({radius: 15}),
           json: "{\"radius\":15}",
           qs: "radius=15",
         },
