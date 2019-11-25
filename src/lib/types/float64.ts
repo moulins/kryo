@@ -1,9 +1,9 @@
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "../core";
 import { createInvalidFloat64Error } from "../errors/invalid-float64";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { readVisitor } from "../readers/read-visitor";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type Name = "float64";
 export const name: Name = "float64";

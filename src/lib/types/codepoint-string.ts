@@ -1,6 +1,4 @@
 import { Incident } from "incident";
-import { checkedUcs2Decode } from "../_helpers/checked-ucs2-decode";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
@@ -11,6 +9,8 @@ import { createMissingDependencyError } from "../errors/missing-dependency";
 import { createNotTrimmedError } from "../errors/not-trimmed";
 import { createPatternNotMatchedError } from "../errors/pattern-not-matched";
 import { readVisitor } from "../readers/read-visitor";
+import { checkedUcs2Decode } from "../_helpers/checked-ucs2-decode";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type UnormNfc = (str: string) => string;
 

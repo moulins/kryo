@@ -1,11 +1,11 @@
 import { Incident } from "incident";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
 import { testError } from "../test-error";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type Name = "map";
 export const name: Name = "map";

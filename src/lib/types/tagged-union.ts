@@ -1,10 +1,10 @@
 import { Incident } from "incident";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { readVisitor } from "../readers/read-visitor";
 import { testError } from "../test-error";
+import { lazyProperties } from "../_helpers/lazy-properties";
 import { DocumentType } from "./document";
 import { LiteralType } from "./literal";
 import { TsEnumType } from "./ts-enum";

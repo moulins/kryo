@@ -6,19 +6,15 @@ notifications:
     on_failure: change
 
 node_js:
-- stable
+- 13.2
 
 before_install:
-- npm install -g greenkeeper-lockfile@1
-
-before_script:
-- greenkeeper-lockfile-update
+- npm install -g yarn@berry
 
 script:
-- npm test
+- yarn test
 - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 - ./tools/continuous-deployment.travis.sh
 
 after_script:
-- greenkeeper-lockfile-upload
 - node node_modules/.bin/codecov

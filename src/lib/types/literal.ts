@@ -1,8 +1,8 @@
 import { Incident } from "incident";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, Type, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { testError } from "../test-error";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type Name = "literal";
 export const name: Name = "literal";

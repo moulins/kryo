@@ -1,5 +1,4 @@
 import { Incident } from "incident";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { CaseStyle, rename } from "../case-style";
 import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../core";
 import { createInvalidDocumentError } from "../errors/invalid-document";
@@ -7,6 +6,7 @@ import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type Name = "document";
 export const name: Name = "document";

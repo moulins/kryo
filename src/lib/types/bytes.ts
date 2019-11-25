@@ -1,10 +1,10 @@
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createMaxArrayLengthError } from "../errors/max-array-length";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type Diff = any;
 

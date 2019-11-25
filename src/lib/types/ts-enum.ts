@@ -1,10 +1,10 @@
 import { Incident } from "incident";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { CaseStyle, rename } from "../case-style";
 import { IoType, Lazy, Reader, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { createNotImplementedError } from "../errors/not-implemented";
 import { readVisitor } from "../readers/read-visitor";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 /**
  * Represents an enum value defined in `EnumConstructor`
@@ -86,20 +86,6 @@ export class TsEnumType<E extends string | number, EO extends any = any>
   readonly changeCase?: CaseStyle;
   readonly rename?: { [P in keyof EO]?: string };
 
-  private get jsToOut(): Map<E, string> {
-    if (this._jsToOut === undefined) {
-      [this._jsToOut, this._outToJs] = getEnumMaps(this.enum, this.changeCase, this.rename);
-    }
-    return this._jsToOut;
-  }
-
-  private get outToJs(): Map<string, E> {
-    if (this._outToJs === undefined) {
-      [this._jsToOut, this._outToJs] = getEnumMaps(this.enum, this.changeCase, this.rename);
-    }
-    return this._outToJs;
-  }
-
   private _jsToOut: Map<E, string> | undefined;
   private _outToJs: Map<string, E> | undefined;
 
@@ -116,6 +102,20 @@ export class TsEnumType<E extends string | number, EO extends any = any>
 
   static fromJSON(): TsEnumType<any> {
     throw createNotImplementedError("TsEnumType.fromJSON");
+  }
+
+  private get jsToOut(): Map<E, string> {
+    if (this._jsToOut === undefined) {
+      [this._jsToOut, this._outToJs] = getEnumMaps(this.enum, this.changeCase, this.rename);
+    }
+    return this._jsToOut;
+  }
+
+  private get outToJs(): Map<string, E> {
+    if (this._outToJs === undefined) {
+      [this._jsToOut, this._outToJs] = getEnumMaps(this.enum, this.changeCase, this.rename);
+    }
+    return this._outToJs;
   }
 
   read<R>(reader: Reader<R>, raw: R): E {

@@ -1,8 +1,8 @@
 import { Incident } from "incident";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../core";
 import { createLazyOptionsError } from "../errors/lazy-options";
 import { testError } from "../test-error";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type Name = "union";
 export const name: Name = "union";

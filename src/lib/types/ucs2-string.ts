@@ -1,5 +1,4 @@
 import { Incident } from "incident";
-import { lazyProperties } from "../_helpers/lazy-properties";
 import { IoType, Lazy, Reader, VersionedType, Writer } from "../core";
 import { createInvalidTypeError } from "../errors/invalid-type";
 import { createLazyOptionsError } from "../errors/lazy-options";
@@ -9,6 +8,7 @@ import { createMinUcs2StringLengthError } from "../errors/min-ucs2-string-length
 import { createNotTrimmedError } from "../errors/not-trimmed";
 import { createPatternNotMatchedError } from "../errors/pattern-not-matched";
 import { readVisitor } from "../readers/read-visitor";
+import { lazyProperties } from "../_helpers/lazy-properties";
 
 export type Name = "ucs2-string";
 export const name: Name = "ucs2-string";

@@ -1,6 +1,7 @@
 # Next
 
 - **[Fix]** Update dependencies.
+- **[Fix]** Update build tools.
 
 # 0.8.1 (2019-01-03)
 
