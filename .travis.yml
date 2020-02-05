@@ -17,4 +17,4 @@ script:
 - ./tools/continuous-deployment.travis.sh
 
 after_script:
-- node node_modules/.bin/codecov
+- yarn dlx codecov

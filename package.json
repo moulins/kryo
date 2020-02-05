@@ -27,6 +27,9 @@
       "pre-commit": "yarn run lint"
     }
   },
+  "engines": {
+    "node": ">=13.2"
+  },
   "keywords": [],
   "license": "MIT",
   "dependencies": {

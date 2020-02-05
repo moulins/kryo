@@ -1,5 +1,6 @@
 # Next
 
+- **[Breaking change]** Require Node `13.2`.
 - **[Fix]** Update dependencies.
 - **[Fix]** Update build tools.
 
