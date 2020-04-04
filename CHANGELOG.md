@@ -1,8 +1,10 @@
 # Next
 
-- **[Breaking change]** Require Node `13.2`.
+- **[Breaking change]** Require Node `13.7`.
+- **[Breaking change]** Publish the library as ESM.
 - **[Fix]** Update dependencies.
 - **[Fix]** Update build tools.
+- **[Internal]** Drop Gulp dependency.
 
 # 0.8.1 (2019-01-03)
 

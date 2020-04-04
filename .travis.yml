@@ -6,15 +6,12 @@ notifications:
     on_failure: change
 
 node_js:
-- 13.2
-
-before_install:
-- npm install -g yarn@berry
+  - 13.7
 
 script:
-- yarn test
-- echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-- ./tools/continuous-deployment.travis.sh
+  - yarn --cwd packages/kryo test
+#- echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+#- ./tools/continuous-deployment.travis.sh
 
 after_script:
-- yarn dlx codecov
+  - npx codecov
