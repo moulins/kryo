@@ -4,6 +4,7 @@
 - **[Breaking change]** Publish the library as ESM.
 - **[Fix]** Update dependencies.
 - **[Fix]** Update build tools.
+- **[Fix]** Update README badges.
 - **[Internal]** Drop Gulp dependency.
 
 # 0.8.1 (2019-01-03)
