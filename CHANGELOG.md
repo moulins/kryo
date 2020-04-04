@@ -1,4 +1,4 @@
-# Next
+# 0.9.0 (2020-04-04)
 
 - **[Breaking change]** Require Node `13.7`.
 - **[Breaking change]** Publish the library as ESM.
