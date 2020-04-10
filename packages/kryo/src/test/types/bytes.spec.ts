@@ -1,4 +1,4 @@
-import { BytesType } from "../../lib/types/bytes.js";
+import { BytesType } from "../../lib/bytes.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("BytesType", function () {

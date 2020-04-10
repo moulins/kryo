@@ -1,6 +1,6 @@
 import chai from "chai";
-import { AnyType } from "kryo/lib/types/any.js";
-import { RecordIoType, RecordType } from "kryo/lib/types/record.js";
+import { AnyType } from "kryo/lib/any.js";
+import { RecordIoType, RecordType } from "kryo/lib/record.js";
 
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsValueReader } from "../../lib/qs-value-reader.js";

@@ -1,6 +1,6 @@
 import chai from "chai";
 
-import { Ucs2StringType } from "../../lib/types/ucs2-string.js";
+import { Ucs2StringType } from "../../lib/ucs2-string.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Ucs2StringType", function () {

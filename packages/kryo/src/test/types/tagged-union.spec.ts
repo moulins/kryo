@@ -1,11 +1,11 @@
 import BSON from "bson";
 
 import { CaseStyle } from "../../lib/core.js";
-import { IntegerType } from "../../lib/types/integer.js";
-import { LiteralType } from "../../lib/types/literal.js";
-import { RecordType } from "../../lib/types/record.js";
-import { TaggedUnionType } from "../../lib/types/tagged-union.js";
-import { TsEnumType } from "../../lib/types/ts-enum.js";
+import { IntegerType } from "../../lib/integer.js";
+import { LiteralType } from "../../lib/literal.js";
+import { RecordType } from "../../lib/record.js";
+import { TaggedUnionType } from "../../lib/tagged-union.js";
+import { TsEnumType } from "../../lib/ts-enum.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("TaggedUnion", function () {

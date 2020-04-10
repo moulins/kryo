@@ -1,5 +1,5 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
-import { BooleanType } from "kryo/lib/types/boolean.js";
+import { BooleanType } from "kryo/lib/boolean.js";
 
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";

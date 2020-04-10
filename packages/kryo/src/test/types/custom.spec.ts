@@ -2,9 +2,9 @@ import BSON from "bson";
 import incident from "incident";
 
 import { Reader, Writer } from "../../lib/core.js";
+import { CustomType } from "../../lib/custom.js";
 import { createInvalidTypeError } from "../../lib/errors/invalid-type.js";
 import { readVisitor } from "../../lib/readers/read-visitor.js";
-import { CustomType } from "../../lib/types/custom.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Custom", function () {

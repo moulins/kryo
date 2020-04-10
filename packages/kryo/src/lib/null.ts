@@ -1,6 +1,6 @@
-import { IoType, Reader, VersionedType, Writer } from "../core.js";
-import { createInvalidTypeError } from "../errors/invalid-type.js";
-import { readVisitor } from "../readers/read-visitor.js";
+import { IoType, Reader, VersionedType, Writer } from "./core.js";
+import { createInvalidTypeError } from "./errors/invalid-type.js";
+import { readVisitor } from "./readers/read-visitor.js";
 
 export type Name = "null";
 export const name: Name = "null";

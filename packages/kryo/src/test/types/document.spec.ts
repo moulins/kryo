@@ -1,9 +1,9 @@
 import BSON from "bson";
 
 import { CaseStyle } from "../../lib/core.js";
-import { DateType } from "../../lib/types/date.js";
-import { IntegerType } from "../../lib/types/integer.js";
-import { RecordType } from "../../lib/types/record.js";
+import { DateType } from "../../lib/date.js";
+import { IntegerType } from "../../lib/integer.js";
+import { RecordType } from "../../lib/record.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Document", function () {

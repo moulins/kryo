@@ -1,6 +1,6 @@
-import { IntegerType } from "../../lib/types/integer.js";
-import { MapType } from "../../lib/types/map.js";
-import { Ucs2StringType } from "../../lib/types/ucs2-string.js";
+import { IntegerType } from "../../lib/integer.js";
+import { MapType } from "../../lib/map.js";
+import { Ucs2StringType } from "../../lib/ucs2-string.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Map", function () {

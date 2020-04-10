@@ -1,10 +1,10 @@
-import { lazyProperties } from "../_helpers/lazy-properties.js";
-import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "../core.js";
-import { createInvalidTypeError } from "../errors/invalid-type.js";
-import { createLazyOptionsError } from "../errors/lazy-options.js";
-import { createMaxArrayLengthError } from "../errors/max-array-length.js";
-import { createNotImplementedError } from "../errors/not-implemented.js";
-import { readVisitor } from "../readers/read-visitor.js";
+import { lazyProperties } from "./_helpers/lazy-properties.js";
+import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "./core.js";
+import { createInvalidTypeError } from "./errors/invalid-type.js";
+import { createLazyOptionsError } from "./errors/lazy-options.js";
+import { createMaxArrayLengthError } from "./errors/max-array-length.js";
+import { createNotImplementedError } from "./errors/not-implemented.js";
+import { readVisitor } from "./readers/read-visitor.js";
 
 export type Diff = any;
 

@@ -1,9 +1,9 @@
 import incident from "incident";
 
-import { lazyProperties } from "../_helpers/lazy-properties.js";
-import { testError } from "../_helpers/test-error.js";
-import { IoType, Lazy, Reader, VersionedType, Writer } from "../core.js";
-import { createLazyOptionsError } from "../errors/lazy-options.js";
+import { lazyProperties } from "./_helpers/lazy-properties.js";
+import { testError } from "./_helpers/test-error.js";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "./core.js";
+import { createLazyOptionsError } from "./errors/lazy-options.js";
 
 export type Name = "white-list";
 export const name: Name = "white-list";

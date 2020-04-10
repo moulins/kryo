@@ -1,10 +1,10 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { CaseStyle } from "kryo/lib/core.js";
-import { IntegerType } from "kryo/lib/types/integer.js";
-import { LiteralType } from "kryo/lib/types/literal.js";
-import { RecordType } from "kryo/lib/types/record.js";
-import { TaggedUnionType } from "kryo/lib/types/tagged-union.js";
-import { TsEnumType } from "kryo/lib/types/ts-enum.js";
+import { IntegerType } from "kryo/lib/integer.js";
+import { LiteralType } from "kryo/lib/literal.js";
+import { RecordType } from "kryo/lib/record.js";
+import { TaggedUnionType } from "kryo/lib/tagged-union.js";
+import { TsEnumType } from "kryo/lib/ts-enum.js";
 
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";

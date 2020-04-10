@@ -1,6 +1,6 @@
 import chai from "chai";
 
-import { Float64Type } from "../../lib/types/float64.js";
+import { Float64Type } from "../../lib/float64.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Float64Type", function () {

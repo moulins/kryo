@@ -1,5 +1,5 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
-import { Float64Type } from "kryo/lib/types/float64.js";
+import { Float64Type } from "kryo/lib/float64.js";
 
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";

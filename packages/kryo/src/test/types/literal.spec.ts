@@ -1,6 +1,6 @@
-import { LiteralIoType, LiteralType } from "../../lib/types/literal.js";
-import { TsEnumType } from "../../lib/types/ts-enum.js";
-import { Ucs2StringType } from "../../lib/types/ucs2-string.js";
+import { LiteralIoType, LiteralType } from "../../lib/literal.js";
+import { TsEnumType } from "../../lib/ts-enum.js";
+import { Ucs2StringType } from "../../lib/ucs2-string.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Literal", function () {

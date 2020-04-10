@@ -3,6 +3,7 @@
 - **[Breaking change]** Move format support to their own packages: `kryo-bson`, `kryo-json` and `kryo-qs`.
 - **[Breaking change]** Rename `DocumentType` to `RecordType`.
 - **[Breaking change]** Move `CaseStyle` to main exports.
+- **[Breaking change]** Move `types/` module to the library root.
 
 # 0.9.0 (2020-04-04)
 

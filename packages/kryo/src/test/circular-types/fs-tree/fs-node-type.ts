@@ -1,4 +1,4 @@
-import { TsEnumType } from "../../../lib/types/ts-enum.js";
+import { TsEnumType } from "../../../lib/ts-enum.js";
 
 export enum FsNodeType {
   File,

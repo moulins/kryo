@@ -1,7 +1,7 @@
 import { CaseStyle } from "../../lib/core.js";
-import { IntegerType } from "../../lib/types/integer.js";
-import { RecordType } from "../../lib/types/record.js";
-import { TryUnionType } from "../../lib/types/try-union.js";
+import { IntegerType } from "../../lib/integer.js";
+import { RecordType } from "../../lib/record.js";
+import { TryUnionType } from "../../lib/try-union.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("TryUnion", function () {

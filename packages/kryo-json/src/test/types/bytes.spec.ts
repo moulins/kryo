@@ -1,5 +1,5 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
-import { BytesType } from "kryo/lib/types/bytes.js";
+import { BytesType } from "kryo/lib/bytes.js";
 
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";

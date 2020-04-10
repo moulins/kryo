@@ -1,7 +1,7 @@
 import { CaseStyle } from "../../../lib/core.js";
-import { IntegerType } from "../../../lib/types/integer.js";
-import { LiteralType } from "../../../lib/types/literal.js";
-import { RecordType } from "../../../lib/types/record.js";
+import { IntegerType } from "../../../lib/integer.js";
+import { LiteralType } from "../../../lib/literal.js";
+import { RecordType } from "../../../lib/record.js";
 import { $FsNodeBase, FsNodeBase } from "./fs-node-base.js";
 import { $FsNodeType, FsNodeType } from "./fs-node-type.js";
 

@@ -1,5 +1,5 @@
-import { Ucs2StringType } from "../../lib/types/ucs2-string.js";
-import { WhiteListType } from "../../lib/types/white-list.js";
+import { Ucs2StringType } from "../../lib/ucs2-string.js";
+import { WhiteListType } from "../../lib/white-list.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("WhiteListType", function () {

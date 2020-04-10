@@ -1,6 +1,6 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { CaseStyle } from "kryo/lib/core.js";
-import { TsEnumType } from "kryo/lib/types/ts-enum.js";
+import { TsEnumType } from "kryo/lib/ts-enum.js";
 
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";

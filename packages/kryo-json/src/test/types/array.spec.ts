@@ -1,8 +1,8 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
+import { ArrayIoType, ArrayType } from "kryo/lib/array.js";
 import { $Boolean } from "kryo/lib/builtins/boolean.js";
 import { $Uint8 } from "kryo/lib/builtins/uint8.js";
-import { ArrayIoType, ArrayType } from "kryo/lib/types/array.js";
-import { IntegerType } from "kryo/lib/types/integer.js";
+import { IntegerType } from "kryo/lib/integer.js";
 
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";

@@ -1,11 +1,11 @@
 import incident from "incident";
 
-import { lazyProperties } from "../_helpers/lazy-properties.js";
-import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "../core.js";
-import { createInvalidIntegerError } from "../errors/invalid-integer.js";
-import { createInvalidTypeError } from "../errors/invalid-type.js";
-import { createLazyOptionsError } from "../errors/lazy-options.js";
-import { readVisitor } from "../readers/read-visitor.js";
+import { lazyProperties } from "./_helpers/lazy-properties.js";
+import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "./core.js";
+import { createInvalidIntegerError } from "./errors/invalid-integer.js";
+import { createInvalidTypeError } from "./errors/invalid-type.js";
+import { createLazyOptionsError } from "./errors/lazy-options.js";
+import { readVisitor } from "./readers/read-visitor.js";
 
 export type Name = "integer";
 export const name: Name = "integer";

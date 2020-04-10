@@ -1,17 +1,17 @@
 import incident from "incident";
 
-import { checkedUcs2Decode } from "../_helpers/checked-ucs2-decode.js";
-import { lazyProperties } from "../_helpers/lazy-properties.js";
-import { IoType, Lazy, Reader, VersionedType, Writer } from "../core.js";
-import { createInvalidTypeError } from "../errors/invalid-type.js";
-import { createLazyOptionsError } from "../errors/lazy-options.js";
-import { createLowerCaseError } from "../errors/lower-case.js";
-import { createMaxCodepointsError } from "../errors/max-codepoints.js";
-import { createMinCodepointsError } from "../errors/min-codepoints.js";
-import { createMissingDependencyError } from "../errors/missing-dependency.js";
-import { createNotTrimmedError } from "../errors/not-trimmed.js";
-import { createPatternNotMatchedError } from "../errors/pattern-not-matched.js";
-import { readVisitor } from "../readers/read-visitor.js";
+import { checkedUcs2Decode } from "./_helpers/checked-ucs2-decode.js";
+import { lazyProperties } from "./_helpers/lazy-properties.js";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "./core.js";
+import { createInvalidTypeError } from "./errors/invalid-type.js";
+import { createLazyOptionsError } from "./errors/lazy-options.js";
+import { createLowerCaseError } from "./errors/lower-case.js";
+import { createMaxCodepointsError } from "./errors/max-codepoints.js";
+import { createMinCodepointsError } from "./errors/min-codepoints.js";
+import { createMissingDependencyError } from "./errors/missing-dependency.js";
+import { createNotTrimmedError } from "./errors/not-trimmed.js";
+import { createPatternNotMatchedError } from "./errors/pattern-not-matched.js";
+import { readVisitor } from "./readers/read-visitor.js";
 
 export type UnormNfc = (str: string) => string;
 

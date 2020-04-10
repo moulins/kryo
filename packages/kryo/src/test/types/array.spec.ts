@@ -1,6 +1,6 @@
+import { ArrayType } from "../../lib/array.js";
 import { $Uint8 } from "../../lib/builtins/uint8.js";
-import { ArrayType } from "../../lib/types/array.js";
-import { IntegerType } from "../../lib/types/integer.js";
+import { IntegerType } from "../../lib/integer.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("ArrayType", function () {

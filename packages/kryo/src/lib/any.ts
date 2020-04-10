@@ -1,4 +1,4 @@
-import { IoType, Reader, Writer } from "../core.js";
+import { IoType, Reader, Writer } from "./core.js";
 
 export type Diff = any;
 

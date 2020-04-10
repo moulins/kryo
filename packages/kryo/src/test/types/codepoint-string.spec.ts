@@ -1,7 +1,7 @@
 import chai from "chai";
 import unorm from "unorm";
 
-import { CodepointStringType } from "../../lib/types/codepoint-string.js";
+import { CodepointStringType } from "../../lib/codepoint-string.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("CodepointStringType", function () {

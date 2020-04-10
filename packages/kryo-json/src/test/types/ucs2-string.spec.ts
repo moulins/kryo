@@ -1,5 +1,5 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
-import { Ucs2StringType } from "kryo/lib/types/ucs2-string.js";
+import { Ucs2StringType } from "kryo/lib/ucs2-string.js";
 
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";

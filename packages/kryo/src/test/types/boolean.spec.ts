@@ -1,6 +1,6 @@
 import chai from "chai";
 
-import { BooleanType } from "../../lib/types/boolean.js";
+import { BooleanType } from "../../lib/boolean.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("BooleanType", function () {

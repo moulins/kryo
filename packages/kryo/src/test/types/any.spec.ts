@@ -1,4 +1,4 @@
-import { AnyType } from "../../lib/types/any.js";
+import { AnyType } from "../../lib/any.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Any", function () {

@@ -1,4 +1,4 @@
-import { IntegerType } from "../../lib/types/integer.js";
+import { IntegerType } from "../../lib/integer.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("IntegerType", function () {

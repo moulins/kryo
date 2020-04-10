@@ -1,4 +1,4 @@
-import { DateType } from "../../lib/types/date.js";
+import { DateType } from "../../lib/date.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("DateType", function () {
