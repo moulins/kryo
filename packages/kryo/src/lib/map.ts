@@ -40,7 +40,7 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): Map<K, V> {
     if (this.assumeStringKey) {
-      return reader.readDocument(raw, readVisitor({
+      return reader.readRecord(raw, readVisitor({
         fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): Map<K, V> => {
           const result: Map<K, V> = new Map();
 
@@ -87,7 +87,7 @@ export class MapType<K, V> implements IoType<Map<K, V>>, VersionedType<Map<K, V>
   // TODO: Dynamically add with prototype?
   write<W>(writer: Writer<W>, value: Map<K, V>): W {
     if (this.assumeStringKey) {
-      return writer.writeDocument(
+      return writer.writeRecord(
         value.keys() as Iterable<any> as Iterable<string>,
         <FW>(outKey: string, fieldWriter: Writer<FW>): FW => {
           return this.valueType.write!(fieldWriter, value.get(outKey as any)!);

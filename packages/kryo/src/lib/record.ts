@@ -146,7 +146,7 @@ export const RecordType: RecordTypeConstructor = <any> class<T> implements IoTyp
 
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): T {
-    return reader.readDocument(raw, readVisitor({
+    return reader.readRecord(raw, readVisitor({
       fromMap: <RK, RV>(input: Map<RK, RV>, keyReader: Reader<RK>, valueReader: Reader<RV>): T => {
         const extra: Set<string> = new Set();
         const missing: Set<string> = new Set();
@@ -206,7 +206,7 @@ export const RecordType: RecordTypeConstructor = <any> class<T> implements IoTyp
       }
     }
 
-    return writer.writeDocument(outKeys.keys(), <FW>(outKey: string, fieldWriter: Writer<FW>): FW => {
+    return writer.writeRecord(outKeys.keys(), <FW>(outKey: string, fieldWriter: Writer<FW>): FW => {
       const jsKey: keyof T = this.outKeys.get(outKey)!;
       const descriptor: PropertyDescriptor<any> = this.properties[jsKey];
       if (descriptor.type.write === undefined) {

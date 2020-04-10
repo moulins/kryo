@@ -130,7 +130,7 @@ export interface Writer<W> {
 
   writeDate(value: Date): W;
 
-  writeDocument<K extends string>(keys: Iterable<K>, handler: <FW>(key: K, fieldWriter: Writer<FW>) => FW): W;
+  writeRecord<K extends string>(keys: Iterable<K>, handler: <FW>(key: K, fieldWriter: Writer<FW>) => FW): W;
 
   writeFloat64(value: number): W;
 
@@ -185,7 +185,7 @@ export interface Reader<R> {
 
   readDate<T>(raw: R, visitor: ReadVisitor<T>): T;
 
-  readDocument<T>(raw: R, visitor: ReadVisitor<T>): T;
+  readRecord<T>(raw: R, visitor: ReadVisitor<T>): T;
 
   readFloat64<T>(raw: R, visitor: ReadVisitor<T>): T;
 

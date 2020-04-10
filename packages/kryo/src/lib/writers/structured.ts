@@ -32,7 +32,7 @@ export abstract class StructuredWriter implements Writer<any> {
     return result;
   }
 
-  writeDocument<K extends string>(
+  writeRecord<K extends string>(
     keys: Iterable<K>,
     handler: (key: K, fieldWriter: Writer<any>) => any,
   ): Record<K, any> {

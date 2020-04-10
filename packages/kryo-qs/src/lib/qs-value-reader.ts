@@ -63,7 +63,7 @@ export class QsValueReader implements Reader<any> {
     throw createInvalidTypeError("string | number", input);
   }
 
-  readDocument<R>(raw: any, visitor: ReadVisitor<R>): R {
+  readRecord<R>(raw: any, visitor: ReadVisitor<R>): R {
     if (typeof raw !== "object" || raw === null) {
       throw createInvalidTypeError("object", raw);
     }

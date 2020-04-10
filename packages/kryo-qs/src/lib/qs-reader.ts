@@ -36,8 +36,8 @@ export class QsReader implements Reader<string> {
     return this.valueReader.readDate(qs.parse(raw)[this.primitiveWrapper], visitor);
   }
 
-  readDocument<R>(raw: any, visitor: ReadVisitor<R>): R {
-    return this.valueReader.readDocument(qs.parse(raw), visitor);
+  readRecord<R>(raw: any, visitor: ReadVisitor<R>): R {
+    return this.valueReader.readRecord(qs.parse(raw), visitor);
   }
 
   readFloat64<R>(raw: string, visitor: ReadVisitor<R>): R {

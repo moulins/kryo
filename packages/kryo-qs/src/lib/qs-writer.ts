@@ -32,11 +32,11 @@ export class QsWriter implements Writer<string> {
     return qs.stringify({[this.primitiveWrapper]: this.valueWriter.writeDate(value)});
   }
 
-  writeDocument<K extends string>(
+  writeRecord<K extends string>(
     keys: Iterable<K>,
     handler: (key: K, fieldWriter: Writer<any>) => any,
   ): string {
-    return qs.stringify(this.valueWriter.writeDocument(keys, handler));
+    return qs.stringify(this.valueWriter.writeRecord(keys, handler));
   }
 
   writeFloat64(value: number): string {

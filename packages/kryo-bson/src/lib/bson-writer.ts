@@ -32,11 +32,11 @@ export class BsonWriter implements Writer<Buffer> {
     return BSON.serialize({[this.primitiveWrapper]: this.valueWriter.writeDate(value)});
   }
 
-  writeDocument<K extends string>(
+  writeRecord<K extends string>(
     keys: Iterable<K>,
     handler: (key: K, fieldWriter: Writer<any>) => any,
   ): Buffer {
-    return BSON.serialize(this.valueWriter.writeDocument(keys, handler));
+    return BSON.serialize(this.valueWriter.writeRecord(keys, handler));
   }
 
   writeFloat64(value: number): Buffer {

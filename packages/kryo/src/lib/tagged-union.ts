@@ -85,7 +85,7 @@ export class TaggedUnionType<T, K extends RecordType<T> = RecordType<T>> impleme
   }
 
   variantRead<R>(reader: Reader<R>, raw: R): [K, T] {
-    return reader.readDocument(raw, readVisitor({
+    return reader.readRecord(raw, readVisitor({
       fromMap: <RK, RV>(
         input: Map<RK, RV>,
         keyReader: Reader<RK>,

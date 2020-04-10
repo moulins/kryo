@@ -38,7 +38,7 @@ export class JsonStreamWriter implements Writer<boolean> {
     return this.writeString(result.join(""));
   }
 
-  writeDocument<K extends string>(
+  writeRecord<K extends string>(
     keys: Iterable<K>,
     handler: (key: K, fieldWriter: Writer<boolean>) => boolean,
   ): boolean {

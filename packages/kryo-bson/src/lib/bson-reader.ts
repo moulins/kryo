@@ -36,8 +36,8 @@ export class BsonReader implements Reader<Buffer> {
     return this.valueReader.readDate(BSON.deserialize(raw)[this.primitiveWrapper], visitor);
   }
 
-  readDocument<R>(raw: any, visitor: ReadVisitor<R>): R {
-    return this.valueReader.readDocument(BSON.deserialize(raw), visitor);
+  readRecord<R>(raw: any, visitor: ReadVisitor<R>): R {
+    return this.valueReader.readRecord(BSON.deserialize(raw), visitor);
   }
 
   readFloat64<R>(raw: Buffer, visitor: ReadVisitor<R>): R {

@@ -60,7 +60,7 @@ export class BsonValueReader implements Reader<any> {
     return visitor.fromDate(new Date(raw.getTime()));
   }
 
-  readDocument<R>(raw: any, visitor: ReadVisitor<R>): R {
+  readRecord<R>(raw: any, visitor: ReadVisitor<R>): R {
     if (typeof raw !== "object" || raw === null) {
       throw createInvalidTypeError("object", raw);
     }

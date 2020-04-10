@@ -29,11 +29,11 @@ export class JsonWriter implements Writer<string> {
     return JSON.stringify(this.valueWriter.writeDate(value));
   }
 
-  writeDocument<K extends string>(
+  writeRecord<K extends string>(
     keys: Iterable<K>,
     handler: (key: K, fieldWriter: Writer<any>) => any,
   ): string {
-    return JSON.stringify(this.valueWriter.writeDocument(keys, handler));
+    return JSON.stringify(this.valueWriter.writeRecord(keys, handler));
   }
 
   writeFloat64(value: number): string {

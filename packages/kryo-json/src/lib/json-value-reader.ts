@@ -65,7 +65,7 @@ export class JsonValueReader implements Reader<JsonValue> {
     throw createInvalidTypeError("string | number", raw);
   }
 
-  readDocument<R>(raw: any, visitor: ReadVisitor<R>): R {
+  readRecord<R>(raw: any, visitor: ReadVisitor<R>): R {
     if (typeof raw !== "object" || raw === null) {
       throw createInvalidTypeError("object", raw);
     }
