@@ -37,3 +37,5 @@ export class AnyType<T = any> implements IoType<T> {
     return JSON.parse(JSON.stringify(val));
   }
 }
+
+export const $Any: AnyType = new AnyType();

@@ -116,3 +116,5 @@ export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, 
     Object.assign(this, {maxLength});
   }
 }
+
+export const $Bytes: BytesType = new BytesType({maxLength: Infinity});

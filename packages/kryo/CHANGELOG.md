@@ -5,6 +5,7 @@
 - **[Breaking change]** Move `CaseStyle` to main exports.
 - **[Breaking change]** Move `types/` module to the library root.
 - **[Breaking change]** Rename `core.js` to `index.js`.
+- **[Breaking change]** Move builtin types to the module defining the corresponding type.
 
 # 0.9.0 (2020-04-04)
 

@@ -1,4 +1,4 @@
-import { $Uint8 } from "../../lib/builtins/uint8.js";
+import { $Uint8 } from "../../lib/integer.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("$Uint8", function () {

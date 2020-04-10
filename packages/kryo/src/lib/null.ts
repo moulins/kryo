@@ -59,3 +59,5 @@ export class NullType implements IoType<null>, VersionedType<null, undefined> {
     return;
   }
 }
+
+export const $Null: NullType = new NullType();

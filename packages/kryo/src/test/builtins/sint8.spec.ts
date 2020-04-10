@@ -1,4 +1,4 @@
-import { $Sint8 } from "../../lib/builtins/sint8.js";
+import { $Sint8 } from "../../lib/integer.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("$Sint8", function () {

@@ -70,3 +70,5 @@ export class BooleanType implements IoType<boolean>, VersionedType<boolean, Diff
     return (diff1 !== diff2) && undefined;
   }
 }
+
+export const $Boolean: BooleanType = new BooleanType();

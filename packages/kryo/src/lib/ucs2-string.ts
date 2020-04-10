@@ -267,3 +267,5 @@ export class Ucs2StringType implements IoType<string>, VersionedType<string, Dif
     Object.assign(this, {allowUnicodeRegExp, pattern, lowerCase, trimmed, minLength, maxLength});
   }
 }
+
+export const $Ucs2String: Ucs2StringType = new Ucs2StringType({maxLength: Infinity});

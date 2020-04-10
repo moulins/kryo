@@ -175,3 +175,5 @@ export class Float64Type implements IoType<number>, VersionedType<number, [numbe
     Object.assign(this, {allowNaN, allowInfinity});
   }
 }
+
+export const $Float64: Float64Type = new Float64Type();

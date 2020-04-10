@@ -2,7 +2,7 @@
  * @module kryo/builtins/uuid-hex
  */
 
-import { Ucs2StringType } from "../ucs2-string.js";
+import { Ucs2StringType } from "./ucs2-string.js";
 
 /**
  * Semantic alias for strings representing UUID.

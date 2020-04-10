@@ -80,3 +80,5 @@ export class DateType implements IoType<Date>, VersionedType<Date, Diff>, Ord<Da
     return diff2 === -diff1 ? undefined : diff1 + diff2;
   }
 }
+
+export const $Date: DateType = new DateType();

@@ -155,3 +155,15 @@ export class IntegerType implements IoType<number>, VersionedType<number, Diff>,
     Object.assign(this, {min, max});
   }
 }
+
+export const $Sint8: IntegerType = new IntegerType({min: -128, max: 127});
+export const $Sint16: IntegerType = new IntegerType({min: -32768, max: 32767});
+export const $Sint32: IntegerType = new IntegerType({min: -2147483648, max: 2147483647});
+export const $Sint54: IntegerType = new IntegerType({
+  min: -9007199254740992,
+  max: 9007199254740991,
+});
+export const $Uint8: IntegerType = new IntegerType({min: 0, max: 255});
+export const $Uint16: IntegerType = new IntegerType({min: 0, max: 65535});
+export const $Uint32: IntegerType = new IntegerType({min: 0, max: 4294967295});
+export const $Uint53: IntegerType = new IntegerType({min: 0, max: 9007199254740991});

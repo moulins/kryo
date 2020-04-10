@@ -1,8 +1,7 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { ArrayIoType, ArrayType } from "kryo/lib/array.js";
-import { $Boolean } from "kryo/lib/builtins/boolean.js";
-import { $Uint8 } from "kryo/lib/builtins/uint8.js";
-import { IntegerType } from "kryo/lib/integer.js";
+import { $Boolean } from "kryo/lib/boolean.js";
+import { $Uint8, IntegerType } from "kryo/lib/integer.js";
 
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
@@ -172,7 +171,11 @@ describe("kryo-qs | Array", function () {
       {
         value: [[true], [false, true]],
         io: [
-          {writer: QS_WRITER, reader: QS_READER, raw: "_%5B0%5D%5B0%5D=true&_%5B1%5D%5B0%5D=false&_%5B1%5D%5B1%5D=true"},
+          {
+            writer: QS_WRITER,
+            reader: QS_READER,
+            raw: "_%5B0%5D%5B0%5D=true&_%5B1%5D%5B0%5D=false&_%5B1%5D%5B1%5D=true",
+          },
         ],
       },
     ];

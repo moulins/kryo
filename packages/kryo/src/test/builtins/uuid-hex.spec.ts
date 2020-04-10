@@ -1,4 +1,4 @@
-import { $UuidHex } from "../../lib/builtins/uuid-hex.js";
+import { $UuidHex } from "../../lib/uuid-hex.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("$UuidHex", function () {
