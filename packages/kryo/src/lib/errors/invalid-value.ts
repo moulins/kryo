@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 import { Type } from "../core";
 
@@ -11,7 +11,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidValueError = incident.Incident<Data, Name, Cause>;
+export type InvalidValueError = Incident<Data, Name, Cause>;
 
 export function createInvalidValueError(type: Type<any>, value: any): InvalidValueError {
   return new incident.Incident(name, {type, value});

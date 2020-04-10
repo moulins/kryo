@@ -1,9 +1,9 @@
 import incident from "incident";
 
 import { lazyProperties } from "../_helpers/lazy-properties.js";
+import { testError } from "../_helpers/test-error.js";
 import { IoType, Lazy, Reader, Type, Writer } from "../core.js";
 import { createLazyOptionsError } from "../errors/lazy-options.js";
-import { testError } from "../test-error.js";
 
 export type Name = "literal";
 export const name: Name = "literal";

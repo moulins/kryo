@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "MaxCodepoints";
 export const name: Name = "MaxCodepoints";
@@ -10,7 +10,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type MaxCodepointsError = incident.Incident<Data, Name, Cause>;
+export type MaxCodepointsError = Incident<Data, Name, Cause>;
 
 export function format({count, max}: Data): string {
   return `Expected codepoints count (${count}) to be less than or equal to ${max}`;

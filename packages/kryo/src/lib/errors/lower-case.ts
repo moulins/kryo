@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "LowerCase";
 export const name: Name = "LowerCase";
@@ -8,7 +8,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type LowerCaseError = incident.Incident<Data, Name, Cause>;
+export type LowerCaseError = Incident<Data, Name, Cause>;
 
 export function format({string}: Data): string {
   return `Expected the following string to be lowercase: ${JSON.stringify(string)}`;

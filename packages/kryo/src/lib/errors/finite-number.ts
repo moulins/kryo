@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "FiniteNumber";
 export const name: Name = "FiniteNumber";
@@ -8,7 +8,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type FiniteNumberError = incident.Incident<Data, Name, Cause>;
+export type FiniteNumberError = Incident<Data, Name, Cause>;
 
 export function format({value}: Data): string {
   return `Expected a finite number, received ${value}`;

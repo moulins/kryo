@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "InvalidFloat64";
 export const name: Name = "InvalidFloat64";
@@ -9,7 +9,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidFloat64Error = incident.Incident<Data, Name, Cause>;
+export type InvalidFloat64Error = Incident<Data, Name, Cause>;
 
 export function format({value, source}: Data): string {
   return `Invalid float64: ${value}` + (source === undefined ? "" : `, from ${source}`);

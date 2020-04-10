@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "InvalidRecord";
 export const name: Name = "InvalidRecord";
@@ -23,7 +23,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidRecord = incident.Incident<Data, Name, Cause>;
+export type InvalidRecord = Incident<Data, Name, Cause>;
 
 export function createInvalidRecordError(data: Data): InvalidRecord {
   if (data.extra === undefined) {

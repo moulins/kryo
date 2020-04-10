@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 import objectInspect from "object-inspect";
 
 export type Name = "LazyOptions";
@@ -9,8 +9,8 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type LazyOptionsError = incident.Incident<Data, Name, Cause>;
+export type LazyOptionsError = Incident<Data, Name, Cause>;
 
 export function createLazyOptionsError(target: any): LazyOptionsError {
-  return new incident.Incident(name, {target}, ({target}) => `Cannot resolve lazy options in target: ${objectInspect(target)}`);
+  return new incident.Incident(name, {target}, ({target}: Data) => `Cannot resolve lazy options in target: ${objectInspect(target)}`);
 }

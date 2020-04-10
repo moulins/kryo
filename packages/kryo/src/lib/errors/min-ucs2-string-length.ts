@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "MinUcs2StringLength";
 export const name: Name = "MinUcs2StringLength";
@@ -9,7 +9,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type MinUcs2StringLengthError = incident.Incident<Data, Name, Cause>;
+export type MinUcs2StringLengthError = Incident<Data, Name, Cause>;
 
 export function format({string, min}: Data): string {
   return `Expected length of UCS2 string (${string.length}) to be greater than or equal to ${min}`;

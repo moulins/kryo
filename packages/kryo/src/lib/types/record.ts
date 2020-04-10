@@ -1,8 +1,8 @@
 import incident from "incident";
 
+import { rename } from "../_helpers/case-style.js";
 import { lazyProperties } from "../_helpers/lazy-properties.js";
-import { CaseStyle, rename } from "../case-style.js";
-import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../core.js";
+import { CaseStyle, IoType, Lazy, Reader, Type, VersionedType, Writer } from "../core.js";
 import { createInvalidRecordError } from "../errors/invalid-record.js";
 import { createInvalidTypeError } from "../errors/invalid-type.js";
 import { createLazyOptionsError } from "../errors/lazy-options.js";

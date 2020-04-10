@@ -1,6 +1,6 @@
 import BSON from "bson";
 
-import { CaseStyle } from "../../lib/case-style.js";
+import { CaseStyle } from "../../lib/core.js";
 import { DateType } from "../../lib/types/date.js";
 import { IntegerType } from "../../lib/types/integer.js";
 import { RecordType } from "../../lib/types/record.js";

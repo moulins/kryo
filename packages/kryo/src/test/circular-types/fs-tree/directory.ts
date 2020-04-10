@@ -1,4 +1,4 @@
-import { CaseStyle } from "../../../lib/case-style.js";
+import { CaseStyle } from "../../../lib/core.js";
 import { ArrayType } from "../../../lib/types/array.js";
 import { LiteralType } from "../../../lib/types/literal.js";
 import { RecordType } from "../../../lib/types/record.js";

@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "InvalidInteger";
 export const name: Name = "InvalidInteger";
@@ -9,7 +9,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidIntegerError = incident.Incident<Data, Name, Cause>;
+export type InvalidIntegerError = Incident<Data, Name, Cause>;
 
 export function format({value, source}: Data): string {
   return `Invalid integer: ${value}` + (source === undefined ? "" : `, from ${source}`);

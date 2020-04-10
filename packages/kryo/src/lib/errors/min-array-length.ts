@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "MinArrayLength";
 export const name: Name = "MinArrayLength";
@@ -9,7 +9,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type MinArrayLengthError = incident.Incident<Data, Name, Cause>;
+export type MinArrayLengthError = Incident<Data, Name, Cause>;
 
 export function format({array, min}: Data): string {
   return `Expected array length (${array.length}) to be greater than or equal to ${min}`;

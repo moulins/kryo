@@ -1,5 +1,5 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
-import { CaseStyle } from "kryo/lib/case-style.js";
+import { CaseStyle } from "kryo/lib/core.js";
 import { IntegerType } from "kryo/lib/types/integer.js";
 import { RecordType } from "kryo/lib/types/record.js";
 import { TryUnionType } from "kryo/lib/types/try-union.js";

@@ -1,6 +1,7 @@
 import incident from "incident";
 
 import { lazyProperties } from "../_helpers/lazy-properties.js";
+import { testError } from "../_helpers/test-error.js";
 import { IoType, Lazy, Reader, Type, Writer } from "../core.js";
 import { createInvalidArrayItemsError } from "../errors/invalid-array-items.js";
 import { createInvalidTypeError } from "../errors/invalid-type.js";
@@ -8,7 +9,6 @@ import { createLazyOptionsError } from "../errors/lazy-options.js";
 import { createMaxArrayLengthError } from "../errors/max-array-length.js";
 import { createMinArrayLengthError } from "../errors/min-array-length.js";
 import { readVisitor } from "../readers/read-visitor.js";
-import { testError } from "../test-error.js";
 
 export type Name = "array";
 export const name: Name = "array";

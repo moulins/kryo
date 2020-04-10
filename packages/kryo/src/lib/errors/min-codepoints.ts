@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "MinCodepoints";
 export const name: Name = "MinCodepoints";
@@ -10,7 +10,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type MinCodepointsError = incident.Incident<Data, Name, Cause>;
+export type MinCodepointsError = Incident<Data, Name, Cause>;
 
 export function format({count, min}: Data): string {
   return `Expected codepoints count (${count}) to be greater than or equal to ${min}`;

@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "InvalidTimestamp";
 export const name: Name = "InvalidTimestamp";
@@ -8,7 +8,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidTimestampError = incident.Incident<Data, Name, Cause>;
+export type InvalidTimestampError = Incident<Data, Name, Cause>;
 
 export function format({date}: Data): string {
   return `Invalid timestamp for the date: ${JSON.stringify(date)}`;

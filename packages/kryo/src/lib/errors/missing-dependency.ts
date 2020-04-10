@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "MissingDependency";
 export const name: Name = "MissingDependency";
@@ -9,7 +9,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type MissingDependencyError = incident.Incident<Data, Name, Cause>;
+export type MissingDependencyError = Incident<Data, Name, Cause>;
 
 export function format({name, role}: Data): string {
   return `Missing optional dependencies ${JSON.stringify(name)}: ${role}`;

@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 import objectInspect from "object-inspect";
 
 export type Name = "InvalidType";
@@ -23,7 +23,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidTypeError = incident.Incident<Data, Name, Cause>;
+export type InvalidTypeError = Incident<Data, Name, Cause>;
 
 export function format({typeName, value, variableName}: Data): string {
   if (typeof variableName === "string") {

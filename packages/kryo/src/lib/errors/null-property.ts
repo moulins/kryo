@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "NullProperty";
 export const name: Name = "NullProperty";
@@ -8,7 +8,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type NullPropertyError = incident.Incident<Data, Name, Cause>;
+export type NullPropertyError = Incident<Data, Name, Cause>;
 
 export function format({key}: Data): string {
   return `The property ${key} is not allowed to be null`;

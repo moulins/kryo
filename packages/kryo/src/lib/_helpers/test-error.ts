@@ -1,5 +1,5 @@
-import { Type } from "./core.js";
-import { createInvalidValueError } from "./errors/invalid-value.js";
+import { Type } from "../core.js";
+import { createInvalidValueError } from "../errors/invalid-value.js";
 
 /**
  * Calls the `.testError` method of `type` or falls back to an implementation derived from `.test`.

@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "UnknownFormat";
 export const name: Name = "UnknownFormat";
@@ -17,7 +17,7 @@ export type Cause = undefined;
  *
  * Currently, only the two format "json-doc" and "bson-doc" are supported.
  */
-export type UnknownFormatError = incident.Incident<Data, Name, Cause>;
+export type UnknownFormatError = Incident<Data, Name, Cause>;
 
 export function format({format}: Data): string {
   return `Unknown format ${JSON.stringify(format)}, supported formats: bson, json or qs`;

@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "MaxUcs2StringLength";
 export const name: Name = "MaxUcs2StringLength";
@@ -9,7 +9,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type MaxUcs2StringLengthError = incident.Incident<Data, Name, Cause>;
+export type MaxUcs2StringLengthError = Incident<Data, Name, Cause>;
 
 export function format({string, max}: Data): string {
   return `Expected length of UCS2 string (${string.length}) to be less than or equal to ${max}`;

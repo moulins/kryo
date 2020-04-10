@@ -1,4 +1,4 @@
-import { CaseStyle } from "../../lib/case-style.js";
+import { CaseStyle } from "../../lib/core.js";
 import { IntegerType } from "../../lib/types/integer.js";
 import { RecordType } from "../../lib/types/record.js";
 import { TryUnionType } from "../../lib/types/try-union.js";

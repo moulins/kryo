@@ -5,7 +5,8 @@
 import incident from "incident";
 import { Reader, ReadVisitor } from "kryo/lib/core.js";
 import { createInvalidTypeError } from "kryo/lib/errors/invalid-type.js";
-import { JsonValue } from "kryo/lib/json-value.js";
+
+import { JsonValue } from "./json-value.js";
 
 export class JsonValueReader implements Reader<JsonValue> {
   trustInput?: boolean | undefined;

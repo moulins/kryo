@@ -1,6 +1,7 @@
 import chai from "chai";
 
-import { CaseStyle, detectCaseStyle, join, rename, split } from "../lib/case-style.js";
+import { detectCaseStyle, join, rename, split } from "../lib/_helpers/case-style.js";
+import { CaseStyle } from "../lib/core.js";
 
 describe("rename", function () {
   describe("detectCaseStyle", function () {
@@ -44,7 +45,7 @@ describe("rename", function () {
     ];
 
     for (const item of items) {
-      it(`detectCaseStyle for ${item.identifier} should return ${CaseStyle[item.expected]}`, function () {
+      it(`detectCaseStyle for ${item.identifier} should return ${item.expected}`, function () {
         chai.assert.deepEqual(detectCaseStyle(item.identifier), item.expected);
       });
     }
@@ -93,7 +94,7 @@ describe("rename", function () {
 
     describe("split", function () {
       for (const {caseStyle, identifier, parts} of items) {
-        it(`split for ${CaseStyle[caseStyle]}, ${identifier} should return ${JSON.stringify(parts)}`, function () {
+        it(`split for ${caseStyle}, ${identifier} should return ${JSON.stringify(parts)}`, function () {
           chai.assert.deepEqual(split(caseStyle, identifier), parts);
         });
       }
@@ -101,7 +102,7 @@ describe("rename", function () {
 
     describe("join", function () {
       for (const {caseStyle, identifier, parts} of items) {
-        it(`join for ${CaseStyle[caseStyle]}, ${JSON.stringify(parts)} should return ${identifier}`, function () {
+        it(`join for ${caseStyle}, ${JSON.stringify(parts)} should return ${identifier}`, function () {
           chai.assert.deepEqual(join(caseStyle, parts), identifier);
         });
       }
@@ -125,7 +126,7 @@ describe("rename", function () {
     ];
 
     for (const {identifier, to, expected} of items) {
-      it(`rename ${identifier} to ${CaseStyle[to]} should return ${expected}`, function () {
+      it(`rename ${identifier} to ${to} should return ${expected}`, function () {
         chai.assert.deepEqual(rename(identifier, to), expected);
       });
     }

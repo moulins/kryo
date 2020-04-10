@@ -1,4 +1,4 @@
-import incident from "incident";
+import incident, { Incident } from "incident";
 
 export type Name = "InvalidArrayItems";
 export const name: Name = "InvalidArrayItems";
@@ -11,7 +11,7 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidArrayItemsError = incident.Incident<Data, Name, Cause>;
+export type InvalidArrayItemsError = Incident<Data, Name, Cause>;
 
 export function createInvalidArrayItemsError(invalid: Map<number, Error>): InvalidArrayItemsError {
   return incident.Incident(name, {invalid});

@@ -216,3 +216,45 @@ export interface VersionedType<T, Diff> extends Type<T> {
 
   // readonly diffType: Type<Diff>;
 }
+
+/**
+ * Represents an identifier case style.
+ *
+ * This enum is used when automatically renaming fields and enum variants.
+ */
+export enum CaseStyle {
+  /**
+   * Capitalize every component except for the first one, then join them without any separator.
+   *
+   * e.g. `camelCase`
+   */
+  CamelCase = "camelCase",
+
+  /**
+   * Capitalize every component, then join them without any separator.
+   *
+   * e.g. `PascalCase`
+   */
+  PascalCase = "PascalCase",
+
+  /**
+   * Make every component lowercase, then join them using `_`.
+   *
+   * e.g. `snake_case`
+   */
+  SnakeCase = "snake_case",
+
+  /**
+   * Make every component uppercase, then join them using `_`.
+   *
+   * e.g. `SCREAMING_SNAKE_CASE`
+   */
+  ScreamingSnakeCase = "SCREAMING_SNAKE_CASE",
+
+  /**
+   * Make every component lowercase, then join them using `-`.
+   *
+   * e.g. `kebab-case`
+   */
+  KebabCase = "kebab-case",
+}

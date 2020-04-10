@@ -1,8 +1,8 @@
 import incident from "incident";
 
+import { rename } from "../_helpers/case-style.js";
 import { lazyProperties } from "../_helpers/lazy-properties.js";
-import { CaseStyle, rename } from "../case-style.js";
-import { IoType, Lazy, Reader, Writer } from "../core.js";
+import { CaseStyle, IoType, Lazy, Reader, Writer } from "../core.js";
 import { createLazyOptionsError } from "../errors/lazy-options.js";
 import { createNotImplementedError } from "../errors/not-implemented.js";
 import { readVisitor } from "../readers/read-visitor.js";

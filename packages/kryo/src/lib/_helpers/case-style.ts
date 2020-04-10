@@ -6,13 +6,7 @@
 
 import incident from "incident";
 
-export enum CaseStyle {
-  CamelCase,
-  PascalCase,
-  SnakeCase,
-  ScreamingSnakeCase,
-  KebabCase,
-}
+import { CaseStyle } from "../core.js";
 
 export function detectCaseStyle(identifier: string): CaseStyle {
   if (/^[A-Z]+[0-9]*(?:_[A-Z]+[0-9]*)*$/.test(identifier)) {
