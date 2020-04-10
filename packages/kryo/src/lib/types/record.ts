@@ -3,14 +3,14 @@ import incident from "incident";
 import { lazyProperties } from "../_helpers/lazy-properties.js";
 import { CaseStyle, rename } from "../case-style.js";
 import { IoType, Lazy, Reader, Type, VersionedType, Writer } from "../core.js";
-import { createInvalidDocumentError } from "../errors/invalid-document.js";
+import { createInvalidRecordError } from "../errors/invalid-record.js";
 import { createInvalidTypeError } from "../errors/invalid-type.js";
 import { createLazyOptionsError } from "../errors/lazy-options.js";
 import { createNotImplementedError } from "../errors/not-implemented.js";
 import { readVisitor } from "../readers/read-visitor.js";
 
-export type Name = "document";
-export const name: Name = "document";
+export type Name = "record";
+export const name: Name = "record";
 
 export interface Diff<T> {
   set: {[P in keyof T]?: any}; // val
@@ -18,7 +18,7 @@ export interface Diff<T> {
   unset: {[P in keyof T]?: any}; // val
 }
 
-export interface DocumentTypeOptions<T> {
+export interface RecordTypeOptions<T> {
   /**
    * Treat values with extra keys as invalid.
    */
@@ -30,7 +30,7 @@ export interface DocumentTypeOptions<T> {
   properties: {readonly [P in keyof T]: PropertyDescriptor<T[P], Type<T[P]>>};
 
   /**
-   * The keys of the serialized documents are renamed following the
+   * The keys of the serialized records are renamed following the
    * supplied style (undefined to keep the original name).
    */
   changeCase?: CaseStyle;
@@ -38,7 +38,7 @@ export interface DocumentTypeOptions<T> {
   rename?: {readonly [P in keyof T]?: string};
 }
 
-export interface DocumentIoTypeOptions<T> extends DocumentTypeOptions<T> {
+export interface RecordIoTypeOptions<T> extends RecordTypeOptions<T> {
   properties: {readonly [P in keyof T]: PropertyDescriptor<T[P], IoType<T[P]>>};
 }
 
@@ -54,37 +54,37 @@ export interface PropertyDescriptor<T, K extends Type<T> = Type<T>> {
   type: K;
 
   /**
-   * The key in the serialized documents will be automatically renamed with the provided
+   * The key in the serialized records will be automatically renamed with the provided
    * case style.
    */
   changeCase?: CaseStyle;
 
   /**
-   * The name of the key used in the serialized documents.
+   * The name of the key used in the serialized records.
    */
   rename?: string;
 }
 
-export interface DocumentTypeConstructor {
-  new<T>(options: Lazy<DocumentIoTypeOptions<T>>): DocumentIoType<T>;
+export interface RecordTypeConstructor {
+  new<T>(options: Lazy<RecordIoTypeOptions<T>>): RecordIoType<T>;
 
   /**
-   * Create a new document type checking for objects with the supplied properties.
+   * Create a new record type checking for objects with the supplied properties.
    *
    * The generic type `T` is the interface described by this instance.
    *
-   * @param options Options describing this document type.
-   * @return The document type corresponding to the provided options
+   * @param options Options describing this record type.
+   * @return The record type corresponding to the provided options
    */
-  new<T>(options: Lazy<DocumentTypeOptions<T>>): DocumentType<T>;
+  new<T>(options: Lazy<RecordTypeOptions<T>>): RecordType<T>;
 }
 
-export interface DocumentType<T> extends Type<T>, VersionedType<T, Diff<T>>, DocumentTypeOptions<T> {
+export interface RecordType<T> extends Type<T>, VersionedType<T, Diff<T>>, RecordTypeOptions<T> {
   getOutKey(key: keyof T): string;
 }
 
 // tslint:disable-next-line:max-line-length
-export interface DocumentIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>, DocumentIoTypeOptions<T> {
+export interface RecordIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>, RecordIoTypeOptions<T> {
   getOutKey(key: keyof T): string;
 
   read<R>(reader: Reader<R>, raw: R): T;
@@ -94,17 +94,17 @@ export interface DocumentIoType<T> extends IoType<T>, VersionedType<T, Diff<T>>,
 
 // We use an `any` cast because of the `properties` property.
 // tslint:disable-next-line:variable-name
-export const DocumentType: DocumentTypeConstructor = <any> class<T> implements IoType<T>,
-  DocumentIoTypeOptions<T> {
+export const RecordType: RecordTypeConstructor = <any> class<T> implements IoType<T>,
+  RecordIoTypeOptions<T> {
   readonly name: Name = name;
   readonly noExtraKeys?: boolean;
   readonly properties!: {readonly [P in keyof T]: PropertyDescriptor<T[P], any>};
   readonly rename?: {readonly [P in keyof T]?: string};
   readonly changeCase?: CaseStyle;
-  private _options: Lazy<DocumentTypeOptions<T>>;
+  private _options: Lazy<RecordTypeOptions<T>>;
   private _outKeys: Map<string, keyof T> | undefined;
 
-  constructor(options: Lazy<DocumentTypeOptions<T>>) {
+  constructor(options: Lazy<RecordTypeOptions<T>>) {
     this._options = options;
     if (typeof options !== "function") {
       this._applyOptions();
@@ -114,7 +114,7 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T> implements I
   }
 
   /**
-   * Map from serialized keys to the document keys
+   * Map from serialized keys to the record keys
    */
   get outKeys(): Map<string, keyof T> {
     if (this._outKeys === undefined) {
@@ -189,7 +189,7 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T> implements I
         }
 
         if (this.noExtraKeys && extra.size > 0 || missing.size > 0 || invalid.size > 0) {
-          throw createInvalidDocumentError({extra, missing, invalid});
+          throw createInvalidRecordError({extra, missing, invalid});
         }
         return result as T;
       },
@@ -244,7 +244,7 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T> implements I
     }
 
     if (extra !== undefined && extra.size > 0 || missing.size > 0 || invalid.size > 0) {
-      return createInvalidDocumentError({extra, missing, invalid});
+      return createInvalidRecordError({extra, missing, invalid});
     }
     return undefined;
   }
@@ -367,14 +367,14 @@ export const DocumentType: DocumentTypeConstructor = <any> class<T> implements I
   }
 
   squash(_diff1: Diff<T> | undefined, _diff2: Diff<T> | undefined): Diff<T> | undefined {
-    throw createNotImplementedError("DocumentType#squash");
+    throw createNotImplementedError("RecordType#squash");
   }
 
   private _applyOptions(): void {
     if (this._options === undefined) {
       throw createLazyOptionsError(this);
     }
-    const options: DocumentTypeOptions<T> = typeof this._options === "function" ?
+    const options: RecordTypeOptions<T> = typeof this._options === "function" ?
       this._options() :
       this._options;
 

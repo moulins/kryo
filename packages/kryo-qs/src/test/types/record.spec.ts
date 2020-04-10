@@ -1,17 +1,17 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { CaseStyle } from "kryo/lib/case-style.js";
 import { DateType } from "kryo/lib/types/date.js";
-import { DocumentIoType, DocumentType } from "kryo/lib/types/document.js";
 import { IntegerType } from "kryo/lib/types/integer.js";
+import { RecordIoType, RecordType } from "kryo/lib/types/record.js";
 
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("Document", function () {
+describe("kryo-qs | Record", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 
-  const documentType: DocumentIoType<any> = new DocumentType({
+  const documentType: RecordIoType<any> = new RecordType({
     noExtraKeys: false,
     properties: {
       dateProp: {
@@ -24,7 +24,7 @@ describe("Document", function () {
       },
       nestedDoc: {
         optional: true,
-        type: new DocumentType({
+        type: new RecordType({
           noExtraKeys: false,
           properties: {
             id: {
@@ -97,7 +97,7 @@ describe("Document: rename", function () {
     yMax: number;
   }
 
-  const type: DocumentIoType<Rect> = new DocumentType<Rect>({
+  const type: RecordIoType<Rect> = new RecordType<Rect>({
     properties: {
       xMin: {type: new IntegerType()},
       xMax: {type: new IntegerType(), changeCase: CaseStyle.ScreamingSnakeCase},

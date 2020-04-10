@@ -4,7 +4,7 @@ import { BytesType } from "kryo/lib/types/bytes.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Bytes", function () {
+describe("kryo-json | Bytes", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

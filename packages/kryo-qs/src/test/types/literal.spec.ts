@@ -6,7 +6,7 @@ import { Ucs2StringType } from "kryo/lib/types/ucs2-string.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("Literal", function () {
+describe("kryo-qs | Literal", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

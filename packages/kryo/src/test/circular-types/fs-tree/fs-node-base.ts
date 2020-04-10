@@ -1,5 +1,5 @@
 import { CaseStyle } from "../../../lib/case-style.js";
-import { DocumentType } from "../../../lib/types/document.js";
+import { RecordType } from "../../../lib/types/record.js";
 import { Ucs2StringType } from "../../../lib/types/ucs2-string.js";
 import { $FsNodeType, FsNodeType } from "./fs-node-type.js";
 
@@ -8,7 +8,7 @@ export interface FsNodeBase {
   name: string;
 }
 
-export const $FsNodeBase: DocumentType<FsNodeBase> = new DocumentType<FsNodeBase>({
+export const $FsNodeBase: RecordType<FsNodeBase> = new RecordType<FsNodeBase>({
   properties: {
     tag: {type: $FsNodeType},
     name: {type: new Ucs2StringType({maxLength: Infinity})},

@@ -2,12 +2,12 @@ import BSON from "bson";
 
 import { CaseStyle } from "../../lib/case-style.js";
 import { DateType } from "../../lib/types/date.js";
-import { DocumentType } from "../../lib/types/document.js";
 import { IntegerType } from "../../lib/types/integer.js";
+import { RecordType } from "../../lib/types/record.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("Document", function () {
-  const documentType: DocumentType<any> = new DocumentType({
+  const documentType: RecordType<any> = new RecordType({
     noExtraKeys: false,
     properties: {
       dateProp: {
@@ -20,7 +20,7 @@ describe("Document", function () {
       },
       nestedDoc: {
         optional: true,
-        type: new DocumentType({
+        type: new RecordType({
           noExtraKeys: false,
           properties: {
             id: {
@@ -93,7 +93,7 @@ describe("Document: rename", function () {
     yMax: number;
   }
 
-  const type: DocumentType<Rect> = new DocumentType<Rect>({
+  const type: RecordType<Rect> = new RecordType<Rect>({
     properties: {
       xMin: {type: new IntegerType()},
       xMax: {type: new IntegerType(), changeCase: CaseStyle.ScreamingSnakeCase},

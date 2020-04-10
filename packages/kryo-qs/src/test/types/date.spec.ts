@@ -4,7 +4,7 @@ import { DateType } from "kryo/lib/types/date.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("Date", function () {
+describe("kryo-qs | Date", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

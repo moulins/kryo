@@ -6,7 +6,7 @@ import { Ucs2StringType } from "kryo/lib/types/ucs2-string.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Map", function () {
+describe("kryo-json | Map", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

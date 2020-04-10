@@ -4,7 +4,7 @@ import { Ucs2StringType } from "kryo/lib/types/ucs2-string.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Ucs2StringType", function () {
+describe("kryo-json | Ucs2StringType", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

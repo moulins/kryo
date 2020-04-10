@@ -4,7 +4,7 @@ import { DateType } from "kryo/lib/types/date.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Date", function () {
+describe("kryo-json | Date", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

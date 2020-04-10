@@ -5,7 +5,7 @@ import unorm from "unorm";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("CodepointString", function () {
+describe("kryo-json | CodepointString", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

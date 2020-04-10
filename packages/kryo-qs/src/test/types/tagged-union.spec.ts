@@ -1,15 +1,15 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { CaseStyle } from "kryo/lib/case-style.js";
-import { DocumentType } from "kryo/lib/types/document.js";
 import { IntegerType } from "kryo/lib/types/integer.js";
 import { LiteralType } from "kryo/lib/types/literal.js";
+import { RecordType } from "kryo/lib/types/record.js";
 import { TaggedUnionType } from "kryo/lib/types/tagged-union.js";
 import { TsEnumType } from "kryo/lib/types/ts-enum.js";
 
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("TaggedUnion", function () {
+describe("kryo-qs | TaggedUnion", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 
@@ -30,7 +30,7 @@ describe("TaggedUnion", function () {
       height: number;
     }
 
-    const rectangleType: DocumentType<Rectangle> = new DocumentType<Rectangle>({
+    const rectangleType: RecordType<Rectangle> = new RecordType<Rectangle>({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Rectangle>({
@@ -48,7 +48,7 @@ describe("TaggedUnion", function () {
       radius: number;
     }
 
-    const circleType: DocumentType<Circle> = new DocumentType<Circle>({
+    const circleType: RecordType<Circle> = new RecordType<Circle>({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Circle>({

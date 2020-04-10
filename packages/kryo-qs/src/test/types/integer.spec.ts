@@ -4,7 +4,7 @@ import { IntegerType } from "kryo/lib/types/integer.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("Integer", function () {
+describe("kryo-qs | Integer", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

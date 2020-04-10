@@ -1,6 +1,6 @@
 import { CaseStyle } from "../../lib/case-style.js";
-import { DocumentType } from "../../lib/types/document.js";
 import { IntegerType } from "../../lib/types/integer.js";
+import { RecordType } from "../../lib/types/record.js";
 import { TryUnionType } from "../../lib/types/try-union.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
@@ -11,7 +11,7 @@ describe("TryUnion", function () {
       height: number;
     }
 
-    const $Rectangle: DocumentType<Rectangle> = new DocumentType<Rectangle>({
+    const $Rectangle: RecordType<Rectangle> = new RecordType<Rectangle>({
       properties: {
         width: {type: new IntegerType()},
         height: {type: new IntegerType()},
@@ -23,7 +23,7 @@ describe("TryUnion", function () {
       radius: number;
     }
 
-    const $Circle: DocumentType<Circle> = new DocumentType<Circle>({
+    const $Circle: RecordType<Circle> = new RecordType<Circle>({
       properties: {
         radius: {type: new IntegerType()},
       },

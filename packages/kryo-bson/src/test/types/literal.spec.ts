@@ -6,7 +6,7 @@ import { Ucs2StringType } from "kryo/lib/types/ucs2-string.js";
 import { BsonReader } from "../../lib/bson-reader.js";
 import { BsonWriter } from "../../lib/bson-writer.js";
 
-describe("Literal", function () {
+describe("kryo-bson | Literal", function () {
   const BSON_READER: BsonReader = new BsonReader();
   const BSON_WRITER: BsonWriter = new BsonWriter();
 

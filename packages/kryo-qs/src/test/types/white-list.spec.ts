@@ -5,7 +5,7 @@ import { WhiteListType } from "kryo/lib/types/white-list.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("WhiteList", function () {
+describe("kryo-qs | WhiteList", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

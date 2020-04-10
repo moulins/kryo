@@ -8,7 +8,7 @@ import { CustomType } from "kryo/lib/types/custom.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("Custom", function () {
+describe("kryo-qs | Custom", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

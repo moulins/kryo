@@ -4,7 +4,7 @@ import { BooleanType } from "kryo/lib/types/boolean.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Boolean", function () {
+describe("kryo-json | Boolean", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

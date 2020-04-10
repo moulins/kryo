@@ -4,7 +4,7 @@ import { BytesType } from "kryo/lib/types/bytes.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("Bytes", function () {
+describe("kryo-qs | Bytes", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

@@ -7,7 +7,7 @@ import { IntegerType } from "kryo/lib/types/integer.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Array", function () {
+describe("kryo-json | Array", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

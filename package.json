@@ -2,8 +2,11 @@
   "name": "kryo-monorepo",
   "private": true,
   "scripts": {
+    "clean": "git clean --force -d -x .",
     "lint": "eslint \"packages/*/src/**/*.ts\"",
-    "format": "eslint --fix \"packages/*/src/**/*.ts\""
+    "format": "eslint --fix \"packages/*/src/**/*.ts\"",
+    "pretest": "tsc --build test.tsconfig.json",
+    "test": "mocha \"packages/*/test/**/*.spec.js\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.26.0",
@@ -11,6 +14,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-simple-import-sort": "^5.0.2",
     "husky": "^4.2.3",
+    "mocha": "^7.1.1",
     "typescript": "^3.8.3"
   },
   "workspaces": {

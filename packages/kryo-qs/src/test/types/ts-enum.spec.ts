@@ -5,7 +5,7 @@ import { TsEnumType } from "kryo/lib/types/ts-enum.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("TsEnum", function () {
+describe("kryo-qs | TsEnum", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

@@ -5,7 +5,7 @@ import unorm from "unorm";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("CodepointString", function () {
+describe("kryo-qs | CodepointString", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

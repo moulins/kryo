@@ -4,7 +4,7 @@ import { Float64Type } from "kryo/lib/types/float64.js";
 import { QsReader } from "../../lib/qs-reader.js";
 import { QsWriter } from "../../lib/qs-writer.js";
 
-describe("Float64", function () {
+describe("kryo-qs | Float64", function () {
   const QS_READER: QsReader = new QsReader();
   const QS_WRITER: QsWriter = new QsWriter();
 

@@ -1,11 +1,11 @@
 import chai from "chai";
 import { AnyType } from "kryo/lib/types/any.js";
-import { DocumentIoType, DocumentType } from "kryo/lib/types/document.js";
+import { RecordIoType, RecordType } from "kryo/lib/types/record.js";
 
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonValueReader } from "../../lib/json-value-reader.js";
 
-describe("Any", function () {
+describe("kryo-json | Any", function () {
   describe("with JsonReader", function () {
     it("should read the expected top-level values", function () {
       const reader: JsonReader = new JsonReader();
@@ -21,7 +21,7 @@ describe("Any", function () {
         foo: any;
       }
 
-      const $FooBarQuz: DocumentIoType<FooBarQuz> = new DocumentType({
+      const $FooBarQuz: RecordIoType<FooBarQuz> = new RecordType({
         properties: {foo: {type: $Any}},
       });
 

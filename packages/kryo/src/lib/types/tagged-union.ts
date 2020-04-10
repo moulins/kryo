@@ -6,15 +6,15 @@ import { createInvalidTypeError } from "../errors/invalid-type.js";
 import { createLazyOptionsError } from "../errors/lazy-options.js";
 import { readVisitor } from "../readers/read-visitor.js";
 import { testError } from "../test-error.js";
-import { DocumentType } from "./document.js";
 import { LiteralType } from "./literal.js";
+import { RecordType } from "./record.js";
 import { TsEnumType } from "./ts-enum.js";
 
 export type Name = "union";
 export const name: Name = "union";
 export type Diff = any;
 
-export interface TaggedUnionTypeOptions<T, K extends DocumentType<T> = DocumentType<T>> {
+export interface TaggedUnionTypeOptions<T, K extends RecordType<T> = RecordType<T>> {
   variants: ReadonlyArray<K>;
   tag: keyof T;
 }
@@ -23,7 +23,7 @@ export type TestWithVariantResult<T> =
   [true, VersionedType<T, any>]
   | [false, VersionedType<T, any> | undefined];
 
-export class TaggedUnionType<T, K extends DocumentType<T> = DocumentType<T>> implements IoType<T>,
+export class TaggedUnionType<T, K extends RecordType<T> = RecordType<T>> implements IoType<T>,
   TaggedUnionTypeOptions<T, K> {
   readonly name: Name = name;
   readonly variants!: ReadonlyArray<K>;

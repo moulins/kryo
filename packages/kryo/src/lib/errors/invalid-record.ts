@@ -1,13 +1,13 @@
 import incident from "incident";
 
-export type Name = "InvalidDocument";
-export const name: Name = "InvalidDocument";
+export type Name = "InvalidRecord";
+export const name: Name = "InvalidRecord";
 
 export interface Data {
   /**
    * Extra properties.
    * If this error is thrown during a read operation, the keys in this set correspond to the
-   * raw keys of the input document (even if a `rename` is applied).
+   * raw keys of the input record (even if a `rename` is applied).
    */
   extra?: Set<string>;
 
@@ -23,9 +23,9 @@ export interface Data {
 }
 
 export type Cause = undefined;
-export type InvalidDocumentError = incident.Incident<Data, Name, Cause>;
+export type InvalidRecord = incident.Incident<Data, Name, Cause>;
 
-export function createInvalidDocumentError(data: Data): InvalidDocumentError {
+export function createInvalidRecordError(data: Data): InvalidRecord {
   if (data.extra === undefined) {
     Reflect.deleteProperty(data, "extra");
   }

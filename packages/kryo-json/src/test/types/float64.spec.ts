@@ -4,7 +4,7 @@ import { Float64Type } from "kryo/lib/types/float64.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Float64", function () {
+describe("kryo-json | Float64", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

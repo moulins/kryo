@@ -5,7 +5,7 @@ import { TsEnumType } from "kryo/lib/types/ts-enum.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("TsEnum", function () {
+describe("kryo-json | TsEnum", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

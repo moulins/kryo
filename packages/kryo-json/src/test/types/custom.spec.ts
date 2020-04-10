@@ -8,7 +8,7 @@ import { CustomType } from "kryo/lib/types/custom.js";
 import { JsonReader } from "../../lib/json-reader.js";
 import { JsonWriter } from "../../lib/json-writer.js";
 
-describe("Custom", function () {
+describe("kryo-json | Custom", function () {
   const JSON_READER: JsonReader = new JsonReader();
   const JSON_WRITER: JsonWriter = new JsonWriter();
 

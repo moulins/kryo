@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./packages/kryo/src/test"
+    },
+    {
+      "path": "./packages/kryo-bson/src/test"
+    },
+    {
+      "path": "./packages/kryo-json/src/test"
+    },
+    {
+      "path": "./packages/kryo-qs/src/test"
+    }
+  ]
+}

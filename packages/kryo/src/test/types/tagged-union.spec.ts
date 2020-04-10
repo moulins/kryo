@@ -1,9 +1,9 @@
 import BSON from "bson";
 
 import { CaseStyle } from "../../lib/case-style.js";
-import { DocumentType } from "../../lib/types/document.js";
 import { IntegerType } from "../../lib/types/integer.js";
 import { LiteralType } from "../../lib/types/literal.js";
+import { RecordType } from "../../lib/types/record.js";
 import { TaggedUnionType } from "../../lib/types/tagged-union.js";
 import { TsEnumType } from "../../lib/types/ts-enum.js";
 import { runTests, TypedValue } from "../helpers/test.js";
@@ -26,7 +26,7 @@ describe("TaggedUnion", function () {
       height: number;
     }
 
-    const rectangleType: DocumentType<Rectangle> = new DocumentType<Rectangle>({
+    const rectangleType: RecordType<Rectangle> = new RecordType<Rectangle>({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Rectangle>({
@@ -44,7 +44,7 @@ describe("TaggedUnion", function () {
       radius: number;
     }
 
-    const circleType: DocumentType<Circle> = new DocumentType<Circle>({
+    const circleType: RecordType<Circle> = new RecordType<Circle>({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Circle>({
