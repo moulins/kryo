@@ -1,13 +1,10 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { BytesType } from "kryo/lib/bytes.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | Bytes", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
   const shortBuffer: BytesType = new BytesType({
     maxLength: 2,
   });

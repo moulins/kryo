@@ -56,3 +56,5 @@ export class JsonReader implements Reader<string> {
     return this.valueReader.readString(JSON.parse(raw), visitor);
   }
 }
+
+export const JSON_READER: JsonReader = new JsonReader();

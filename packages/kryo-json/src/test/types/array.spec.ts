@@ -3,13 +3,10 @@ import { ArrayIoType, ArrayType } from "kryo/lib/array.js";
 import { $Boolean } from "kryo/lib/boolean.js";
 import { $Uint8, IntegerType } from "kryo/lib/integer.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | Array", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
   describe("Main", function () {
     const $IntArray: ArrayIoType<number> = new ArrayType({
       itemType: new IntegerType(),

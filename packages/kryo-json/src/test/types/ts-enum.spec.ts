@@ -2,13 +2,10 @@ import { CaseStyle } from "kryo";
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { TsEnumType } from "kryo/lib/ts-enum.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | TsEnum", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
   describe("Color", function () {
     enum Color {
       Red,

@@ -5,14 +5,10 @@ import { IntegerType } from "kryo/lib/integer.js";
 import { RecordIoType } from "kryo/lib/record";
 import { RecordType } from "kryo/lib/record.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER, PRETTY_JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | Record", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
-
   describe("TestRecord", function () {
     const $TestRecord: RecordIoType<any> = new RecordType({
       noExtraKeys: false,
@@ -51,11 +47,21 @@ describe("kryo-json | Record", function () {
         },
         io: [
           {
-            writer: JSON_WRITER, reader: JSON_READER, raw: JSON.stringify({
-              dateProp: "1970-01-01T00:00:00.000Z",
-              optIntProp: 50,
-              nestedDoc: {id: 10},
-            }),
+            writer: JSON_WRITER,
+            reader: JSON_READER,
+            raw: "{\"dateProp\":\"1970-01-01T00:00:00.000Z\",\"optIntProp\":50,\"nestedDoc\":{\"id\":10}}",
+          },
+          {
+            writer: PRETTY_JSON_WRITER,
+            reader: JSON_READER,
+            raw: `{
+  "dateProp": "1970-01-01T00:00:00.000Z",
+  "optIntProp": 50,
+  "nestedDoc": {
+    "id": 10
+  }
+}
+`,
           },
         ],
       },
@@ -70,7 +76,7 @@ describe("kryo-json | Record", function () {
           {
             writer: JSON_WRITER,
             reader: JSON_READER,
-            raw: JSON.stringify({dateProp: "1970-01-01T00:00:00.000Z", nestedDoc: {id: 10}}),
+            raw: "{\"dateProp\":\"1970-01-01T00:00:00.000Z\",\"nestedDoc\":{\"id\":10}}",
           },
         ],
       },
@@ -130,7 +136,7 @@ describe("kryo-json | Record", function () {
           {
             writer: JSON_WRITER,
             reader: JSON_READER,
-            raw: JSON.stringify({"xmin": 0, "X_MAX": 10, "__yMin": 20, "y-max": 30}),
+            raw: "{\"xmin\":0,\"X_MAX\":10,\"__yMin\":20,\"y-max\":30}",
           },
         ],
       },

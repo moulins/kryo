@@ -5,13 +5,10 @@ import { CustomType } from "kryo/lib/custom.js";
 import { createInvalidTypeError } from "kryo/lib/errors/invalid-type.js";
 import { readVisitor } from "kryo/lib/readers/read-visitor.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | Custom", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
   describe("ComplexNumber", function () {
     /**
      * Represents a complex number.

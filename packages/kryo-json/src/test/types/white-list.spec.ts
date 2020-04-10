@@ -2,13 +2,10 @@ import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testi
 import { Ucs2StringType } from "kryo/lib/ucs2-string.js";
 import { WhiteListType } from "kryo/lib/white-list.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | WhiteList", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
   describe("\"foo\" | \"bar\" | \"baz\"", function () {
     const $Ucs2String: Ucs2StringType = new Ucs2StringType({maxLength: 10});
     type VarName = "foo" | "bar" | "baz";

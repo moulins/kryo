@@ -3,13 +3,10 @@ import { LiteralIoType, LiteralType } from "kryo/lib/literal.js";
 import { TsEnumType } from "kryo/lib/ts-enum.js";
 import { Ucs2StringType } from "kryo/lib/ucs2-string.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | Literal", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
   describe("Literal<\"foo\">", function () {
     const $FooLit: LiteralIoType<"foo"> = new LiteralType<"foo">(() => ({
       type: new Ucs2StringType({maxLength: Infinity}),

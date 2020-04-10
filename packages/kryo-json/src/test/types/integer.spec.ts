@@ -1,13 +1,10 @@
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
 import { IntegerType } from "kryo/lib/integer.js";
 
-import { JsonReader } from "../../lib/json-reader.js";
-import { JsonWriter } from "../../lib/json-writer.js";
+import { JSON_READER } from "../../lib/json-reader.js";
+import { JSON_WRITER } from "../../lib/json-writer.js";
 
 describe("kryo-json | Integer", function () {
-  const JSON_READER: JsonReader = new JsonReader();
-  const JSON_WRITER: JsonWriter = new JsonWriter();
-
   describe("Main", function () {
     const $Integer: IntegerType = new IntegerType();
 

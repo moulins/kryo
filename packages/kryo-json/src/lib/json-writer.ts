@@ -5,58 +5,78 @@
 import { Writer } from "kryo";
 
 import { JsonValueWriter } from "./json-value-writer.js";
+import { JsonValue } from "./json-value.js";
 
 export class JsonWriter implements Writer<string> {
   private readonly valueWriter: JsonValueWriter;
+  public readonly pretty: boolean;
 
-  constructor() {
+  /**
+   * Creates a new JSON writer.
+   *
+   * @param pretty If `true`, indent with 2 spaces and add a final new line.
+   */
+  public constructor(pretty: boolean = false) {
     this.valueWriter = new JsonValueWriter();
+    this.pretty = pretty;
   }
 
-  writeAny(value: number): string {
-    return JSON.stringify(this.valueWriter.writeAny(value));
+  public writeAny(value: number): string {
+    return this.stringify(this.valueWriter.writeAny(value));
   }
 
-  writeBoolean(value: boolean): string {
-    return JSON.stringify(this.valueWriter.writeBoolean(value));
+  public writeBoolean(value: boolean): string {
+    return this.stringify(this.valueWriter.writeBoolean(value));
   }
 
-  writeBytes(value: Uint8Array): string {
-    return JSON.stringify(this.valueWriter.writeBytes(value));
+  public writeBytes(value: Uint8Array): string {
+    return this.stringify(this.valueWriter.writeBytes(value));
   }
 
-  writeDate(value: Date): string {
-    return JSON.stringify(this.valueWriter.writeDate(value));
+  public writeDate(value: Date): string {
+    return this.stringify(this.valueWriter.writeDate(value));
   }
 
-  writeRecord<K extends string>(
+  public writeRecord<K extends string>(
     keys: Iterable<K>,
     handler: (key: K, fieldWriter: Writer<any>) => any,
   ): string {
-    return JSON.stringify(this.valueWriter.writeRecord(keys, handler));
+    return this.stringify(this.valueWriter.writeRecord(keys, handler));
   }
 
-  writeFloat64(value: number): string {
-    return JSON.stringify(this.valueWriter.writeFloat64(value));
+  public writeFloat64(value: number): string {
+    return this.stringify(this.valueWriter.writeFloat64(value));
   }
 
-  writeList(size: number, handler: (index: number, itemWriter: Writer<any>) => any): string {
-    return JSON.stringify(this.valueWriter.writeList(size, handler));
+  public writeList(size: number, handler: (index: number, itemWriter: Writer<any>) => any): string {
+    return this.stringify(this.valueWriter.writeList(size, handler));
   }
 
-  writeMap(
+  public writeMap(
     size: number,
     keyHandler: <KW>(index: number, mapKeyWriter: Writer<KW>) => KW,
     valueHandler: <VW>(index: number, mapValueWriter: Writer<VW>) => VW,
   ): any {
-    return JSON.stringify(this.valueWriter.writeMap(size, keyHandler, valueHandler));
+    return this.stringify(this.valueWriter.writeMap(size, keyHandler, valueHandler));
   }
 
-  writeNull(): string {
-    return JSON.stringify(this.valueWriter.writeNull());
+  public writeNull(): string {
+    return this.stringify(this.valueWriter.writeNull());
   }
 
-  writeString(value: string): string {
-    return JSON.stringify(this.valueWriter.writeString(value));
+  public writeString(value: string): string {
+    return this.stringify(this.valueWriter.writeString(value));
+  }
+
+  private stringify(jsonValue: JsonValue): string {
+    if (!this.pretty) {
+      return JSON.stringify(jsonValue);
+    } else {
+      return `${JSON.stringify(jsonValue, null, 2)}\n`;
+    }
   }
 }
+
+export const JSON_WRITER: JsonWriter = new JsonWriter(false);
+
+export const PRETTY_JSON_WRITER: JsonWriter = new JsonWriter(true);
