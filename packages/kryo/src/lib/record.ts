@@ -2,11 +2,11 @@ import incident from "incident";
 
 import { rename } from "./_helpers/case-style.js";
 import { lazyProperties } from "./_helpers/lazy-properties.js";
-import { CaseStyle, IoType, Lazy, Reader, Type, VersionedType, Writer } from "./core.js";
 import { createInvalidRecordError } from "./errors/invalid-record.js";
 import { createInvalidTypeError } from "./errors/invalid-type.js";
 import { createLazyOptionsError } from "./errors/lazy-options.js";
 import { createNotImplementedError } from "./errors/not-implemented.js";
+import { CaseStyle, IoType, Lazy, Reader, Type, VersionedType, Writer } from "./index.js";
 import { readVisitor } from "./readers/read-visitor.js";
 
 export type Name = "record";

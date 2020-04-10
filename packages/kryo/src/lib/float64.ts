@@ -1,8 +1,8 @@
 import { lazyProperties } from "./_helpers/lazy-properties.js";
-import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "./core.js";
 import { createInvalidFloat64Error } from "./errors/invalid-float64.js";
 import { createInvalidTypeError } from "./errors/invalid-type.js";
 import { createLazyOptionsError } from "./errors/lazy-options.js";
+import { IoType, Lazy, Ord, Reader, VersionedType, Writer } from "./index.js";
 import { readVisitor } from "./readers/read-visitor.js";
 
 export type Name = "float64";

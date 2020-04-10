@@ -1,6 +1,6 @@
 import incident from "incident";
+import { Reader, Writer } from "kryo";
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
-import { Reader, Writer } from "kryo/lib/core.js";
 import { CustomType } from "kryo/lib/custom.js";
 import { createInvalidTypeError } from "kryo/lib/errors/invalid-type.js";
 import { readVisitor } from "kryo/lib/readers/read-visitor.js";

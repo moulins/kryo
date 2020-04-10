@@ -2,8 +2,8 @@
  * @module kryo/writers/qs-value
  */
 
+import { Writer } from "kryo";
 import { JsonWriter } from "kryo-json/lib/json-writer.js";
-import { Writer } from "kryo/lib/core.js";
 import { StructuredWriter } from "kryo/lib/writers/structured.js";
 
 export class QsValueWriter extends StructuredWriter {

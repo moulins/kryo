@@ -1,5 +1,5 @@
 import chai from "chai";
-import { IoType, Reader, Writer } from "kryo/lib/core.js";
+import { IoType, Reader, Writer } from "kryo";
 import util from "util";
 
 export interface TestItem<T = unknown> {

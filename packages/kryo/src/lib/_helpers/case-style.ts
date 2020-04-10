@@ -6,7 +6,7 @@
 
 import incident from "incident";
 
-import { CaseStyle } from "../core.js";
+import { CaseStyle } from "../index.js";
 
 export function detectCaseStyle(identifier: string): CaseStyle {
   if (/^[A-Z]+[0-9]*(?:_[A-Z]+[0-9]*)*$/.test(identifier)) {

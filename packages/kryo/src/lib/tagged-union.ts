@@ -2,9 +2,9 @@ import incident from "incident";
 
 import { lazyProperties } from "./_helpers/lazy-properties.js";
 import { testError } from "./_helpers/test-error.js";
-import { IoType, Lazy, Reader, VersionedType, Writer } from "./core.js";
 import { createInvalidTypeError } from "./errors/invalid-type.js";
 import { createLazyOptionsError } from "./errors/lazy-options.js";
+import { IoType, Lazy, Reader, VersionedType, Writer } from "./index.js";
 import { LiteralType } from "./literal.js";
 import { readVisitor } from "./readers/read-visitor.js";
 import { RecordType } from "./record.js";

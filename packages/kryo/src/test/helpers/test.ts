@@ -1,6 +1,6 @@
 import chai from "chai";
 
-import { Type } from "../../lib/core.js";
+import { Type } from "../../lib";
 
 export interface NamedValue {
   name?: string;

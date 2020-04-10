@@ -3,7 +3,7 @@
  */
 
 import BSON from "bson";
-import { Writer } from "kryo/lib/core.js";
+import { Writer } from "kryo";
 
 import { BsonValueWriter } from "./bson-value-writer.js";
 

@@ -1,4 +1,4 @@
-import { CaseStyle } from "../../../lib/core.js";
+import { CaseStyle } from "../../../lib/index.js";
 import { RecordType } from "../../../lib/record.js";
 import { Ucs2StringType } from "../../../lib/ucs2-string.js";
 import { $FsNodeType, FsNodeType } from "./fs-node-type.js";

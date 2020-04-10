@@ -1,6 +1,6 @@
 import incident, { Incident } from "incident";
 
-import { Type } from "../core";
+import { Type } from "../index";
 
 export type Name = "InvalidValue";
 export const name: Name = "InvalidValue";

@@ -1,5 +1,5 @@
 import { ArrayType } from "../../../lib/array.js";
-import { CaseStyle } from "../../../lib/core.js";
+import { CaseStyle } from "../../../lib/index.js";
 import { LiteralType } from "../../../lib/literal.js";
 import { RecordType } from "../../../lib/record.js";
 import { $FsNodeBase, FsNodeBase } from "./fs-node-base.js";

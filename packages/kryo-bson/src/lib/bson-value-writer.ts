@@ -3,8 +3,8 @@
  */
 
 import BSON from "bson";
+import { Writer } from "kryo";
 import { JsonWriter } from "kryo-json/lib/json-writer.js";
-import { Writer } from "kryo/lib/core.js";
 import { StructuredWriter } from "kryo/lib/writers/structured.js";
 
 export class BsonValueWriter extends StructuredWriter {

@@ -1,5 +1,5 @@
+import { CaseStyle } from "kryo";
 import { registerErrMochaTests, registerMochaSuites, TestItem } from "kryo-testing";
-import { CaseStyle } from "kryo/lib/core.js";
 import { DateType } from "kryo/lib/date.js";
 import { IntegerType } from "kryo/lib/integer.js";
 import { RecordIoType, RecordType } from "kryo/lib/record.js";

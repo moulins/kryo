@@ -2,7 +2,7 @@
  * @module kryo/writers/json
  */
 
-import { Writer } from "kryo/lib/core.js";
+import { Writer } from "kryo";
 
 import { JsonValueWriter } from "./json-value-writer.js";
 

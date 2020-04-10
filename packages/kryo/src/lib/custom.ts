@@ -1,6 +1,6 @@
 import { lazyProperties } from "./_helpers/lazy-properties.js";
-import { Lazy, Reader, Type, Writer } from "./core.js";
 import { createLazyOptionsError } from "./errors/lazy-options.js";
+import { Lazy, Reader, Type, Writer } from "./index.js";
 
 export type Name = "custom";
 export const name: Name = "custom";

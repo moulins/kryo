@@ -2,7 +2,7 @@
  * @module kryo/writers/structured
  */
 
-import { Writer } from "../core.js";
+import { Writer } from "../index.js";
 
 /**
  * Base class for `json`, `qs` and `bson` writers.

@@ -2,7 +2,7 @@
  * @module kryo/readers/json
  */
 
-import { Reader, ReadVisitor } from "kryo/lib/core.js";
+import { Reader, ReadVisitor } from "kryo";
 
 import { JsonValueReader } from "./json-value-reader.js";
 

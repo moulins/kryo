@@ -4,8 +4,8 @@
 
 import BSON from "bson";
 import incident from "incident";
+import { Reader, ReadVisitor } from "kryo";
 import { JsonReader } from "kryo-json/lib/json-reader.js";
-import { Reader, ReadVisitor } from "kryo/lib/core.js";
 import { createInvalidTypeError } from "kryo/lib/errors/invalid-type.js";
 
 function isBinary(val: any): val is BSON.Binary {

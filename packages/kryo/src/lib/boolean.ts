@@ -1,5 +1,5 @@
-import { IoType, Ord, Reader, VersionedType, Writer } from "./core.js";
 import { createInvalidTypeError } from "./errors/invalid-type.js";
+import { IoType, Ord, Reader, VersionedType, Writer } from "./index.js";
 import { readVisitor } from "./readers/read-visitor.js";
 
 export type Name = "boolean";

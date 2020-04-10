@@ -11,10 +11,13 @@
   },
   "private": false,
   "type": "module",
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
   "files": [
     "./lib/"
   ],
   "exports": {
+    ".": "./lib/index.js",
     "./lib/": "./lib/"
   },
   "engines": {

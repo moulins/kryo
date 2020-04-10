@@ -1,7 +1,7 @@
 import BSON from "bson";
 
-import { CaseStyle } from "../../lib/core.js";
 import { DateType } from "../../lib/date.js";
+import { CaseStyle } from "../../lib/index.js";
 import { IntegerType } from "../../lib/integer.js";
 import { RecordType } from "../../lib/record.js";
 import { runTests, TypedValue } from "../helpers/test.js";

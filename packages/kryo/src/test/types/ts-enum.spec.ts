@@ -1,6 +1,6 @@
 import BSON from "bson";
 
-import { CaseStyle } from "../../lib/core.js";
+import { CaseStyle } from "../../lib/index.js";
 import { TsEnumType } from "../../lib/ts-enum.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 

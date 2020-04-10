@@ -2,7 +2,7 @@
  * @module kryo/readers/qs
  */
 
-import { Reader, ReadVisitor } from "kryo/lib/core.js";
+import { Reader, ReadVisitor } from "kryo";
 import qs from "qs";
 
 import { QsValueReader } from "./qs-value-reader.js";

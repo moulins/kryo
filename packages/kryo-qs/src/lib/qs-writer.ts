@@ -2,7 +2,7 @@
  * @module kryo/writers/qs
  */
 
-import { Writer } from "kryo/lib/core.js";
+import { Writer } from "kryo";
 import qs from "qs";
 
 import { QsValueWriter } from "./qs-value-writer.js";

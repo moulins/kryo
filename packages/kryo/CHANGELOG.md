@@ -4,6 +4,7 @@
 - **[Breaking change]** Rename `DocumentType` to `RecordType`.
 - **[Breaking change]** Move `CaseStyle` to main exports.
 - **[Breaking change]** Move `types/` module to the library root.
+- **[Breaking change]** Rename `core.js` to `index.js`.
 
 # 0.9.0 (2020-04-04)
 

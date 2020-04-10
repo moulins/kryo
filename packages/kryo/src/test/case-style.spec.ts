@@ -1,7 +1,7 @@
 import chai from "chai";
 
 import { detectCaseStyle, join, rename, split } from "../lib/_helpers/case-style.js";
-import { CaseStyle } from "../lib/core.js";
+import { CaseStyle } from "../lib/index.js";
 
 describe("rename", function () {
   describe("detectCaseStyle", function () {

@@ -3,7 +3,7 @@
  */
 
 import BSON from "bson";
-import { Reader, ReadVisitor } from "kryo/lib/core.js";
+import { Reader, ReadVisitor } from "kryo";
 
 import { BsonValueReader } from "./bson-value-reader.js";
 
