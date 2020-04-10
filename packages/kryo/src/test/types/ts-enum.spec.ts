@@ -1,5 +1,3 @@
-import BSON from "bson";
-
 import { CaseStyle } from "../../lib/index.js";
 import { TsEnumType } from "../../lib/ts-enum.js";
 import { runTests, TypedValue } from "../helpers/test.js";
@@ -98,7 +96,6 @@ describe("SimpleEnum: rename KebabCase", function () {
       value: Node.Expression,
       valid: true,
       output: {
-        bson: BSON.serialize({_: "expression"}),
         json: "\"expression\"",
         qs: "_=expression",
       },
@@ -108,7 +105,6 @@ describe("SimpleEnum: rename KebabCase", function () {
       value: Node.BinaryOperator,
       valid: true,
       output: {
-        bson: BSON.serialize({_: "binary-operator"}),
         json: "\"binary-operator\"",
         qs: "_=binary-operator",
       },
@@ -118,7 +114,6 @@ describe("SimpleEnum: rename KebabCase", function () {
       value: Node.BlockStatement,
       valid: true,
       output: {
-        bson: BSON.serialize({_: "block-statement"}),
         json: "\"block-statement\"",
         qs: "_=block-statement",
       },
@@ -128,7 +123,6 @@ describe("SimpleEnum: rename KebabCase", function () {
       value: 0,
       valid: true,
       output: {
-        bson: BSON.serialize({_: "expression"}),
         json: "\"expression\"",
         qs: "_=expression",
       },
@@ -138,7 +132,6 @@ describe("SimpleEnum: rename KebabCase", function () {
       value: 1,
       valid: true,
       output: {
-        bson: BSON.serialize({_: "binary-operator"}),
         json: "\"binary-operator\"",
         qs: "_=binary-operator",
       },
@@ -148,7 +141,6 @@ describe("SimpleEnum: rename KebabCase", function () {
       value: 2,
       valid: true,
       output: {
-        bson: BSON.serialize({_: "block-statement"}),
         json: "\"block-statement\"",
         qs: "_=block-statement",
       },

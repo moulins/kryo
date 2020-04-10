@@ -9,7 +9,6 @@
     "type": "git",
     "url": "git://github.com/demurgos/kryo.git"
   },
-  "private": false,
   "type": "module",
   "main": "./lib/index.js",
   "module": "./lib/index.js",

@@ -1,5 +1,3 @@
-import BSON from "bson";
-
 import { DateType } from "../../lib/date.js";
 import { CaseStyle } from "../../lib/index.js";
 import { IntegerType } from "../../lib/integer.js";
@@ -115,7 +113,6 @@ describe("Document: rename", function () {
       },
       valid: true,
       output: {
-        bson: BSON.serialize({"xmin": 0, "X_MAX": 10, "__yMin": 20, "y-max": 30}),
         json: JSON.stringify({"xmin": 0, "X_MAX": 10, "__yMin": 20, "y-max": 30}),
         qs: "xmin=0&X_MAX=10&__yMin=20&y-max=30",
       },

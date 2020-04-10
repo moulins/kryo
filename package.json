@@ -6,7 +6,7 @@
     "lint": "eslint \"packages/*/src/**/*.ts\"",
     "format": "eslint --fix \"packages/*/src/**/*.ts\"",
     "pretest": "tsc --build test.tsconfig.json",
-    "test": "mocha \"packages/*/test/**/*.spec.js\""
+    "test": "yarn pretest && mocha \"packages/*/test/**/*.spec.js\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.26.0",

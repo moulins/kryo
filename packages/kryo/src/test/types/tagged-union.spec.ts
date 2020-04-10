@@ -1,5 +1,3 @@
-import BSON from "bson";
-
 import { CaseStyle } from "../../lib/index.js";
 import { IntegerType } from "../../lib/integer.js";
 import { LiteralType } from "../../lib/literal.js";
@@ -72,7 +70,6 @@ describe("TaggedUnion", function () {
         },
         valid: true,
         output: {
-          bson: BSON.serialize({type: "rectangle", width: 10, height: 20}),
           json: "{\"type\":\"rectangle\",\"width\":10,\"height\":20}",
           qs: "type=rectangle&width=10&height=20",
         },
@@ -85,7 +82,6 @@ describe("TaggedUnion", function () {
         },
         valid: true,
         output: {
-          bson: BSON.serialize({type: "circle", radius: 15}),
           json: "{\"type\":\"circle\",\"radius\":15}",
           qs: "type=circle&radius=15",
         },

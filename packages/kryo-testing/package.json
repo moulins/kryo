@@ -9,7 +9,6 @@
     "type": "git",
     "url": "git://github.com/demurgos/kryo.git"
   },
-  "private": false,
   "type": "module",
   "files": [
     "./lib/"
@@ -38,6 +37,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.8",
     "@types/mocha": "^7.0.1",
+    "@types/node": "^13.11.1",
     "c88": "^0.3.4",
     "chai": "^4.2.0",
     "mocha": "^7.1.1",

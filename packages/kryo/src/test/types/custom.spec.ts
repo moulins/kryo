@@ -1,4 +1,3 @@
-import BSON from "bson";
 import incident from "incident";
 
 import { CustomType } from "../../lib/custom.js";
@@ -81,7 +80,6 @@ describe("Custom", function () {
       value: new Complex(0, 0),
       valid: true,
       output: {
-        bson: BSON.serialize({_: "0"}),
         json: "\"0\"",
         qs: "_=0",
       },
@@ -91,7 +89,6 @@ describe("Custom", function () {
       value: new Complex(1, 0),
       valid: true,
       output: {
-        bson: BSON.serialize({_: "1"}),
         json: "\"1\"",
         qs: "_=1",
       },
@@ -101,7 +98,6 @@ describe("Custom", function () {
       value: new Complex(0, 2),
       valid: true,
       output: {
-        bson: BSON.serialize({_: "2j"}),
         json: "\"2j\"",
         qs: "_=2j",
       },
@@ -111,7 +107,6 @@ describe("Custom", function () {
       value: new Complex(3, 4),
       valid: true,
       output: {
-        bson: BSON.serialize({_: "3 + 4j"}),
         json: "\"3 + 4j\"",
         qs: "_=3%20%2B%204j",
       },
