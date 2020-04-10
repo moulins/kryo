@@ -1,4 +1,4 @@
-# Next
+# 0.10.0 (2020-04-10)
 
 - **[Breaking change]** Move format support to their own packages: `kryo-bson`, `kryo-json` and `kryo-qs`.
 - **[Breaking change]** Rename `DocumentType` to `RecordType`.
