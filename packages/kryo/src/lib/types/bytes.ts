@@ -29,7 +29,11 @@ export class BytesType implements IoType<Uint8Array>, VersionedType<Uint8Array, 
   // TODO: Dynamically add with prototype?
   read<R>(reader: Reader<R>, raw: R): Uint8Array {
     return reader.readBytes(raw, readVisitor({
-      fromBytes(input: Uint8Array): Uint8Array {
+      fromBytes: (input: Uint8Array): Uint8Array => {
+        const err: Error | undefined = this.testError(input);
+        if (err !== undefined) {
+          throw err;
+        }
         return input;
       },
     }));

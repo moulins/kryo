@@ -1,11 +1,6 @@
-import chai from "chai";
-
-import { $Boolean } from "../../lib/builtins/boolean.js";
 import { $Uint8 } from "../../lib/builtins/uint8.js";
-import { JsonReader } from "../../lib/readers/json.js";
-import { ArrayIoType, ArrayType } from "../../lib/types/array.js";
+import { ArrayType } from "../../lib/types/array.js";
 import { IntegerType } from "../../lib/types/integer.js";
-import { JsonWriter } from "../../lib/writers/json.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
 describe("ArrayType", function () {
@@ -134,31 +129,5 @@ describe("ArrayType", function () {
     ];
 
     runTests($IntArray, items);
-  });
-
-  describe("NestedArray", function () {
-    const jsonWriter: JsonWriter = new JsonWriter();
-    const jsonReader: JsonReader = new JsonReader();
-    const $NestedBooleanArray: ArrayIoType<boolean[]> = new ArrayType({
-      itemType: new ArrayType({
-        itemType: $Boolean,
-        maxLength: Infinity,
-      }),
-      maxLength: Infinity,
-    });
-
-    it("should be possible to write nested arrays", function () {
-      const input: boolean[][] = [[true], [false, true]];
-      const actual: string = $NestedBooleanArray.write(jsonWriter, input);
-      const expected: string = "[[true],[false,true]]";
-      chai.assert.deepEqual(actual, expected);
-    });
-
-    it("should be possible to read nested arrays", function () {
-      const input: string = "[[true],[false,true]]";
-      const actual: boolean[][] = $NestedBooleanArray.read(jsonReader, input);
-      const expected: boolean[][] = [[true], [false, true]];
-      chai.assert.deepEqual(actual, expected);
-    });
   });
 });

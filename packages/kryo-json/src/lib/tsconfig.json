@@ -1,0 +1,17 @@
+{
+  "extends": "../../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": ".",
+    "outDir": "../../lib"
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [],
+  "references": [
+    {
+      "path": "../../../kryo/src/lib"
+    }
+  ]
+}

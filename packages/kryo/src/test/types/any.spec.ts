@@ -1,40 +1,28 @@
-import chai from "chai";
-
-import { JsonValueReader } from "../../lib/readers/json-value.js";
-import { JsonReader } from "../../lib/readers/json.js";
 import { AnyType } from "../../lib/types/any.js";
-import { DocumentIoType, DocumentType } from "../../lib/types/document.js";
+import { runTests, TypedValue } from "../helpers/test.js";
 
-describe("AnyType", function () {
-  describe("with JsonReader", function () {
-    it("should read the expected top-level values", function () {
-      const reader: JsonReader = new JsonReader();
-      const $Any: AnyType = new AnyType();
-      chai.assert.deepEqual($Any.read(reader, "0"), "0");
-      chai.assert.deepEqual($Any.read(reader, "{\"foo\": \"bar\""), "{\"foo\": \"bar\"");
-    });
-    it("should read the expected nested values", function () {
-      const reader: JsonReader = new JsonReader();
-      const $Any: AnyType = new AnyType();
+describe("Any", function () {
+  const $Any: AnyType = new AnyType();
 
-      interface FooBarQuz {
-        foo: any;
-      }
+  const items: TypedValue[] = [
+    {name: "true", value: true, valid: true},
+    {name: "false", value: false, valid: true},
+    {name: "0", value: 0, valid: true},
+    {name: "1", value: 1, valid: true},
+    {name: "\"\"", value: "", valid: true},
+    {name: "\"0\"", value: "0", valid: true},
+    {name: "\"true\"", value: "true", valid: true},
+    {name: "\"false\"", value: "false", valid: true},
+    {name: "Infinity", value: Infinity, valid: true},
+    {name: "-Infinity", value: -Infinity, valid: true},
+    {name: "NaN", value: NaN, valid: true},
+    // {name: "undefined", value: undefined, valid: true},
+    {name: "null", value: null, valid: true},
+    {name: "[]", value: [], valid: true},
+    {name: "{}", value: {}, valid: true},
+    {name: "new Date()", value: new Date(), valid: true},
+    {name: "/regex/", value: /regex/, valid: true},
+  ];
 
-      const $FooBarQuz: DocumentIoType<FooBarQuz> = new DocumentType({
-        properties: {foo: {type: $Any}},
-      });
-
-      chai.assert.deepEqual($FooBarQuz.read(reader, "{\"foo\": {\"bar\": \"quz\"}}"), {foo: {bar: "quz"}});
-    });
-  });
-
-  describe("with JsonValueReader", function () {
-    it("should read the expected values", function () {
-      const reader: JsonValueReader = new JsonValueReader();
-      const $Any: AnyType = new AnyType();
-      chai.assert.deepEqual($Any.read(reader, 0), 0);
-      chai.assert.deepEqual($Any.read(reader, {foo: "bar"}), {foo: "bar"});
-    });
-  });
+  runTests($Any, items);
 });

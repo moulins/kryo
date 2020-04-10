@@ -1,8 +1,4 @@
-import BSON from "bson";
-import chai from "chai";
-
 import { CaseStyle } from "../../lib/case-style.js";
-import { JsonValueReader } from "../../lib/readers/json-value.js";
 import { DocumentType } from "../../lib/types/document.js";
 import { IntegerType } from "../../lib/types/integer.js";
 import { TryUnionType } from "../../lib/types/try-union.js";
@@ -47,11 +43,6 @@ describe("TryUnion", function () {
           height: 20,
         },
         valid: true,
-        output: {
-          bson: BSON.serialize({width: 10, height: 20}),
-          json: "{\"width\":10,\"height\":20}",
-          qs: "width=10&height=20",
-        },
       },
       {
         name: "Circle {radius: 15}",
@@ -59,11 +50,6 @@ describe("TryUnion", function () {
           radius: 15,
         },
         valid: true,
-        output: {
-          bson: BSON.serialize({radius: 15}),
-          json: "{\"radius\":15}",
-          qs: "radius=15",
-        },
       },
 
       {
@@ -102,18 +88,6 @@ describe("TryUnion", function () {
     ];
 
     runTests($Shape, items);
-
-    const jsonValueReader: JsonValueReader = new JsonValueReader();
-
-    it(".readTrustedWithVariant should return $Rectangle", () => {
-      const {variant} = $Shape.variantRead(jsonValueReader, {width: 10, height: 20});
-      chai.assert.strictEqual(variant, $Rectangle);
-    });
-
-    it(".readTrustedWithVariant should return $Circle", () => {
-      const {variant} = $Shape.variantRead(jsonValueReader, {radius: 15});
-      chai.assert.strictEqual(variant, $Circle);
-    });
 
     // it(".testWithVariant should return [true, $Rectangle]", () => {
     //   const [test, variant] = $Shape.testWithVariant({width: 10, height: 20});
