@@ -1,4 +1,4 @@
-# Next
+# 0.10.1 (2020-04-13)
 
 - **[Feature]** Add `JSON_VALUE_WRITER` and `JSON_VALUE_READER` builtins.
 
