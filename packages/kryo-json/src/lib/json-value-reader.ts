@@ -134,3 +134,5 @@ export class JsonValueReader implements Reader<JsonValue> {
     return visitor.fromString(raw);
   }
 }
+
+export const JSON_VALUE_READER: JsonValueReader = new JsonValueReader();

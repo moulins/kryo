@@ -60,3 +60,5 @@ export class JsonValueWriter extends StructuredWriter {
     return result;
   }
 }
+
+export const JSON_VALUE_WRITER: JsonValueWriter = new JsonValueWriter();
