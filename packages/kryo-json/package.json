@@ -1,6 +1,6 @@
 {
   "name": "kryo-json",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "JSON serializer for Kryo types",
   "license": "MIT",
   "keywords": [],
