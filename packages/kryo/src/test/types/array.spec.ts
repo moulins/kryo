@@ -1,13 +1,15 @@
 import { ArrayType } from "../../lib/array.js";
 import { $Uint8, IntegerType } from "../../lib/integer.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("ArrayType", function () {
   describe("General", function () {
-    const $IntArray: ArrayType<number> = new ArrayType({
+    const $IntArray = new ArrayType({
       itemType: new IntegerType(),
       maxLength: 2,
     });
+
+    assertKryoType<typeof $IntArray, Array<number>>(true);
 
     const items: TypedValue[] = [
       {

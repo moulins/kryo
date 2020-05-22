@@ -1,10 +1,11 @@
 import chai from "chai";
 
 import { Float64Type } from "../../lib/float64.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("Float64Type", function () {
   const $Float64: Float64Type = new Float64Type();
+  assertKryoType<typeof $Float64, number>(true);
 
   const items: TypedValue[] = [
     {

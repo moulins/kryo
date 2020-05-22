@@ -1,8 +1,9 @@
 import { DateType } from "../../lib/date.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("DateType", function () {
-  const type: DateType = new DateType();
+  const $Date = new DateType();
+  assertKryoType<typeof $Date, Date>(true);
 
   const items: TypedValue[] = [
     {name: "new Date()", value: new Date(), valid: true},
@@ -44,5 +45,5 @@ describe("DateType", function () {
     {name: "/regex/", value: /regex/, valid: false},
   ];
 
-  runTests(type, items);
+  runTests($Date, items);
 });

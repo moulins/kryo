@@ -1,10 +1,12 @@
 import { BytesType } from "../../lib/bytes.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("BytesType", function () {
-  const shortBuffer: BytesType = new BytesType({
+  const $Bytes = new BytesType({
     maxLength: 2,
   });
+
+  assertKryoType<typeof $Bytes, Uint8Array>(true);
 
   const items: TypedValue[] = [
     {
@@ -93,5 +95,5 @@ describe("BytesType", function () {
     {name: "/regex/", value: /regex/, valid: false},
   ];
 
-  runTests(shortBuffer, items);
+  runTests($Bytes, items);
 });

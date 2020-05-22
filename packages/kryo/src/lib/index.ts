@@ -12,6 +12,12 @@
 export type Lazy<T> = T | (() => T);
 
 /**
+ * Helper to extract the value type `T` described by a `Type<T>`.
+ * For example, `FromKryoType<typeof $Uint16>` will be `Number`.
+ */
+export type FromKryoType<K> = K extends Type<infer T> ? T : never;
+
+/**
  * Simple type interface.
  *
  * This is the smallest interface for objects to be valid types.

@@ -1,11 +1,12 @@
 import chai from "chai";
 
 import { Ucs2StringType } from "../../lib/ucs2-string.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("Ucs2StringType", function () {
   describe("basic support", function () {
-    const type: Ucs2StringType = new Ucs2StringType({maxLength: 500});
+    const $Ucs2String = new Ucs2StringType({maxLength: 500});
+    assertKryoType<typeof $Ucs2String, string>(true);
 
     const items: TypedValue[] = [
       // Valid items
@@ -30,7 +31,7 @@ describe("Ucs2StringType", function () {
       {name: "/regex/", value: /regex/, valid: false},
     ];
 
-    runTests(type, items);
+    runTests($Ucs2String, items);
   });
 
   describe("Simple UCS2 behavior", function () {
@@ -51,11 +52,11 @@ describe("Ucs2StringType", function () {
     });
     it("should accept unmatched surrogate halves", function () {
       // 𝄞 corresponds to the surrogate pair (0xd834, 0xdd1e)
-      const type: Ucs2StringType = new Ucs2StringType({maxLength: 500});
+      const $Ucs2String: Ucs2StringType = new Ucs2StringType({maxLength: 500});
       const items: string[] = ["\ud834", "a\ud834", "\ud834b", "a\ud834b", "\udd1e", "a\udd1e", "\udd1eb", "a\udd1eb"];
       for (const item of items) {
         it(JSON.stringify(item), function () {
-          chai.assert.isTrue(type.test(item));
+          chai.assert.isTrue($Ucs2String.test(item));
         });
       }
     });

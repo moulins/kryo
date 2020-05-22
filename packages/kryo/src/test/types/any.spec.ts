@@ -1,8 +1,9 @@
 import { AnyType } from "../../lib/any.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("Any", function () {
-  const $Any: AnyType = new AnyType();
+  const $Any = new AnyType();
+  assertKryoType<typeof $Any, any>(true);
 
   const items: TypedValue[] = [
     {name: "true", value: true, valid: true},
@@ -25,4 +26,5 @@ describe("Any", function () {
   ];
 
   runTests($Any, items);
+
 });

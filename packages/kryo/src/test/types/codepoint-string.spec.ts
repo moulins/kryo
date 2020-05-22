@@ -2,11 +2,12 @@ import chai from "chai";
 import unorm from "unorm";
 
 import { CodepointStringType } from "../../lib/codepoint-string.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("CodepointStringType", function () {
   describe("basic support", function () {
-    const type: CodepointStringType = new CodepointStringType({maxCodepoints: 500, unorm});
+    const $CodepointString = new CodepointStringType({maxCodepoints: 500, unorm});
+    assertKryoType<typeof $CodepointString, string>(true);
 
     const items: TypedValue[] = [
       // Valid items
@@ -31,7 +32,7 @@ describe("CodepointStringType", function () {
       {name: "/regex/", value: /regex/, valid: false},
     ];
 
-    runTests(type, items);
+    runTests($CodepointString, items);
   });
 
   describe("Ensure valid codepoints with Javascript (UCS2) strings", function () {

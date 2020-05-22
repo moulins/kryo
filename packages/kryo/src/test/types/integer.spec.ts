@@ -1,9 +1,10 @@
 import { IntegerType } from "../../lib/integer.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("IntegerType", function () {
   describe("General", function () {
-    const type: IntegerType = new IntegerType();
+    const $Int = new IntegerType();
+    assertKryoType<typeof $Int, number>(true);
 
     const items: TypedValue[] = [
       // Valid values
@@ -44,6 +45,6 @@ describe("IntegerType", function () {
       {name: "/regex/", value: /regex/, valid: false},
     ];
 
-    runTests(type, items);
+    runTests($Int, items);
   });
 });

@@ -4,7 +4,7 @@ import { CustomType } from "../../lib/custom.js";
 import { createInvalidTypeError } from "../../lib/errors/invalid-type.js";
 import { Reader, Writer } from "../../lib/index.js";
 import { readVisitor } from "../../lib/readers/read-visitor.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("Custom", function () {
   /**
@@ -46,7 +46,7 @@ describe("Custom", function () {
     }
   }
 
-  const complexType: CustomType<Complex> = new CustomType({
+  const $Complex = new CustomType({
     read<R>(reader: Reader<R>, raw: R): Complex {
       return reader.readString(raw, readVisitor({
         fromString: (input: string): Complex => {
@@ -73,6 +73,8 @@ describe("Custom", function () {
       return new Complex(value.real, value.imaginary);
     },
   });
+
+  assertKryoType<typeof $Complex, Complex>(true);
 
   const items: TypedValue[] = [
     {
@@ -129,5 +131,5 @@ describe("Custom", function () {
     {name: "/regex/", value: /regex/, valid: false},
   ];
 
-  runTests(complexType, items);
+  runTests($Complex, items);
 });

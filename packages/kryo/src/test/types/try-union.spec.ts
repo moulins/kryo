@@ -4,6 +4,8 @@ import { RecordType } from "../../lib/record.js";
 import { TryUnionType } from "../../lib/try-union.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
+// TODO: test with assertKryoType
+
 describe("TryUnion", function () {
   describe("TryUnion<Shape>", function () {
     interface Rectangle {

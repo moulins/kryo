@@ -4,6 +4,8 @@ import { IntegerType } from "../../lib/integer.js";
 import { RecordType } from "../../lib/record.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
+// TODO: test with assertKryoType
+
 describe("kryo | Record", function () {
   describe("Main", function () {
     interface TestRecord {

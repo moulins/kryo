@@ -1,14 +1,16 @@
 import { IntegerType } from "../../lib/integer.js";
 import { MapType } from "../../lib/map.js";
 import { Ucs2StringType } from "../../lib/ucs2-string.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("Map", function () {
-  const mapType: MapType<number, number> = new MapType({
+  const $Map = new MapType({
     keyType: new IntegerType(),
     valueType: new IntegerType(),
     maxSize: 5,
   });
+
+  assertKryoType<typeof $Map, Map<number, number>>(true);
 
   const items: TypedValue[] = [
     {
@@ -38,16 +40,18 @@ describe("Map", function () {
     {name: "/regex/", value: /regex/, valid: false},
   ];
 
-  runTests(mapType, items);
+  runTests($Map, items);
 });
 
 describe("Map (assumeStringKey)", function () {
-  const mapType: MapType<string, number> = new MapType({
+  const $Map = new MapType({
     keyType: new Ucs2StringType({pattern: /^a+$/, maxLength: 10}),
     valueType: new IntegerType(),
     maxSize: 5,
     assumeStringKey: true,
   });
+
+  assertKryoType<typeof $Map, Map<string, number>>(true);
 
   const items: TypedValue[] = [
     {
@@ -60,5 +64,5 @@ describe("Map (assumeStringKey)", function () {
     },
   ];
 
-  runTests(mapType, items);
+  runTests($Map, items);
 });

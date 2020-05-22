@@ -1,6 +1,15 @@
 import chai from "chai";
 
-import { Type } from "../../lib";
+import { FromKryoType, Type } from "../../lib";
+
+
+export type AssertKryoType<K, T> = FromKryoType<K> extends T ?
+  (T extends FromKryoType<K> ? true : false)
+  : false;
+
+export function assertKryoType<K, T>(_equals: AssertKryoType<K, T>) {
+  // nothing to do, this is a type-level assertion
+}
 
 export interface NamedValue {
   name?: string;

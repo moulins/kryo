@@ -1,7 +1,9 @@
 import { $UuidHex } from "../../lib/uuid-hex.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("$UuidHex", function () {
+  assertKryoType<typeof $UuidHex, string>(true);
+
   const items: TypedValue[] = [
     // Valid values
     {value: "bbb823fc-f020-4e96-97b4-5d08907a463f", valid: true},

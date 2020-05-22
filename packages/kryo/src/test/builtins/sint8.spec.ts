@@ -1,7 +1,9 @@
 import { $Sint8 } from "../../lib/integer.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("$Sint8", function () {
+  assertKryoType<typeof $Sint8, number>(true);
+
   const items: TypedValue[] = [
     // Valid values
     {name: "0", value: 0, valid: true},

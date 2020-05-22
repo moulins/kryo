@@ -2,6 +2,8 @@ import { CaseStyle } from "../../lib/index.js";
 import { TsEnumType } from "../../lib/ts-enum.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
+// TODO: test with assertKryoType
+
 describe("TsEnum", function () {
   enum Color {
     Red,

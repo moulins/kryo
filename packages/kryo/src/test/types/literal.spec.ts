@@ -1,14 +1,16 @@
-import { LiteralIoType, LiteralType } from "../../lib/literal.js";
+import { LiteralType } from "../../lib/literal.js";
 import { TsEnumType } from "../../lib/ts-enum.js";
 import { Ucs2StringType } from "../../lib/ucs2-string.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("Literal", function () {
   describe("Literal<\"foo\">", function () {
-    const type: LiteralType<"foo"> = new LiteralType<"foo">(() => ({
+    const $Foo = new LiteralType(() => ({
       type: new Ucs2StringType({maxLength: Infinity}),
-      value: "foo",
+      value: "foo" as "foo",
     }));
+
+    assertKryoType<typeof $Foo, "foo">(true);
 
     const items: TypedValue[] = [
       {
@@ -46,7 +48,7 @@ describe("Literal", function () {
       {name: "/regex/", value: /regex/, valid: false},
     ];
 
-    runTests(type, items);
+    runTests($Foo, items);
   });
 
   describe("Literal<Color.Red>", function () {
@@ -56,10 +58,12 @@ describe("Literal", function () {
       Blue,
     }
 
-    const $ColorRed: LiteralIoType<Color.Red> = new LiteralType<Color.Red>({
+    const $ColorRed = new LiteralType({
       type: new TsEnumType({enum: Color}),
-      value: Color.Red,
+      value: Color.Red as Color.Red,
     });
+
+    assertKryoType<typeof $ColorRed, Color.Red>(true);
 
     const items: TypedValue[] = [
       {

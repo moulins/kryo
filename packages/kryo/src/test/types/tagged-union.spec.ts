@@ -6,6 +6,8 @@ import { TaggedUnionType } from "../../lib/tagged-union.js";
 import { TsEnumType } from "../../lib/ts-enum.js";
 import { runTests, TypedValue } from "../helpers/test.js";
 
+// TODO: test with assertKryoType
+
 describe("TaggedUnion", function () {
   describe("TaggedUnion<Shape>", function () {
     enum ShapeType {
@@ -13,7 +15,7 @@ describe("TaggedUnion", function () {
       Circle,
     }
 
-    const shapeTypeType: TsEnumType<ShapeType> = new TsEnumType({
+    const $ShapeType: TsEnumType<ShapeType> = new TsEnumType({
       enum: ShapeType,
       changeCase: CaseStyle.KebabCase,
     });
@@ -24,11 +26,11 @@ describe("TaggedUnion", function () {
       height: number;
     }
 
-    const rectangleType: RecordType<Rectangle> = new RecordType<Rectangle>({
+    const $Rectangle: RecordType<Rectangle> = new RecordType<Rectangle>({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Rectangle>({
-            type: shapeTypeType,
+            type: $ShapeType,
             value: ShapeType.Rectangle,
           }),
         },
@@ -42,11 +44,11 @@ describe("TaggedUnion", function () {
       radius: number;
     }
 
-    const circleType: RecordType<Circle> = new RecordType<Circle>({
+    const $Circle: RecordType<Circle> = new RecordType<Circle>({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Circle>({
-            type: shapeTypeType,
+            type: $ShapeType,
             value: ShapeType.Circle,
           }),
         },
@@ -55,8 +57,8 @@ describe("TaggedUnion", function () {
     });
 
     type Shape = Rectangle | Circle;
-    const shapeType: TaggedUnionType<Shape> = new TaggedUnionType<Shape>(() => ({
-      variants: [rectangleType, circleType],
+    const $Shape: TaggedUnionType<Shape> = new TaggedUnionType<Shape>(() => ({
+      variants: [$Rectangle, $Circle],
       tag: "type",
     }));
 
@@ -127,6 +129,6 @@ describe("TaggedUnion", function () {
       {name: "/regex/", value: /regex/, valid: false},
     ];
 
-    runTests(shapeType, items);
+    runTests($Shape, items);
   });
 });

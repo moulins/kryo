@@ -1,10 +1,11 @@
 import chai from "chai";
 
 import { BooleanType } from "../../lib/boolean.js";
-import { runTests, TypedValue } from "../helpers/test.js";
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("BooleanType", function () {
-  const type: BooleanType = new BooleanType();
+  const $Boolean = new BooleanType();
+  assertKryoType<typeof $Boolean, boolean>(true);
 
   const items: TypedValue[] = [
     {name: "true", value: true, valid: true},
@@ -31,7 +32,8 @@ describe("BooleanType", function () {
     {name: "/regex/", value: /regex/, valid: false},
   ];
 
-  runTests(type, items);
+  runTests($Boolean, items);
+
 
   describe("lte", function () {
     const $Boolean: BooleanType = new BooleanType();
