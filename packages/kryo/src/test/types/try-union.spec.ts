@@ -13,7 +13,7 @@ describe("TryUnion", function () {
       height: number;
     }
 
-    const $Rectangle: RecordType<Rectangle> = new RecordType<Rectangle>({
+    const $Rectangle: RecordType<Rectangle> = new RecordType({
       properties: {
         width: {type: new IntegerType()},
         height: {type: new IntegerType()},
@@ -25,7 +25,7 @@ describe("TryUnion", function () {
       radius: number;
     }
 
-    const $Circle: RecordType<Circle> = new RecordType<Circle>({
+    const $Circle: RecordType<Circle> = new RecordType({
       properties: {
         radius: {type: new IntegerType()},
       },

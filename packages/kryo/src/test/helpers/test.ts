@@ -3,8 +3,8 @@ import chai from "chai";
 import { FromKryoType, Type } from "../../lib";
 
 
-export type AssertKryoType<K, T> = FromKryoType<K> extends T ?
-  (T extends FromKryoType<K> ? true : false)
+export type AssertKryoType<K, T> = [FromKryoType<K>] extends [T] ?
+  ([T] extends [FromKryoType<K>] ? true : false)
   : false;
 
 export function assertKryoType<K, T>(_equals: AssertKryoType<K, T>) {

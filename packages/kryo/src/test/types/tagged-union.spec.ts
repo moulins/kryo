@@ -26,7 +26,7 @@ describe("TaggedUnion", function () {
       height: number;
     }
 
-    const $Rectangle: RecordType<Rectangle> = new RecordType<Rectangle>({
+    const $Rectangle: RecordType<Rectangle> = new RecordType({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Rectangle>({
@@ -44,7 +44,7 @@ describe("TaggedUnion", function () {
       radius: number;
     }
 
-    const $Circle: RecordType<Circle> = new RecordType<Circle>({
+    const $Circle: RecordType<Circle> = new RecordType({
       properties: {
         type: {
           type: new LiteralType<ShapeType.Circle>({

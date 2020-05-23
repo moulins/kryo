@@ -6,7 +6,7 @@ import { createInvalidRecordError } from "./errors/invalid-record.js";
 import { createInvalidTypeError } from "./errors/invalid-type.js";
 import { createLazyOptionsError } from "./errors/lazy-options.js";
 import { createNotImplementedError } from "./errors/not-implemented.js";
-import { CaseStyle, IoType, Lazy, Reader, Type, VersionedType, Writer } from "./index.js";
+import { CaseStyle, FromKryoType, IoType, Lazy, Reader, Type, VersionedType, Writer } from "./index.js";
 import { readVisitor } from "./readers/read-visitor.js";
 
 export type Name = "record";
@@ -66,7 +66,8 @@ export interface PropertyDescriptor<T, K extends Type<T> = Type<T>> {
 }
 
 export interface RecordTypeConstructor {
-  new<T>(options: Lazy<RecordIoTypeOptions<T>>): RecordIoType<T>;
+
+  new<T, O extends RecordIoTypeOptions<T>>(options: Lazy<O>): RecordIoType<FromRecordTypeOptions<O>>;
 
   /**
    * Create a new record type checking for objects with the supplied properties.
@@ -76,8 +77,21 @@ export interface RecordTypeConstructor {
    * @param options Options describing this record type.
    * @return The record type corresponding to the provided options
    */
-  new<T>(options: Lazy<RecordTypeOptions<T>>): RecordType<T>;
+  new<T, O extends RecordTypeOptions<T>>(options: Lazy<O>): RecordType<FromRecordTypeOptions<O>>;
 }
+
+type OptionalPropertiesOf<O> = {
+  [P in keyof O]-?: O[P] extends { optional: true } ? P : never
+}[keyof O];
+
+type PartialSubset<O, K extends keyof O> = Partial<Pick<O, K>> & Pick<O, Exclude<keyof O, K>>;
+
+type FromRecordTypeOptions<O> = O extends RecordTypeOptions<infer _> ? {
+  [P in keyof PartialSubset<
+    O["properties"],
+    OptionalPropertiesOf<O["properties"]>
+  >]: FromKryoType<O["properties"][P]["type"]>;
+} : never;
 
 export interface RecordType<T> extends Type<T>, VersionedType<T, Diff<T>>, RecordTypeOptions<T> {
   getOutKey(key: keyof T): string;

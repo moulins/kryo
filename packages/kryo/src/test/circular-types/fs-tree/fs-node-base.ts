@@ -8,7 +8,7 @@ export interface FsNodeBase {
   name: string;
 }
 
-export const $FsNodeBase: RecordType<FsNodeBase> = new RecordType<FsNodeBase>({
+export const $FsNodeBase: RecordType<FsNodeBase> = new RecordType({
   properties: {
     tag: {type: $FsNodeType},
     name: {type: new Ucs2StringType({maxLength: Infinity})},

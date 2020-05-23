@@ -10,7 +10,7 @@ export interface File extends FsNodeBase {
   size: number;
 }
 
-export const $File: RecordType<File> = new RecordType<File>(() => ({
+export const $File: RecordType<File> = new RecordType(() => ({
   properties: {
     ...$FsNodeBase.properties,
     tag: {type: new LiteralType<FsNodeType.File>({type: $FsNodeType, value: FsNodeType.File})},

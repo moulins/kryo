@@ -2,9 +2,7 @@ import { DateType } from "../../lib/date.js";
 import { CaseStyle } from "../../lib/index.js";
 import { IntegerType } from "../../lib/integer.js";
 import { RecordType } from "../../lib/record.js";
-import { runTests, TypedValue } from "../helpers/test.js";
-
-// TODO: test with assertKryoType
+import { assertKryoType, runTests, TypedValue } from "../helpers/test.js";
 
 describe("kryo | Record", function () {
   describe("Main", function () {
@@ -14,7 +12,7 @@ describe("kryo | Record", function () {
       nestedDoc?: {id?: number};
     }
 
-    const $TestRecord: RecordType<TestRecord> = new RecordType({
+    const $TestRecord = new RecordType({
       noExtraKeys: false,
       properties: {
         dateProp: {
@@ -39,6 +37,8 @@ describe("kryo | Record", function () {
         },
       },
     });
+
+    assertKryoType<typeof $TestRecord, TestRecord>(true);
 
     const items: TypedValue[] = [
       {
@@ -100,7 +100,7 @@ describe("kryo | Record", function () {
       yMax: number;
     }
 
-    const type: RecordType<Rect> = new RecordType<Rect>({
+    const $Rect = new RecordType({
       properties: {
         xMin: {type: new IntegerType()},
         xMax: {type: new IntegerType(), changeCase: CaseStyle.ScreamingSnakeCase},
@@ -110,6 +110,8 @@ describe("kryo | Record", function () {
       rename: {xMin: "xmin"},
       changeCase: CaseStyle.KebabCase,
     });
+
+    assertKryoType<typeof $Rect, Rect>(true);
 
     const items: TypedValue[] = [
       {
@@ -128,6 +130,6 @@ describe("kryo | Record", function () {
       },
     ];
 
-    runTests(type, items);
+    runTests($Rect, items);
   });
 });

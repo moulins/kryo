@@ -8,10 +8,10 @@ import { $FsNode, FsNode } from "./fs-node.js";
 
 export interface Directory extends FsNodeBase {
   tag: FsNodeType.Directory;
-  children: FsNode[];
+  children?: FsNode[];
 }
 
-export const $Directory: RecordType<Directory> = new RecordType<Directory>(() => ({
+export const $Directory: RecordType<Directory> = new RecordType(() => ({
   properties: {
     ...$FsNodeBase.properties,
     tag: {type: new LiteralType<FsNodeType.Directory>({type: $FsNodeType, value: FsNodeType.Directory})},
